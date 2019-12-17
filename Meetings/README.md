@@ -3,14 +3,14 @@ Documentation for meetings with group. Notes, agenda and other documentation is 
 #### Prevous Meetings
 
 
-1. [2019-11-22](Group2191122.md)
+1. [2019-11-22](Meeting191122.md)
     - Agenda: initial problem description
     
     
-1. [2019-12-03](Second_meeting.md)
+1. [2019-12-03]((Meeting191203.md)
     - [Agenda](Agenda191203.md)
     
-1. [2019-12-10](Meeting_191210.md)
+1. [2019-12-10](Meeting191210.md)
     - [Agenda](Agenda191210.md)
 
  
