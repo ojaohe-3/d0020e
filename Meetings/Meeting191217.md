@@ -23,6 +23,13 @@
 - Steffi Knorn
 - Damianov Varagnolo
 
+## Summary
+We presented the design for user interfaces together with the node structure for the database. The feedback from Steffi and Damianov was to include Intented learning outcome (ilo) to get a better overview of what is needed to learn to get the degree. Ilo would also make it easier for teachers to add the knowledge components because the ilo inlcude knowledge components. Program board members don't talk about knowledge components, instead they make the programs from skills or ilos. Ilos for a program will always be the same, therefore it doesn't matter if the knowledge components is changed as long as the ilos isn't affected. 
+
+They also thought that the drag and drop function should have an alternative to just search for knowledge component and click to add. It should be efficient because teachers won't use the system if it takes too long time. A tree structure for the knowledge components should be good to know how they relate to each other. It would also be good if you could filter on different topics to easier find the knowledge components. They also wanted to know if knowledge components are connected inside a course. 
+
+Before next meeting a git respository with all the information about the project done before will be shared to avoid replicating.
+
 ## Meeting notes
 Johan explains what we are doing. Well done.
 Dami: No drag and drop? No, I don't want to use the mouse.
@@ -79,7 +86,6 @@ Jan: ok but if you make that available so we can see what we can do with that.
 
 Dami: We send you the information that we have, then we have a talk in january and the we have time to think about things. Whe n do you have to deliver your project?
 Dami: My proposal is to talk the first week in january.
-
 
 ## Action points
 - Build some small example of a course in JSON.
