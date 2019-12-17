@@ -1,4 +1,4 @@
-# Initial meeting
+# Second meeting
 
 ## Date and location
 - Tuesday, December 3, 2019 @ 13:00
