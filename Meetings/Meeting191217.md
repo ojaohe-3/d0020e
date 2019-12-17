@@ -20,8 +20,8 @@
 - Wilma Krutrök
 - Johan Rodahl Holmgren
 - Marcus Eriksson
-- Steffi   
-- Damianov 
+- Steffi Knorn
+- Damianov Varagnolo
 
 ## Meeting notes
 Johan explains what we are doing. Well done.
@@ -82,4 +82,8 @@ Dami: My proposal is to talk the first week in january.
 
 
 ## Action points
+- Build some small example of a course in JSON.
+
+## Next meeting
+- Wednesday, January 8, 2020 @ 13:00
 
