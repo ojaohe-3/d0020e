@@ -28,18 +28,17 @@ Jan was happy about the design of our git-workflow. To make things clearer the g
 of the nodes. The group is also asked to add git commands to avoid misunderstanding. 
 
 We did discuss how the group felt about the project and displayed a file containing a priority list. We all agreed that 
-the it is a good idea to follow the list when designing the software. 
+it is a good idea to follow the list when designing the software and making design choices. 
 
-For the system design the group got a lot of work to do. It is not easy to view the UML and get an overview of how the 
-software should be implemented.
+For the system design the group should work on clearifying the design. It is not easy to view the UML and get an overview of how the software should be implemented.
 
 Jan did like the first idea of a graphical user interface. 
 
-For the next meeting the group is asked to spend time on the database structure and the system architecture. 
+Until the next meeting the group is asked to spend time on the database structure and the system architecture. 
 
 ## Action points
 - Next meeting Tuesday 13 December 10:00
 - Fix Github workflow
 - An example overview of a Neo4J database
-- work on the UML diagram
+- Work on the UML diagram
 - Interview with Jonny Johansson Wednesday 11 December 14:00
