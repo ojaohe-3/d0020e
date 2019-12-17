@@ -42,7 +42,7 @@ All the data about the courses and the knowledge components will be stored in a 
 
 ![A first design of the UML-diagram](.././Resources/UML-Module diagram-2.png)
 <center>
-Figure 1: A first design of the UML-diagram.
+Figure 1: Overview of the program structure by a module diagram.
 </center>
 
 
