@@ -12,7 +12,8 @@ Documentation for meetings with group. Notes, agenda and other documentation is 
     
 1. [2019-12-10](Meeting191210.md)
     - [Agenda](Agenda191210.md)
-
+1. [2020-01-08](Meeting200108.md)
+    - [Agenda](Agenda200108.md)
  
 # Team Workflow
 Scrum Master - Tommy Andersson
