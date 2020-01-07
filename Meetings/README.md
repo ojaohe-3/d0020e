@@ -7,13 +7,16 @@ Documentation for meetings with group. Notes, agenda and other documentation is 
     - Agenda: initial problem description
     
     
-1. [2019-12-03]((Meeting191203.md)
+1. [2019-12-03](Meeting191203.md)
     - [Agenda](Agenda191203.md)
     
 1. [2019-12-10](Meeting191210.md)
     - [Agenda](Agenda191210.md)
+1. [2019-12-17](Meeting191217.md)
+    - [Agenda](Agenda191217.md)
 1. [2020-01-08](Meeting200108.md)
     - [Agenda](Agenda200108.md)
+  
  
 # Team Workflow
 Scrum Master - Tommy Andersson
