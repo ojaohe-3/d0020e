@@ -93,31 +93,31 @@ Run a test bench that is creating new nodes and stores them into the database us
 
 ##### Tasks
 
-1.1<br>
+###### 1.1
 **Description:** Store a new course in the database<br>
 **References tasks:** None<br>
 **Estimated time:** 6 h<br>
 **Estimated risk:** 8/10<br>
 
-1.2<br>
+###### 1.2
 **Description:** Store a new KC in the database<br>
 **References tasks:** None<br>
 **Estimated time:** 6 h<br>
 **Estimated risk:** 8/10<br>
 
-1.3<br>
+###### 1.3
 **Description:** Create and store a new user<br>
 **References tasks:** None<br>
 **Estimated time:** 5 h<br>
 **Estimated risk:** 8/10<br>
 
-1.4<br>
+###### .4
 **Description:** Store a new topic<br>
 **References tasks:** None<br>
 **Estimated time:** 4 h<br>
 **Estimated risk:** 7/10<br>
 
-1.5<br>
+###### 1.5
 **Description:** Store a new course program<br>
 **References tasks:** None<br>
 **Estimated time:** 10 h<br>
@@ -141,25 +141,25 @@ Rigorous search tests to see that the database returns the correct values. Stres
 
 ##### Tasks
 
-2.1<br>
+###### 2.1
 **Description:** Search for courses in the database<br>
 **References tasks:** 1.1<br>
 **Estimated time:** 3 h<br>
 **Estimated risk:** 2/10<br>
 
-2.2<br>
+###### 2.2
 **Description:** Search for KC in the database<br>
 **References tasks:** 1.2<br>
 **Estimated time:** 2 h<br>
 **Estimated risk:** 1/10<br>
 
-2.3<br>
+###### 2.3
 **Description:** Search for users in the database<br>
 **References tasks:** 1.3<br>
 **Estimated time:** 4 h<br>
 **Estimated risk:** 5/10<br>
 
-2.4
+###### 2.4
 **Description:** Search for topics in the database<br>
 **References tasks:** 1.4<br>
 **Estimated time:** 3 h<br>
@@ -183,25 +183,25 @@ Manual testing that includes deleting and modifying objects in the database. The
 
 ##### Tasks
 
-3.1<br>
+###### 3.1
 **Description:** Modify course content in the database<br>
 **References tasks:** 2.1<br>
 **Estimated time:** 3 h<br>
 **Estimated risk:** 7/10<br>
 
-3.2<br>
+###### 3.2
 **Description:** Modify KC content in the database<br>
 **References tasks:** 2.2<br>
 **Estimated time:** 2 h<br>
 **Estimated risk:** 7/10<br>
 
-3.3<br>
+###### 3.3
 **Description:** Modify existing user credentials<br>
 **References tasks:** 2.2<br>
 **Estimated time:** 4 h<br>
 **Estimated risk:** 9/10<br>
 
-3.4<br>
+###### 3.4
 **Description:** Modify course program content.<br>
 **References tasks:** 1.5<br>
 **Estimated time:** 3 h<br>
@@ -226,13 +226,13 @@ Run tests to check it is accessible for the server computer and not from other c
 
 ##### Tasks
 
-4.1<br>
+###### 4.1
 **Description:** Install the server software on the server machine<br>
 **References tasks:** None<br>
 **Estimated time:** 5 h<br>
 **Estimated risk:** 10/10<br>
 
-4.2<br>
+###### 4.2
 **Description:** Give the correct access<br>
 **References tasks:** None<br>
 **Estimated time:** 3 h<br>
@@ -260,19 +260,19 @@ Third party program that intended for testing on frontend. Other than that manua
 
 ##### Tasks
 
-5.1<br>
+###### 5.1
 **Description:** Display Course order on page<br>
 **References tasks:** 2.* , 4.*<br>
 **Estimated time:** 15 h<br>
 **Estimated risk:** 5/10<br>
 
-5.2<br>
+###### 5.2
 **Description:** Connect courses and knowledge components<br>
 **References tasks:** 5.1<br>
 **Estimated time:** 8 h<br>
 **Estimated risk:** 5/10<br>
 
-5.3<br>
+###### 5.3
 **Description:** Application protocol to communicate to server, fetch new and publish data<br>
 **References tasks:** 5.2<br>
 **Estimated time:** 6 h<br>
@@ -296,19 +296,19 @@ Registering an account then trying to log in if it fails then something is wrong
 
 ###### Tasks
 
-6.1<br>
+###### 6.1
 **Description:** Logging in<br>
 **References tasks:** 2.*<br>
 **Estimated time:** 6 h<br>
 **Estimated risk:** 4/10<br>
 
-6.2<br>
+###### 6.2
 **Description:** Account recovery<br>
 **References tasks:** None<br>
 **Estimated time:** 8 h<br>
 **Estimated risk:** 4/10<br>
 
-6.3<br>
+###### 6.3
 **Description:**  Register Account<br>
 **References tasks:** 1.3<br>
 **Estimated time:** 8 h<br>
@@ -332,13 +332,13 @@ Run a test program that search for a student program and get the desired overvie
 
 ##### Tasks
 
-7.1<br>
+###### 7.1
 **Description:** Search for knowledge component or course<br>
 **References tasks:** 2.*<br>
 **Estimated time:** 10 h<br>
 **Estimated risk:** 2/10<br>
 
-7.2<br>
+###### 7.2
 **Description:** Search for program with specialization<br>
 **References tasks:** 2.*<br>
 **Estimated time:** 6 h<br>
@@ -362,19 +362,19 @@ Run tests with different inputs and compare with expected result.
 
 ##### Tasks
 
-8.1<br>
+###### 8.1
 **Description:** Add course<br>
 **References tasks:** 1.*<br>
 **Estimated time:** 10 h<br>
 **Estimated risk:** 5/10<br>
 
-8.2<br>
+###### 8.2
 **Description:** Remove knowledge component from course<br>
 **References tasks:** 2.*, 3.2<br>
 **Estimated time:** 8 h<br>
 **Estimated risk:** 6/10<br>
 
-8.3<br>
+###### 8.3
 **Description:** Edit information for knowledge component<br>
 **References tasks:** 2.*, 3.2<br>
 **Estimated time:** 8 h<br>
