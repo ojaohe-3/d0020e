@@ -45,6 +45,7 @@ The main problems are divided into different parts. One is that some courses ove
 
 <center>1</center>
 <div style="page-break-after: always; break-after: page;"></div>
+
 ## 2. System Design
 
 
@@ -168,7 +169,7 @@ Run a test bench that is creating new nodes and stores them into the database us
 **Estimated time:** 6 h<br>
 **Estimated risk:** 8/10<br>
 
-=======
+
 ###### 1.2
 
 **Description:** Store a new KC in the database<br>
@@ -230,7 +231,7 @@ Rigorous search tests to see that the database returns the correct values. Stres
 ##### Tasks
 
 
-=======
+
 ###### 2.1
 
 **Description:** Search for courses in the database<br>
@@ -352,7 +353,7 @@ Run tests to check it is accessible for the server computer and not from other c
 
 
 4.2<br>
-=======
+
 ###### 4.2
 
 **Description:** Give the correct access<br>
