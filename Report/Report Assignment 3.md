@@ -122,6 +122,7 @@ Figure 1 is an overview of our system design. The user will access the system us
 
 <center>3</center>
 <div style="page-break-after: always; break-after: page;"></div>
+
 # 3. Implementation
 
 ## 3.1. Working module
@@ -342,6 +343,7 @@ Run tests to check it is accessible for the server computer and not from other c
 
 
 <center>8</center>
+
 ##### Tasks
 
 ###### 4.1
@@ -392,6 +394,7 @@ Third party program that intended for testing on frontend. Other than that manua
 
 
 <center>9</center>
+
 ###### 5.2
 **Description:** Connect courses and knowledge components<br>
 **References tasks:** 5.1<br>
