@@ -21,17 +21,23 @@ One attempt to solve this problem has been done. The solution was using Google S
 
 ### 1.2. Problem description
 
+
 The main problems are divided into different parts. One is that some courses overlap while others have a missing link, i.e. the knowledge required for one course is not given in previous courses. And certain prerequisites are not obvious between courses since some details are not written in the course description. When interviewing the teachers it became apparent that most of them had, at least once, encountered the problem were most students had not been given the knowledge required for some part in a course. 
+
+
 
 ### 1.3. Assignment
 
+
+
 To solve the problem a software will be implemented. The software will be web based and interactive. Users should be able to search for programs and courses to see how the courses are connected and what knowledge component each course require and give. This will motivate the user group students, and help all user groups to plan the optimal course order. Teachers should be able to see what knowledge components they should teach and on what level. 
+
+
 
 ### 1.4. Delimitation
 
-Because of the limited time set the project group will not focus on collecting the data that is needed for the solution to work. This job will be placed on the examiners together with a group of engaged teachers. The system will not be fully integrated with the system the university is currently using. 
 
-
+The main problems are divided into different parts. One is that some courses overlap while others have a missing link, i.e. the knowledge required for one course is not given in previous courses. And certain prerequisites are not obvious between courses since some details are not written in the course description. When interviewing the teachers it became apparent that most of them had, at least once, encountered the problem were most students had not been given the knowledge required for some part in a course. 
 
 
 
@@ -41,16 +47,15 @@ Because of the limited time set the project group will not focus on collecting t
 <div style="page-break-after: always; break-after: page;"></div>
 ## 2. System Design
 
-The software is planned to be implemented as a Java program utilizing a graph database Neo4j. In that way classes and objects can be implemented as related components. Java also got the libraries needed to communicate with a Neo4j. Courses and knowledge components will be implemented as objects with different parameters and represented as nodes in Neo4j. Courses will be connected to knowledge components containing the taxonomy level. It will also make it possible to make the connections between the different objects clearer and easier to change.
 
 All the data about the courses and the knowledge components will be stored in a Neo4J<sup>[1](#footnote)</sup> database with the same structure as in the node objects. The reason for choosing Neo4J is because it is fast with graph relationships and the way it is constructed makes it easy to create and connect nodes. Storing the data in a database will give a good overview and access to the data. Connection to the front-end program from the Java program will go through a server.
 
 ![A first design of the UML-diagram](.././Resources/UML-Module diagram.png)
 
+
 <center>
 Figure 1: Overview of the program structure by a module diagram.
 </center>
-
 
 
 <a name="footnote">1</a>: Neo4J website. 2019-12-11. [https://neo4j.com](https://neo4j.com)
@@ -58,9 +63,6 @@ Figure 1: Overview of the program structure by a module diagram.
 <center>2</center>
 <div style="page-break-after: always; break-after: page;"></div>
 Figure 1 is an overview of our system design. The user will access the system using a web browser. The Java program will contain a JSP (Java Server Pages) class running in a Tomcat container and connect to the web browser using HTTP requests. All database communication will be handled by the Java program. Courses and knowledge components will be represented as nodes in a graph. Using this method it will be easy and fast to make changes in the graph and return the changes back to the user. 
-
-
-
 
 
 
@@ -150,31 +152,41 @@ Will be used to write data from the Java program into the database. Example crea
 **Desired properties:**
 It is important that it is working correctly and not overwriting data that exists in the database. The structure for the nodes that is stored needs to be correct and the functionality must be implemented in an efficient way.
 
+
 <center>4</center>
+
+
+
 **Test case:**
 Run a test bench that is creating new nodes and stores them into the database using all available functions. 
 
 ##### Tasks
 
-1.1<br>
+###### 1.1
 **Description:** Store a new course in the database<br>
 **References tasks:** None<br>
 **Estimated time:** 6 h<br>
 **Estimated risk:** 8/10<br>
 
-1.2<br>
+=======
+###### 1.2
+
 **Description:** Store a new KC in the database<br>
 **References tasks:** None<br>
 **Estimated time:** 6 h<br>
 **Estimated risk:** 8/10<br>
 
-1.3<br>
+
+###### 1.3
 **Description:** Create and store a new user<br>
 **References tasks:** None<br>
 **Estimated time:** 5 h<br>
 **Estimated risk:** 8/10<br>
 
-1.4<br>
+
+
+###### 1.4
+
 **Description:** Store a new topic<br>
 **References tasks:** None<br>
 **Estimated time:** 4 h<br>
@@ -189,17 +201,17 @@ Run a test bench that is creating new nodes and stores them into the database us
 
 
 
-
 <center>5</center>
-1.5<br>
+
+
+###### 1.5
+
 **Description:** Store a new course program<br>
 **References tasks:** None<br>
 **Estimated time:** 10 h<br>
 **Estimated risk:** 7/10<br>
 
 
-
-**Risk for the story:** 8/10
 
 #### Story 2
 
@@ -217,13 +229,19 @@ Rigorous search tests to see that the database returns the correct values. Stres
 
 ##### Tasks
 
-2.1<br>
+
+=======
+###### 2.1
+
 **Description:** Search for courses in the database<br>
 **References tasks:** 1.1<br>
 **Estimated time:** 3 h<br>
 **Estimated risk:** 2/10<br>
 
-2.2<br>
+
+
+###### 2.2
+
 **Description:** Search for KC in the database<br>
 **References tasks:** 1.2<br>
 **Estimated time:** 2 h<br>
@@ -231,20 +249,23 @@ Rigorous search tests to see that the database returns the correct values. Stres
 
 
 
+
 <center>6</center>
-2.3<br>
+
+
+###### 2.3
 **Description:** Search for users in the database<br>
 **References tasks:** 1.3<br>
 **Estimated time:** 4 h<br>
 **Estimated risk:** 5/10<br>
 
-2.4
+
+
+###### 2.4
 **Description:** Search for topics in the database<br>
 **References tasks:** 1.4<br>
 **Estimated time:** 3 h<br>
-**Estimated risk:** 2/10<br>
-
-**Risk for the story:** 5/10
+**Estimated risk:** 2/10<br>**Risk for the story:** 5/10<br>
 
 #### Story 3
 
@@ -262,7 +283,8 @@ Manual testing that includes deleting and modifying objects in the database. The
 
 ##### Tasks
 
-3.1<br>
+###### 3.1
+
 **Description:** Modify course content in the database<br>
 **References tasks:** 2.1<br>
 **Estimated time:** 3 h<br>
@@ -271,29 +293,28 @@ Manual testing that includes deleting and modifying objects in the database. The
 
 
 
-
-
-
 <center>7</center>
-3.2<br>
+
+
+###### 3.2
 **Description:** Modify KC content in the database<br>
 **References tasks:** 2.2<br>
 **Estimated time:** 2 h<br>
 **Estimated risk:** 7/10<br>
 
-3.3<br>
+###### 3.3
+
 **Description:** Modify existing user credentials<br>
 **References tasks:** 2.2<br>
 **Estimated time:** 4 h<br>
 **Estimated risk:** 9/10<br>
 
-3.4<br>
+
+###### 3.4
 **Description:** Modify course program content.<br>
 **References tasks:** 1.5<br>
 **Estimated time:** 3 h<br>
-**Estimated risk:** 7/10<br>
-
-**Risk for the story:** 9/10
+**Estimated risk:** 7/10<br>**Risk for the story:** 9/10
 
 
 #### Story 4
@@ -318,16 +339,22 @@ Run tests to check it is accessible for the server computer and not from other c
 
 
 
+
 <center>8</center>
 ##### Tasks
 
-4.1<br>
+###### 4.1
+
 **Description:** Install the server software on the server machine<br>
 **References tasks:** None<br>
 **Estimated time:** 5 h<br>
 **Estimated risk:** 10/10<br>
 
+
 4.2<br>
+=======
+###### 4.2
+
 **Description:** Give the correct access<br>
 **References tasks:** None<br>
 **Estimated time:** 3 h<br>
@@ -355,20 +382,23 @@ Third party program that intended for testing on frontend. Other than that manua
 
 ##### Tasks
 
-5.1<br>
+###### 5.1
+
 **Description:** Display Course order on page<br>
 **References tasks:** 2.* , 4.*<br>
 **Estimated time:** 15 h<br>
 **Estimated risk:** 5/10<br>
 
+
 <center>9</center>
-5.2<br>
+###### 5.2
 **Description:** Connect courses and knowledge components<br>
 **References tasks:** 5.1<br>
 **Estimated time:** 8 h<br>
 **Estimated risk:** 5/10<br>
 
-5.3<br>
+###### 5.3
+
 **Description:** Application protocol to communicate to server, fetch new and publish data<br>
 **References tasks:** 5.2<br>
 **Estimated time:** 6 h<br>
@@ -392,7 +422,8 @@ Registering an account then trying to log in if it fails then something is wrong
 
 ###### Tasks
 
-6.1<br>
+###### 6.1
+
 **Description:** Logging in<br>
 **References tasks:** 2.*<br>
 **Estimated time:** 6 h<br>
@@ -403,15 +434,22 @@ Registering an account then trying to log in if it fails then something is wrong
 
 
 
-
 <center>10</center>
-6.2<br>
+
+
+###### 6.2
+
 **Description:** Account recovery<br>
 **References tasks:** None<br>
 **Estimated time:** 8 h<br>
 **Estimated risk:** 4/10<br>
 
-6.3<br>
+
+
+
+
+###### 6.3
+
 **Description:**  Register Account<br>
 **References tasks:** 1.3<br>
 **Estimated time:** 8 h<br>
@@ -435,7 +473,10 @@ Run a test program that search for a student program and get the desired overvie
 
 ##### Tasks
 
-7.1<br>
+
+
+###### 7.1
+
 **Description:** Search for knowledge component or course<br>
 **References tasks:** 2.*<br>
 **Estimated time:** 10 h<br>
@@ -444,11 +485,11 @@ Run a test program that search for a student program and get the desired overvie
 
 
 
-
-
-
 <center>11</center>
-7.2<br>
+
+
+###### 7.2
+
 **Description:** Search for program with specialization<br>
 **References tasks:** 2.*<br>
 **Estimated time:** 6 h<br>
@@ -472,13 +513,16 @@ Run tests with different inputs and compare with expected result.
 
 ##### Tasks
 
-8.1<br>
+###### 8.1
+
 **Description:** Add course<br>
 **References tasks:** 1.*<br>
 **Estimated time:** 10 h<br>
 **Estimated risk:** 5/10<br>
 
-8.2<br>
+
+###### 8.2
+
 **Description:** Remove knowledge component from course<br>
 **References tasks:** 2.*, 3.2<br>
 **Estimated time:** 8 h<br>
@@ -489,9 +533,11 @@ Run tests with different inputs and compare with expected result.
 
 
 
-
 <center>12</center>
-8.3<br>
+
+
+###### 8.3
+
 **Description:** Edit information for knowledge component<br>
 **References tasks:** 2.*, 3.2<br>
 **Estimated time:** 8 h<br>
@@ -500,9 +546,6 @@ Run tests with different inputs and compare with expected result.
 **Risk for the story:** 6/10
 
 ## 3.3.3. Reflections, planning, implementation and time tracking
-
-
-
 
 
 
@@ -574,15 +617,6 @@ For example, if a function is designed to iterate over an array, it must throw a
 
 
 
-
-
-
-
-
-
-
-
-
 <center>14</center>
 #### Remote regression
 
@@ -638,12 +672,9 @@ Unit level testing is small parts of a code tested in isolation to make sure tha
 
 
 
-
-
-
-
-
 <center>16</center>
+
+
 ##### Story 1
 
 **Title:** Test of the Neo4J API. <br>**Intended use:** Automatically create, edit and delete nodes and relationships using the developed API. <br>**Desired properties:** Will cover all possible inputs for the API. <br>**Test case:** Run the test with both valid and invalid input <br>**Estimated time:** 18h, **Risk:** 8/10, **Prio:** High.
@@ -657,8 +688,6 @@ Unit level testing is small parts of a code tested in isolation to make sure tha
 **What to do:** Create a script that starts the Neo4J module.<br>
 
 **Estimated time: ** 4h, **Risk:** 8/10, **Dependency: ** No dependency
-
-
 
 
 
@@ -695,8 +724,9 @@ Automatic test of all functions involved when getting a graph from the database 
 
 
 
-
 <center>17</center>
+
+
 ##### Tasks
 
 ###### 2.1
@@ -710,13 +740,6 @@ Automatic test of all functions involved when getting a graph from the database 
 **What to do:** Use the script from above to check that the graphical view is working.<br>
 
 **Estimated time:** 4h, **Risk:** 4/10, **Dependency:** No dependency
-
-
-
-
-
-
-
 
 
 
