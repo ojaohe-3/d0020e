@@ -14,13 +14,13 @@
 - Jan van Deventer
 - Jesper Nilsson 
 - Robin Danielsson
-- Tommy Andersson
+- Tommy Andersson (Note taker)
 - Wilma Krutrök
 - Johan Rodahl Holmgren
 - Marcus Eriksson
 
 ## Summary
-Jan starts the meeting talking about the last meeting how he was offended from all the critiques. 
+Jan starts the meeting talking about the last meeting how he chosed to be offended from all the critiques. 
 He also tells the group that he wants us to tell him before we put up code on the git. 
 Jesper shows how relationships works in Neo4J with his program that he did. 
 Jan want instruction how to get Neo4J and how to install it and how it works. 
