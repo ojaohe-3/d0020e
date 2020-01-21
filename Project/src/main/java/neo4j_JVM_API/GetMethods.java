@@ -9,6 +9,7 @@ import org.neo4j.driver.v1.StatementResult;
 import Data.Course;
 import Data.CourseDate;
 import Data.Credits;
+import Data.KC;
 import Data.LP;
 import neoCommunicator.Neo4jCommunicator;
 
@@ -49,6 +50,7 @@ public class GetMethods {
 	public String getProgram() {
 		return "";
 	}
+	
 	public Course getCourse(String courseCode) {
 		String query = "MATCH (node: Course {courseCode: \"" + courseCode + "\"}) RETURN node";
 		
@@ -69,15 +71,18 @@ public class GetMethods {
 		return course;
 	}
 	
-	public KC getKCwithTaxonomyLevel(String name, int level) {
-		String query = "MATCH (node: Kc {name: \"" + name + "\", taxonomy_level: \"" + level + "\"}) RETURN node";
+	public KC getKCwithTaxonomyLevel(String name, int taxonomyLevel) {
+		String query = "MATCH (node: Kc {name: \"" + name + "\", taxonomy_level: \"" + taxonomyLevel + "\"}) RETURN node";
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		
 		Record row = result.next();
 		
+		String generalDescription = row.get("node").get("general_description").toString();
+		String taxonomyDescription = row.get("node").get("taxonomy_description").toString();
 		
-		KC kc = new KC();
+		
+		KC kc = new KC(name, generalDescription, taxonomyLevel, taxonomyDescription);
 		return kc;
 	}
 	
