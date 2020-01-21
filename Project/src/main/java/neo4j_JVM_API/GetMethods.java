@@ -85,7 +85,7 @@ public class GetMethods {
 			
 		}
 		
-		Record row = result.next();
+		
 		
 		CourseProgram program = new CourseProgram();
 		
