@@ -17,14 +17,14 @@ public class Neo4JAPI {
 	private final Neo4jCommunicator communicator;
 	
 	public GetMethods getMethods;
-	public SetMethods setMethods;
+	public CreateMethods setMethods;
 	public ModifyMethods modifyMethods;
 	
 	
 	public Neo4JAPI(String uri, String user, String password) {
 		this.communicator = new Neo4jCommunicator(uri, user, password);
 		this.getMethods = new GetMethods(communicator);
-		this.setMethods = new SetMethods(communicator);
+		this.setMethods = new CreateMethods(communicator);
 		this.modifyMethods = new ModifyMethods(communicator);
 	}
 	
