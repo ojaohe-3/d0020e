@@ -2,7 +2,7 @@ package neoCommunicator;
 import org.neo4j.driver.v1.*;
 
 
-class Neo4jCommunicator implements AutoCloseable {
+public class Neo4jCommunicator implements AutoCloseable {
 
     private final Driver driver;
 

@@ -1,6 +1,8 @@
 package neo4j_JVM_API;
 
 
+import neoCommunicator.Neo4jCommunicator;
+
 /**
  * <p>
  * This is the class used for creating, editing and deleting nodes in the 
