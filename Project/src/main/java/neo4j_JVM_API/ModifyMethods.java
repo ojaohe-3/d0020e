@@ -10,10 +10,6 @@ public class ModifyMethods {
 		this.communicator = communicator;
 	}
 	
-	public void removeTopic() {
-		
-	}
-	
 	public void changeUserPrivileges() {
 		
 	}

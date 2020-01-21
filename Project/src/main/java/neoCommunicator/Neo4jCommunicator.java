@@ -44,7 +44,7 @@ public class Neo4jCommunicator implements AutoCloseable {
      * @param message The Cipher query to execute
      * @return Statement result containing the returned nodes from the query
      */
-    protected synchronized StatementResult readFromNeo(final String query) {
+    public synchronized StatementResult readFromNeo(final String query) {
     	
     	try ( Session session = driver.session() ) {
             StatementResult result = session.writeTransaction( new TransactionWork<StatementResult>() {
