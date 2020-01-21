@@ -65,14 +65,20 @@ public class GetMethods {
 		LP lp = LP.valueOf(row.get("node").get("lp").toString());
 		CourseDate startDate = new CourseDate(year, lp);
 		
-		
-		
 		Course course = new Course(name, courseCode, credits, description, examiner, startDate);
 		return course;
 	}
 	
-	public void getKCwithTaxonomyLevel() {
+	public KC getKCwithTaxonomyLevel(String name, int level) {
+		String query = "MATCH (node: Kc {name: \"" + name + "\", taxonomy_level: \"" + level + "\"}) RETURN node";
 		
+		StatementResult result = this.communicator.readFromNeo(query);
+		
+		Record row = result.next();
+		
+		
+		KC kc = new KC();
+		return kc;
 	}
 	
 	
