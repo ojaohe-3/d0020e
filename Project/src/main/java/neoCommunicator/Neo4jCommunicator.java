@@ -1,3 +1,4 @@
+package neoCommunicator;
 import org.neo4j.driver.v1.*;
 
 
@@ -16,12 +17,18 @@ class Neo4jCommunicator implements AutoCloseable {
         driver.close();
     }
     
-    protected synchronized void writeToNeo(final String message) {
+    
+    /**
+     *  Method used for writing to the DB
+     * @param query
+     */
+    
+    protected synchronized void writeToNeo(final String query) {
     	try ( Session session = driver.session() ) {
             session.writeTransaction( new TransactionWork<String>() {
                 @Override
                 public String execute( Transaction tx ) {
-                    StatementResult result = tx.run(message);
+                    StatementResult result = tx.run(query);
                     
                     return result.single().get(0).asString();
                 }
@@ -30,24 +37,27 @@ class Neo4jCommunicator implements AutoCloseable {
     }
     
     
-    /*
+    /**
      * 
-     *  Will need different return types or to let the caller create the return obj from a string
+     *  Method used for getting nodes from the DB
      * 
+     * @param message The Cipher query to execute
+     * @return Statement result containing the returned nodes from the query
      */
-    protected synchronized String readFromNeo(final String message) {
+    protected synchronized StatementResult readFromNeo(final String query) {
     	
     	try ( Session session = driver.session() ) {
-            session.writeTransaction( new TransactionWork<String>() {
+            StatementResult result = session.writeTransaction( new TransactionWork<StatementResult>() {
                 @Override
-                public String execute( Transaction tx ) {
-                    StatementResult result = tx.run(message);
+                public StatementResult execute( Transaction tx ) {
+                    StatementResult result = tx.run(query);
                     
-                    return result.single().get(0).asString();
+                    return result;
                 }
             });
-        }
-		return "null :) readFromNeo() ";
+            return result;
+        } 
+    	
     }
     
 }
