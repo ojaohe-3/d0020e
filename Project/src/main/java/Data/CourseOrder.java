@@ -41,7 +41,7 @@ public class CourseOrder {
 		
 		for(int i = 0; i < COURSES_PER_PERIOD; i++) {
 			for(int j = 0; j < this.readingPeriods; j++) {
-				if(this.courses[i][j].courseCode == course.courseCode) {
+				if(this.courses[i][j].getCourseCode() == course.getCourseCode()) {
 					this.courses[i][j] = null;
 					
 					// Break the loops
@@ -62,7 +62,7 @@ public class CourseOrder {
 	public void changeCourse(Course from, Course to) {
 		for(int i = 0; i < COURSES_PER_PERIOD; i++) {
 			for(int j = 0; j < this.readingPeriods; j++) {
-				if(this.courses[i][j].courseCode == from.courseCode) {
+				if(this.courses[i][j].getCourseCode() == from.getCourseCode()) {
 					this.courses[i][j] = to;
 					
 					// Break the loops

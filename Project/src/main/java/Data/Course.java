@@ -3,10 +3,10 @@ package Data;
 import java.util.ArrayList;
 
 public class Course {
-	private String[] name;
-	private String[] courseCode;
-	private String[] description;
-	private String[] examiner;
+	private String name;
+	private String courseCode;
+	private String description;
+	private String examiner;
 	private CourseDate startPeriod;
 	private Credits credit;
 	private ArrayList<KC> requiredKC = new ArrayList<KC>();
@@ -22,7 +22,7 @@ public class Course {
 	 * @param examiner
 	 * @param startPeriod type CourseDate to get same format
 	 */
-	public Course(String[] name, String[] courseCode, Credits credit, String[] description, String[] examiner, CourseDate startPeriod) {
+	public Course(String name, String courseCode, Credits credit, String description, String examiner, CourseDate startPeriod) {
 		this.name = name;
 		this.courseCode = courseCode;
 		this.credit = credit;
@@ -55,35 +55,35 @@ public class Course {
 		return developedKC;
 	}
 	
-	public String[] getName() {
+	public String getName() {
 		return name;
 	}
 
-	public void setName(String[] name) {
+	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String[] getCourseCode() {
+	public String getCourseCode() {
 		return courseCode;
 	}
 
-	public void setCourseCode(String[] courseCode) {
+	public void setCourseCode(String courseCode) {
 		this.courseCode = courseCode;
 	}
 
-	public String[] getDescription() {
+	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String[] description) {
+	public void setDescription(String description) {
 		this.description = description;
 	}
 
-	public String[] getExaminer() {
+	public String getExaminer() {
 		return examiner;
 	}
 
-	public void setExaminer(String[] examiner) {
+	public void setExaminer(String examiner) {
 		this.examiner = examiner;
 	}
 
