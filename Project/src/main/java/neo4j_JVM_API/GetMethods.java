@@ -8,6 +8,7 @@ import org.neo4j.driver.v1.StatementResult;
 
 import Data.Course;
 import Data.CourseDate;
+import Data.CourseOrder;
 import Data.Credits;
 import Data.KC;
 import Data.LP;
@@ -21,6 +22,11 @@ public class GetMethods {
 		this.communicator = communicator;
 	}
 	
+	/**
+	 * get all topics from neo
+	 * 
+	 * @return string array
+	 */
 	public String[] getTopics() {
 		
 		String query = "MATCH (node: Topic) RETURN node";
@@ -47,18 +53,72 @@ public class GetMethods {
 		return "";
 	}
 	
-	public String getProgram() {
-		return "";
+	/**
+	 * get program from neo
+	 * 
+	 * @param code
+	 * @return
+	 */
+	public CourseProgram getProgram(String code) {
+		String query = "MATCH (node: Program {code: \"" + code + "\"}) return node";
+		
+		StatementResult result = this.communicator.readFromNeo(query);
+		
+		Record row = result.next();
+		int readingPeriods = Integer.parseInt(row.get("node").get("readingPeriods").toString());
+		
+		
+		String query2 = "MATCH (node: Program {code: \"" + code + "\"}) ";
+		query2 += "MATCH (node)<-[r: BELONGS_TO]-(courses) REUTRN courses";
+		
+		result = this.communicator.readFromNeo(query2);
+		
+		CourseOrder courseOrder = new CourseOrder(readingPeriods);
+		
+		while(result.hasNext()) {
+		
+			row = result.next();
+			
+			Course course = createCourse(row);
+			
+			
+			
+		}
+		
+		Record row = result.next();
+		
+		CourseProgram program = new CourseProgram();
+		
+		return program;
 	}
 	
+	/**
+	 * Get course from neo
+	 * 
+	 * @param courseCode
+	 * @return
+	 */
 	public Course getCourse(String courseCode) {
 		String query = "MATCH (node: Course {courseCode: \"" + courseCode + "\"}) RETURN node";
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		
 		Record row = result.next();
+		Course course = createCourse(row);
+		
+		return course;
+	}
+	
+	/**
+	 * Help function to createCourse
+	 * 
+	 * @param row
+	 * @return
+	 */
+	private Course createCourse(Record row) {
+		
 		String name = row.get("node").get("name").toString();
-		//String courseCode = row.get("node").get("courseCode").toString();
+		String courseCode = row.get("node").get("courseCode").toString();
 		String creds = row.get("node").get("credit").toString();
 		Credits credits = Credits.valueOf(creds);
 		String description = row.get("node").get("description").toString();
@@ -68,18 +128,26 @@ public class GetMethods {
 		CourseDate startDate = new CourseDate(year, lp);
 		
 		Course course = new Course(name, courseCode, credits, description, examiner, startDate);
+		
 		return course;
 	}
 	
+	/**
+	 * Get KC from neo
+	 * 
+	 * @param name
+	 * @param taxonomyLevel
+	 * @return
+	 */
 	public KC getKCwithTaxonomyLevel(String name, int taxonomyLevel) {
-		String query = "MATCH (node: Kc {name: \"" + name + "\", taxonomy_level: \"" + taxonomyLevel + "\"}) RETURN node";
+		String query = "MATCH (node: Kc {name: \"" + name + "\", taxonomyLevel: \"" + taxonomyLevel + "\"}) RETURN node";
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		
 		Record row = result.next();
 		
-		String generalDescription = row.get("node").get("general_description").toString();
-		String taxonomyDescription = row.get("node").get("taxonomy_description").toString();
+		String generalDescription = row.get("node").get("generalDescription").toString();
+		String taxonomyDescription = row.get("node").get("taxonomyDescription").toString();
 		
 		
 		KC kc = new KC(name, generalDescription, taxonomyLevel, taxonomyDescription);

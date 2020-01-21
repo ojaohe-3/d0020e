@@ -23,7 +23,7 @@ public class Neo4jCommunicator implements AutoCloseable {
      * @param query
      */
     
-    protected synchronized void writeToNeo(final String query) {
+    public synchronized void writeToNeo(final String query) {
     	try ( Session session = driver.session() ) {
             session.writeTransaction( new TransactionWork<String>() {
                 @Override
