@@ -1,7 +1,10 @@
 package neo4j_JVM_API;
 
 import Data.Course;
+import Data.CourseDate;
+import Data.Credits;
 import Data.KC;
+import Data.LP;
 import neoCommunicator.Neo4jCommunicator;
 
 /**
@@ -22,27 +25,33 @@ private final Neo4jCommunicator communicator;
 	}
 	
 	/**
-	 * Add a topic. What's a topic btw?
+	 * Add a topic.
 	 */
 	public void addTopic() {
-			
+		throw new RuntimeException("This function is not finished yet.");
 	}
 	
 	/**
-	 * Add a user. This function must be water tight.
+	 * Add a user. This method must prevent any unauthorized access and 
+	 * hacker attacks.
 	 */
 	public void addUser() {
-		
+		throw new RuntimeException("This function is not finished yet.");
 	}
 	
 	/**
-	 * 
-	 * @param course
+	 * Add a new course to the server. This is still a work in progress, so don't use it yet.
+	 * @param course - The selected course to create.
+	 * @author Robin
 	 */
-	public void CreateCourse(Course course) {
-		String[] options = new String[] {"name"};
-		String[] values = new String[] {course.getName(), course.getCourseCode(), course.getCredit(), course.getDescription()};
-		String query = QueryTranslator.CREATE("n", "Course", new String[] {}, new String[] {});
+	public void createCourse(Course course) {
+		String[] values = new String[] {course.getName(), course.getCourseCode(), 
+										course.getCredit().toString(), course.getDescription(), 
+										course.getExaminer(), Integer.toString(course.getStartPeriod().getYear()), 
+										course.getStartPeriod().getPeriod().toString()};
+		String query = QueryTranslator.CREATE("n", "Course", new String[] {"name", "courseCode", "credit", "description", "examiner", "year", "lp"}, values);
+		System.out.println(query);
+		throw new RuntimeException("This function is not finished yet.");
 	}
 	
 	/**
@@ -50,22 +59,29 @@ private final Neo4jCommunicator communicator;
 	 * @param kc
 	 */
 	public void createKC (KC kc) {
+		String[] values = new String[] {};
 		
+		
+		String query = QueryTranslator.CREATE("n", "KC", new String[] {}, values);
+		
+		System.out.println(query);
+		
+		throw new RuntimeException("This function is not finished yet.");
 	}
 	
 	/**
-	 * Why does this exist if one kc has only one taxonomy level?
-	 * @author Robin
+	 * 
+	 * 
 	 */
 	public void createKCgroup() {
-		
+		throw new RuntimeException("This function is not finished yet.");
 	}
 	
 	/**
-	 * Create a program in the database.
+	 * Add a new program in the database.
 	 */
 	public void createProgram() {
-	
+		throw new RuntimeException("This function is not finished yet.");
 	}
 	
 	

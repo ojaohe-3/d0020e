@@ -21,11 +21,8 @@ class QueryTranslator {
 		return query;
 	}
 
+	@Deprecated
 	String MATCH() {
 		return "";
-	}
-	
-	public static void main(String[] args) {
-		System.out.println(CREATE("n", "Course", new String[] {"name"}, new String[] {"math"}));
 	}
 }
