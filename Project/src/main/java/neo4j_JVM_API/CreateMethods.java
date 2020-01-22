@@ -15,6 +15,14 @@ import neoCommunicator.Neo4jCommunicator;
 public class CreateMethods {
 
 private final Neo4jCommunicator communicator;
+
+	public static void main(String[] args) {
+		String[] array = Course.CourseLabels.asStringArray();
+		array[0] = Course.CourseLabels.DESCRIPTION.toString();
+		for (String s : array) {
+			System.out.println(s);
+		}
+	}
 	
 	/**
 	 * 
@@ -45,11 +53,14 @@ private final Neo4jCommunicator communicator;
 	 * @author Robin
 	 */
 	public void createCourse(Course course) {
-		String[] values = new String[] {course.getName(), course.getCourseCode(), 
-										course.getCredit().toString(), course.getDescription(), 
-										course.getExaminer(), Integer.toString(course.getStartPeriod().getYear()), 
-										course.getStartPeriod().getPeriod().toString()};
-		String query = QueryTranslator.CREATE("n", "Course", new String[] {"name", "courseCode", "credit", "description", "examiner", "year", "lp"}, values);
+		String[] values = new String[] {course.getName(), 
+				course.getCredit().toString(),
+				course.getDescription(), 
+				course.getExaminer(),
+				Integer.toString(course.getStartPeriod().getYear()),
+				course.getStartPeriod().getPeriod().toString(),
+				course.getCourseCode()};
+		String query = QueryTranslator.getCreateStatement("n", "Course", Course.CourseLabels.asStringArray(), values);
 		System.out.println(query);
 		throw new RuntimeException("This function is not finished yet.");
 	}
@@ -62,7 +73,7 @@ private final Neo4jCommunicator communicator;
 		String[] values = new String[] {};
 		
 		
-		String query = QueryTranslator.CREATE("n", "KC", new String[] {}, values);
+		String query = QueryTranslator.getCreateStatement("n", "KC", new String[] {}, values);
 		
 		System.out.println(query);
 		

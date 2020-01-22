@@ -102,5 +102,52 @@ public class Course {
 	public void setCredit(Credits credit) {
 		this.credit = credit;
 	}
+	
+	/**
+	 * I don't wanna use strings everywhere and keep track of how 
+	 * how to spell stuff, so I made this. It's basically just a few
+	 * values with the names of every label in a course.
+	 * @author Robin
+	 *
+	 */
+	public static enum CourseLabels {
+		NAME("name"), CREDIT("credit"), DESCRIPTION("description"), EXAMINER("examiner"), YEAR("year"), LP("lp"), CODE("courseCode");
+		private static String[] asStrings;
+		private String name;
+		
+		static 
+		{
+			asStrings = new String[CourseLabels.values().length];
+			for (int i = 0; i < CourseLabels.values().length; i++) {
+				asStrings[i] = CourseLabels.values()[i].toString();
+			}	
+		}
+		private CourseLabels(String name) {
+			this.name = name;
+		}
+		
+		/**
+		 * <b>The items of the returned array can be altered, but that is highly prohibited and
+		 * will mess up your code.</b>
+		 * @return Returns all the possible values as an array in the following order:
+		 * <ul>
+		 * <li>name</li>
+		 * <li>credit</li>
+		 * <li>description</li>
+		 * <li>examiner</li>
+		 * <li>year</li>
+		 * <li>lp</li>
+		 * <li>courseCode</li>
+		 * </ul>
+		 */
+		public static String[] asStringArray() {
+			return asStrings;
+		}
+		
+		@Override
+		public String toString() {
+			return this.name;
+		}
+	}
 
 }

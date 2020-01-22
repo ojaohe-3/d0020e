@@ -50,19 +50,19 @@ public class GetMethods {
 		return "";
 	}
 	public Course getCourse(String courseCode) {
-		String query = "MATCH (node: Course {courseCode: \"" + courseCode + "\"}) RETURN node";
+		String query = "MATCH (node: Course {" + Course.CourseLabels.CODE.toString() +": \"" + courseCode + "\"}) RETURN node";
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		
 		Record row = result.next();
-		String name = row.get("node").get("name").toString();
+		String name = row.get("node").get(Course.CourseLabels.NAME.toString()).toString();
 		//String courseCode = row.get("node").get("courseCode").toString();
-		String creds = row.get("node").get("credit").toString();
+		String creds = row.get("node").get(Course.CourseLabels.CREDIT.toString()).toString();
 		Credits credits = Credits.valueOf(creds);
-		String description = row.get("node").get("description").toString();
-		String examiner = row.get("node").get("examiner").toString();
-		int year = Integer.parseInt(row.get("node").get("year").toString());
-		LP lp = LP.valueOf(row.get("node").get("lp").toString());
+		String description = row.get("node").get(Course.CourseLabels.DESCRIPTION.toString()).toString();
+		String examiner = row.get("node").get(Course.CourseLabels.EXAMINER.toString()).toString();
+		int year = Integer.parseInt(row.get("node").get(Course.CourseLabels.YEAR.toString()).toString());
+		LP lp = LP.valueOf(row.get("node").get(Course.CourseLabels.LP.toString()).toString());
 		CourseDate startDate = new CourseDate(year, lp);
 		
 		

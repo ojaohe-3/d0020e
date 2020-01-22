@@ -9,7 +9,7 @@ package neo4j_JVM_API;
 class QueryTranslator {
 
 	
-	static String CREATE(String variable, String label, String[] options, String[] values) {
+	static String getCreateStatement(String variable, String label, String[] options, String[] values) {
 		if (options.length != values.length) {
 			throw new IllegalArgumentException("The options and values have different length");
 		}
