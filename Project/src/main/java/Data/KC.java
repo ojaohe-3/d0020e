@@ -1,7 +1,6 @@
 package Data;
 
 public class KC {
-	private int id;
 	private int taxonomyLevel;
 	private String name;
 	private String generalDescription;
@@ -16,18 +15,13 @@ public class KC {
 	 * @param taxonomyLevel
 	 * @param taxonomyDescription
 	 */
-	public KC(String name, int id, String generalDescription, int taxonomyLevel, String taxonomyDescription) {
+	public KC(String name, String generalDescription, int taxonomyLevel, String taxonomyDescription) {
 		this.name = name;
-		this.id = id;
 		this.generalDescription = generalDescription;
 		this.taxonomyLevel = taxonomyLevel;
 		this.taxonomyDescription = taxonomyDescription;
 	}
 	
-	public int getId() {
-		return id;
-	}
-
 	public int getTaxonomyLevel() {
 		return taxonomyLevel;
 	}
