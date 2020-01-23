@@ -1,10 +1,13 @@
 package neo4j_JVM_API;
 
+import org.neo4j.driver.v1.StatementResult;
+
 import Data.Course;
 import Data.CourseDate;
 import Data.Credits;
 import Data.KC;
 import Data.LP;
+import Data.Course.CourseLabels;
 import neoCommunicator.Neo4jCommunicator;
 
 /**
@@ -14,12 +17,22 @@ import neoCommunicator.Neo4jCommunicator;
  */
 public class CreateMethods {
 
+private final Neo4jCommunicator communicator;
+
 	public static void main(String[] args) {
 		String[] array = Course.CourseLabels.asStringArray();
 		array[0] = Course.CourseLabels.DESCRIPTION.toString();
 		for (String s : array) {
 			System.out.println(s);
 		}
+	}
+	
+	/**
+	 * 
+	 * @param communicator
+	 */
+	public CreateMethods(Neo4jCommunicator communicator){
+		this.communicator = communicator;
 	}
 	
 	/**
@@ -42,10 +55,14 @@ public class CreateMethods {
 	 * @param course - The selected course to create.
 	 * @author Robin
 	 */
-	public static void createCourse(Course course, Neo4jCommunicator communicator) {
+	public void createCourse(Course course) {
+		String query = "MATCH (course: Course {courseCode: \"" + course.getCourseCode() + "\", "+ CourseLabels.YEAR + " : \"" + course.getStartPeriod().getYear() + "\" , " + CourseLabels.LP + " : \"" + course.getStartPeriod().getPeriod() + "\" }) ";
+		StatementResult result = this.communicator.readFromNeo(query);
+		if (!result.hasNext()) {
+			throw new IllegalArgumentException("The course exists already for the same year and study period.");
+		}
 		
-		
-		String query = "CREATE(n:Course{"+
+		query = "CREATE(n:Course{"+
 		Course.CourseLabels.NAME.toString() + "\"" + course.getName().toString() + "\"" +
 		Course.CourseLabels.CREDIT.toString() + "\"" + course.getCredit().toString() + "\"" +
 		Course.CourseLabels.DESCRIPTION.toString() + "\"" + course.getDescription().toString() + "\"" +
@@ -54,6 +71,8 @@ public class CreateMethods {
 		Course.CourseLabels.LP.toString() + "\"" + course.getStartPeriod().getPeriod().toString() + "\"" +
 		Course.CourseLabels.CODE.toString()+ "\"" + course.getCourseCode() + "\"" +
 		"})";
+		
+		
 		
 		communicator.writeToNeo(query);
 	}
