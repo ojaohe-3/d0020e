@@ -1,7 +1,6 @@
 package neo4j_JVM_API;
 
-import Data.Course;
-import Data.CourseDate;
+import Data.*;
 import neoCommunicator.Neo4jCommunicator;
 
 public class ModifyMethods {
@@ -19,16 +18,22 @@ public class ModifyMethods {
 	public void removeUser() {
 		
 	}
-	public void editKCWithTaxonomyLevel() {
-		
+	public void editKCWithTaxonomyLevel(String name, int taxlvl, KC kcData) {
+		String query = "MATCH(n:KC{"+ KC.KCLabel.NAME +":\""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL +":"+taxlvl+"}) SET n={";
+		query += KC.KCLabel.NAME+":\""+kcData.getName()+"\",";
+		query += KC.KCLabel.TAXONOMYLEVEL+":\""+kcData.getTaxonomyLevel()+"\",";
+		query += KC.KCLabel.GENERAL_DESCRIPTION+":\""+kcData.getGeneralDescription()+"\",";
+		query += KC.KCLabel.TAXONOMY_DESCRIPTION+":\""+kcData.getTaxonomyDescription()+"\"}";
+
+		communicator.writeToNeo(query);
 	}
 	
 	public void editProgram() {
 		
 	}
 	
-	public void removeKCByName() {
-		
+	public void removeKCByName(String name, int taxlvl) {
+		String query = "MATCH(n:KC{"+ KC.KCLabel.NAME +":"+name+","+ KC.KCLabel.TAXONOMYLEVEL+ ":"+ taxlvl +"}) DETACH DELETE n";
 	}
 	
 	public void removeProgram() {
@@ -42,12 +47,16 @@ public class ModifyMethods {
 	 * @author Johan RH
 	 */
 	public void editCourse(String courseID,Course nCourse) {
-		String query = "MATCH (n:Course{CourseCode:\""+ courseID+"\"} SET " +
-				"n.CourseCode = \""+ nCourse.getCourseCode()+"\"" +
-				"n.Name = \""+nCourse.getName()+"\"" +
-				"n.Examiner =\""+nCourse.getExaminer()+"\"" +
-				"n.Size =\""+nCourse.getCredit()+"\"";
-		//not done yet
+		String query = "MATCH (n:Course{CourseCode:\""+ courseID+"\"} SET n={";
+		query += Course.CourseLabels.CODE.toString() +":"+nCourse.getCourseCode();
+		query +=  Course.CourseLabels.CREDIT.toString() +":"+nCourse.getCredit();
+		query += Course.CourseLabels.DESCRIPTION.toString() +":"+nCourse.getDescription();
+		query +=Course.CourseLabels.LP.toString() +"="+nCourse.getStartPeriod().getPeriod().name();
+		query +=  Course.CourseLabels.YEAR.toString() +"="+nCourse.getStartPeriod().getYear();
+		query += Course.CourseLabels.EXAMINER.toString() +"="+nCourse.getExaminer();
+		query += Course.CourseLabels.NAME.toString() +"="+nCourse.getName();
+
+		query +="}";
 		communicator.writeToNeo(query);
 	}
 
@@ -66,7 +75,9 @@ public class ModifyMethods {
 	public void removeKCtaxonomy() {
 		
 	}
-	
-	
 
+
+	public static void main(String[] args) {
+		//editKCWithTaxonomyLevel("test",2,new KC("test2","blabla",3,"blabla"));
+	}
 }
