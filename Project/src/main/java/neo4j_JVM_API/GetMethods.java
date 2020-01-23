@@ -32,8 +32,7 @@ public class GetMethods {
 		while ( result.hasNext() ) {
 			
 			Record row = result.next();
-
-			
+			System.out.println(row.get("node").get("title"));
             resultArray.add(row.get("node").get("title").toString());
         }
 		return resultArray.toArray(new String[resultArray.size()]);
@@ -52,8 +51,7 @@ public class GetMethods {
 		return "";
 	}
 	public Course getCourse(String courseCode, CourseDate courseDate) {
-		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
-		query += "RETURN course";
+		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
 		
 		System.out.println(query);
 		
@@ -64,6 +62,7 @@ public class GetMethods {
 		
 		String developedQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
 		developedQuery += "MATCH(developedKC : KC)<-[r: DEVELOPED]-(course) RETURN developedKC";
+		System.out.println(developedQuery);
 		result = this.communicator.readFromNeo(developedQuery);
 		
 		while(result.hasNext()) {
@@ -71,7 +70,8 @@ public class GetMethods {
 		}
 		
 		String requiredQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
-		developedQuery += "MATCH(requiredKC : KC)<-[r: DEVELOPED]-(course) RETURN requiredKC";
+		requiredQuery += "MATCH(requiredKC : KC)<-[r: DEVELOPED]-(course) RETURN requiredKC";
+		System.out.println(requiredQuery);
 		result = this.communicator.readFromNeo(requiredQuery);
 		
 		while(result.hasNext()) {
@@ -92,7 +92,7 @@ public class GetMethods {
 		
 		String generalDescription = row.get(nodename).get("generalDescription").toString();
 		String taxonomyDescription = row.get(nodename).get("taxonomyDescription").toString();
-		int taxonomyLevel = row.get(nodename).get("taxonomyLevel").asInt();
+		int taxonomyLevel = Integer.parseInt(row.get(nodename).get("taxonomyLevel").toString().replaceAll("\"", ""));
 		String name = row.get(nodename).get("name").asString();		
 		
 		KC kc = new KC(name, generalDescription, taxonomyLevel, taxonomyDescription);
@@ -109,11 +109,14 @@ public class GetMethods {
 		String name = row.get(nodename).get("name").toString();
 		String courseCode = row.get(nodename).get("courseCode").toString();
 		String creds = row.get(nodename).get("credit").toString();
+		
+		creds = creds.replaceAll("\"", "");
 		Credits credits = Credits.valueOf(creds);
+		
 		String description = row.get(nodename).get("description").toString();
 		String examiner = row.get(nodename).get("examiner").toString();
-		int year = Integer.parseInt(row.get(nodename).get("year").toString());
-		LP lp = LP.valueOf(row.get(nodename).get("lp").toString());
+		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"", ""));
+		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"", ""));
 		CourseDate startDate = new CourseDate(year, lp);
 		
 		Course course = new Course(name, courseCode, credits, description, examiner, startDate);
