@@ -99,12 +99,22 @@ public class GetMethods {
 	 * @return
 	 */
 	public Course getCourse(String courseCode) {
-		String query = "MATCH (node: Course {courseCode: \"" + courseCode + "\"}) RETURN node";
+		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\"}) ";
+		query += "MATCH (kcDeveloped)<-[r: DEVELOPED]-(course) ";
+		query += "MATCH (kcRequired)<-[r: REQUIRED]-(course) RETURN course, kcDeveloped, kcRequired ";
+		
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		
+		while(result.hasNext()) {
+			Record row = result.next();
+			if(row.get("course") != null) {
+				
+			}
+		}
+		
 		Record row = result.next();
-		Course course = createCourse(row);
+		Course course = createCourse(row, "node");
 		
 		return course;
 	}
@@ -115,16 +125,16 @@ public class GetMethods {
 	 * @param row
 	 * @return
 	 */
-	private Course createCourse(Record row) {
+	private Course createCourse(Record row, String nodename) {
 		
-		String name = row.get("node").get("name").toString();
-		String courseCode = row.get("node").get("courseCode").toString();
-		String creds = row.get("node").get("credit").toString();
+		String name = row.get(nodename).get("name").toString();
+		String courseCode = row.get(nodename).get("courseCode").toString();
+		String creds = row.get(nodename).get("credit").toString();
 		Credits credits = Credits.valueOf(creds);
-		String description = row.get("node").get("description").toString();
-		String examiner = row.get("node").get("examiner").toString();
-		int year = Integer.parseInt(row.get("node").get("year").toString());
-		LP lp = LP.valueOf(row.get("node").get("lp").toString());
+		String description = row.get(nodename).get("description").toString();
+		String examiner = row.get(nodename).get("examiner").toString();
+		int year = Integer.parseInt(row.get(nodename).get("year").toString());
+		LP lp = LP.valueOf(row.get(nodename).get("lp").toString());
 		CourseDate startDate = new CourseDate(year, lp);
 		
 		Course course = new Course(name, courseCode, credits, description, examiner, startDate);
