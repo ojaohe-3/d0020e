@@ -14,22 +14,12 @@ import neoCommunicator.Neo4jCommunicator;
  */
 public class CreateMethods {
 
-private final Neo4jCommunicator communicator;
-
 	public static void main(String[] args) {
 		String[] array = Course.CourseLabels.asStringArray();
 		array[0] = Course.CourseLabels.DESCRIPTION.toString();
 		for (String s : array) {
 			System.out.println(s);
 		}
-	}
-	
-	/**
-	 * 
-	 * @param communicator
-	 */
-	public CreateMethods(Neo4jCommunicator communicator){
-		this.communicator = communicator;
 	}
 	
 	/**
@@ -52,7 +42,9 @@ private final Neo4jCommunicator communicator;
 	 * @param course - The selected course to create.
 	 * @author Robin
 	 */
-	public void createCourse(Course course) {
+	public static void createCourse(Course course, Neo4jCommunicator communicator) {
+		
+		
 		String query = "CREATE(n:Course{"+
 		Course.CourseLabels.NAME.toString() + "\"" + course.getName().toString() + "\"" +
 		Course.CourseLabels.CREDIT.toString() + "\"" + course.getCredit().toString() + "\"" +
@@ -63,8 +55,7 @@ private final Neo4jCommunicator communicator;
 		Course.CourseLabels.CODE.toString()+ "\"" + course.getCourseCode() + "\"" +
 		"})";
 		
-		System.out.println(query);
-		throw new RuntimeException("This function is not finished yet.");
+		communicator.writeToNeo(query);
 	}
 	
 	/**

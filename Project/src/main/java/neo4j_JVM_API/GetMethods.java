@@ -16,17 +16,11 @@ import neoCommunicator.Neo4jCommunicator;
 
 public class GetMethods {
 	
-	private final Neo4jCommunicator communicator;
-	
-	public GetMethods(Neo4jCommunicator communicator){
-		this.communicator = communicator;
-	}
-	
-	public String[] getTopics() {
+	public String[] getTopics(Neo4jCommunicator communicator) {
 		
 		String query = "MATCH (node: Topic) RETURN node";
 		
-		StatementResult result = this.communicator.readFromNeo(query);
+		StatementResult result = communicator.readFromNeo(query);
 		
 		ArrayList<String> resultArray = new ArrayList<String>();
 		while ( result.hasNext() ) {
@@ -51,13 +45,13 @@ public class GetMethods {
 	public String getProgram() {
 		return "";
 	}
-	public Course getCourse(String courseCode, CourseDate courseDate) {
+	public static Course getCourse(String courseCode, CourseDate courseDate, Neo4jCommunicator communicator) {
 		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + ", \"" + CourseLabels.LP + "\" : \"" + courseDate.getPeriod() + "}) ";
 		query += "MATCH (kcDeveloped)<-[r: DEVELOPED]-(course) ";
 		query += "MATCH (kcRequired)<-[r: REQUIRED]-(course) RETURN course, kcDeveloped, kcRequired ";
 		
 		
-		StatementResult result = this.communicator.readFromNeo(query);
+		StatementResult result = communicator.readFromNeo(query);
 		Course course = null;
 		ArrayList<KC> developed = new ArrayList<KC>();
 		ArrayList<KC> required = new ArrayList<KC>();
@@ -93,7 +87,7 @@ public class GetMethods {
 	 * @param nodename
 	 * @return
 	 */
-	private KC createKC(Record row, String nodename) {
+	private static KC createKC(Record row, String nodename) {
 		
 		String generalDescription = row.get(nodename).get("generalDescription").toString();
 		String taxonomyDescription = row.get(nodename).get("taxonomyDescription").toString();
@@ -109,7 +103,7 @@ public class GetMethods {
 	 * @param row
 	 * @return
 	 */
-	private Course createCourse(Record row, String nodename) {
+	private static Course createCourse(Record row, String nodename) {
 		
 		String name = row.get(nodename).get("name").toString();
 		String courseCode = row.get(nodename).get("courseCode").toString();
@@ -134,10 +128,10 @@ public class GetMethods {
 	 * @param taxonomyLevel
 	 * @return
 	 */
-	public KC getKCwithTaxonomyLevel(String name, int taxonomyLevel) {
+	public KC getKCwithTaxonomyLevel(String name, int taxonomyLevel, Neo4jCommunicator communicator) {
 		String query = "MATCH (node: Kc {name: \"" + name + "\", taxonomyLevel: \"" + taxonomyLevel + "\"}) RETURN node";
 		
-		StatementResult result = this.communicator.readFromNeo(query);
+		StatementResult result = communicator.readFromNeo(query);
 		
 		Record row = result.next();
 
