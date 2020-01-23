@@ -1,5 +1,7 @@
 package neo4j_JVM_API;
 
+import java.util.ArrayList;
+
 import org.neo4j.driver.v1.StatementResult;
 
 import Data.Course;
@@ -72,6 +74,7 @@ private final Neo4jCommunicator communicator;
 		Course.CourseLabels.CODE.toString()+ "\"" + course.getCourseCode() + "\"" +
 		"})";
 		
+		ArrayList<KC> required = course.getRequiredKC();
 		
 		
 		communicator.writeToNeo(query);
@@ -82,14 +85,9 @@ private final Neo4jCommunicator communicator;
 	 * @param kc
 	 */
 	public void createKC (KC kc) {
-		String[] values = new String[] {};
+		String query = "";
 		
 		
-		String query = QueryTranslator.getCreateStatement("n", "KC", new String[] {}, values);
-		
-		System.out.println(query);
-		
-		throw new RuntimeException("This function is not finished yet.");
 	}
 	
 	/**
