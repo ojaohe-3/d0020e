@@ -116,36 +116,10 @@ public class Course {
 	 */
 	public static enum CourseLabels {
 		NAME("name"), CREDIT("credit"), DESCRIPTION("description"), EXAMINER("examiner"), YEAR("year"), LP("lp"), CODE("courseCode");
-		private static String[] asStrings;
 		private String name;
 		
-		static 
-		{
-			asStrings = new String[CourseLabels.values().length];
-			for (int i = 0; i < CourseLabels.values().length; i++) {
-				asStrings[i] = CourseLabels.values()[i].toString();
-			}	
-		}
 		private CourseLabels(String name) {
 			this.name = name;
-		}
-		
-		/**
-		 * <b>The items of the returned array can be altered, but that is highly prohibited and
-		 * will mess up your code.</b>
-		 * @return Returns all the possible values as an array in the following order:
-		 * <ul>
-		 * <li>name</li>
-		 * <li>credit</li>
-		 * <li>description</li>
-		 * <li>examiner</li>
-		 * <li>year</li>
-		 * <li>lp</li>
-		 * <li>courseCode</li>
-		 * </ul>
-		 */
-		public static String[] asStringArray() {
-			return asStrings;
 		}
 		
 		@Override
