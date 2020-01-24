@@ -16,6 +16,15 @@ public class CourseProgram {
 		this.courseOrder = courseOrder;
 	}
 	
+	/**
+	 * 
+	 * @param courseOrder
+	 * @param code
+	 * @param name
+	 * @param description
+	 * @param startDate
+	 * @param credits
+	 */
 	public CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits) {
 		this.courseOrder = courseOrder;
 		this.code = code;
@@ -87,6 +96,11 @@ public class CourseProgram {
 		private String label;
 		private ProgramLabels (String label) {
 			this.label = label;
+		}
+		
+		@Override
+		public String toString() {
+			return this.label;
 		}
 	}
 	

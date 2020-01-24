@@ -25,7 +25,7 @@ public class CreateMethods {
 private final Neo4jCommunicator communicator;
 
 	public static void main(String[] args) {
-		Course course = new Course("Math course", "D0009M", Credits.FIFTEEN, "you do math", "Stefan", new CourseDate(2019, LP.TWO));
+		/*Course course = new Course("Math course", "D0009M", Credits.FIFTEEN, "you do math", "Stefan", new CourseDate(2019, LP.TWO));
 		
 		KC kc = new KC("maeth", "Calulations", 1, "counting to 4");
 		KC kc2 = new KC("extra maeth", "Division", 3, "Divide 4 by 2");
@@ -40,6 +40,14 @@ private final Neo4jCommunicator communicator;
 		methods.createKC(kc2);
 		methods.createKC(kc3);
 		methods.createCourseKCrelation(course);
+		*/
+
+		CreateMethods methods = new CreateMethods(null);
+		CourseOrder order = new CourseOrder(12);
+		CourseProgram program = new CourseProgram(order, "TCDAA", "Computer engineering", "We are the definitive nerds", new CourseDate(2019,LP.ONE), Credits.THIRTY);
+		
+		
+		methods.createProgram(program);
 	}
 	
 	/**
@@ -123,18 +131,15 @@ private final Neo4jCommunicator communicator;
 	 * @see Data.CourseProgram
 	 */
 	public void createProgram(CourseProgram program) {
-		String query = "CREATE(n:)" + CourseProgram.courseProgram + " {" +
-				CourseProgram.ProgramLabels.NAME + ":\"" + program.getName() + "\", " +
-				CourseProgram.ProgramLabels.DESCRIPTION + ":\"" + program.getDescription() + "\", " +
-				CourseProgram.ProgramLabels.CODE + ":\"" + program.getCode() + "\", " +
-				CourseProgram.ProgramLabels.CREDITS + ":\"" + program.getCredits() + "\", ";
-				
-				//TODO FIX THIS
-				/*
-				CourseProgram.ProgramLabels.YEAR + ":\"" + program.getYear() + "\", " +
-				CourseProgram.ProgramLabels.LP + ":\"" + program.getYear() + "\", " +		
-				CourseProgram.ProgramLabels.READING_PERIODS + ":\"" + program.getYear() + "\"})";
-		*/
+		String query = "CREATE(n:" + CourseProgram.courseProgram + " {" +
+				CourseProgram.ProgramLabels.NAME.toString() + ":\"" + program.getName() + "\", " +
+				CourseProgram.ProgramLabels.DESCRIPTION.toString() + ":\"" + program.getDescription() + "\", " +
+				CourseProgram.ProgramLabels.CODE.toString() + ":\"" + program.getCode() + "\", " +
+				CourseProgram.ProgramLabels.CREDITS.toString() + ":\"" + program.getCredits() + "\", " +
+				CourseProgram.ProgramLabels.YEAR.toString() + ":\"" + program.getStartDate().getYear() + "\", " +
+				CourseProgram.ProgramLabels.LP.toString() + ":\"" + program.getStartDate().getPeriod().toString() + "\", " +		
+				CourseProgram.ProgramLabels.READING_PERIODS.toString() + ":\"" + program.getCourseOrder().getReadingPeriods() + "\"})";
+		System.out.println(query);
 	}
 	
 	/**
@@ -161,21 +166,21 @@ private final Neo4jCommunicator communicator;
 	public void createCourseKCrelation(Course course) {
 		ArrayList<KC> developed = course.getDevelopedKC();
 		ArrayList<KC> required = course.getRequiredKC();
-		String query = "MATCH (course: " + Course.course +" {" +CourseLabels.CODE + ":\""+course.getCourseCode()+"\", "+
-				Course.CourseLabels.YEAR +":\"" + course.getStartPeriod().getYear()+"\","+
-				Course.CourseLabels.LP + ":\""+course.getStartPeriod().getPeriod().toString()+"\"})";
+		String query = "MATCH (course: " + Course.course +" {" +CourseLabels.CODE.toString() + ":\""+course.getCourseCode()+"\", "+
+				Course.CourseLabels.YEAR.toString() +":\"" + course.getStartPeriod().getYear()+"\","+
+				Course.CourseLabels.LP.toString() + ":\""+course.getStartPeriod().getPeriod().toString()+"\"})";
 		for (int i = 0; i < required.size(); i++) {
-			query += " MATCH ( kc" + i + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + required.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL + ":\"" + required.get(i).getTaxonomyLevel()+ "\"})";
+			query += " MATCH ( kc" + i + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + required.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + required.get(i).getTaxonomyLevel()+ "\"})";
 		}
 		for (int i = 0; i < developed.size(); i++) {
-			query += " MATCH ( kc" + (i+required.size()) + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + developed.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL + ":\"" + developed.get(i).getTaxonomyLevel()+ "\"})";
+			query += " MATCH ( kc" + (i+required.size()) + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + developed.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + developed.get(i).getTaxonomyLevel()+ "\"})";
 		}
 		
 		for (int i = 0; i < required.size(); i++) {
-			query += "CREATE (course)-[r" + i + ":" + Relations.REQUIRED + "]->(kc" + i + ")";
+			query += "CREATE (course)-[r" + i + ":" + Relations.REQUIRED.toString() + "]->(kc" + i + ")";
 		}
 		for (int i = 0; i < developed.size(); i++) {
-			query += "CREATE (course)-[r" + (required.size()+i) + ":" + Relations.DEVELOPED + "]->(kc" + (required.size()+i) + ")";
+			query += "CREATE (course)-[r" + (required.size()+i) + ":" + Relations.DEVELOPED.toString() + "]->(kc" + (required.size()+i) + ")";
 		}
 		communicator.writeToNeo(query);
 	}	

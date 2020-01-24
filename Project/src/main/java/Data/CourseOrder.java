@@ -106,6 +106,10 @@ public class CourseOrder {
 		}
 	}
 	
+	public int getReadingPeriods() {
+		return this.readingPeriods;
+	}
+	
 	public Course[][] getCourseArray() {
 		return this.courses;
 	}
