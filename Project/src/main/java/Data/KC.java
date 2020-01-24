@@ -1,5 +1,11 @@
 package Data;
 
+/**
+ * KC = Knowledge component. Knowledge components can either be
+ * created or required by a course, i.e. KCs are the result of every course.
+ * @author Wilma
+ *
+ */
 public class KC {
 	private int taxonomyLevel;
 	private String name;
@@ -7,10 +13,14 @@ public class KC {
 	private String taxonomyDescription;
 	
 	/**
+	 * Database name for a KC.
+	 */
+	public static final String kc = "KC";
+
+	/**
 	 * Constructor
-	 * 
+	 *
 	 * @param name
-	 * @param id
 	 * @param generalDescription
 	 * @param taxonomyLevel
 	 * @param taxonomyDescription
@@ -21,7 +31,7 @@ public class KC {
 		this.taxonomyLevel = taxonomyLevel;
 		this.taxonomyDescription = taxonomyDescription;
 	}
-	
+
 	public int getTaxonomyLevel() {
 		return taxonomyLevel;
 	}

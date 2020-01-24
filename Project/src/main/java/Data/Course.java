@@ -13,6 +13,10 @@ public class Course {
 	private ArrayList<KC> developedKC = new ArrayList<KC>();
 	
 	/**
+	 * Database name for a course.
+	 */
+	public static final String course = "Course";
+	/**
 	 * Constructor
 	 * 
 	 * @param name
@@ -20,7 +24,7 @@ public class Course {
 	 * @param credit enum 
 	 * @param description
 	 * @param examiner
-	 * @param startPeriod type CourseDate to get same format
+	 * @param startPeriod an object of type {@link CourseOrder}
 	 */
 	public Course(String name, String courseCode, Credits credit, String description, String examiner, CourseDate startPeriod) {
 		this.name = name;
