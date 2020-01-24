@@ -9,11 +9,19 @@ import org.neo4j.driver.v1.StatementResult;
 import Data.Course;
 import Data.Course.CourseLabels;
 import Data.CourseDate;
+import Data.CourseOrder;
+import Data.CourseProgram;
 import Data.Credits;
 import Data.KC;
 import Data.LP;
 import neoCommunicator.Neo4jCommunicator;
 
+/**
+ * Get kc, course, topic, program and users
+ * 
+ * @author Wilma and Jesper
+ *
+ */
 public class GetMethods {
 	
 	private final Neo4jCommunicator communicator;
@@ -22,6 +30,11 @@ public class GetMethods {
 		this.communicator = communicator;
 	}
 	
+	/**
+	 * Get all topics from database
+	 * 
+	 * @return string array with all topics
+	 */
 	public String[] getTopics() {
 		
 		String query = "MATCH (node: Topic) RETURN node";
@@ -32,7 +45,6 @@ public class GetMethods {
 		while ( result.hasNext() ) {
 			
 			Record row = result.next();
-
 			
             resultArray.add(row.get("node").get("title").toString());
         }
@@ -48,14 +60,71 @@ public class GetMethods {
 		return "";
 	}
 	
-	public String getProgram() {
-		return "";
+	/**
+	 * Get Program from database
+	 * 
+	 * @param code
+	 * @param startDate
+	 * @return
+	 */
+	public CourseProgram getProgram(String code, CourseDate startDate) {
+		String query = "MATCH (courseProgram: CourseProgram {code: \"" + code + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
+		query += "RETURN courseProgram";
+		
+		StatementResult result = this.communicator.readFromNeo(query);
+		Record row = result.next();
+		
+		int readingPeriods = row.get("courseProgram").get("readingPeriods").asInt();
+		CourseOrder courseOrder = new CourseOrder(readingPeriods);
+		
+		String inProgramQuery = "MATCH (courseProgram: CourseProgram {code: \"" + code + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
+		inProgramQuery += "MATCH(courseInProgram : Course)<-[relation: IN_PROGRAM]-(courseProgram) RETURN courseInProgram, relation";
+		result = this.communicator.readFromNeo(inProgramQuery);
+		
+		while(result.hasNext()) {
+			Record currentRow = result.next();
+			Course course = createCourse(currentRow, "courseInProgram");
+			courseOrder.setCourseAt(course, currentRow.get("relation").get("period").asInt(), currentRow.get("relation").get("pos").asInt());
+		}
+		
+		CourseProgram courseProgram = createCourseProgram(courseOrder, row, "courseProgram");
+		return courseProgram;
 	}
+	
+	/**
+	 * Help function to create a Program
+	 * 
+	 * @param courseOrder
+	 * @param row
+	 * @param nodename
+	 * @return
+	 */
+	private CourseProgram createCourseProgram(CourseOrder courseOrder, Record row, String nodename) {
+		
+		String name = row.get(nodename).get("name").toString();
+		String code = row.get(nodename).get("code").toString();
+		String description = row.get(nodename).get("description").toString();
+		String creds = row.get(nodename).get("credit").toString();
+		Credits credits = Credits.valueOf(creds);
+		int year = Integer.parseInt(row.get(nodename).get("year").toString());
+		LP lp = LP.valueOf(row.get(nodename).get("lp").toString());
+		CourseDate startDate = new CourseDate(year, lp);	
+		
+		CourseProgram courseProgram = new CourseProgram(courseOrder, name, code, description, startDate, credits);
+		
+		return courseProgram;
+	}
+	
+	/**
+	 * Get course from database
+	 * 
+	 * @param courseCode
+	 * @param courseDate
+	 * @return course
+	 */
 	public Course getCourse(String courseCode, CourseDate courseDate) {
 		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
 		query += "RETURN course";
-		
-		System.out.println(query);
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
@@ -123,7 +192,7 @@ public class GetMethods {
 	}
 	
 	/**
-	 * Get KC from neo
+	 * Get KC from database
 	 * 
 	 * @param name
 	 * @param taxonomyLevel

@@ -6,12 +6,21 @@ public class CourseProgram {
 	private String code;
 	private String name;
 	private String description;
-	private int year;
+	private CourseDate startDate;
 	private Credits credits;
 	
 	
 	public CourseProgram(CourseOrder courseOrder) {
 		this.courseOrder = courseOrder;
+	}
+	
+	public CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits) {
+		this.courseOrder = courseOrder;
+		this.code = code;
+		this.name = name;
+		this.description = description;
+		this.startDate = startDate;
+		this.credits = credits;
 	}
 	
 	public CourseOrder getCourseOrder() {
@@ -53,16 +62,6 @@ public class CourseProgram {
 	}
 
 
-	public int getYear() {
-		return year;
-	}
-
-
-	public void setYear(int year) {
-		this.year = year;
-	}
-
-
 	public Credits getCredits() {
 		return credits;
 	}
@@ -70,6 +69,14 @@ public class CourseProgram {
 
 	public void setCredits(Credits credits) {
 		this.credits = credits;
+	}
+
+	public CourseDate getStartDate() {
+		return startDate;
+	}
+
+	public void setStartDate(CourseDate startDate) {
+		this.startDate = startDate;
 	}
 
 

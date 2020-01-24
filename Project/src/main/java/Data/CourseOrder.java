@@ -28,7 +28,7 @@ public class CourseOrder {
 	public void setCourseAt(Course course, int period, int pos) {
 		if(period < this.readingPeriods && pos < COURSES_PER_PERIOD) {
 			
-			this.courses[pos][readingPeriods] = course;
+			this.courses[pos][period] = course;
 			
 		}
 	}
@@ -59,7 +59,7 @@ public class CourseOrder {
 		if(period < this.readingPeriods) {
 			int pos = findFirstPos(period);
 			if(pos != -1) {
-				this.courses[pos][readingPeriods] = course;
+				this.courses[pos][period] = course;
 				return true;
 			}
 		}
