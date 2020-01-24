@@ -3,6 +3,7 @@ package Data;
 public class CourseProgram {
 
 	private CourseOrder courseOrder;
+	private String code;
 	private String name;
 	private String description;
 	private int year;
@@ -30,6 +31,15 @@ public class CourseProgram {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	public String getCode() {
+		return code;
+	}
+
+
+	public void setCode(String code) {
+		this.code = code;
 	}
 
 
