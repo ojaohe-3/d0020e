@@ -83,12 +83,9 @@ public class KC {
 		 * @return Returns all the possible values as an array in the following order:
 		 * <ul>
 		 * <li>name</li>
-		 * <li>credit</li>
-		 * <li>description</li>
-		 * <li>examiner</li>
-		 * <li>year</li>
-		 * <li>lp</li>
-		 * <li>courseCode</li>
+		 * <li>general description</li>
+		 * <li>taxonomy description </li>
+		 * <li>taxonomy level</li>
 		 * </ul>
 		 */
 		public static String[] asStringArray() {

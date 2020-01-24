@@ -1,17 +1,14 @@
 package neo4j_JVM_API;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Map;
 
+import Data.*;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
 
-import Data.Course;
 import Data.Course.CourseLabels;
-import Data.CourseDate;
-import Data.Credits;
-import Data.KC;
-import Data.LP;
 import neoCommunicator.Neo4jCommunicator;
 
 public class GetMethods {
@@ -38,14 +35,52 @@ public class GetMethods {
         }
 		return resultArray.toArray(new String[resultArray.size()]);
 	}
-	
-	
-	public boolean login() {
+
+	/**
+	 * Login manager, todo load session when logged in
+	 * @param username Selector
+	 * @param password Input to test authentication
+	 * @return true if successful
+	 * @author Johan RH
+	 * @throws NoSuchAlgorithmException
+	 */
+	public boolean login(String username, String password) throws NoSuchAlgorithmException {
+		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
+		StatementResult result = communicator.readFromNeo(query);
+		if(!result.hasNext())
+			return false;
+		Record record = result.next();
+		String pwd = record.get("n").get(User.UserLables.PASSWORD.toString()).toString();
+		if(pwd.equals(Security.generateHash(password))) {
+			// session = getUser(username);
+			return true;
+		}
 		return false;
 	}
-	
-	public String getUser() {
-		return "";
+
+	/**
+	 * get user object
+	 * @param username Selector
+	 * @author Johan RH
+	 * @return User object
+	 */
+	public User getUser(String username) {
+		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
+		StatementResult result = communicator.readFromNeo(query);
+		if(!result.hasNext())
+			return null;
+		Record record = result.next();
+		User user = new User(
+				record.get('n').get(User.UserLables.USERNAME.toString()).toString(),
+				record.get('n').get(User.UserLables.PASSWORD.toString()).toString()
+				);
+		query = "MATCH(:User{"+ User.UserLables.USERNAME +":\""+username+"\"})-->(n) return n";
+		result = communicator.readFromNeo(query);
+		while (result.hasNext()){
+			user.addCourse(createCourse(result.next(),"n"));
+		}
+		//todo load admin tag
+		return user;
 	}
 	
 	public String getProgram() {
