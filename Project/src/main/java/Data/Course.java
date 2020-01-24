@@ -2,6 +2,13 @@ package Data;
 
 import java.util.ArrayList;
 
+/**
+ * 
+ * 	Java representation of a course. 
+ * 
+ * @author Jesper
+ *
+ */
 public class Course {
 	private String name;
 	private String courseCode;

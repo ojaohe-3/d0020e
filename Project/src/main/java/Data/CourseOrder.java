@@ -1,5 +1,13 @@
 package Data;
 
+
+/**
+ * 
+ *  Keeps track of courses using a 2D array
+ * 
+ * @author Seagate_os
+ *
+ */
 public class CourseOrder {
 
 	private Course[][] courses;
