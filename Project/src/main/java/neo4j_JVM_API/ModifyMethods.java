@@ -6,7 +6,11 @@ import neoCommunicator.Neo4jCommunicator;
 public class ModifyMethods {
 	
 	private final Neo4jCommunicator communicator;
-	
+
+	/**
+	 * Manipulate and edit object already existing in the topology
+	 * @param communicator Neo4j communicator object
+	 */
 	public ModifyMethods(Neo4jCommunicator communicator){
 		this.communicator = communicator;
 	}
@@ -18,7 +22,14 @@ public class ModifyMethods {
 	public void removeUser() {
 		
 	}
-	public void editKCWithTaxonomyLevel(String name, int taxlvl, KC kcData) {
+
+	/**
+	 * Edit a Specific KC to a new generated KC object
+	 * @param name name Selector
+	 * @param taxlvl Taxonomy level Selector
+	 * @param kcData New Object to change selected element
+	 */
+	public void editKC(String name, int taxlvl, KC kcData) {
 		String query = "MATCH(n:KC{"+ KC.KCLabel.NAME +":\""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL +":"+taxlvl+"}) SET n={";
 		query += KC.KCLabel.NAME+":\""+kcData.getName()+"\",";
 		query += KC.KCLabel.TAXONOMYLEVEL+":\""+kcData.getTaxonomyLevel()+"\",";
@@ -31,8 +42,13 @@ public class ModifyMethods {
 	public void editProgram() {
 		
 	}
-	
-	public void removeKCByName(String name, int taxlvl) {
+
+	/**
+	 * Remove and detach selected KC object
+	 * @param name name selector
+	 * @param taxlvl taxonomy level selector
+	 */
+	public void removeKC(String name, int taxlvl) {
 		String query = "MATCH(n:KC{"+ KC.KCLabel.NAME +":"+name+","+ KC.KCLabel.TAXONOMYLEVEL+ ":"+ taxlvl +"}) DETACH DELETE n";
 	}
 	
@@ -42,6 +58,7 @@ public class ModifyMethods {
 
 	/**
 	 *  Edit a Course at Selector. todo KCs handling
+	 *  Make sure that the edges and internal object match.
 	 * @param courseID Course Code ex D0020E, Selector
 	 * @param nCourse new Course object, will write the new object
 	 * @author Johan RH
@@ -70,14 +87,5 @@ public class ModifyMethods {
 		String query  ="MATCH(n:Course{CourseCode:\""+ couseID +"\", Startdate:\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
 
 		communicator.writeToNeo(query);
-	}
-	
-	public void removeKCtaxonomy() {
-		
-	}
-
-
-	public static void main(String[] args) {
-		//editKCWithTaxonomyLevel("test",2,new KC("test2","blabla",3,"blabla"));
 	}
 }
