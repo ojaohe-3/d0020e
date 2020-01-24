@@ -41,7 +41,7 @@ private final Neo4jCommunicator communicator;
 		methods.createKC(kc3);
 		methods.createCourseKCrelation(course);
 		*/
-		Neo4jCommunicator communicator = new Neo4jCommunicator("bolt://130.240.200.254:7687","neo4j","neo4j-d0020e");
+		Neo4jCommunicator communicator = new Neo4jCommunicator();
 		CreateMethods methods = new CreateMethods(null);
 		CourseOrder order = new CourseOrder(12);
 		CourseProgram program = new CourseProgram(order, "TCDAA", "Computer engineering", "We are the definitive nerds", new CourseDate(2019,LP.ONE), Credits.THIRTY);
