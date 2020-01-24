@@ -102,6 +102,10 @@ public class Main {
 	
 	public static void createDevelopedRelations() {
 		
+		for(Course course: courses) {
+			neoapi.createMethods
+		}
+		
 	}
 	
 
