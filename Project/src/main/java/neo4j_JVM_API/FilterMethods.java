@@ -92,12 +92,12 @@ public class FilterMethods {
 	}
 	
 	/**
-	 * Filter topic
+	 * Filter topic by name
 	 * 
 	 * @param code
 	 * @return array with matching topics
 	 */
-	public String[] filterTopic(String name) {
+	public String[] filterTopicByName(String name) {
 		String query = "MATCH (topic: Topic) WHERE topic.name STARTS WITH \"" + name + "\"";
 		query += "RETURN topic";
 		
@@ -111,12 +111,59 @@ public class FilterMethods {
 	}
 	
 	/**
-	 * Filter kc
+	 * Filter courses by Topic
+	 * 
+	 * @param code
+	 * @return array with matching courses
+	 */
+	public String[] filterCoursesByTopic(String name) {
+		String query = "MATCH (topic: Topic) WHERE topic.name = \"" + name + "\"";
+		query += "MATCH (course: Course)-[r: BELONGS_TO]->(topic) RETURN course";
+		
+		StatementResult result = this.communicator.readFromNeo(query);
+		ArrayList<String> courses = new ArrayList<String>();
+		while(result.hasNext()) {
+			courses.add(result.next().get("course").get("name").toString());
+		}
+		
+		return courses.toArray(new String[courses.size()]);
+	}
+	
+	/**
+	 * Filter kcs by Topic
 	 * 
 	 * @param code
 	 * @return array with matching kcs
 	 */
-	public void filterKC() {
+	public String[] filterKCsByTopic(String name) {
+		String query = "MATCH (topic: Topic) WHERE topic.name = \"" + name + "\"";
+		query += "MATCH (kc: KC)-[r: BELONGS_TO]->(topic) RETURN kc";
 		
+		StatementResult result = this.communicator.readFromNeo(query);
+		ArrayList<String> kcs = new ArrayList<String>();
+		while(result.hasNext()) {
+			kcs.add(result.next().get("kc").get("name").toString());
+		}
+		
+		return kcs.toArray(new String[kcs.size()]);
+	}
+	
+	/**
+	 * Filter kc by name
+	 * 
+	 * @param code
+	 * @return array with matching kcs
+	 */
+	public String[] filterKC(String name) {
+		String query = "MATCH (kc: KC) WHERE kc.name STARTS WITH \"" + name + "\"";
+		query += "RETURN kc";
+		
+		StatementResult result = this.communicator.readFromNeo(query);
+		ArrayList<String> kcs = new ArrayList<String>();
+		while(result.hasNext()) {
+			kcs.add(result.next().get("kc").get("name").toString());
+		}
+		
+		return kcs.toArray(new String[kcs.size()]);
 	}
 }
