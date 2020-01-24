@@ -75,7 +75,7 @@ public class ModifyMethods {
 		communicator.writeToNeo(query);
 	}
 	
-	public void removeProgram() {
+	public void removeProgram( String programCode,CourseDate start) {
 		
 	}
 
