@@ -153,7 +153,13 @@ private final Neo4jCommunicator communicator;
 		CourseOrder courseOrder = program.getCourseOrder();
 		Course[][] courses = courseOrder.getCourseArray();
 		
-		String query = "";
+		String query = "MATH(cp: " + CourseProgram.courseProgram + ")";
+		
+		for (int x=0; x < courses.length; x++) {
+			for (int y = 0; y < courses.length; y++) {
+				
+			}
+		}
 	}
 	
 	/**
