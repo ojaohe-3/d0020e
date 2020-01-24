@@ -6,6 +6,8 @@ import org.neo4j.driver.v1.StatementResult;
 
 import Data.Course;
 import Data.CourseDate;
+import Data.CourseOrder;
+import Data.CourseProgram;
 import Data.Credits;
 import Data.KC;
 import Data.LP;
@@ -42,7 +44,8 @@ private final Neo4jCommunicator communicator;
 	
 	/**
 	 * 
-	 * @param communicator see {@link neoCommunicator.Neo4jCommunicator}
+	 * @param The communicator used when calling the database.
+	 * @see neoCommunicator.Neo4jCommunicator
 	 */
 	public CreateMethods(Neo4jCommunicator communicator){
 		this.communicator = communicator;
@@ -67,6 +70,7 @@ private final Neo4jCommunicator communicator;
 	 * Add a new course to the server. This is still a work in progress, so don't use it yet.
 	 * @param course - The selected course to create.
 	 * @author Robin
+	 * @see Data.Course
 	 */
 	public void createCourse(Course course) {
 		String query = "MATCH (course: Course {courseCode: \"" + course.getCourseCode() + "\", "+ CourseLabels.YEAR + " : \"" + course.getStartPeriod().getYear() + "\" , " + CourseLabels.LP + " : \"" + course.getStartPeriod().getPeriod() + "\" }) ";
@@ -94,14 +98,14 @@ private final Neo4jCommunicator communicator;
 	 * Create a KC in the database.
 	 * @param kc- The KC to add.
 	 * @author Robin
+	 * @see Data.KC
 	 */
 	public void createKC (KC kc) {
 		String query = "CREATE(n:" +KC.kc + "{" +
 			KC.KCLabel.NAME.toString() + ":\"" + kc.getName()+"\", " + 
 			KC.KCLabel.GENERAL_DESCRIPTION.toString()+ ":\"" + kc.getGeneralDescription() + "\", " + 
 			KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + kc.getTaxonomyLevel() + "\", " + 
-			KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + ":\"" + kc.getTaxonomyDescription() + "\"" +
-			"})";
+			KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + ":\"" + kc.getTaxonomyDescription() + "\"})";
 		communicator.writeToNeo(query);
 	}
 	
@@ -115,16 +119,44 @@ private final Neo4jCommunicator communicator;
 	
 	/**
 	 * Add a new program in the database.
+	 * @param program - The program you want to add.
+	 * @see Data.CourseProgram
 	 */
-	public void createProgram() {
-		throw new RuntimeException("This function is not finished yet.");
+	public void createProgram(CourseProgram program) {
+		String query = "CREATE(n:)" + CourseProgram.courseProgram + " {" +
+				CourseProgram.ProgramLabels.NAME + ":\"" + program.getName() + "\", " +
+				CourseProgram.ProgramLabels.DESCRIPTION + ":\"" + program.getDescription() + "\", " +
+				CourseProgram.ProgramLabels.CODE + ":\"" + program.getCode() + "\", " +
+				CourseProgram.ProgramLabels.CREDITS + ":\"" + program.getCredits() + "\", ";
+				
+				//TODO FIX THIS
+				/*
+				CourseProgram.ProgramLabels.YEAR + ":\"" + program.getYear() + "\", " +
+				CourseProgram.ProgramLabels.LP + ":\"" + program.getYear() + "\", " +		
+				CourseProgram.ProgramLabels.READING_PERIODS + ":\"" + program.getYear() + "\"})";
+		*/
+	}
+	
+	/**
+	 * Add relations between a program and it's courses.
+	 * The courses must be added to the program before the 
+	 * connections are made.
+	 * @param program - The course program.
+	 * @see Data.CourseProgram
+	 */
+	public void createProgramCourseRelation(CourseProgram program) {
+		CourseOrder courseOrder = program.getCourseOrder();
+		Course[][] courses = courseOrder.getCourseArray();
+		
+		String query = "";
 	}
 	
 	/**
 	 * Add a relation between a course and a KC to the database. 
 	 * The KCs must be added as required or developed to the desired 
 	 * course first.
-	 * @param course - The course used for the relations
+	 * @param course - The course used for the relations.
+	 * @see Data.Course
 	 */
 	public void createCourseKCrelation(Course course) {
 		ArrayList<KC> developed = course.getDevelopedKC();

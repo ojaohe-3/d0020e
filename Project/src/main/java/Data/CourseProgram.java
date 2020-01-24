@@ -9,6 +9,8 @@ public class CourseProgram {
 	private CourseDate startDate;
 	private Credits credits;
 	
+	public static final String courseProgram = "courseProgram";
+	
 	
 	public CourseProgram(CourseOrder courseOrder) {
 		this.courseOrder = courseOrder;
@@ -80,7 +82,13 @@ public class CourseProgram {
 	}
 
 
-
+	public static enum ProgramLabels {
+		NAME("name"), CODE("code"), DESCRIPTION("description"), YEAR("year"), LP("lp"), READING_PERIODS("readingPeriods"), CREDITS("credits");
+		private String label;
+		private ProgramLabels (String label) {
+			this.label = label;
+		}
+	}
 	
 
 }
