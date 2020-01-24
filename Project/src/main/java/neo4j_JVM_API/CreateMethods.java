@@ -2,6 +2,7 @@ package neo4j_JVM_API;
 
 import java.util.ArrayList;
 
+import Data.*;
 import org.neo4j.driver.v1.StatementResult;
 
 import Data.Course;
@@ -15,12 +16,19 @@ import Data.Relations;
 import Data.Course.CourseLabels;
 import neoCommunicator.Neo4jCommunicator;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+
+import static Data.Security.SALT;
+import static Data.Security.generateHash;
+
 /**
  * Internal class for create functions.
  * @author Jesper, Robin
  *
  */
 public class CreateMethods {
+
 
 private final Neo4jCommunicator communicator;
 
@@ -52,7 +60,7 @@ private final Neo4jCommunicator communicator;
 	
 	/**
 	 * 
-	 * @param The communicator used when calling the database.
+	 * @param communicator communicator used when calling the database.
 	 * @see neoCommunicator.Neo4jCommunicator
 	 */
 	public CreateMethods(Neo4jCommunicator communicator){
@@ -190,4 +198,26 @@ private final Neo4jCommunicator communicator;
 		}
 		communicator.writeToNeo(query);
 	}	
+
+
+	/**
+	 * Create user object in database
+	 * @author Johan RH
+	 * @param user
+	 * @throws Exception Does not accept duplications of username, will throw exception
+	 */
+	public void createUser(User user) throws Exception {
+		String query = "MATCH(n:User{"+ User.UserLables.USERNAME+":\""+ user.getUsername()+"\"} return n";
+		if(communicator.readFromNeo(query).hasNext()) {
+			throw new Exception("Username already exist!");
+		}else{
+			String hashedPassword = generateHash(user.getPassword());
+
+			query = "CREATE(n:User{"+User.UserLables.USERNAME+":\""+user.getUsername()+"\","+User.UserLables.USERTAG+":"+(user.isAdmintag()==true?1:0)+","+User.UserLables.PASSWORD+":\""+hashedPassword+"\"})";
+			communicator.writeToNeo(query);
+		}
+
+
+	}
+
 }

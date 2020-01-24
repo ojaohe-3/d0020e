@@ -3,6 +3,8 @@ package neo4j_JVM_API;
 import Data.*;
 import neoCommunicator.Neo4jCommunicator;
 
+import java.security.NoSuchAlgorithmException;
+
 
 public class ModifyMethods {
 	
@@ -16,12 +18,29 @@ public class ModifyMethods {
 		this.communicator = communicator;
 	}
 	
-	public void changeUserPrivileges() {
-		
+	public void changeUserPrivileges(String username,boolean admin) {
+		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.USERTAG +"="+(admin?1:0);
+		communicator.writeToNeo(query);
 	}
-	
-	public void removeUser() {
-		
+	public void changeUserPassword(String username,String pwd) throws NoSuchAlgorithmException {
+		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.PASSWORD +"=" + Security.generateHash(pwd);
+		communicator.writeToNeo(query);
+	}
+	public void removeUser(String username) {
+		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+username+"}) DETACH DELETE n";
+		communicator.writeToNeo(query);
+	}
+
+	public void addCourseToUser(User user,Course data) {
+
+		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+user.getUsername()+
+				"}),(m:Course{"+
+				Course.CourseLabels.CODE+":\""+ data.getCourseCode()+"\", "+
+				Course.CourseLabels.YEAR +":"+data.getStartPeriod().getYear()+"," +
+				Course.CourseLabels.LP +":\""+data.getStartPeriod().getPeriod().name()+"\"" +
+				"}) CREATE (n)-[r:CAN_EDIT]->(m)";
+		communicator.writeToNeo(query);
+		user.addCourse(data);
 	}
 
 	/**
@@ -53,6 +72,7 @@ public class ModifyMethods {
 	 */
 	public void removeKC(String name, int taxlvl) {
 		String query = "MATCH(n:KC{"+ KC.KCLabel.NAME +":"+name+","+ KC.KCLabel.TAXONOMYLEVEL+ ":"+ taxlvl +"}) DETACH DELETE n";
+		communicator.writeToNeo(query);
 	}
 	
 	public void removeProgram() {
