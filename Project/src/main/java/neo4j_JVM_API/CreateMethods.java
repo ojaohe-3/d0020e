@@ -1,10 +1,15 @@
 package neo4j_JVM_API;
 
+import java.util.ArrayList;
+
+import org.neo4j.driver.v1.StatementResult;
+
 import Data.Course;
 import Data.CourseDate;
 import Data.Credits;
 import Data.KC;
 import Data.LP;
+import Data.Course.CourseLabels;
 import neoCommunicator.Neo4jCommunicator;
 
 /**
@@ -53,16 +58,26 @@ private final Neo4jCommunicator communicator;
 	 * @author Robin
 	 */
 	public void createCourse(Course course) {
-		String[] values = new String[] {course.getName(), 
-				course.getCredit().toString(),
-				course.getDescription(), 
-				course.getExaminer(),
-				Integer.toString(course.getStartPeriod().getYear()),
-				course.getStartPeriod().getPeriod().toString(),
-				course.getCourseCode()};
-		String query = QueryTranslator.getCreateStatement("n", "Course", Course.CourseLabels.asStringArray(), values);
-		System.out.println(query);
-		throw new RuntimeException("This function is not finished yet.");
+		String query = "MATCH (course: Course {courseCode: \"" + course.getCourseCode() + "\", "+ CourseLabels.YEAR + " : \"" + course.getStartPeriod().getYear() + "\" , " + CourseLabels.LP + " : \"" + course.getStartPeriod().getPeriod() + "\" }) ";
+		StatementResult result = this.communicator.readFromNeo(query);
+		if (!result.hasNext()) {
+			throw new IllegalArgumentException("The course exists already for the same year and study period.");
+		}
+		
+		query = "CREATE(n:Course{"+
+		Course.CourseLabels.NAME.toString() + "\"" + course.getName().toString() + "\"" +
+		Course.CourseLabels.CREDIT.toString() + "\"" + course.getCredit().toString() + "\"" +
+		Course.CourseLabels.DESCRIPTION.toString() + "\"" + course.getDescription().toString() + "\"" +
+		Course.CourseLabels.EXAMINER.toString() + "\"" + course.getExaminer().toString() + "\"" +
+		Course.CourseLabels.YEAR.toString() + "\"" + Integer.toString(course.getStartPeriod().getYear()) + "\"" +
+		Course.CourseLabels.LP.toString() + "\"" + course.getStartPeriod().getPeriod().toString() + "\"" +
+		Course.CourseLabels.CODE.toString()+ "\"" + course.getCourseCode() + "\"" +
+		"})";
+		
+		ArrayList<KC> required = course.getRequiredKC();
+		
+		
+		communicator.writeToNeo(query);
 	}
 	
 	/**
@@ -70,14 +85,9 @@ private final Neo4jCommunicator communicator;
 	 * @param kc
 	 */
 	public void createKC (KC kc) {
-		String[] values = new String[] {};
+		String query = "";
 		
 		
-		String query = QueryTranslator.getCreateStatement("n", "KC", new String[] {}, values);
-		
-		System.out.println(query);
-		
-		throw new RuntimeException("This function is not finished yet.");
 	}
 	
 	/**

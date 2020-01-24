@@ -52,35 +52,30 @@ public class GetMethods {
 		return "";
 	}
 	public Course getCourse(String courseCode, CourseDate courseDate) {
-		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + ", \"" + CourseLabels.LP + "\" : \"" + courseDate.getPeriod() + "}) ";
-		query += "MATCH (kcDeveloped)<-[r: DEVELOPED]-(course) ";
-		query += "MATCH (kcRequired)<-[r: REQUIRED]-(course) RETURN course, kcDeveloped, kcRequired ";
+		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
+		query += "RETURN course";
 		
+		System.out.println(query);
 		
 		StatementResult result = this.communicator.readFromNeo(query);
-		Course course = null;
-		ArrayList<KC> developed = new ArrayList<KC>();
-		ArrayList<KC> required = new ArrayList<KC>();
+		Record row = result.next();
+		
+		Course course = createCourse(row, "course");
+		
+		String developedQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
+		developedQuery += "MATCH(developedKC : KC)<-[r: DEVELOPED]-(course) RETURN developedKC";
+		result = this.communicator.readFromNeo(developedQuery);
 		
 		while(result.hasNext()) {
-			Record row = result.next();
-			if(row.get("course") != null) {
-				course = createCourse(row, "course");
-				
-			} else if(row.get("kcDeveloped") != null) {
-				developed.add(createKC(row, "kcDeveloped"));
-				
-			} else if(row.get("kcRequired") != null) {
-				required.add(createKC(row, "kcRequired"));
-			}
+			course.setDevelopedKC(createKC(result.next(), "developedKC"));
 		}
 		
+		String requiredQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
+		developedQuery += "MATCH(requiredKC : KC)<-[r: DEVELOPED]-(course) RETURN requiredKC";
+		result = this.communicator.readFromNeo(requiredQuery);
 		
-		for(KC kc : developed) {
-			course.setDevelopedKC(kc);
-		}
-		for(KC kc: required) {
-			course.setRequiredKC(kc);
+		while(result.hasNext()) {
+			course.setRequiredKC(createKC(result.next(), "requiredKC"));
 		}
 		
 		return course;
