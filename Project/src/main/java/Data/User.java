@@ -52,34 +52,10 @@ public class User {
 
     public static enum UserLables {
         USERNAME("Username"),  USERTAG("Usertag"), PASSWORD("Password");
-        private static String[] asStrings;
         private String name;
 
-        static
-        {
-            asStrings = new String[KC.KCLabel.values().length];
-            for (int i = 0; i < KC.KCLabel.values().length; i++) {
-                asStrings[i] = KC.KCLabel.values()[i].toString();
-            }
-        }
         private UserLables(String name) {
             this.name = name;
-        }
-
-
-        /**
-         * <b>The items of the returned array can be altered, but that is highly prohibited and
-         * will mess up your code.</b>
-         * @return Returns all the possible values as an array in the following order:
-         * <ul>
-         * <li>Username</li>
-         * <li>Role tag</li>
-         * <li>Password</li>
-         *
-         * </ul>
-         */
-        public static String[] asStringArray() {
-            return asStrings;
         }
 
         @Override

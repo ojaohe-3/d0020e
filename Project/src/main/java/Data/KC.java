@@ -67,34 +67,11 @@ public class KC {
 
 	public static enum KCLabel {
 		NAME("name"),  GENERAL_DESCRIPTION("generaldescription"), TAXONOMY_DESCRIPTION("taxonomydescription"), TAXONOMYLEVEL("taxonomylevel");
-		private static String[] asStrings;
 		private String name;
 
-		static
-		{
-			asStrings = new String[KC.KCLabel.values().length];
-			for (int i = 0; i < KC.KCLabel.values().length; i++) {
-				asStrings[i] = KC.KCLabel.values()[i].toString();
-			}
-		}
+
 		private KCLabel(String name) {
 			this.name = name;
-		}
-
-
-		/**
-		 * <b>The items of the returned array can be altered, but that is highly prohibited and
-		 * will mess up your code.</b>
-		 * @return Returns all the possible values as an array in the following order:
-		 * <ul>
-		 * <li>name</li>
-		 * <li>general description</li>
-		 * <li>taxonomy description </li>
-		 * <li>taxonomy level</li>
-		 * </ul>
-		 */
-		public static String[] asStringArray() {
-			return asStrings;
 		}
 
 		@Override
