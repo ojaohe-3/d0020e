@@ -1,5 +1,7 @@
 import Data.Course;
 import Data.CourseDate;
+import Data.CourseOrder;
+import Data.CourseProgram;
 import Data.Credits;
 import Data.KC;
 import Data.LP;
@@ -11,6 +13,7 @@ public class Main {
 	final static int AMOUNT_OF_KCS_CREATED = 24;
 	static Course[] courses;
 	static KC[] kcs;
+	static String[] topics = {"MATH", "PHYSICS", "COMPUTER_SCIENCE", "ECONOMY", "SPACE"};
 	
 	static Neo4JAPI neoapi;
 	
@@ -25,8 +28,10 @@ public class Main {
 		createTopics();
 		createKCs();
 		
-		createDevelopedRelations();
+		createRelationsBetweenCoursesAndKCs();
 		
+		addTopicsToCourses();
+		addTopicsToKCs();
 		
 		
 	}
@@ -74,13 +79,11 @@ public class Main {
 	public static void createTopics() {
 		// ------- CREATE TOPICS --------- // 
 		
-		neoapi.createMethods.addTopic("MATH");
-		neoapi.createMethods.addTopic("PHYSICS");
-		neoapi.createMethods.addTopic("COMPUTER_SCIENCE");
-		neoapi.createMethods.addTopic("ECONOMY");
-		neoapi.createMethods.addTopic("SPORT");
+		for(String topic: topics) {
+			neoapi.createMethods.addTopic(topic);
+		}
 		
-		print("5 topics created ");
+		print(topics.length + " topics created ");
 		// ----- CREATE TOPICS COMPLETE --- //
 	}
 	public static void createKCs() {
@@ -100,12 +103,61 @@ public class Main {
 		}
 	}
 	
-	public static void createDevelopedRelations() {
+	public static void createRelationsBetweenCoursesAndKCs() {
 		
+		boolean toggle = true;
+		for(KC kc : kcs) {
+			for(Course course: courses) {
+				if(toggle) {
+					toggle = !toggle;
+					course.setDevelopedKC(kc);
+				} else {
+					toggle = !toggle;
+					course.setRequiredKC(kc);
+				}
+				
+			}
+
+		}
 		for(Course course: courses) {
-			neoapi.createMethods
+			neoapi.createMethods.createCourseKCrelation(course);
 		}
 		
+		print("created A lot of relations between courses and kcs");
+		
+	}
+	
+	public static void addTopicsToCourses() {
+		
+		int i = 0;
+		for(Course course: courses) {
+			neoapi.createMethods.addTopicToCourse(course, topics[i%topics.length]);
+			i ++;
+		}
+		
+	}
+	public static void addTopicsToKCs() {
+		
+		int i = 0;
+		for(KC kc: kcs) {
+			neoapi.createMethods.addTopicToKC(kc, topics[i%topics.length]);
+			i ++;
+		}
+		
+	}
+	
+	public static void createCourseProgram(String name, String code) {
+		CourseOrder courseOrder = new CourseOrder(12);
+		CourseDate courseDate = new CourseDate(2018, LP.ONE);
+		
+		CourseProgram courseProgram = new CourseProgram(courseOrder);
+		courseProgram.setCourseDate(courseDate);
+		courseProgram.setCode(code);
+		courseProgram.setName(name);
+		courseProgram.setDescription("descrtiption for course" + name);
+		courseProgram.setCredits(Credits.ERROR);
+		
+		neoapi.createMethods.createProgram(courseProgram);
 	}
 	
 
