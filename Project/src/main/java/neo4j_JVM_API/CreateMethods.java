@@ -9,6 +9,7 @@ import Data.CourseDate;
 import Data.Credits;
 import Data.KC;
 import Data.LP;
+import Data.Relations;
 import Data.Course.CourseLabels;
 import neoCommunicator.Neo4jCommunicator;
 
@@ -22,16 +23,26 @@ public class CreateMethods {
 private final Neo4jCommunicator communicator;
 
 	public static void main(String[] args) {
-		String[] array = Course.CourseLabels.asStringArray();
-		array[0] = Course.CourseLabels.DESCRIPTION.toString();
-		for (String s : array) {
-			System.out.println(s);
-		}
+		Course course = new Course("Math course", "D0009M", Credits.FIFTEEN, "you do math", "Stefan", new CourseDate(2019, LP.TWO));
+		
+		KC kc = new KC("maeth", "Calulations", 1, "counting to 4");
+		KC kc2 = new KC("extra maeth", "Division", 3, "Divide 4 by 2");
+		KC kc3 = new KC("super maeth", "Multiplication", 4, "Multiply 4 by 2");
+		course.setRequiredKC(kc);
+		course.setDevelopedKC(kc2);
+		course.setDevelopedKC(kc3);
+		
+		CreateMethods methods = new CreateMethods(null);
+		methods.createCourse(course);
+		methods.createKC(kc);
+		methods.createKC(kc2);
+		methods.createKC(kc3);
+		methods.createCourseKCrelation(course);
 	}
 	
 	/**
 	 * 
-	 * @param communicator
+	 * @param communicator see {@link neoCommunicator.Neo4jCommunicator}
 	 */
 	public CreateMethods(Neo4jCommunicator communicator){
 		this.communicator = communicator;
@@ -60,34 +71,38 @@ private final Neo4jCommunicator communicator;
 	public void createCourse(Course course) {
 		String query = "MATCH (course: Course {courseCode: \"" + course.getCourseCode() + "\", "+ CourseLabels.YEAR + " : \"" + course.getStartPeriod().getYear() + "\" , " + CourseLabels.LP + " : \"" + course.getStartPeriod().getPeriod() + "\" }) ";
 		StatementResult result = this.communicator.readFromNeo(query);
-		if (!result.hasNext()) {
+		
+		/* Check if a course exist already. */
+		if (result.hasNext()) {
 			throw new IllegalArgumentException("The course exists already for the same year and study period.");
 		}
 		
-		query = "CREATE(n:Course{"+
-		Course.CourseLabels.NAME.toString() + "\"" + course.getName().toString() + "\"" +
-		Course.CourseLabels.CREDIT.toString() + "\"" + course.getCredit().toString() + "\"" +
-		Course.CourseLabels.DESCRIPTION.toString() + "\"" + course.getDescription().toString() + "\"" +
-		Course.CourseLabels.EXAMINER.toString() + "\"" + course.getExaminer().toString() + "\"" +
-		Course.CourseLabels.YEAR.toString() + "\"" + Integer.toString(course.getStartPeriod().getYear()) + "\"" +
-		Course.CourseLabels.LP.toString() + "\"" + course.getStartPeriod().getPeriod().toString() + "\"" +
-		Course.CourseLabels.CODE.toString()+ "\"" + course.getCourseCode() + "\"" +
-		"})";
-		
-		ArrayList<KC> required = course.getRequiredKC();
-		
+		query = "CREATE(n:" + Course.course+"{"+
+		Course.CourseLabels.NAME.toString() + ":\"" + course.getName().toString() + "\", " +
+		Course.CourseLabels.CREDIT.toString() + ":\"" + course.getCredit().toString() + "\", " +
+		Course.CourseLabels.DESCRIPTION.toString() + ":\"" + course.getDescription().toString() + "\", " +
+		Course.CourseLabels.EXAMINER.toString() + ":\"" + course.getExaminer().toString() + "\", " +
+		Course.CourseLabels.YEAR.toString() + ":\"" + Integer.toString(course.getStartPeriod().getYear()) + "\", " +
+		Course.CourseLabels.LP.toString() + ":\"" + course.getStartPeriod().getPeriod().toString() + "\", " +
+		Course.CourseLabels.CODE.toString()+ ":\"" + course.getCourseCode() + "\"" +
+		"})";		
 		
 		communicator.writeToNeo(query);
 	}
 	
 	/**
 	 * Create a KC in the database.
-	 * @param kc
+	 * @param kc- The KC to add.
+	 * @author Robin
 	 */
 	public void createKC (KC kc) {
-		String query = "";
-		
-		
+		String query = "CREATE(n:" +KC.kc + "{" +
+			KC.KCLabel.NAME.toString() + ":\"" + kc.getName()+"\", " + 
+			KC.KCLabel.GENERAL_DESCRIPTION.toString()+ ":\"" + kc.getGeneralDescription() + "\", " + 
+			KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + kc.getTaxonomyLevel() + "\", " + 
+			KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + ":\"" + kc.getTaxonomyDescription() + "\"" +
+			"})";
+		communicator.writeToNeo(query);
 	}
 	
 	/**
@@ -105,5 +120,31 @@ private final Neo4jCommunicator communicator;
 		throw new RuntimeException("This function is not finished yet.");
 	}
 	
-	
+	/**
+	 * Add a relation between a course and a KC to the database. 
+	 * The KCs must be added as required or developed to the desired 
+	 * course first.
+	 * @param course - The course used for the relations
+	 */
+	public void createCourseKCrelation(Course course) {
+		ArrayList<KC> developed = course.getDevelopedKC();
+		ArrayList<KC> required = course.getRequiredKC();
+		String query = "MATCH (course: " + Course.course +" {" +CourseLabels.CODE + ":\""+course.getCourseCode()+"\", "+
+				Course.CourseLabels.YEAR +":\"" + course.getStartPeriod().getYear()+"\","+
+				Course.CourseLabels.LP + ":\""+course.getStartPeriod().getPeriod().toString()+"\"})";
+		for (int i = 0; i < required.size(); i++) {
+			query += " MATCH ( kc" + i + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + required.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL + ":\"" + required.get(i).getTaxonomyLevel()+ "\"})";
+		}
+		for (int i = 0; i < developed.size(); i++) {
+			query += " MATCH ( kc" + (i+required.size()) + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + developed.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL + ":\"" + developed.get(i).getTaxonomyLevel()+ "\"})";
+		}
+		
+		for (int i = 0; i < required.size(); i++) {
+			query += "CREATE (course)-[r" + i + ":" + Relations.REQUIRED + "]->(kc" + i + ")";
+		}
+		for (int i = 0; i < developed.size(); i++) {
+			query += "CREATE (course)-[r" + (required.size()+i) + ":" + Relations.DEVELOPED + "]->(kc" + (required.size()+i) + ")";
+		}
+		communicator.writeToNeo(query);
+	}	
 }
