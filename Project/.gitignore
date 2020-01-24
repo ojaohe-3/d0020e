@@ -5,6 +5,4 @@
 *.settings
 /.settings
 /.idea
-**/db.conf
 db.conf
-pom.xml
