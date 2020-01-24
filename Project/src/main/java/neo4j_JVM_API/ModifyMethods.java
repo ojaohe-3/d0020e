@@ -3,6 +3,7 @@ package neo4j_JVM_API;
 import Data.*;
 import neoCommunicator.Neo4jCommunicator;
 
+
 public class ModifyMethods {
 	
 	private final Neo4jCommunicator communicator;
@@ -28,6 +29,7 @@ public class ModifyMethods {
 	 * @param name name Selector
 	 * @param taxlvl Taxonomy level Selector
 	 * @param kcData New Object to change selected element
+	 * @author Johan RH
 	 */
 	public void editKC(String name, int taxlvl, KC kcData) {
 		String query = "MATCH(n:KC{"+ KC.KCLabel.NAME +":\""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL +":"+taxlvl+"}) SET n={";
@@ -47,6 +49,7 @@ public class ModifyMethods {
 	 * Remove and detach selected KC object
 	 * @param name name selector
 	 * @param taxlvl taxonomy level selector
+	 * @author Johan RH, Markus
 	 */
 	public void removeKC(String name, int taxlvl) {
 		String query = "MATCH(n:KC{"+ KC.KCLabel.NAME +":"+name+","+ KC.KCLabel.TAXONOMYLEVEL+ ":"+ taxlvl +"}) DETACH DELETE n";
