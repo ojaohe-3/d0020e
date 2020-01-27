@@ -111,6 +111,13 @@ public class DeleteMethods {
 		
 	}
 
+	/**
+	 * Delete relation between course and topic
+	 * 
+	 * @param topic
+	 * @param courseCode
+	 * @param startDate
+	 */
 	public void deleteRelationCourseToTopic(String topic, String courseCode, CourseDate startDate) {
 
 		String query = "MATCH (topic : Topic{name: \"" + topic + "\"})<-[r:"+Relations.BELONGS_TO+"]-(course: Course{courseCode: \"" + 
@@ -120,6 +127,13 @@ public class DeleteMethods {
 		communicator.writeToNeo(query);
 	}
 
+	/**
+	 * Delete relation between KC and topic
+	 * 
+	 * @param topic
+	 * @param nameKC
+	 * @param taxonomyLevel
+	 */
 	public void deleteRelationKCToTopic(String topic, String nameKC, int taxonomyLevel) {
 
 		String query = "MATCH (topic : Topic{name: \"" + topic + "\"})<-[r:"+Relations.BELONGS_TO+"]-(kc: KC{name: \"" + 
@@ -128,6 +142,13 @@ public class DeleteMethods {
 		communicator.writeToNeo(query);
 	}
 
+	/**
+	 * Delete relation between program and topic
+	 * 	
+	 * @param topic
+	 * @param programCode
+	 * @param startDate
+	 */
 	public void deleteRelationProgramToTopic(String topic, String programCode, CourseDate startDate) {
 
 		String query = "MATCH (topic : Topic{name: \"" + topic + "\"})<-[r:"+Relations.BELONGS_TO+"]-(courseProgram: CourseProgram{: \"" + 
@@ -137,6 +158,14 @@ public class DeleteMethods {
 		communicator.writeToNeo(query);
 	}
 
+	/**
+	 * Delete relation between Course and Program
+	 * 
+	 * @param courseCode
+	 * @param startDateCourse
+	 * @param programCode
+	 * @param startDateProgram
+	 */
 	public void deleteRelationCourseInProgram(String courseCode, CourseDate startDateCourse, String programCode, CourseDate startDateProgram) {
 
 		String query = "MATCH (courseCode : CourseCode{code: \"" + courseCode + "\"," + CourseLabels.YEAR + ": \"" + startDateCourse.getYear() +
