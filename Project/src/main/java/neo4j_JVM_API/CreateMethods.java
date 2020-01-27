@@ -177,7 +177,7 @@ private final Neo4jCommunicator communicator;
 	 * course first.
 	 * @param course - The course used for the relations.
 	 * @see Data.Course
-	 */
+	 */	
 	public void createCourseKCrelation(Course course) {
 		ArrayList<KC> developed = course.getDevelopedKC();
 		ArrayList<KC> required = course.getRequiredKC();
@@ -185,14 +185,19 @@ private final Neo4jCommunicator communicator;
 				Course.CourseLabels.YEAR.toString() +":\"" + course.getStartPeriod().getYear()+"\","+
 				Course.CourseLabels.LP.toString() + ":\""+course.getStartPeriod().getPeriod().toString()+"\"})";
 		
-		/* These loops match a kc and creates a relation between the course and every kc. */
-		/* The first loop matches for every required kc, and the second one does the same for required. */
+		/* the first two loops create a match for every required and developed KC.*/
 		for (int i = 0; i < required.size(); i++) {
 			query += " MATCH ( kc" + i + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + required.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + required.get(i).getTaxonomyLevel()+ "\"})";
-			query += "CREATE (course)-[r" + i + ":" + Relations.REQUIRED.toString() + "]->(kc" + i + ")";
 		}
 		for (int i = 0; i < developed.size(); i++) {
 			query += " MATCH ( kc" + (i+required.size()) + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + developed.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + developed.get(i).getTaxonomyLevel()+ "\"})";
+		}
+		
+		/* these loops create a relation between the matched KCs and the course. */
+		for (int i = 0; i < required.size(); i++) {
+			query += "CREATE (course)-[r" + i + ":" + Relations.REQUIRED.toString() + "]->(kc" + i + ")";
+		}
+		for (int i = 0; i < developed.size(); i++) {
 			query += "CREATE (course)-[r" + (required.size()+i) + ":" + Relations.DEVELOPED.toString() + "]->(kc" + (required.size()+i) + ")";
 		}
 		communicator.writeToNeo(query);
