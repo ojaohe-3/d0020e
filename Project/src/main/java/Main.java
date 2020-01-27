@@ -22,7 +22,7 @@ public class Main {
 	public static void main(String[] args) {
 		
 		// Setup database connection
-		neoapi = new Neo4JAPI("bolt://localhost:7687", "neo4j", "admin");
+		neoapi = new Neo4JAPI("bolt://130.240.200.254:7687", "neo4j", "neo4j-d0020e");
 		
 		createCourses();
 		createTopics();
@@ -30,8 +30,8 @@ public class Main {
 		
 		createRelationsBetweenCoursesAndKCs();
 		
-		addTopicsToCourses();
-		addTopicsToKCs();
+		//addTopicsToCourses();
+		//addTopicsToKCs();
 		
 		readCourses();
 		readKCs();
@@ -75,7 +75,7 @@ public class Main {
 		for(Course c : courses) {
 			neoapi.createMethods.createCourse(c);
 		}
-		print(AMOUNT_OF_COURSE_CREATED + " should have been created");
+		print(AMOUNT_OF_COURSE_CREATED + " courses should have been created");
 		// ------- CREATE COURSE COMPLETE -------- //
 		
 	}
@@ -96,13 +96,15 @@ public class Main {
 		kcs = new KC[AMOUNT_OF_KCS_CREATED * 3];
 		
 		for(int i = 0; i < AMOUNT_OF_KCS_CREATED; i += 3) {
-			kcs[i] = new KC("KC num " + i, "GENERAL DESC"+ i,1, "TAXONOMY DESC" + i);
-			kcs[i+1] = new KC("KC num " + i+1, "GENERAL DESC"+ i+1, 2, "TAXONOMY DESC" + i+1);
-			kcs[i+2] = new KC("KC num " + i+1, "GENERAL DESC"+ i+2, 3, "TAXONOMY DESC" + i+2);
+			kcs[i] = new KC("KC num " + i, "GENERAL DESC"+ i, 1, "TAXONOMY DESC" + i);
+			kcs[i+1] = new KC("KC num " + i, "GENERAL DESC"+ i, 2, "TAXONOMY DESC" + i+1);
+			kcs[i+2] = new KC("KC num " + i, "GENERAL DESC"+ i, 3, "TAXONOMY DESC" + i+2);
 		}
 		
 		for(KC kc: kcs) {
-			neoapi.createMethods.createKC(kc);
+			if(kc != null) {
+				neoapi.createMethods.createKC(kc);
+			}
 		}
 	}
 	
@@ -110,19 +112,22 @@ public class Main {
 		
 		boolean toggle = true;
 		for(KC kc : kcs) {
-			for(Course course: courses) {
-				if(toggle) {
-					toggle = !toggle;
-					course.setDevelopedKC(kc);
-				} else {
-					toggle = !toggle;
-					course.setRequiredKC(kc);
+			if(kc != null) {
+				for(Course course: courses) {
+					if(toggle) {
+						toggle = !toggle;
+						course.setDevelopedKC(kc);
+					} else {
+						toggle = !toggle;
+						course.setRequiredKC(kc);
+					}
+					
 				}
-				
 			}
 
 		}
 		for(Course course: courses) {
+			
 			neoapi.createMethods.createCourseKCrelation(course);
 		}
 		
@@ -134,7 +139,7 @@ public class Main {
 		
 		int i = 0;
 		for(Course course: courses) {
-			neoapi.createMethods.addTopicToCourse(course, topics[i%topics.length]);
+			//neoapi.createMethods.addTopicToCourse(course, topics[i%topics.length]);
 			i ++;
 		}
 		
@@ -143,7 +148,7 @@ public class Main {
 		
 		int i = 0;
 		for(KC kc: kcs) {
-			neoapi.createMethods.addTopicToKC(kc, topics[i%topics.length]);
+			//neoapi.createMethods.addTopicToKC(kc, topics[i%topics.length]);
 			i ++;
 		}
 		
@@ -154,7 +159,7 @@ public class Main {
 		CourseDate courseDate = new CourseDate(2018, LP.ONE);
 		
 		CourseProgram courseProgram = new CourseProgram(courseOrder);
-		courseProgram.setCourseDate(courseDate);
+		courseProgram.setStartDate(courseDate);
 		courseProgram.setCode(code);
 		courseProgram.setName(name);
 		courseProgram.setDescription("descrtiption for course" + name);
@@ -221,6 +226,4 @@ public class Main {
 		print("*************");
 	}
 	
-	
-
 }

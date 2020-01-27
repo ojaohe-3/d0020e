@@ -29,8 +29,8 @@ public class Neo4jCommunicator implements AutoCloseable {
                 @Override
                 public String execute( Transaction tx ) {
                     StatementResult result = tx.run(query);
-                    System.out.println(result.single().get(0).asString());
-                    return result.single().get(0).asString();
+                    //System.out.println(result.single().get(0).asString());
+                    return "";
                 }
             });
         }
@@ -47,7 +47,7 @@ public class Neo4jCommunicator implements AutoCloseable {
     public synchronized StatementResult readFromNeo(final String query) {
     	
     	try ( Session session = driver.session() ) {
-            StatementResult result = session.writeTransaction( new TransactionWork<StatementResult>() {
+            StatementResult result = session.readTransaction( new TransactionWork<StatementResult>() {
                 @Override
                 public StatementResult execute( Transaction tx ) {
                     StatementResult result = tx.run(query);
