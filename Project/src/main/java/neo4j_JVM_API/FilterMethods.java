@@ -119,4 +119,23 @@ public class FilterMethods {
 	public void filterKC() {
 		
 	}
+
+	/**
+	 * Get names of courses that has a specific topic
+	 * @param topicTitle
+	 * @return String[] of available course names
+	 */
+	public String[] getCourseNameByTopic(String topicTitle) {
+		String query = "MATCH(node: Topic {title : \""+ topicTitle +"\"})<-[r]-(course) RETURN course ";
+		
+		StatementResult result = this.communicator.readFromNeo(query);
+		ArrayList<String> courseNames = new ArrayList<String>();
+		
+		while(result.hasNext()) {
+			Record row = result.next();
+			courseNames.add(row.get("course").get("name").asString());
+		}
+		return courseNames.toArray(new String[courseNames.size()]);
+		
+	}
 }
