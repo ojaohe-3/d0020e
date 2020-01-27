@@ -174,7 +174,7 @@ private final Neo4jCommunicator communicator;
 		Course[][] courses = courseOrder.getCourseArray();
 		
 		/* find the program */
-		String query = "MATH(program: " + CourseProgram.courseProgram + "{" + CourseProgram.ProgramLabels.CODE.toString() + ":\"" + program.getCode() + "\", " + 
+		String query = "MATCH(program: " + CourseProgram.courseProgram + "{" + CourseProgram.ProgramLabels.CODE.toString() + ":\"" + program.getCode() + "\", " + 
 				CourseProgram.ProgramLabels.YEAR.toString()+ ":\"" + program.getStartDate().getYear()+ "\", " + 
 				CourseProgram.ProgramLabels.LP.toString() + "\"" + program.getStartDate().getPeriod().toString()+ "})";
 		
