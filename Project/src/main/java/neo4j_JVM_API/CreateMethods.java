@@ -26,31 +26,7 @@ public class CreateMethods {
 
 private final Neo4jCommunicator communicator;
 
-	public static void main(String[] args) {
-		/*Course course = new Course("Math course", "D0009M", Credits.FIFTEEN, "you do math", "Stefan", new CourseDate(2019, LP.TWO));
-		
-		KC kc = new KC("maeth", "Calulations", 1, "counting to 4");
-		KC kc2 = new KC("extra maeth", "Division", 3, "Divide 4 by 2");
-		KC kc3 = new KC("super maeth", "Multiplication", 4, "Multiply 4 by 2");
-		course.setRequiredKC(kc);
-		course.setDevelopedKC(kc2);
-		course.setDevelopedKC(kc3);
-		
-		CreateMethods methods = new CreateMethods(null);
-		methods.createCourse(course);
-		methods.createKC(kc);
-		methods.createKC(kc2);
-		methods.createKC(kc3);
-		methods.createCourseKCrelation(course);
-		*/
-		Neo4jCommunicator communicator = null;
-		CreateMethods methods = new CreateMethods(communicator);
-		CourseOrder order = new CourseOrder(12);
-		CourseProgram program = new CourseProgram(order, "TCDAA", "Computer engineering", "We are the definitive nerds", new CourseDate(2019,LP.ONE), Credits.THIRTY);
-		
-		
-		methods.createProgram(program);
-	}
+	
 	
 	/**
 	 * 
@@ -89,7 +65,7 @@ private final Neo4jCommunicator communicator;
 	 * @see Data.Course
 	 */
 	public void createCourse(Course course) {
-		String query = "MATCH (course: Course {courseCode: \"" + course.getCourseCode() + "\", "+ CourseLabels.YEAR + " : \"" + course.getStartPeriod().getYear() + "\" , " + CourseLabels.LP + " : \"" + course.getStartPeriod().getPeriod() + "\" }) ";
+		String query = "MATCH (course: Course {courseCode: \"" + course.getCourseCode() + "\", "+ CourseLabels.YEAR + " : \"" + course.getStartPeriod().getYear() + "\" , " + CourseLabels.LP + " : \"" + course.getStartPeriod().getPeriod() + "\" }) RETURN course";
 		StatementResult result = this.communicator.readFromNeo(query);
 		
 		/* Check if a course exist already. */
@@ -117,6 +93,7 @@ private final Neo4jCommunicator communicator;
 	 * @see Data.KC
 	 */
 	public void createKC (KC kc) {
+		
 		String query = "CREATE(n:" +KC.kc + "{" +
 			KC.KCLabel.NAME.toString() + ":\"" + kc.getName()+"\", " + 
 			KC.KCLabel.GENERAL_DESCRIPTION.toString()+ ":\"" + kc.getGeneralDescription() + "\", " + 
@@ -125,6 +102,7 @@ private final Neo4jCommunicator communicator;
 		communicator.writeToNeo(query);
 	}
 	
+
 	/**
 	 * Add multiple variants of the same KC to the database. 
 	 * Instead of the KC's internal taxonomy level, a selections of multiple levels can be used.
