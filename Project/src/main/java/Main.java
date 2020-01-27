@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 
 import Data.Course;
@@ -19,11 +20,12 @@ public class Main {
 	
 	static Neo4JAPI neoapi;
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		// Setup database connection
 		neoapi = new Neo4JAPI("bolt://130.240.200.254:7687", "neo4j", "neo4j-d0020e");
 		
+		neoapi.createMethods.clear();
 		createCourses();
 		createTopics();
 		createKCs();
@@ -41,6 +43,8 @@ public class Main {
 		readTopics();
 		
 		filterTest();
+		
+		System.in.read();
 		
 		deleteCourses();
 		deleteKCs();
@@ -163,6 +167,25 @@ public class Main {
 	
 	public static void createCourseProgram(String name, String code) {
 		CourseOrder courseOrder = new CourseOrder(12);
+		
+		int x = 0;
+		int y = 0;
+		int count = 0;
+		for(Course course: courses) {
+			if(count < 24) {
+				courseOrder.setCourseAt(course, x, y);
+				if(y == 2) {
+					y = 0;
+					x ++;
+				} else {
+					y ++;
+				}
+				
+				count ++;
+			}
+		}
+		
+		
 		CourseDate courseDate = new CourseDate(2018, LP.ONE);
 		
 		CourseProgram courseProgram = new CourseProgram(courseOrder);
@@ -210,11 +233,11 @@ public class Main {
 		for(Course course : courses) {
 			Course c = neoapi.getMethods.getCourse(course.getCourseCode(), course.getStartPeriod());
 			
-			printCourse(c);
+			/*printCourse(c);
 			print("Developed KCs");
 			printKCs(c.getDevelopedKC());
 			print("Required KCs");
-			printKCs(c.getRequiredKC());
+			printKCs(c.getRequiredKC());*/
 		}
 	}
 	
@@ -222,7 +245,7 @@ public class Main {
 		for(KC kc: kcs) {
 			if(kc != null) {
 				KC k = neoapi.getMethods.getKCwithTaxonomyLevel(kc.getName(), kc.getTaxonomyLevel());
-				printKC(k);
+				//printKC(k);
 			}
 		}
 	}

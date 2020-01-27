@@ -152,25 +152,60 @@ private final Neo4jCommunicator communicator;
 		Course[][] courses = courseOrder.getCourseArray();
 		
 		/* find the program */
-		String query = "MATCH(program: " + CourseProgram.courseProgram + "{" + CourseProgram.ProgramLabels.CODE.toString() + ":\"" + program.getCode() + "\", " + 
-				CourseProgram.ProgramLabels.YEAR.toString()+ ":\"" + program.getStartDate().getYear()+ "\", " + 
-				CourseProgram.ProgramLabels.LP.toString() + "\"" + program.getStartDate().getPeriod().toString()+ "})";
+		String query = "MATCH(program: " + CourseProgram.courseProgram + "{" + CourseProgram.ProgramLabels.CODE.toString() + ": \"" + program.getCode() + "\", " + 
+				CourseProgram.ProgramLabels.YEAR.toString()+ ": \"" + program.getStartDate().getYear()+ "\", " + 
+				CourseProgram.ProgramLabels.LP.toString() + ": \"" + program.getStartDate().getPeriod().toString()+ "\"}) ";
 		
 		/* Create a match for every course in the course order and add a relation for that course. */
 		Course c = null;	// temporary pointer.
+		boolean hasCourses = false;
 		for (int pos=0; pos < courses.length; pos++) {
 			for (int period = 0; period < courses[pos].length; period++) {
 				c = courses[pos][period];
-				query += "MATCH (course" + pos + "" + period + ":" + Course.course +" {" +CourseLabels.CODE.toString() + ":\""+c.getCourseCode()+"\", "+
-				Course.CourseLabels.YEAR.toString() +":\"" + c.getStartPeriod().getYear()+"\","+
-				Course.CourseLabels.LP.toString() + ":\""+c.getStartPeriod().getPeriod().toString()+"\"})";
+				if(c != null) {
+					hasCourses = true;
+					query += "MATCH (course" + pos + "" + period + ": " + Course.course +" {" +CourseLabels.CODE.toString() + ": \""+c.getCourseCode()+"\", "+
+					Course.CourseLabels.YEAR.toString() +": \"" + c.getStartPeriod().getYear()+"\","+
+					Course.CourseLabels.LP.toString() + ": \""+c.getStartPeriod().getPeriod().toString()+"\"}) ";
+					
+	
+			
+				}
 				
-				query += "CREATE (program) - [r"+pos+""+period+ ":"+ pos + ", " + period + "]" + "->(course" + pos + "" + period +")";
 			}
 		}
+		if(!hasCourses) {
+			System.err.print("No ocurses : ");
+			return;
+		}
+		for (int pos=0; pos < courses.length; pos++) {
+			for (int period = 0; period < courses[pos].length; period++) {
+				c = courses[pos][period];
+				if(c != null) {
+					
+
+					query += "CREATE (program)<-[r"+ pos + "" + period +": "+ Relations.IN_PROGRAM.toString() + " { pos: \"" + pos + "\", period :\"" + period + "\"}]" + "-(course" + pos + "" + period +") ";
+			
+				}
+				
+			}
+		}
+		
+		
 		this.communicator.writeToNeo(query);
+		
+		
 	}
 	
+	
+	public void clear() {
+		
+		String query = "MATCH (n)-[r]-(m) DELETE n,r,m";
+		this.communicator.writeToNeo(query);
+		query = "MATCH (n) DELETE n";
+		this.communicator.writeToNeo(query);
+		
+	}
 	/**
 	 * Add a relation between a course and a KC to the database. 
 	 * The KCs must be added as required or developed to the desired 
