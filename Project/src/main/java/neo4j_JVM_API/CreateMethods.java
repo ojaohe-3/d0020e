@@ -41,8 +41,8 @@ private final Neo4jCommunicator communicator;
 		methods.createKC(kc3);
 		methods.createCourseKCrelation(course);
 		*/
-		Neo4jCommunicator communicator = new Neo4jCommunicator();
-		CreateMethods methods = new CreateMethods(null);
+		Neo4jCommunicator communicator = null;
+		CreateMethods methods = new CreateMethods(communicator);
 		CourseOrder order = new CourseOrder(12);
 		CourseProgram program = new CourseProgram(order, "TCDAA", "Computer engineering", "We are the definitive nerds", new CourseDate(2019,LP.ONE), Credits.THIRTY);
 		
@@ -52,7 +52,7 @@ private final Neo4jCommunicator communicator;
 	
 	/**
 	 * 
-	 * @param The communicator used when calling the database.
+	 * @param communicator  used when calling the database.
 	 * @see neoCommunicator.Neo4jCommunicator
 	 */
 	public CreateMethods(Neo4jCommunicator communicator){
@@ -140,6 +140,7 @@ private final Neo4jCommunicator communicator;
 				CourseProgram.ProgramLabels.LP.toString() + ":\"" + program.getStartDate().getPeriod().toString() + "\", " +		
 				CourseProgram.ProgramLabels.READING_PERIODS.toString() + ":\"" + program.getCourseOrder().getReadingPeriods() + "\"})";
 		System.out.println(query);
+		communicator.writeToNeo(query);
 	}
 	
 	/**

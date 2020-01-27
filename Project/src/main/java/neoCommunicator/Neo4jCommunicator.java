@@ -29,7 +29,7 @@ public class Neo4jCommunicator implements AutoCloseable {
                 @Override
                 public String execute( Transaction tx ) {
                     StatementResult result = tx.run(query);
-                    
+                    System.out.println(result.single().get(0).asString());
                     return result.single().get(0).asString();
                 }
             });
@@ -41,7 +41,7 @@ public class Neo4jCommunicator implements AutoCloseable {
      * 
      *  Method used for getting nodes from the DB
      * 
-     * @param message The Cipher query to execute
+     * @param query The Cipher query to execute
      * @return Statement result containing the returned nodes from the query
      */
     public synchronized StatementResult readFromNeo(final String query) {
