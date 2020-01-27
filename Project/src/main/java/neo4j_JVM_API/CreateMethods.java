@@ -5,7 +5,15 @@ import java.util.ArrayList;
 import Data.*;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
-
+import Data.Course;
+import Data.CourseDate;
+import Data.CourseOrder;
+import Data.CourseProgram;
+import Data.Credits;
+import Data.KC;
+import Data.LP;
+import Data.Relations;
+import Data.Topic;
 import Data.Course.CourseLabels;
 import neoCommunicator.Neo4jCommunicator;
 
@@ -54,10 +62,11 @@ private final Neo4jCommunicator communicator;
 	}
 	
 	/**
-	 * Add a topic.
+	 * Add a topic to the database.
 	 */
-	public void addTopic() {
-		throw new RuntimeException("This function is not finished yet.");
+	public void addTopic(String topic) {
+		String query = "CREATE (n: " + Topic.TopicLabels.TOPIC.toString() +" { " +Topic.TopicLabels.TITLE.toString()+ ":\""+ topic.toString() +"\"})";
+		this.communicator.writeToNeo(query);
 	}
 	
 	/**
@@ -117,11 +126,22 @@ private final Neo4jCommunicator communicator;
 	}
 	
 	/**
-	 * 
-	 * 
+	 * Add multiple variants of the same KC to the database. 
+	 * Instead of the KC's internal taxonomy level, a selections of multiple levels can be used.
+	 * @param kc - The KC source.
+	 * @param taxonomyLevels - Every level you want to add.
+	 * @see Data.KC
 	 */
-	public void createKCgroup() {
-		throw new RuntimeException("This function is not finished yet.");
+	public void createKCgroup(KC kc, int... taxonomyLevels) {
+		String query = "";
+		for (int lv : taxonomyLevels) {
+			query += "CREATE(n:" +KC.kc + "{" +
+					KC.KCLabel.NAME.toString() + ":\"" + kc.getName()+"\", " + 
+					KC.KCLabel.GENERAL_DESCRIPTION.toString()+ ":\"" + kc.getGeneralDescription() + "\", " + 
+					KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + lv + "\", " + 
+					KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + ":\"" + kc.getTaxonomyDescription() + "\"})";
+		}
+		communicator.writeToNeo(query);
 	}
 	
 	/**
