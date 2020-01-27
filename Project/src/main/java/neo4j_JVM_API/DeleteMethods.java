@@ -64,12 +64,25 @@ public class DeleteMethods {
 		
 	}
 	
-	public void deleteProgram() {
+	public void deleteProgram(String name, CourseDate startDate) {
+		
+		String query = "MATCH (courseProgram: CourseProgram {name: \"" + name + "\", " + CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" })-[relations]-(nodes) DELETE courseProgram, relations";
+		
+		communicator.writeToNeo(query);
 		
 	}
 	
-	public void deleteTopic() {
+	/**
+	 * Delete topic from database
+	 * 
+	 * @param name
+	 */
+	public void deleteTopic(String name) {
 		
+		String query = "MATCH (topic: Topic {name: \"" + name + "\"})<-[relations]-(nodes) DELETE topic, relations";
+		
+		communicator.writeToNeo(query);
+	
 	}
 	
 	public void deleteRelation() {
