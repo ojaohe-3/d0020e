@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import Data.Course;
 import Data.CourseDate;
 import Data.CourseOrder;
@@ -19,8 +21,6 @@ public class Main {
 	
 	public static void main(String[] args) {
 		
-		
-		
 		// Setup database connection
 		neoapi = new Neo4JAPI("bolt://localhost:7687", "neo4j", "admin");
 		
@@ -33,7 +33,10 @@ public class Main {
 		addTopicsToCourses();
 		addTopicsToKCs();
 		
+		readCourses();
+		readKCs();
 		
+		readTopics();
 	}
 	
 	public static void print(String s ) {
@@ -158,7 +161,66 @@ public class Main {
 		courseProgram.setCredits(Credits.ERROR);
 		
 		neoapi.createMethods.createProgram(courseProgram);
+		print("A program named " + name + "is created");
+		
 	}
+	
+	private static void printCourse(Course course) {
+		
+		print("--Print course--");
+		print("name :" +  course.getName());
+		print("courseCode :" + course.getCourseCode());
+		print("LP : " + course.getStartPeriod().getPeriod());
+		print("year : " + course.getStartPeriod().getYear());
+		print("description : " + course.getDescription());
+		print("examiner :" + course.getExaminer());
+		print("credits :" + course.getCredit());
+		print("**********************************");
+	}
+	
+	private static void printKCs(ArrayList<KC> kc_s) {
+		for(KC kc: kc_s) {
+			printKC(kc);
+		}
+	}
+	
+	private static void printKC(KC kc) {
+		print("name :" + kc.getName());
+		print("general desc :" + kc.getGeneralDescription());
+		print("taxonomy desc : "+ kc.getTaxonomyDescription());
+		print("taxonomy level : "+ kc.getTaxonomyLevel());
+		print("************");
+	}
+	
+	public static void readCourses() {
+		
+		for(Course course : courses) {
+			Course c = neoapi.getMethods.getCourse(course.getCourseCode(), course.getStartPeriod());
+			
+			printCourse(c);
+			print("Developed KCs");
+			printKCs(c.getDevelopedKC());
+			print("Required KCs");
+			printKCs(c.getRequiredKC());
+		}
+	}
+	
+	public static void readKCs() {
+		for(KC kc: kcs) {
+			KC k = neoapi.getMethods.getKCwithTaxonomyLevel(kc.getName(), kc.getTaxonomyLevel());
+			printKC(k);
+		}
+	}
+	
+	public static void readTopics() {
+		String[] titles = neoapi.getMethods.getTopics();
+		print("-- Topics in Neo --");
+		for(String t: titles) {
+			print(t);
+		}
+		print("*************");
+	}
+	
 	
 
 }
