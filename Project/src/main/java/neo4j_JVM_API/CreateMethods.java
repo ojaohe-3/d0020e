@@ -173,15 +173,24 @@ private final Neo4jCommunicator communicator;
 		CourseOrder courseOrder = program.getCourseOrder();
 		Course[][] courses = courseOrder.getCourseArray();
 		
-		String query = "MATH(cp: " + CourseProgram.courseProgram + "{" + CourseProgram.ProgramLabels.CODE.toString() + ":\"" + program.getCode() + "\", " + 
+		/* find the program */
+		String query = "MATCH(program: " + CourseProgram.courseProgram + "{" + CourseProgram.ProgramLabels.CODE.toString() + ":\"" + program.getCode() + "\", " + 
 				CourseProgram.ProgramLabels.YEAR.toString()+ ":\"" + program.getStartDate().getYear()+ "\", " + 
 				CourseProgram.ProgramLabels.LP.toString() + "\"" + program.getStartDate().getPeriod().toString()+ "})";
 		
-		for (int x=0; x < courses.length; x++) {
-			for (int y = 0; y < courses.length; y++) {
-				query += "MATCH ()";
+		/* Create a match for every course in the course order and add a relation for that course. */
+		Course c = null;	// temporary pointer.
+		for (int pos=0; pos < courses.length; pos++) {
+			for (int period = 0; period < courses[pos].length; period++) {
+				c = courses[pos][period];
+				query += "MATCH (course" + pos + "" + period + ":" + Course.course +" {" +CourseLabels.CODE.toString() + ":\""+c.getCourseCode()+"\", "+
+				Course.CourseLabels.YEAR.toString() +":\"" + c.getStartPeriod().getYear()+"\","+
+				Course.CourseLabels.LP.toString() + ":\""+c.getStartPeriod().getPeriod().toString()+"\"})";
+				
+				query += "CREATE (program) - [r"+pos+""+period+ ":"+ pos + ", " + period + "]" + "->(course" + pos + "" + period +")";
 			}
 		}
+		this.communicator.writeToNeo(query);
 	}
 	
 	/**
@@ -190,13 +199,15 @@ private final Neo4jCommunicator communicator;
 	 * course first.
 	 * @param course - The course used for the relations.
 	 * @see Data.Course
-	 */
+	 */	
 	public void createCourseKCrelation(Course course) {
 		ArrayList<KC> developed = course.getDevelopedKC();
 		ArrayList<KC> required = course.getRequiredKC();
 		String query = "MATCH (course: " + Course.course +" {" +CourseLabels.CODE.toString() + ":\""+course.getCourseCode()+"\", "+
 				Course.CourseLabels.YEAR.toString() +":\"" + course.getStartPeriod().getYear()+"\","+
 				Course.CourseLabels.LP.toString() + ":\""+course.getStartPeriod().getPeriod().toString()+"\"})";
+		
+		/* the first two loops create a match for every required and developed KC.*/
 		for (int i = 0; i < required.size(); i++) {
 			query += " MATCH ( kc" + i + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + required.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + required.get(i).getTaxonomyLevel()+ "\"})";
 		}
@@ -204,6 +215,7 @@ private final Neo4jCommunicator communicator;
 			query += " MATCH ( kc" + (i+required.size()) + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + developed.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + developed.get(i).getTaxonomyLevel()+ "\"})";
 		}
 		
+		/* these loops create a relation between the matched KCs and the course. */
 		for (int i = 0; i < required.size(); i++) {
 			query += "CREATE (course)-[r" + i + ":" + Relations.REQUIRED.toString() + "]->(kc" + i + ")";
 		}
