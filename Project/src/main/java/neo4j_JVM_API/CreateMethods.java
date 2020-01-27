@@ -173,15 +173,24 @@ private final Neo4jCommunicator communicator;
 		CourseOrder courseOrder = program.getCourseOrder();
 		Course[][] courses = courseOrder.getCourseArray();
 		
-		String query = "MATH(cp: " + CourseProgram.courseProgram + "{" + CourseProgram.ProgramLabels.CODE.toString() + ":\"" + program.getCode() + "\", " + 
+		/* find the program */
+		String query = "MATH(program: " + CourseProgram.courseProgram + "{" + CourseProgram.ProgramLabels.CODE.toString() + ":\"" + program.getCode() + "\", " + 
 				CourseProgram.ProgramLabels.YEAR.toString()+ ":\"" + program.getStartDate().getYear()+ "\", " + 
 				CourseProgram.ProgramLabels.LP.toString() + "\"" + program.getStartDate().getPeriod().toString()+ "})";
 		
-		for (int x=0; x < courses.length; x++) {
-			for (int y = 0; y < courses.length; y++) {
-				query += "MATCH ()";
+		/* Create a match for every course in the course order and add a relation for that course. */
+		Course c = null;	// temporary pointer.
+		for (int pos=0; pos < courses.length; pos++) {
+			for (int period = 0; period < courses[pos].length; period++) {
+				c = courses[pos][period];
+				query += "MATCH (course" + pos + "" + period + ":" + Course.course +" {" +CourseLabels.CODE.toString() + ":\""+c.getCourseCode()+"\", "+
+				Course.CourseLabels.YEAR.toString() +":\"" + c.getStartPeriod().getYear()+"\","+
+				Course.CourseLabels.LP.toString() + ":\""+c.getStartPeriod().getPeriod().toString()+"\"})";
+				
+				query += "CREATE (program) - [r"+pos+""+period+ ":"+ pos + ", " + period + "]" + "->(course" + pos + "" + period +")";
 			}
 		}
+		this.communicator.writeToNeo(query);
 	}
 	
 	/**
@@ -197,17 +206,15 @@ private final Neo4jCommunicator communicator;
 		String query = "MATCH (course: " + Course.course +" {" +CourseLabels.CODE.toString() + ":\""+course.getCourseCode()+"\", "+
 				Course.CourseLabels.YEAR.toString() +":\"" + course.getStartPeriod().getYear()+"\","+
 				Course.CourseLabels.LP.toString() + ":\""+course.getStartPeriod().getPeriod().toString()+"\"})";
+		
+		/* These loops match a kc and creates a relation between the course and every kc. */
+		/* The first loop matches for every required kc, and the second one does the same for required. */
 		for (int i = 0; i < required.size(); i++) {
 			query += " MATCH ( kc" + i + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + required.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + required.get(i).getTaxonomyLevel()+ "\"})";
-		}
-		for (int i = 0; i < developed.size(); i++) {
-			query += " MATCH ( kc" + (i+required.size()) + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + developed.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + developed.get(i).getTaxonomyLevel()+ "\"})";
-		}
-		
-		for (int i = 0; i < required.size(); i++) {
 			query += "CREATE (course)-[r" + i + ":" + Relations.REQUIRED.toString() + "]->(kc" + i + ")";
 		}
 		for (int i = 0; i < developed.size(); i++) {
+			query += " MATCH ( kc" + (i+required.size()) + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + developed.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + developed.get(i).getTaxonomyLevel()+ "\"})";
 			query += "CREATE (course)-[r" + (required.size()+i) + ":" + Relations.DEVELOPED.toString() + "]->(kc" + (required.size()+i) + ")";
 		}
 		communicator.writeToNeo(query);
