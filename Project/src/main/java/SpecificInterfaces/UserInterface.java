@@ -33,13 +33,21 @@ public class UserInterface {
 		return this.neoapi.getMethods.getCourse(courseCode, courseDate);
 	}
 	
-	public Course[] getCoursesByTopic(String topic) {
-		
-		throw new RuntimeException("");
-		
-		//this.neoapi.getMethods.getCoursesByTopic(topic);
-		
+	/**
+	 *  Get course names from courses related to a topic
+	 * @param topic
+	 * @return
+	 */
+	public String[] getCoursesByTopic(String topic) {
+		return this.neoapi.filterMethods.getCourseNameByTopic(topic);
 	}
 	
+	/**
+	 * Get all avaliable topics
+	 * @return
+	 */
+	public String[] getTopics() {
+		return this.neoapi.getMethods.getTopics();
+	}
 	
 }

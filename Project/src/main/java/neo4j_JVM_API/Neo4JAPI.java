@@ -18,6 +18,7 @@ public class Neo4JAPI {
 	public GetMethods getMethods;
 	public CreateMethods createMethods;
 	public ModifyMethods modifyMethods;
+	public FilterMethods filterMethods;
 	
 	
 	public Neo4JAPI(String uri, String user, String password) {
@@ -25,5 +26,6 @@ public class Neo4JAPI {
 		this.getMethods = new GetMethods(communicator);
 		this.createMethods = new CreateMethods(communicator);
 		this.modifyMethods = new ModifyMethods(communicator);
+		this.filterMethods = new FilterMethods(communicator);
 	}
 }
