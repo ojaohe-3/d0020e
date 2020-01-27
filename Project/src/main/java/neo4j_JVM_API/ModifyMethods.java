@@ -18,21 +18,21 @@ public class ModifyMethods {
 	}
 	
 	public void changeUserPrivileges(String username,boolean admin) {
-		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.USERTAG +"="+(admin?1:0);
+		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.USERTAG +"="+(admin?1:0);
 		communicator.writeToNeo(query);
 	}
 	public void changeUserPassword(String username,String pwd)  {
-		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.PASSWORD +"=" + Security.generateHash(pwd);
+		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.PASSWORD +"=" + Security.generateHash(pwd);
 		communicator.writeToNeo(query);
 	}
 	public void removeUser(String username) {
-		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+username+"}) DETACH DELETE n";
+		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) DETACH DELETE n";
 		communicator.writeToNeo(query);
 	}
 
 	public void addCourseToUser(User user,Course data) {
 
-		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+user.getUsername()+
+		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+user.getUsername()+
 				"}),(m:Course{"+
 				Course.CourseLabels.CODE+":\""+ data.getCourseCode()+"\", "+
 				Course.CourseLabels.YEAR +":"+data.getStartPeriod().getYear()+"," +
@@ -50,7 +50,7 @@ public class ModifyMethods {
 	 * @author Johan RH
 	 */
 	public void editKC(String name, int taxlvl, KC kcData) {
-		String query = "MATCH(n:KC{"+ KC.KCLabel.NAME +":\""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL +":"+taxlvl+"}) SET n={";
+		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME +":\""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL +":"+taxlvl+"}) SET n={";
 		query += KC.KCLabel.NAME+":\""+kcData.getName()+"\",";
 		query += KC.KCLabel.TAXONOMYLEVEL+":\""+kcData.getTaxonomyLevel()+"\",";
 		query += KC.KCLabel.GENERAL_DESCRIPTION+":\""+kcData.getGeneralDescription()+"\",";
@@ -70,7 +70,7 @@ public class ModifyMethods {
 	 * @author Johan RH, Markus
 	 */
 	public void removeKC(String name, int taxlvl) {
-		String query = "MATCH(n:KC{"+ KC.KCLabel.NAME +":"+name+","+ KC.KCLabel.TAXONOMYLEVEL+ ":"+ taxlvl +"}) DETACH DELETE n";
+		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME +":"+name+","+ KC.KCLabel.TAXONOMYLEVEL+ ":"+ taxlvl +"}) DETACH DELETE n";
 		communicator.writeToNeo(query);
 	}
 	
@@ -86,7 +86,7 @@ public class ModifyMethods {
 	 * @author Johan RH
 	 */
 	public void editCourse(String courseID,Course nCourse) {
-		String query = "MATCH (n:Course{CourseCode:\""+ courseID+"\"} SET n={";
+		String query = "MATCH (n:"+Course.course+"{CourseCode:\""+ courseID+"\"} SET n={";
 		query += Course.CourseLabels.CODE.toString() +":"+nCourse.getCourseCode();
 		query +=  Course.CourseLabels.CREDIT.toString() +":"+nCourse.getCredit();
 		query += Course.CourseLabels.DESCRIPTION.toString() +":"+nCourse.getDescription();
@@ -106,7 +106,7 @@ public class ModifyMethods {
 	 * @author Johan RH
 	 */
 	public void removeCourse(String couseID, CourseDate startyear) {
-		String query  ="MATCH(n:Course{CourseCode:\""+ couseID +"\", Startdate:\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
+		String query  ="MATCH(n:"+Course.course+"{CourseCode:\""+ couseID +"\", Startdate:\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
 
 		communicator.writeToNeo(query);
 	}

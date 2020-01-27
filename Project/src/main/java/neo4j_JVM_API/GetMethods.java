@@ -56,7 +56,7 @@ public class GetMethods {
 	 * @author Johan RH
 	 */
 	public boolean login(String username, String password)  {
-		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
+		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
 		StatementResult result = communicator.readFromNeo(query);
 		if(!result.hasNext())
 			return false;
@@ -76,7 +76,7 @@ public class GetMethods {
 	 * @return User object
 	 */
 	public User getUser(String username) {
-		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
+		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
 		StatementResult result = communicator.readFromNeo(query);
 		if(!result.hasNext())
 			return null;

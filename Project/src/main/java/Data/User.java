@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * @author Johan RH
  */
 public class User {
+    public static String User = "User";
     private String username;
     private boolean Admintag;
     private String password;
