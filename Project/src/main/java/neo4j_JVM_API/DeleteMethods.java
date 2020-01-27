@@ -64,5 +64,15 @@ public class DeleteMethods {
 		
 	}
 	
-	 
+	public void deleteProgram() {
+		
+	}
+	
+	public void deleteTopic() {
+		
+	}
+	
+	public void deleteRelation() {
+		
+	}
 }
