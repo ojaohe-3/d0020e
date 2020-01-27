@@ -1,6 +1,5 @@
 package neo4j_JVM_API;
 
-
 import neoCommunicator.Neo4jCommunicator;
 
 /**
@@ -17,16 +16,14 @@ public class Neo4JAPI {
 	private final Neo4jCommunicator communicator;
 	
 	public GetMethods getMethods;
-	public CreateMethods setMethods;
+	public CreateMethods createMethods;
 	public ModifyMethods modifyMethods;
 	
 	
 	public Neo4JAPI(String uri, String user, String password) {
 		this.communicator = new Neo4jCommunicator(uri, user, password);
-		//this.getMethods = new GetMethods(communicator);
-		//this.setMethods = new CreateMethods(communicator);
+		this.getMethods = new GetMethods(communicator);
+		this.createMethods = new CreateMethods(communicator);
 		this.modifyMethods = new ModifyMethods(communicator);
 	}
-	
-	
 }
