@@ -23,8 +23,8 @@ public class Neo4JAPI {
 	
 	public Neo4JAPI(String uri, String user, String password) {
 		this.communicator = new Neo4jCommunicator(uri, user, password);
-		this.getMethods = new GetMethods(communicator);
-		this.setMethods = new CreateMethods(communicator);
+		//this.getMethods = new GetMethods(communicator);
+		//this.setMethods = new CreateMethods(communicator);
 		this.modifyMethods = new ModifyMethods(communicator);
 	}
 	
