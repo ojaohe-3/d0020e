@@ -15,7 +15,7 @@ public class Main {
 	final static int AMOUNT_OF_KCS_CREATED = 24;
 	static Course[] courses;
 	static KC[] kcs;
-	static String[] topics = {"MATH", "PHYSICS", "COMPUTER_SCIENCE", "ECONOMY", "SPACE"};
+	static String[] topics = {"MATH", "PHYSICS", "COMPUTER_SCIENCE", "ECONOMY", "SPACE", "MATH_SOMETHING"};
 	
 	static Neo4JAPI neoapi;
 	
@@ -30,6 +30,8 @@ public class Main {
 		
 		createRelationsBetweenCoursesAndKCs();
 		
+		createCourseProgram("courseprgroma 1", "TIDAG");
+		
 		//addTopicsToCourses();
 		//addTopicsToKCs();
 		
@@ -37,6 +39,11 @@ public class Main {
 		readKCs();
 		
 		readTopics();
+		
+		filterTest();
+		
+		deleteCourses();
+		deleteKCs();
 	}
 	
 	public static void print(String s ) {
@@ -166,6 +173,7 @@ public class Main {
 		courseProgram.setCredits(Credits.ERROR);
 		
 		neoapi.createMethods.createProgram(courseProgram);
+		neoapi.createMethods.createProgramCourseRelation(courseProgram);
 		print("A program named " + name + "is created");
 		
 	}
@@ -212,8 +220,10 @@ public class Main {
 	
 	public static void readKCs() {
 		for(KC kc: kcs) {
-			KC k = neoapi.getMethods.getKCwithTaxonomyLevel(kc.getName(), kc.getTaxonomyLevel());
-			printKC(k);
+			if(kc != null) {
+				KC k = neoapi.getMethods.getKCwithTaxonomyLevel(kc.getName(), kc.getTaxonomyLevel());
+				printKC(k);
+			}
 		}
 	}
 	
@@ -225,5 +235,35 @@ public class Main {
 		}
 		print("*************");
 	}
+	
+	public static void filterTest() {
+		String[] res = neoapi.filterMethods.filterCourseByCode("D001");
+		print("filter course returned  : " + res.length);
+		res = neoapi.filterMethods.filterCourseByName("Cour");
+		print("filter course returned  : " + res.length);
+		
+		res = neoapi.filterMethods.filterProgramByCode("TID");
+		print("filter programs returned  : " + res.length);
+		res = neoapi.filterMethods.filterProgramByName("cour");
+		print("filer programs returned : " + res.length);
+		
+		res = neoapi.filterMethods.filterTopic("MAT");
+		print("filer topic returned : " + res.length);
+		
+	}
+	
+	public static void deleteCourses() {
+		for(Course course: courses) {
+			neoapi.modifyMethods.removeCourse(course.getCourseCode(), course.getStartPeriod());
+		}
+		print("courses deleted");
+	}
+	public static void deleteKCs() {
+		for(KC kc: kcs) {
+			neoapi.modifyMethods.removeKC(kc.getName(), kc.getTaxonomyLevel());
+		}
+		print("kcs deleted");
+	}
+	
 	
 }
