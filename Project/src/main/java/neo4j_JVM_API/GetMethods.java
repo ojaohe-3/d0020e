@@ -54,9 +54,8 @@ public class GetMethods {
 	 * @param password Input to test authentication
 	 * @return true if successful
 	 * @author Johan RH
-	 * @throws NoSuchAlgorithmException
 	 */
-	public boolean login(String username, String password) throws NoSuchAlgorithmException {
+	public boolean login(String username, String password)  {
 		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
 		StatementResult result = communicator.readFromNeo(query);
 		if(!result.hasNext())

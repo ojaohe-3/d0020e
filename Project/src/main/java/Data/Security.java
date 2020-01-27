@@ -10,7 +10,7 @@ public class Security {
      * @param input input string, string will be salted
      * @return Hashed string
      */
-    public static String generateHash(String input) throws NoSuchAlgorithmException {
+    public static String generateHash(String input) {
         input = SALT+input;
         StringBuilder hash = new StringBuilder();
 
@@ -25,8 +25,8 @@ public class Security {
                 hash.append(digits[b & 0x0f]);
             }
         } catch (NoSuchAlgorithmException e) {
-            // handle error here.
-            throw e;
+            System.out.println(e.getMessage());
+            return null;
         }
 
         return hash.toString();

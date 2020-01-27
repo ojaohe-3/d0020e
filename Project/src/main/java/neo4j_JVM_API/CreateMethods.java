@@ -2,16 +2,10 @@ package neo4j_JVM_API;
 
 import java.util.ArrayList;
 
+import Data.*;
+import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
 
-import Data.Course;
-import Data.CourseDate;
-import Data.CourseOrder;
-import Data.CourseProgram;
-import Data.Credits;
-import Data.KC;
-import Data.LP;
-import Data.Relations;
 import Data.Course.CourseLabels;
 import neoCommunicator.Neo4jCommunicator;
 
@@ -70,8 +64,13 @@ private final Neo4jCommunicator communicator;
 	 * Add a user. This method must prevent any unauthorized access and 
 	 * hacker attacks.
 	 */
-	public void addUser() {
-		throw new RuntimeException("This function is not finished yet.");
+	public void addUser(User userObj) {
+		String query = "CREATE (n:"+ User.UserLables.USER +"{";
+		query +=    User.UserLables.USERNAME +":"+userObj.getUsername();
+		query += 	User.UserLables.PASSWORD +":" + userObj.getPassword() ;
+		query += 	User.UserLables.USERTAG +":" + (userObj.isAdmintag()?1:0) ;
+		query += 	"})";
+		communicator.writeToNeo(query);
 	}
 	
 	/**

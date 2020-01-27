@@ -3,8 +3,6 @@ package neo4j_JVM_API;
 import Data.*;
 import neoCommunicator.Neo4jCommunicator;
 
-import java.security.NoSuchAlgorithmException;
-
 
 public class ModifyMethods {
 	
@@ -13,6 +11,7 @@ public class ModifyMethods {
 	/**
 	 * Manipulate and edit object already existing in the topology
 	 * @param communicator Neo4j communicator object
+	 * @author Johan RH
 	 */
 	public ModifyMethods(Neo4jCommunicator communicator){
 		this.communicator = communicator;
@@ -22,7 +21,7 @@ public class ModifyMethods {
 		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.USERTAG +"="+(admin?1:0);
 		communicator.writeToNeo(query);
 	}
-	public void changeUserPassword(String username,String pwd) throws NoSuchAlgorithmException {
+	public void changeUserPassword(String username,String pwd)  {
 		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.PASSWORD +"=" + Security.generateHash(pwd);
 		communicator.writeToNeo(query);
 	}
