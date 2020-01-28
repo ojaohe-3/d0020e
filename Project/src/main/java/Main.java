@@ -117,10 +117,11 @@ public class Main {
 				neoapi.createMethods.createKC(kc);
 			}
 		}
+		print("kcs created") ;
 	}
 	
 	public static void createRelationsBetweenCoursesAndKCs() {
-		
+		print("starting creating relations");
 		boolean toggle = true;
 		for(KC kc : kcs) {
 			if(kc != null) {
@@ -260,13 +261,17 @@ public class Main {
 	}
 	
 	public static void filterTest() {
-		String[] res = neoapi.filterMethods.filterCourseByCode("D001");
+		String[] res = neoapi.filterMethods.filterCourseByCode("D0001");
 		print("filter course returned  : " + res.length);
+		
+		
 		res = neoapi.filterMethods.filterCourseByName("Cour");
 		print("filter course returned  : " + res.length);
 		
 		res = neoapi.filterMethods.filterProgramByCode("TID");
 		print("filter programs returned  : " + res.length);
+		
+		
 		res = neoapi.filterMethods.filterProgramByName("cour");
 		print("filer programs returned : " + res.length);
 		
@@ -280,10 +285,13 @@ public class Main {
 			neoapi.modifyMethods.removeCourse(course.getCourseCode(), course.getStartPeriod());
 		}
 		print("courses deleted");
+		
 	}
 	public static void deleteKCs() {
 		for(KC kc: kcs) {
-			neoapi.modifyMethods.removeKC(kc.getName(), kc.getTaxonomyLevel());
+			if(kc != null) {
+				neoapi.modifyMethods.removeKC(kc.getName(), kc.getTaxonomyLevel());
+			}
 		}
 		print("kcs deleted");
 	}
