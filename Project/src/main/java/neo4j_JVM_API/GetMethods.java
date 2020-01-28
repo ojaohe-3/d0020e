@@ -165,8 +165,8 @@ public class GetMethods {
 		Course course = createCourse(row, "course");
 		
 		String developedQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
-		developedQuery += "MATCH(developedKC : KC)<-[r: DEVELOPED]-(course) RETURN developedKC";
-		System.out.println(developedQuery);
+		developedQuery += "MATCH(developedKC : KC)<-[r:" + Relations.DEVELOPED.toString() +"]-(course) RETURN developedKC";
+		//System.out.println(developedQuery);
 		result = this.communicator.readFromNeo(developedQuery);
 		
 		while(result.hasNext()) {
@@ -174,8 +174,8 @@ public class GetMethods {
 		}
 		
 		String requiredQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
-		requiredQuery += "MATCH(requiredKC : KC)<-[r: DEVELOPED]-(course) RETURN requiredKC";
-		System.out.println(requiredQuery);
+		requiredQuery += "MATCH(requiredKC : KC)<-[r: "+ Relations.REQUIRED.toString() +"]-(course) RETURN requiredKC";
+		//System.out.println(requiredQuery);
 		result = this.communicator.readFromNeo(requiredQuery);
 		
 		while(result.hasNext()) {
@@ -237,7 +237,8 @@ public class GetMethods {
 	 * @return
 	 */
 	public KC getKCwithTaxonomyLevel(String name, int taxonomyLevel) {
-		String query = "MATCH (node: Kc {name: \"" + name + "\", taxonomyLevel: \"" + taxonomyLevel + "\"}) RETURN node";
+		
+		String query = "MATCH (node: "+ KC.kc +" {name: \"" + name + "\", taxonomyLevel: \"" + taxonomyLevel + "\"}) RETURN node";
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		

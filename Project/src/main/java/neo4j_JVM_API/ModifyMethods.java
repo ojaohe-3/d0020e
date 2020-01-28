@@ -70,7 +70,8 @@ public class ModifyMethods {
 	 * @author Johan RH, Markus
 	 */
 	public void removeKC(String name, int taxlvl) {
-		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME +":"+name+","+ KC.KCLabel.TAXONOMYLEVEL+ ":"+ taxlvl +"}) DETACH DELETE n";
+		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME.toString() +": \""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL.toString() + ": \""+ taxlvl +"\"}) DETACH DELETE n";
+		
 		communicator.writeToNeo(query);
 	}
 	
@@ -106,8 +107,9 @@ public class ModifyMethods {
 	 * @author Johan RH
 	 */
 	public void removeCourse(String couseID, CourseDate startyear) {
-		String query  ="MATCH(n:"+Course.course+"{CourseCode:\""+ couseID +"\", Startdate:\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
-
+		String query  ="MATCH(n:"+Course.course+"{"+Course.CourseLabels.CODE.toString()+":\""+ couseID +"\", "+ Course.CourseLabels.YEAR.toString() + " :\""+ startyear.getYear() +"\", "+ Course.CourseLabels.LP +": \""+ startyear.getPeriod() +"\" }) DETACH DELETE n";
+		
+		
 		communicator.writeToNeo(query);
 	}
 }

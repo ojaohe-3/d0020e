@@ -9,7 +9,7 @@ public class CourseProgram {
 	private CourseDate startDate;
 	private Credits credits;
 	
-	public static final String courseProgram = "courseProgram";
+	public static final String courseProgram = "CourseProgram";
 	
 	
 	public CourseProgram(CourseOrder courseOrder) {

@@ -33,10 +33,14 @@ public class Topic {
 	 * Labels used for the topic class. These include the title and the topic label itself.
 	 */
 	public static enum TopicLabels {
-		TOPIC("topic"), TITLE("title");
+		TOPIC("Topic"), TITLE("title");
 		private String name;
 		private TopicLabels(String name) {
 			this.name = name;
+		}
+		@Override
+		public String toString() {
+			return this.name;
 		}
 	}
 }
