@@ -247,7 +247,9 @@ private final Neo4jCommunicator communicator;
 		String query = "CREATE(programSpecialization:" + ProgramSpecialization.programSpecialization + " {" +
 				ProgramSpecialization.ProgramLabels.NAME.toString() + ":\"" + specialization.getName() + "\", " +
 				ProgramSpecialization.ProgramLabels.DESCRIPTION.toString() + ":\"" + specialization.getDescription() + "\", " +
-				ProgramSpecialization.ProgramLabels.COURSEPROGRAM.toString() + ":\"" + specialization.getCourseProgram() + "\", " +
+				ProgramSpecialization.ProgramLabels.COURSECODE.toString() + ":\"" + specialization.getCourseCode() + "\", " +
+				ProgramSpecialization.ProgramLabels.COURSEYEAR.toString() + ":\"" + specialization.getCourseStartDate().getYear() + "\", " +
+				ProgramSpecialization.ProgramLabels.COURSELP.toString() + ":\"" + specialization.getCourseStartDate().getPeriod().toString() + "\", " +
 				ProgramSpecialization.ProgramLabels.CREDITS.toString() + ":\"" + specialization.getCredits() + "\", " +
 				ProgramSpecialization.ProgramLabels.YEAR.toString() + ":\"" + specialization.getStartDate().getYear() + "\", " +
 				ProgramSpecialization.ProgramLabels.LP.toString() + ":\"" + specialization.getStartDate().getPeriod().toString() + "\"})";
@@ -267,9 +269,12 @@ private final Neo4jCommunicator communicator;
 		Course[][] courses = courseOrder.getCourseArray();
 		
 		/* find the program specialization*/
-		String query = "MATCH(program: " + ProgramSpecialization.programSpecialization + "{" + ProgramSpecialization.ProgramLabels.CODE.toString() + ":\"" + specialization.getCode() + "\", " + 
+		String query = "MATCH(program: " + ProgramSpecialization.programSpecialization + "{" + ProgramSpecialization.ProgramLabels.COURSECODE.toString() + ":\"" + specialization.getCourseCode() + "\", " + 
 				ProgramSpecialization.ProgramLabels.YEAR.toString()+ ":\"" + specialization.getStartDate().getYear()+ "\", " + 
-				ProgramSpecialization.ProgramLabels.LP.toString() + "\"" + specialization.getStartDate().getPeriod().toString()+ "})";
+				ProgramSpecialization.ProgramLabels.LP.toString() + "\"" + specialization.getStartDate().getPeriod().toString() + "\", " +
+				ProgramSpecialization.ProgramLabels.COURSEYEAR.toString()+ ":\"" + specialization.getCourseStartDate().getYear()+ "\", " + 
+				ProgramSpecialization.ProgramLabels.COURSELP.toString() + "\"" + specialization.getCourseStartDate().getPeriod().toString() + "\", " +
+				ProgramSpecialization.ProgramLabels.NAME.toString() + "\"" + specialization.getName().toString() + "})";
 		
 		/* Create a match for every course in the course order and add a relation for that course. */
 		Course c = null;	// temporary pointer.
@@ -280,9 +285,11 @@ private final Neo4jCommunicator communicator;
 				Course.CourseLabels.YEAR.toString() +":\"" + c.getStartPeriod().getYear()+"\","+
 				Course.CourseLabels.LP.toString() + ":\""+c.getStartPeriod().getPeriod().toString()+"\"})";
 				
-				query += "CREATE (program) - [r"+pos+""+period+ ":"+ pos + ", " + period + "]" + "->(course" + pos + "" + period +")";
+				query += "CREATE (programSpecialization) - [r"+pos+""+period+ ":"+ pos + ", " + period + "]" + "->(course" + pos + "" + period +")";
 			}
 		}
 		this.communicator.writeToNeo(query);
 	}
 }
+
+
