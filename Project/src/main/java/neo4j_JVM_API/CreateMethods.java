@@ -237,4 +237,52 @@ private final Neo4jCommunicator communicator;
 		}
 		communicator.writeToNeo(query);
 	}	
+	
+	/**
+	 * Create a program specialization in database
+	 * 
+	 * @param specialization
+	 */
+	public void createProgramSpecialization(ProgramSpecialization specialization) {
+		String query = "CREATE(programSpecialization:" + ProgramSpecialization.programSpecialization + " {" +
+				ProgramSpecialization.ProgramLabels.NAME.toString() + ":\"" + specialization.getName() + "\", " +
+				ProgramSpecialization.ProgramLabels.DESCRIPTION.toString() + ":\"" + specialization.getDescription() + "\", " +
+				ProgramSpecialization.ProgramLabels.COURSEPROGRAM.toString() + ":\"" + specialization.getCourseProgram() + "\", " +
+				ProgramSpecialization.ProgramLabels.CREDITS.toString() + ":\"" + specialization.getCredits() + "\", " +
+				ProgramSpecialization.ProgramLabels.YEAR.toString() + ":\"" + specialization.getStartDate().getYear() + "\", " +
+				ProgramSpecialization.ProgramLabels.LP.toString() + ":\"" + specialization.getStartDate().getPeriod().toString() + "\"})";
+		System.out.println(query);
+		communicator.writeToNeo(query);
+	}
+	
+	/**
+	 * Add relations between a program specialization and it's courses.
+	 * The courses must be added to the program specialization before the 
+	 * connections are made.
+	 * @param program - The program specialization.
+	 *
+	 */
+	public void createProgramSpecializatonCourseRelation(ProgramSpecialization specialization) {
+		CourseOrder courseOrder = specialization.getCourseOrder();
+		Course[][] courses = courseOrder.getCourseArray();
+		
+		/* find the program specialization*/
+		String query = "MATCH(program: " + ProgramSpecialization.programSpecialization + "{" + ProgramSpecialization.ProgramLabels.CODE.toString() + ":\"" + specialization.getCode() + "\", " + 
+				ProgramSpecialization.ProgramLabels.YEAR.toString()+ ":\"" + specialization.getStartDate().getYear()+ "\", " + 
+				ProgramSpecialization.ProgramLabels.LP.toString() + "\"" + specialization.getStartDate().getPeriod().toString()+ "})";
+		
+		/* Create a match for every course in the course order and add a relation for that course. */
+		Course c = null;	// temporary pointer.
+		for (int pos=0; pos < courses.length; pos++) {
+			for (int period = 0; period < courses[pos].length; period++) {
+				c = courses[pos][period];
+				query += "MATCH (course" + pos + "" + period + ":" + Course.course +" {" +CourseLabels.CODE.toString() + ":\""+c.getCourseCode()+"\", "+
+				Course.CourseLabels.YEAR.toString() +":\"" + c.getStartPeriod().getYear()+"\","+
+				Course.CourseLabels.LP.toString() + ":\""+c.getStartPeriod().getPeriod().toString()+"\"})";
+				
+				query += "CREATE (program) - [r"+pos+""+period+ ":"+ pos + ", " + period + "]" + "->(course" + pos + "" + period +")";
+			}
+		}
+		this.communicator.writeToNeo(query);
+	}
 }
