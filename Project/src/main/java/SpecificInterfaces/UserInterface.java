@@ -2,6 +2,7 @@ package SpecificInterfaces;
 
 import Data.Course;
 import Data.CourseDate;
+import Data.CourseProgram;
 import neo4j_JVM_API.Neo4JAPI;
 
 /**
@@ -43,11 +44,50 @@ public class UserInterface {
 	}
 	
 	/**
-	 * Get all avaliable topics
+	 * Get all available topics
 	 * @return
 	 */
 	public String[] getTopics() {
 		return this.neoapi.getMethods.getTopics();
 	}
+	
+	/**
+	 * 	Returns name of available Courses that got a name that starts with the parameter
+	 * @param startsWith
+	 * @return
+	 */
+	public String[] getCourseFilterByName(String startsWith) {
+		return this.neoapi.filterMethods.filterCourseByName(startsWith);
+	}
+	
+	/**
+	 * 	Returns name of available Courses that got a course code that starts with the parameter
+	 * @param startWith
+	 * @return
+	 */
+	public String[] getCourseFilterByCode(String startWith) {
+		return this.neoapi.filterMethods.filterCourseByCode(startWith);
+	}
+	
+	/**
+	 * 	Returns name of programs that got a name that start with the parameter
+	 * @param startsWith
+	 * @return
+	 */
+	public String[] getCourseProgramFilterByName(String startsWith) {
+		return this.neoapi.filterMethods.filterProgramByName(startsWith);
+	}
+	
+	/**
+	 * 	Returns a CourseProgram
+	 * @param code Code of the program
+	 * @param startDate Start date for the program
+	 * @return Program containing a Course order
+	 */
+	public CourseProgram getCourseProgramByCodeAndStartDate(String code, CourseDate startDate) {
+		return this.neoapi.getMethods.getProgram(code, startDate);
+	}
+	
+	
 	
 }
