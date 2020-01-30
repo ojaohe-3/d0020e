@@ -25,12 +25,14 @@ public class FilterMethods {
 	 * @author Robin
 	 */
 	public String[] filterCourseByTags(Course.CourseLabels[] filters, String[] searchTerms) {
+		if (searchTerms.length == 0) {
+			throw new IllegalArgumentException();
+		}
 		String query = "MATCH (course: " + Course.course +") WHERE ";
-		
-		
-		for (int i = 0 ; i < filters.length; i++) {
+		query += "AND course." + filters[0] + " STARTS WITH \"" + searchTerms[0] + "\" ";
+		for (int i = 1 ; i < filters.length; i++) {
 			//this.generateSearchTerm(filters[], searchTerms[0], variable);
-			query += "course." + filters[i] + " STARTS WITH \"" + searchTerms[i] + "\" ";
+			query += "AND course." + filters[i] + " STARTS WITH \"" + searchTerms[i] + "\" ";
 		}
 		return null;
 	}
