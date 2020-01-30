@@ -1,5 +1,6 @@
 package Data;
 
+@Deprecated
 public class ProgramSpecialization {
 
 	private String courseCode;

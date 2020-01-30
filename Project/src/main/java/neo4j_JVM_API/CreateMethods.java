@@ -196,20 +196,12 @@ private final Neo4jCommunicator communicator;
 		
 		
 	}
-	
-	
-	public void clear() {
-		
-		String query = "MATCH (n)-[r]-(m) DELETE n,r,m";
-		this.communicator.writeToNeo(query);
-		query = "MATCH (n) DELETE n";
-		this.communicator.writeToNeo(query);
-		
-	}
+
 	/**
-	 * Add a relation between a course and a KC to the database. 
+	 * Add relations between a course and all it's KCs to the database. 
 	 * The KCs must be added as required or developed to the desired 
-	 * course first.
+	 * course first, and the course must have been added to the database before
+	 * this method is called.
 	 * @param course - The course used for the relations.
 	 * @see Data.Course
 	 */	
@@ -243,6 +235,7 @@ private final Neo4jCommunicator communicator;
 	 * 
 	 * @param specialization
 	 */
+	@Deprecated
 	public void createProgramSpecialization(ProgramSpecialization specialization) {
 		String query = "CREATE(programSpecialization:" + ProgramSpecialization.programSpecialization + " {" +
 				ProgramSpecialization.ProgramLabels.NAME.toString() + ":\"" + specialization.getName() + "\", " +
@@ -264,6 +257,7 @@ private final Neo4jCommunicator communicator;
 	 * @param program - The program specialization.
 	 *
 	 */
+	@Deprecated
 	public void createProgramSpecializatonCourseRelation(ProgramSpecialization specialization) {
 		CourseOrder courseOrder = specialization.getCourseOrder();
 		Course[][] courses = courseOrder.getCourseArray();
@@ -289,6 +283,48 @@ private final Neo4jCommunicator communicator;
 			}
 		}
 		this.communicator.writeToNeo(query);
+	}
+	
+	/**
+	 * Create a complete copy of a program for another starting year. Every course and 
+	 * KC will be replicated and moved relative to the new starting year.
+	 * @param program - The program you want to copy.
+	 * @param newYear - The year of the first study period. This is not relative to the old year.
+	 */
+	public void createCopyOfProgrambyYear(CourseProgram program, int newYear) {
+		int yearDifference = newYear - program.getStartDate().getYear();
+		Course[][] courses = program.getCourseOrder().getCourseArray();
+		Course[][] newCourses = new Course[courses.length][program.getCourseOrder().getReadingPeriods()];
+		Course courseRef = null;
+		CourseDate courseStartDateRef = null;
+		for (int x = 0; x < courses.length; x++) {
+			for (int y = 0; y < courses[x].length; x++) {
+				
+				courseRef = courses[x][y];
+				if (courseRef == null) {
+					continue;
+				}
+				courseStartDateRef = new CourseDate(courseRef.getStartPeriod().getYear() + yearDifference, courseRef.getStartPeriod().getPeriod());
+				newCourses[x][y] = new Course(courseRef.getName(), courseRef.getCourseCode(), courseRef.getCredit(),courseRef.getDescription(), courseRef.getExaminer(), courseStartDateRef);
+				this.createCourse(newCourses[x][y]);
+				for (KC kc : courseRef.getDevelopedKC()) {
+					newCourses[x][y].setDevelopedKC(kc);
+				}
+				for (KC kc : courseRef.getRequiredKC()) {
+					newCourses[x][y].setRequiredKC(kc);
+				}
+				this.createCourseKCrelation(newCourses[x][y]);
+			}
+		}
+		
+		CourseDate newCourseDate = new CourseDate(newYear, program.getStartDate().getPeriod());
+		CourseProgram newProgram = new CourseProgram(null, program.getCode(), program.getName(), program.getDescription(),newCourseDate, program.getCredits());
+		CourseOrder newCourseOrder = new CourseOrder(program.getCourseOrder().getReadingPeriods());
+		newCourseOrder.assignCourseOrder(newCourses);
+		this.createProgram(newProgram);
+		this.createProgramCourseRelation(newProgram);
+		
+		
 	}
 }
 
