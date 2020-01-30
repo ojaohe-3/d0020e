@@ -12,6 +12,7 @@
     <title>$Title$</title>
   </head>
   <body>
+   <%@include  file="_filterContainer.jsp" %>
   $END$
   </body>
 </html>
