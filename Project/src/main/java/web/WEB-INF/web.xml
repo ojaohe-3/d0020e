@@ -6,13 +6,16 @@
     <servlet>
         <servlet-name>indexServlet</servlet-name>
         <servlet-class>com.servlet.IndexServlet</servlet-class>
-    </servlet>
+    </servlet>  
     <servlet-mapping>
         <servlet-name>indexServlet</servlet-name>
         <url-pattern>index.jsp</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>CourseProgramJson</servlet-name>
-        <servlet-class>com.servlet.CourseProgramJson</servlet-class>
-    </servlet>
+    
+    <servlet-mapping>
+   		 <servlet-name>GetCoursesFilterByCourseName</servlet-name>
+        <url-pattern>project/GetCoursesFilterByCourseName</url-pattern>
+    </servlet-mapping>
+   
+
 </web-app>
