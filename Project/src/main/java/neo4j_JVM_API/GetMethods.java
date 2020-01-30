@@ -76,24 +76,7 @@ public class GetMethods {
 	 * @author Johan RH
 	 * @return User object
 	 */
-	public User getUser(String username) {
-		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
-		StatementResult result = communicator.readFromNeo(query);
-		if(!result.hasNext())
-			return null;
-		Record record = result.next();
-		User user = new User(
-				record.get('n').get(User.UserLables.USERNAME.toString()).toString(),
-				record.get('n').get(User.UserLables.PASSWORD.toString()).toString()
-				);
-		query = "MATCH(:User{"+ User.UserLables.USERNAME +":\""+username+"\"})-->(n) return n";
-		result = communicator.readFromNeo(query);
-		while (result.hasNext()){
-			user.addCourse(createCourse(result.next(),"n"));
-		}
-		//todo load admin tag
-		return user;
-	}
+
 	
 	/**
 	 * Get Program from database

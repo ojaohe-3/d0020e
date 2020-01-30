@@ -70,9 +70,7 @@ private final Neo4jCommunicator communicator;
 	 * Add a user. This method must prevent any unauthorized access and 
 	 * hacker attacks.
 	 */
-	public void addUser() {
-		throw new RuntimeException("This function is not finished yet.");
-	}
+
 	
 	/**
 	 * Add a new course to the server. This is still a work in progress, so don't use it yet.
