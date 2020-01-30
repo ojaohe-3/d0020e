@@ -5,7 +5,7 @@
          version="4.0">
     <servlet>
         <servlet-name>indexServlet</servlet-name>
-        <servlet-class>com.servlet.indexServlet</servlet-class>
+        <servlet-class>com.servlet.IndexServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>indexServlet</servlet-name>
