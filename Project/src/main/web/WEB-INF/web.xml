@@ -9,10 +9,8 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>indexServlet</servlet-name>
-        <url-pattern>index.jsp</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
-    <servlet>
-        <servlet-name>CourseProgramJson</servlet-name>
-        <servlet-class>com.servlet.CourseProgramJson</servlet-class>
-    </servlet>
+
+    
 </web-app>
