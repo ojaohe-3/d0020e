@@ -16,56 +16,57 @@
     <div id="course" class="tab-pane fade in active">
       <h3>Course</h3>
 	    <div class="radio">
-		      <label><input type="radio" name="optradio" id="courseFilterByName" checked>Filter by Name</label>
+		      <label><input type="radio" name="optradio" id="courseFilterByName" checked>Filter by Course Name</label>
 	    </div>
 	    <div class="radio">
 	      	  <label><input type="radio" name="optradio" id="courseFilterByCode">Filter by Course code</label>
 	    </div>
 	    <div class="radio disabled">
-	          <label><input type="radio" name="optradio" id="courseFilterByTopic">Filter by Topic</label>
+	          <label><input type="radio" name="optradio" id="courseFilterByTopic">Filter by c Topic</label>
 	    </div>
 	      
 	      <form>
 			<input type="text" id="searchCourse" placeholder="Search.. ">
 		  </form>
 
-	  <div id="course_search_results">
+	 	 <div id="course_search_results"> 
 	
-	</div>
+		 </div>
       
       
     </div>
     
     
-    <div id="program" class="tab-pane fade">
+    <div id="program" class="tab-pane fade in">
       <h3>Program</h3>
       		<div class="radio">
-		      <label><input type="radio" name="optradio" id="programFilterByName" checked>Filter by Name</label>
+		      <label><input type="radio" name="optradio" id="programFilterByName" checked>Filter by Program Name</label>
 	    </div>
 	    <div class="radio">
 	      	  <label><input type="radio" name="optradio" id="programFilterByCode">Filter by Program Code</label>
 	    </div>
 	    <div class="radio">
-	      	  <label><input type="radio" name="optradio" id="programiFlterByTopic">Filter by Topic</label>
+	      	  <label><input type="radio" name="optradio" id="programFilterByTopic">Filter by p Topic</label>
 	    </div>
 	    
 	    <form>
 			<input type="text" id="searchProgram" placeholder="Search.. ">
 		  </form>
 
-	  <div id="program_search_results">
+	  <div id="program_search_results"> 
 	    
+      </div>
+    
     </div>
     
-    
-    <div id="KC" class="tab-pane fade">
+    <div id="KC" class="tab-pane fade in">
       <h3>Knowledge Component</h3>
       
       <div class="radio">
-		      <label><input type="radio" name="optradio" id="kcFilterByName" checked>Filter by Name</label>
+		      <label><input type="radio" name="optradio" id="kcFilterByName" checked>Filter by KC Name</label>
 	    </div>
-	    <div class="radio disabled">
-	          <label><input type="radio" name="optradio" id="kcFilterByTopic">Filter by Topic</label>
+	    <div class="radio">
+	          <label><input type="radio" name="optradio" id="kcFilterByTopic">Filter by kc Topic</label>
 	    </div>
 	      
 	      <form>
@@ -73,11 +74,13 @@
 		  </form>
 
 	  <div id="kc_search_results">
+	  
+	  </div>
       
     </div>
     
     
-    <div id="topic" class="tab-pane fade">
+    <div id="topic" class="tab-pane fade in">
       <h3>Topic ??</h3>
       
     </div>
