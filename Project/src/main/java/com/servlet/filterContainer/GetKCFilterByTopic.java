@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
-@WebServlet("/GetKC/FilterByTopic")
+@WebServlet("/GetKCs/FilterByTopic")
 public class GetKCFilterByTopic extends HttpServlet {
 
 	/**
