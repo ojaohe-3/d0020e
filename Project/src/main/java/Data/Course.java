@@ -10,12 +10,7 @@ import java.util.ArrayList;
  *
  */
 public class Course {
-	private String name;
-	private String courseCode;
-	private String description;
-	private String examiner;
-	private CourseDate startPeriod;
-	private Credits credit;
+	private CourseInformation courseInfo;
 	private ArrayList<KC> requiredKC = new ArrayList<KC>();
 	private ArrayList<KC> developedKC = new ArrayList<KC>();
 	
@@ -23,6 +18,7 @@ public class Course {
 	 * Database name for a course.
 	 */
 	public static final String course = "Course";
+	
 	/**
 	 * Constructor
 	 * 
@@ -34,12 +30,16 @@ public class Course {
 	 * @param startPeriod an object of type {@link CourseOrder}
 	 */
 	public Course(String name, String courseCode, Credits credit, String description, String examiner, CourseDate startPeriod) {
-		this.name = name;
-		this.courseCode = courseCode;
-		this.credit = credit;
-		this.description = description;
-		this.examiner = examiner;
-		this.startPeriod = startPeriod;
+		this.courseInfo = new CourseInformation(name,courseCode,credit,description,examiner,startPeriod);
+	}
+	
+	/**
+	 * Create a full course from course information.
+	 * @param information
+	 * @see 
+	 */
+	public Course(CourseInformation information) {
+		this.courseInfo = information;
 	}
 	
 	public void setRequiredKC(KC kc) {
@@ -67,51 +67,51 @@ public class Course {
 	}
 	
 	public String getName() {
-		return name;
+		return this.courseInfo.getName();
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.courseInfo.setName(name);
 	}
 
 	public String getCourseCode() {
-		return courseCode;
+		return this.courseInfo.getCourseCode();
 	}
 
 	public void setCourseCode(String courseCode) {
-		this.courseCode = courseCode;
+		this.courseInfo.setCourseCode(courseCode);
 	}
 
 	public String getDescription() {
-		return description;
+		return this.courseInfo.getDescription();
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.courseInfo.setDescription(description);
 	}
 
 	public String getExaminer() {
-		return examiner;
+		return this.courseInfo.getExaminer();
 	}
 
 	public void setExaminer(String examiner) {
-		this.examiner = examiner;
+		this.courseInfo.setExaminer(examiner);
 	}
 
 	public CourseDate getStartPeriod() {
-		return startPeriod;
+		return this.courseInfo.getStartPeriod();
 	}
 
 	public void setStartPeriod(CourseDate startPeriod) {
-		this.startPeriod = startPeriod;
+		this.courseInfo.setStartPeriod(startPeriod);
 	}
 
 	public Credits getCredit() {
-		return credit;
+		return this.courseInfo.getCredit();
 	}
 
 	public void setCredit(Credits credit) {
-		this.credit = credit;
+		this.courseInfo.setCredit(credit);
 	}
 	
 	/**

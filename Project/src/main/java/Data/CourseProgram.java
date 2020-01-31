@@ -10,9 +10,9 @@ public class CourseProgram {
 	private Credits credits;
 	private ProgramType programType;
 
-	enum ProgramType {
-		PROGRAM("program"),
-		SPECIALIZATION("specialization");
+	public static enum ProgramType {
+		PROGRAM("CourseProgram"),
+		SPECIALIZATION("ProgramSpecialization");
 		
 		private String programType;
 		private ProgramType(String programType) {
@@ -20,12 +20,10 @@ public class CourseProgram {
 		}
 	}
 	
-	public static final String courseProgram = "CourseProgram";
 	
-	
-	public CourseProgram(CourseOrder courseOrder, ProgramType programType) {
+	public CourseProgram(CourseOrder courseOrder) {
 		this.courseOrder = courseOrder;
-		this.programType = programType;
+		this.programType = ProgramType.PROGRAM;
 	}
 	
 	/**
@@ -37,15 +35,25 @@ public class CourseProgram {
 	 * @param startDate
 	 * @param credits
 	 */
-	public CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits, ProgramType programType) {
+	public CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits) {
 		this.courseOrder = courseOrder;
 		this.code = code;
 		this.name = name;
 		this.description = description;
 		this.startDate = startDate;
 		this.credits = credits;
-		this.programType = programType;
+		this.programType = ProgramType.PROGRAM;
 		
+	}
+	
+	protected CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits, ProgramType type) {
+		this.courseOrder = courseOrder;
+		this.code = code;
+		this.name = name;
+		this.description = description;
+		this.startDate = startDate;
+		this.credits = credits;
+		this.programType = type;
 	}
 	
 	public CourseOrder getCourseOrder() {
