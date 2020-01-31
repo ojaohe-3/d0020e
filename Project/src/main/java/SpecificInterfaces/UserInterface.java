@@ -81,6 +81,6 @@ public abstract class UserInterface {
 
 
 	public String[]  getCourseByTag(Course.CourseLabels tag, String searchTerm){
-		return this.neoapi.filterMethods.getCourseByTag;
+		return this.neoapi.filterMethods.getCourseByTag(tag,searchTerm);
 	}
 }

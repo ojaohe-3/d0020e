@@ -17,6 +17,7 @@ public class ModifyMethods {
 		this.communicator = communicator;
 	}
 	
+<<<<<<< HEAD
 	public void changeUserPrivileges(String username,boolean admin) {
 		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.USERTAG +"="+(admin?1:0);
 		communicator.writeToNeo(query);
@@ -41,6 +42,9 @@ public class ModifyMethods {
 		communicator.writeToNeo(query);
 		user.addCourse(data);
 	}
+=======
+
+>>>>>>> origin/UserMethods
 
 	/**
 	 * Edit a Specific KC to a new generated KC object
@@ -59,8 +63,17 @@ public class ModifyMethods {
 		communicator.writeToNeo(query);
 	}
 	
-	public void editProgram() {
-		
+	public void editProgram(String programCode,CourseDate startyear) {
+		String query = "MATCH (n:Program{ProgramCode:\""+  pogramCode+"\"}) SET n={";
+		query += Program.ProgramLabels.CODE.toString() +":"+nCourse.getProgramCode();
+		query += Program.ProgramLabels.DESCRIPTION.toString() +":"+nProgram.getDescription();
+		query +=  Program.CourseLabels.YEAR.toString() +":"+nProgram.getStartPeriod().getYear();
+		query +=Program.ProgramLabels.LP.toString() +":"+nProgram.getStartPeriod().getPeriod().name();
+		query += Program.ProgramLabels.READING_PERIODS.toString() +":"+nCourse.getReading_periods();
+		query +=  Program.ProgramLabels.CREDIT.toString() +":"+nProgram.getCredit();
+
+		query +="}";
+		communicator.writeToNeo(query);
 	}
 
 	/**
@@ -74,9 +87,13 @@ public class ModifyMethods {
 		communicator.writeToNeo(query);
 	}
 	
-	public void removeProgram( String programCode,CourseDate start) {
+
+	public void removeProgram( String programCode,CourseDate startyear) {
+		String query  ="MATCH(n:Program{ProgramCode:\""+ programCode +"\", "+CourseProgram.ProgramLabels.YEAR+":\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
 		
+		communicator.writeToNeo(query);
 	}
+
 
 	/**
 	 *  Edit a Course at Selector. todo KCs handling

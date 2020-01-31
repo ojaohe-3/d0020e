@@ -1,14 +1,2 @@
 ## Ignore Mac OS files
 .DS_Store
-*.classpath
-*.project
-*.iml
-*.settings
-/.settings
-/.idea
-**/.classpath
-**/.project
-**/.iml
-**/.settings
-/.settings
-/.idea

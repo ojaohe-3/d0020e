@@ -138,4 +138,7 @@ public class FilterMethods {
 		return courseNames.toArray(new String[courseNames.size()]);
 		
 	}
+
+    public String[] getCourseByTag(CourseLabels tag, String searchTerm) {
+    }
 }

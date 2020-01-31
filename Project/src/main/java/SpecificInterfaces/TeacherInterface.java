@@ -31,7 +31,7 @@ public class TeacherInterface extends UserInterface {
     }
     public boolean editCourse(Course c, String courseCode, CourseDate startperiod){
         try {
-            
+
             return true;
         }catch (Exception e){
             System.out.println(e.getMessage());
