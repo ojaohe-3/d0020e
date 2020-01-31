@@ -19,23 +19,44 @@ public class TeacherInterface extends UserInterface {
         this.User = user;
     }
 
-    public boolean createCourse(Course c){
+    /**
+     * Final commit to be writen in the database
+     * @param c course to create
+     * @return
+     */
+    protected boolean createCourse(Course c){
         try {
-
-            this.neoapi.createMethods.createCourse(c);
+            this.neoapi.userMethods.createCourseWithUser(User,c);
             return true;
         }catch (Exception e){
             System.out.println(e.getMessage());
             return false;
         }
     }
-    public boolean editCourse(Course c, String courseCode, CourseDate startperiod){
-        try {
 
+    /**
+     * Edit an already commited course object, User passed must have correct privilege
+     * @param courseCode selector statment
+     * @param startperiod period
+     * @return
+     */
+    protected boolean editCourse(String courseCode, CourseDate startperiod){
+        try {
+            Course c = neoapi.getMethods.getCourse(courseCode,startperiod);
+            if(hasWritePermission(c))
+                neoapi.modifyMethods.editCourse(courseCode,c);
             return true;
         }catch (Exception e){
             System.out.println(e.getMessage());
             return false;
         }
+    }
+
+    private boolean hasWritePermission(Course course){
+        for (Course o:User.getCourses()) {
+            if(o.equals(course))
+                return true;
+        }
+        return false;
     }
 }

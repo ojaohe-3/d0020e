@@ -13,4 +13,5 @@ public class AdminInterface extends TeacherInterface {
     public AdminInterface(Neo4JAPI neoapi, Data.User user) {
         super(neoapi,user);
     }
+
 }

@@ -47,28 +47,6 @@ public class GetMethods {
         }
 		return resultArray.toArray(new String[resultArray.size()]);
 	}
-
-	/**
-	 * Login manager, todo load session when logged in
-	 * @param username Selector
-	 * @param password Input to test authentication
-	 * @return true if successful
-	 * @author Johan RH
-	 */
-	public boolean login(String username, String password)  {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
-		StatementResult result = communicator.readFromNeo(query);
-		if(!result.hasNext())
-			return false;
-		Record record = result.next();
-		String pwd = record.get("n").get(User.UserLables.PASSWORD.toString()).toString();
-		if(pwd.equals(Security.generateHash(password))) {
-			// session = getUser(username);
-			return true;
-		}
-		return false;
-	}
-
 	
 	/**
 	 * Get Program from database

@@ -14,11 +14,12 @@ import neoCommunicator.Neo4jCommunicator;
 public class Neo4JAPI {
 	
 	private final Neo4jCommunicator communicator;
-	
-	public GetMethods getMethods;
-	public CreateMethods createMethods;
-	public ModifyMethods modifyMethods;
-	public FilterMethods filterMethods;
+
+	public final UserMethods userMethods;
+	public final GetMethods getMethods;
+	public final CreateMethods createMethods;
+	public final ModifyMethods modifyMethods;
+	public final FilterMethods filterMethods;
 	
 	
 	public Neo4JAPI(String uri, String user, String password) {
@@ -27,5 +28,6 @@ public class Neo4JAPI {
 		this.createMethods = new CreateMethods(communicator);
 		this.modifyMethods = new ModifyMethods(communicator);
 		this.filterMethods = new FilterMethods(communicator);
+		this.userMethods = new UserMethods(communicator);
 	}
 }

@@ -29,7 +29,7 @@ public abstract class UserInterface {
 	 * @param courseDate
 	 * @return
 	 */
-	public Course getCourseByCode(String courseCode, CourseDate courseDate) {
+	protected Course getCourseByCode(String courseCode, CourseDate courseDate) {
 		return this.neoapi.getMethods.getCourse(courseCode, courseDate);
 	}
 
@@ -39,7 +39,7 @@ public abstract class UserInterface {
 	 * @param courseCode
 	 * @return
 	 */
-	public String[] getCourseByCode(String courseCode) {
+	protected String[] getCourseByCode(String courseCode) {
 		return this.neoapi.filterMethods.filterCourseByCode(courseCode);
 	}
 	
@@ -48,7 +48,7 @@ public abstract class UserInterface {
 	 * @param topic
 	 * @return
 	 */
-	public String[] getCoursesByTopic(String topic) {
+	protected String[] getCoursesByTopic(String topic) {
 		return this.neoapi.filterMethods.getCourseNameByTopic(topic);
 	}
 	
@@ -56,7 +56,7 @@ public abstract class UserInterface {
 	 * Get all avaliable topics
 	 * @return
 	 */
-	public String[] getTopics() {
+	protected String[] getTopics() {
 		return this.neoapi.getMethods.getTopics();
 	}
 
@@ -66,7 +66,7 @@ public abstract class UserInterface {
 	 * @param programName
 	 * @return
 	 */
-	public String[] getProgramByName(String programName){
+	protected String[] getProgramByName(String programName){
 		return this.neoapi.filterMethods.filterProgramByName(programName);
 	}
 	/**
@@ -75,12 +75,12 @@ public abstract class UserInterface {
 	 * @param programCode
 	 * @return
 	 */
-	public String[] getProgramByCode(String programCode){
+	protected String[] getProgramByCode(String programCode){
 		return this.neoapi.filterMethods.filterCourseByCode(programCode);
 	}
 
 
-	public String[]  getCourseByTag(Course.CourseLabels tag, String searchTerm){
+	protected String[]  getCourseByTag(Course.CourseLabels tag, String searchTerm){
 		return this.neoapi.filterMethods.getCourseByTag(tag,searchTerm);
 	}
 }

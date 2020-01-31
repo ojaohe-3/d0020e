@@ -37,7 +37,7 @@ public class FilterMethods {
 	/**
 	 * Filter course by name
 	 * 
-	 * @param code
+	 * @param name
 	 * @return array with matching course name
 	 */
 	public String[] filterCourseByName(String name) {
@@ -75,7 +75,7 @@ public class FilterMethods {
 	/**
 	 * Filter course program by name
 	 * 
-	 * @param code
+	 * @param name
 	 * @return array with matching program
 	 */
 	public String[] filterProgramByName(String name) {
@@ -94,7 +94,7 @@ public class FilterMethods {
 	/**
 	 * Filter topic
 	 * 
-	 * @param code
+	 * @param name
 	 * @return array with matching topics
 	 */
 	public String[] filterTopic(String name) {
@@ -113,7 +113,6 @@ public class FilterMethods {
 	/**
 	 * Filter kc
 	 * 
-	 * @param code
 	 * @return array with matching kcs
 	 */
 	public void filterKC() {
@@ -140,5 +139,6 @@ public class FilterMethods {
 	}
 
     public String[] getCourseByTag(CourseLabels tag, String searchTerm) {
+		return null;
     }
 }

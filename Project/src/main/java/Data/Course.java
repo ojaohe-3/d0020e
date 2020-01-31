@@ -1,6 +1,7 @@
 package Data;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * 
@@ -133,6 +134,19 @@ public class Course {
 		public String toString() {
 			return this.name;
 		}
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Course course = (Course) o;
+		return name.equals(course.name) &&
+				courseCode.equals(course.courseCode) &&
+				description.equals(course.description) &&
+				examiner.equals(course.examiner) &&
+				startPeriod.equals(course.startPeriod) &&
+				credit == course.credit;
 	}
 
 }
