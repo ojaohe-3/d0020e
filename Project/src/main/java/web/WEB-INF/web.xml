@@ -24,4 +24,29 @@
    		 <servlet-name>GetCoursesFilterByTopic</servlet-name>
         <url-pattern>project/GetCourses/FilterByTopic</url-pattern>
     </servlet-mapping>
+   <servlet-mapping>
+   		 <servlet-name>GetKCFilterByTopic</servlet-name>
+        <url-pattern>project/GetKC/FilterByTopic</url-pattern>
+    </servlet-mapping>
+    
+	<servlet-mapping>
+   		 <servlet-name>GetKCFilterByName</servlet-name>
+        <url-pattern>project/GetKC/FilterByName</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet-mapping>
+   		 <servlet-name>GetProgramFilterByCode</servlet-name>
+        <url-pattern>project/GetProgram/FilterByCode</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+   		 <servlet-name>GetProgramFilterByName</servlet-name>
+        <url-pattern>project/GetProgram/FilterByName</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+   		 <servlet-name>GetProgramFilterByTopic</servlet-name>
+        <url-pattern>project/GetProgram/FilterByTopic</url-pattern>
+    </servlet-mapping>
 </web-app>
