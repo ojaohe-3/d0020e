@@ -1,6 +1,7 @@
 package neo4j_JVM_API;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
@@ -17,23 +18,55 @@ public class FilterMethods {
 	}
 	
 	/**
-	 * Generalized search function for courses.
-	 * @param filters - these can be any value with the type {@link Course.CourseLabels}.
-	 * @param searchTerms - These are the actual search terms for every filter. Remember to 
-	 * put them in the same order as the filters.
-	 * @return Nothing, so far. this is a TODO
+	 * Generalized search function for courses. This should be the only search function for 
+	 * courses we need.
+	 * @param filter - This can be any value with the type {@link Course.CourseLabels}.
+	 * @param searchTerm - This is the actual search term for the filter.
+	 * @return An array containing the search results.
 	 * @author Robin
 	 */
-	public String[] filterCourseByTags(Course.CourseLabels[] filters, String[] searchTerms) {
-		if (searchTerms.length == 0) {
-			throw new IllegalArgumentException();
-		}
+	public CourseInformation[] filterCourseByTag(Course.CourseLabels filter, String searchTerm) {
+
 		String query = "MATCH (course: " + Course.course +") WHERE ";
-		query += "AND course." + filters[0] + " STARTS WITH \"" + searchTerms[0] + "\" ";
-		for (int i = 1 ; i < filters.length; i++) {
-			//this.generateSearchTerm(filters[], searchTerms[0], variable);
-			query += "AND course." + filters[i] + " STARTS WITH \"" + searchTerms[i] + "\" ";
+		query += "course." + filter + " CONTAINS \"" + searchTerm + "\" ";
+		
+		/* This gives us the full list of records returned from neo. */
+		List<Record> resultList = this.communicator.readFromNeo(query).list();
+		
+		/* Iterate through the entire result list and create all the courses. */
+		CourseInformation[] result = new CourseInformation[resultList.size()];
+		int i = 0;
+		for (Record row : resultList) {
+			CourseInformation information = new CourseInformation(row.get(Course.CourseLabels.NAME.toString()).toString(), 
+					row.get(Course.CourseLabels.NAME.toString()).toString(), 
+					Credits.valueOf(row.get(Course.CourseLabels.CREDIT.toString()).toString()), 
+					row.get(Course.CourseLabels.DESCRIPTION.toString()).toString(),
+					row.get(Course.CourseLabels.EXAMINER.toString()).toString(), 
+					new CourseDate(Integer.parseInt(row.get(Course.CourseLabels.YEAR.toString()).toString()), LP.valueOf(row.get(Course.CourseLabels.EXAMINER.toString()).toString())));
+			result[i++] = information;
 		}
+		
+		return result;
+	}
+	
+	/**
+	 * 
+	 * @param filter
+	 * @param searchTerm
+	 * @return An array containing all the search results.
+	 */
+	public ProgramInformation[] filterProgramByTag(CourseProgram.ProgramLabels filter, String searchTerm) {
+		String query = "MATCH (program: " + CourseProgram.ProgramType.PROGRAM +") WHERE ";
+		query += "program." + filter + " CONTAINS \"" + searchTerm + "\" ";
+		
+		/* This gives us the full list of records returned from neo. */
+		List<Record> resultList = this.communicator.readFromNeo(query).list();
+		ProgramInformation[] result = new ProgramInformation[resultList.size()];
+		int i = 0;
+		for (Record row : resultList) {
+			ProgramInformation information = new ProgramInformation(null, query, query, query, null, null, null);
+		}
+		
 		return null;
 	}
 	

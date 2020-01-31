@@ -128,7 +128,7 @@ private final Neo4jCommunicator communicator;
 	 * @see Data.CourseProgram
 	 */
 	public void createProgram(CourseProgram program) {
-		String query = "CREATE(n:" + CourseProgram.courseProgram + " {" +
+		String query = "CREATE(n:" + program.getProgramType() + " {" +
 				CourseProgram.ProgramLabels.NAME.toString() + ":\"" + program.getName() + "\", " +
 				CourseProgram.ProgramLabels.DESCRIPTION.toString() + ":\"" + program.getDescription() + "\", " +
 				CourseProgram.ProgramLabels.CODE.toString() + ":\"" + program.getCode() + "\", " +
@@ -152,7 +152,7 @@ private final Neo4jCommunicator communicator;
 		Course[][] courses = courseOrder.getCourseArray();
 		
 		/* find the program */
-		String query = "MATCH(program: " + CourseProgram.courseProgram + "{" + CourseProgram.ProgramLabels.CODE.toString() + ": \"" + program.getCode() + "\", " + 
+		String query = "MATCH(program: " + program.getProgramType() + "{" + CourseProgram.ProgramLabels.CODE.toString() + ": \"" + program.getCode() + "\", " + 
 				CourseProgram.ProgramLabels.YEAR.toString()+ ": \"" + program.getStartDate().getYear()+ "\", " + 
 				CourseProgram.ProgramLabels.LP.toString() + ": \"" + program.getStartDate().getPeriod().toString()+ "\"}) ";
 		
