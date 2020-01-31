@@ -247,6 +247,4 @@ public class GetMethods {
 		KC kc = createKC(row, "node");
 		return kc;
 	}
-		
-	
 }

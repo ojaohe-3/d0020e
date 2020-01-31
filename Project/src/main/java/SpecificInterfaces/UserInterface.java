@@ -8,12 +8,12 @@ import neo4j_JVM_API.Neo4JAPI;
  * A class containing all the functionality that a user should be able to access without signing in
  * 
  * 
- * @author Jesper.
+ * @author Jesper. Johan RH
  *
  */
-public class UserInterface {
+public abstract class UserInterface {
 
-	private Neo4JAPI neoapi;
+	protected Neo4JAPI neoapi;
 	
 	/**
 	 * Constructor
@@ -32,6 +32,16 @@ public class UserInterface {
 	public Course getCourseByCode(String courseCode, CourseDate courseDate) {
 		return this.neoapi.getMethods.getCourse(courseCode, courseDate);
 	}
+
+	/**
+	 * Get all courses with a course code
+	 * @author Johan RH
+	 * @param courseCode
+	 * @return
+	 */
+	public String[] getCourseByCode(String courseCode) {
+		return this.neoapi.filterMethods.filterCourseByCode(courseCode);
+	}
 	
 	/**
 	 *  Get course names from courses related to a topic
@@ -49,5 +59,28 @@ public class UserInterface {
 	public String[] getTopics() {
 		return this.neoapi.getMethods.getTopics();
 	}
-	
+
+	/**
+	 * Get all Program Given Name
+	 * @author Johan RH
+	 * @param programName
+	 * @return
+	 */
+	public String[] getProgramByName(String programName){
+		return this.neoapi.filterMethods.filterProgramByName(programName);
+	}
+	/**
+	 * Get all Program Given Code
+	 * @author Johan RH
+	 * @param programCode
+	 * @return
+	 */
+	public String[] getProgramByCode(String programCode){
+		return this.neoapi.filterMethods.filterCourseByCode(programCode);
+	}
+
+
+	public String[]  getCourseByTag(Course.CourseLabels tag, String searchTerm){
+		return this.neoapi.filterMethods.getCourseByTag;
+	}
 }
