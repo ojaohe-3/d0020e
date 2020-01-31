@@ -29,12 +29,12 @@
    
    <servlet-mapping>
    		 <servlet-name>GetKCsFilterByTopic</servlet-name>
-        <url-pattern>project/GetKC/FilterByTopic</url-pattern>
+        <url-pattern>project/GetKCs/FilterByTopic</url-pattern>
     </servlet-mapping>
     
 	<servlet-mapping>
    		 <servlet-name>GetKCsFilterByName</servlet-name>
-        <url-pattern>project/GetKC/FilterByName</url-pattern>
+        <url-pattern>project/GetKCs/FilterByName</url-pattern>
     </servlet-mapping>
     
     

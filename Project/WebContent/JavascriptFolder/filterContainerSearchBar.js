@@ -1,7 +1,8 @@
 /**
  * 
- * 	First ajax file for the project..
- * 	
+ * 	This will use Ajax to recieve content from the server when a user is searching
+ * 
+ * 	Covers search filtering for Courses, KCs and programs	
  * 
  */
 
@@ -114,10 +115,10 @@ $(document).ready(function() {
 					}
 
 				});
-			} else if($("#kcFilterByCode").is(':checked')) {
+			} else if($("#kcFilterByTopic").is(':checked')) {
 				$.ajax({
 
-					url : 'GetKcs/FilterByCode',
+					url : 'GetKCs/FilterByTopic',
 					data : {
 						filter : $("#searchKC").val()
 					},
@@ -130,5 +131,5 @@ $(document).ready(function() {
 		} 
 		
 	});
-	
+	// -- end Search Kc --
 });
