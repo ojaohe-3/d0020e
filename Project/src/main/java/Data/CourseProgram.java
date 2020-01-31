@@ -8,12 +8,24 @@ public class CourseProgram {
 	private String description;
 	private CourseDate startDate;
 	private Credits credits;
+	private ProgramType programType;
+
+	enum ProgramType {
+		PROGRAM("program"),
+		SPECIALIZATION("specialization");
+		
+		private String programType;
+		private ProgramType(String programType) {
+			this.programType = programType;
+		}
+	}
 	
 	public static final String courseProgram = "CourseProgram";
 	
 	
-	public CourseProgram(CourseOrder courseOrder) {
+	public CourseProgram(CourseOrder courseOrder, ProgramType programType) {
 		this.courseOrder = courseOrder;
+		this.programType = programType;
 	}
 	
 	/**
@@ -25,13 +37,15 @@ public class CourseProgram {
 	 * @param startDate
 	 * @param credits
 	 */
-	public CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits) {
+	public CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits, ProgramType programType) {
 		this.courseOrder = courseOrder;
 		this.code = code;
 		this.name = name;
 		this.description = description;
 		this.startDate = startDate;
 		this.credits = credits;
+		this.programType = programType;
+		
 	}
 	
 	public CourseOrder getCourseOrder() {
@@ -88,6 +102,14 @@ public class CourseProgram {
 
 	public void setStartDate(CourseDate startDate) {
 		this.startDate = startDate;
+	}
+	
+	public ProgramType getProgramType() {
+		return programType;
+	}
+
+	public void setProgramType(ProgramType programType) {
+		this.programType = programType;
 	}
 
 
