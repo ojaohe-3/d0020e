@@ -22,7 +22,7 @@ import neo4j_JVM_API.Neo4JAPI;
  *
  */
 
-@WebServlet("project/GetCoursesFilterByCourseName")
+@WebServlet("/GetCourses/FilterByCourseName")
 public class GetCoursesFilterByCourseName extends HttpServlet {
 
 	/**
@@ -31,19 +31,19 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+
 		
 		//Replace this.
-		Neo4JAPI neoapi = new Neo4JAPI("bolt://130.240.200.254:7687", "neo4j", "neo4j-d0020e");
+		//Neo4JAPI neoapi = new Neo4JAPI("bolt://130.240.200.254:7687", "neo4j", "neo4j-d0020e");
 		
-		String[] courses = neoapi.filterMethods.filterCourseByName(request.getParameter("filter").trim());
+		//String[] courses = neoapi.filterMethods.filterCourseByName(request.getParameter("filter").trim());
 		
-		String s = "";
-		for(String c: courses) {
-			s += c + ", ";
-		}
+		String s = "response  HEj johan";
+		
 		response.setContentType("text/plain");
 		response.getWriter().write(s);
 		
 	}
 	
 }
+

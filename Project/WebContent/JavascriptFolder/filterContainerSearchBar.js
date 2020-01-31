@@ -7,11 +7,9 @@
 
 $(document).ready(function() {
 	$('#searchCoursesByName').blur(function() {
-		console.log("code running");
 		$.ajax({
-			
-			
-			url : 'GetCoursesFilterByCourseName',
+
+			url : 'project/GetCourses/FilterByCourseName',
 			data : {
 				filter : $("#searchCoursesByName").val()
 			},
