@@ -9,7 +9,7 @@ import Data.CourseProgram.ProgramType;
  *
  */
 public class ProgramInformation {
-	private CourseOrder courseOrder;
+	
 	private String code;
 	private String name;
 	private String description;
@@ -17,8 +17,16 @@ public class ProgramInformation {
 	private Credits credits;
 	private ProgramType programType;
 	
-	public ProgramInformation(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits, ProgramType type) {
-		this.courseOrder = courseOrder;
+	/**
+	 * 
+	 * @param code
+	 * @param name
+	 * @param description
+	 * @param startDate
+	 * @param credits
+	 * @param type
+	 */
+	public ProgramInformation( String code, String name, String description, CourseDate startDate, Credits credits, ProgramType type) {
 		this.code = code;
 		this.name = name;
 		this.description = description;
@@ -27,16 +35,6 @@ public class ProgramInformation {
 		this.programType = type;
 		
 	}
-	
-	public CourseOrder getCourseOrder() {
-		return courseOrder;
-	}
-
-
-	public void setCourseOrder(CourseOrder courseOrder) {
-		this.courseOrder = courseOrder;
-	}
-
 
 	public String getName() {
 		return name;

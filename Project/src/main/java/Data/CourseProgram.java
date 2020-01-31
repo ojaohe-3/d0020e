@@ -1,6 +1,7 @@
 package Data;
 
 public class CourseProgram extends ProgramInformation{
+	private CourseOrder courseOrder;
 
 	public static enum ProgramType {
 		PROGRAM("CourseProgram"),
@@ -27,12 +28,28 @@ public class CourseProgram extends ProgramInformation{
 	 * @param credits
 	 */
 	public CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits) {
-		super(courseOrder, code, name, description, startDate, credits, ProgramType.PROGRAM);
+		super( code, name, description, startDate, credits, ProgramType.PROGRAM);
+		this.courseOrder = courseOrder;
+		
+	}
+	
+	public CourseProgram( String code, String name, String description, CourseDate startDate, Credits credits) {
+		super( code, name, description, startDate, credits, ProgramType.PROGRAM);
 		
 	}
 	
 	protected CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits, ProgramType type) {
-		super(courseOrder, code, name, description, startDate, credits, type);
+		super( code, name, description, startDate, credits, type);
+		this.courseOrder = courseOrder;
+	}
+	
+	public CourseOrder getCourseOrder() {
+		return courseOrder;
+	}
+
+
+	public void setCourseOrder(CourseOrder courseOrder) {
+		this.courseOrder = courseOrder;
 	}
 
 	public static enum ProgramLabels {

@@ -22,7 +22,7 @@ public class FilterMethods {
 	 * courses we need.
 	 * @param filter - This can be any value with the type {@link Course.CourseLabels}.
 	 * @param searchTerm - This is the actual search term for the filter.
-	 * @return Nothing, so far. this is a TODO
+	 * @return An array containing the search results.
 	 * @author Robin
 	 */
 	public CourseInformation[] filterCourseByTag(Course.CourseLabels filter, String searchTerm) {
@@ -47,6 +47,27 @@ public class FilterMethods {
 		}
 		
 		return result;
+	}
+	
+	/**
+	 * 
+	 * @param filter
+	 * @param searchTerm
+	 * @return An array containing all the search results.
+	 */
+	public ProgramInformation[] filterProgramByTag(CourseProgram.ProgramLabels filter, String searchTerm) {
+		String query = "MATCH (program: " + CourseProgram.ProgramType.PROGRAM +") WHERE ";
+		query += "program." + filter + " CONTAINS \"" + searchTerm + "\" ";
+		
+		/* This gives us the full list of records returned from neo. */
+		List<Record> resultList = this.communicator.readFromNeo(query).list();
+		ProgramInformation[] result = new ProgramInformation[resultList.size()];
+		int i = 0;
+		for (Record row : resultList) {
+			ProgramInformation information = new ProgramInformation(null, query, query, query, null, null, null);
+		}
+		
+		return null;
 	}
 	
 	/**
