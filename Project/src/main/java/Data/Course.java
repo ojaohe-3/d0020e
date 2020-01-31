@@ -9,8 +9,7 @@ import java.util.ArrayList;
  * @author Jesper
  *
  */
-public class Course {
-	private CourseInformation courseInfo;
+public class Course extends CourseInformation {
 	private ArrayList<KC> requiredKC = new ArrayList<KC>();
 	private ArrayList<KC> developedKC = new ArrayList<KC>();
 	
@@ -30,7 +29,7 @@ public class Course {
 	 * @param startPeriod an object of type {@link CourseOrder}
 	 */
 	public Course(String name, String courseCode, Credits credit, String description, String examiner, CourseDate startPeriod) {
-		this.courseInfo = new CourseInformation(name,courseCode,credit,description,examiner,startPeriod);
+		super(name,courseCode,credit,description,examiner,startPeriod);
 	}
 	
 	/**
@@ -39,7 +38,7 @@ public class Course {
 	 * @see 
 	 */
 	public Course(CourseInformation information) {
-		this.courseInfo = information;
+		super(information.getName(), information.getCourseCode(), information.getCredit(), information.getDescription(), information.getExaminer(), information.getStartPeriod());
 	}
 	
 	public void setRequiredKC(KC kc) {
@@ -64,54 +63,6 @@ public class Course {
 	
 	public ArrayList<KC> getDevelopedKC() {
 		return developedKC;
-	}
-	
-	public String getName() {
-		return this.courseInfo.getName();
-	}
-
-	public void setName(String name) {
-		this.courseInfo.setName(name);
-	}
-
-	public String getCourseCode() {
-		return this.courseInfo.getCourseCode();
-	}
-
-	public void setCourseCode(String courseCode) {
-		this.courseInfo.setCourseCode(courseCode);
-	}
-
-	public String getDescription() {
-		return this.courseInfo.getDescription();
-	}
-
-	public void setDescription(String description) {
-		this.courseInfo.setDescription(description);
-	}
-
-	public String getExaminer() {
-		return this.courseInfo.getExaminer();
-	}
-
-	public void setExaminer(String examiner) {
-		this.courseInfo.setExaminer(examiner);
-	}
-
-	public CourseDate getStartPeriod() {
-		return this.courseInfo.getStartPeriod();
-	}
-
-	public void setStartPeriod(CourseDate startPeriod) {
-		this.courseInfo.setStartPeriod(startPeriod);
-	}
-
-	public Credits getCredit() {
-		return this.courseInfo.getCredit();
-	}
-
-	public void setCredit(Credits credit) {
-		this.courseInfo.setCredit(credit);
 	}
 	
 	/**
