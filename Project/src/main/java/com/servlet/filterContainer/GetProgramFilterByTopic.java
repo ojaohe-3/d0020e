@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-@WebServlet("/GetProgram/FilterByTopic")
+@WebServlet("/GetPrograms/FilterByTopic")
 public class GetProgramFilterByTopic extends HttpServlet {
 
 	/**

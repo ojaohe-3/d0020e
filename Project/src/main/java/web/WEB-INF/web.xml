@@ -28,28 +28,28 @@
     </servlet-mapping>
    
    <servlet-mapping>
-   		 <servlet-name>GetKCFilterByTopic</servlet-name>
+   		 <servlet-name>GetKCsFilterByTopic</servlet-name>
         <url-pattern>project/GetKC/FilterByTopic</url-pattern>
     </servlet-mapping>
     
 	<servlet-mapping>
-   		 <servlet-name>GetKCFilterByName</servlet-name>
+   		 <servlet-name>GetKCsFilterByName</servlet-name>
         <url-pattern>project/GetKC/FilterByName</url-pattern>
     </servlet-mapping>
     
     
     <servlet-mapping>
-   		 <servlet-name>GetProgramFilterByCode</servlet-name>
+   		 <servlet-name>GetProgramsFilterByCode</servlet-name>
         <url-pattern>project/GetProgram/FilterByCode</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
-   		 <servlet-name>GetProgramFilterByName</servlet-name>
+   		 <servlet-name>GetProgramsFilterByName</servlet-name>
         <url-pattern>project/GetProgram/FilterByName</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
-   		 <servlet-name>GetProgramFilterByTopic</servlet-name>
+   		 <servlet-name>GetProgramsFilterByTopic</servlet-name>
         <url-pattern>project/GetProgram/FilterByTopic</url-pattern>
     </servlet-mapping>
     
