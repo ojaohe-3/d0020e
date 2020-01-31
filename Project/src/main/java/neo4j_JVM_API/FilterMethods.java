@@ -1,11 +1,13 @@
 package neo4j_JVM_API;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
 
 import Data.Course.CourseLabels;
+import Data.*;
 import neoCommunicator.Neo4jCommunicator;
 
 public class FilterMethods {
@@ -16,13 +18,45 @@ public class FilterMethods {
 	}
 	
 	/**
+	 * Generalized search function for courses. This should be the only search function for 
+	 * courses we need.
+	 * @param filter - This can be any value with the type {@link Course.CourseLabels}.
+	 * @param searchTerm - This is the actual search term for the filter.
+	 * @return Nothing, so far. this is a TODO
+	 * @author Robin
+	 */
+	public CourseInformation[] filterCourseByTag(Course.CourseLabels filter, String searchTerm) {
+
+		String query = "MATCH (course: " + Course.course +") WHERE ";
+		query += "course." + filter + " CONTAINS \"" + searchTerm + "\" ";
+		
+		/* This gives us the full list of records returned from neo. */
+		List<Record> resultList = this.communicator.readFromNeo(query).list();
+		
+		/* Iterate through the entire result list and create all the courses. */
+		CourseInformation[] result = new CourseInformation[resultList.size()];
+		int i = 0;
+		for (Record row : resultList) {
+			CourseInformation information = new CourseInformation(row.get(Course.CourseLabels.NAME.toString()).toString(), 
+					row.get(Course.CourseLabels.NAME.toString()).toString(), 
+					Credits.valueOf(row.get(Course.CourseLabels.CREDIT.toString()).toString()), 
+					row.get(Course.CourseLabels.DESCRIPTION.toString()).toString(),
+					row.get(Course.CourseLabels.EXAMINER.toString()).toString(), 
+					new CourseDate(Integer.parseInt(row.get(Course.CourseLabels.YEAR.toString()).toString()), LP.valueOf(row.get(Course.CourseLabels.EXAMINER.toString()).toString())));
+			result[i++] = information;
+		}
+		
+		return result;
+	}
+	
+	/**
 	 * Filter course by code
 	 * 
 	 * @param code
 	 * @return array with matching course code
 	 */
 	public String[] filterCourseByCode(String code) {
-		String query = "MATCH (course: Course) WHERE course.courseCode STARTS WITH \"" + code + "\"";
+		String query = "MATCH (course: Course) WHERE course.courseCode STARTS WITH \"" + code + "\" " ;
 		query += "RETURN course";
 		
 		StatementResult result = this.communicator.readFromNeo(query);
@@ -63,6 +97,8 @@ public class FilterMethods {
 		String query = "MATCH (courseProgram: CourseProgram) WHERE courseProgram.code STARTS WITH \"" + code + "\"";
 		query += "RETURN courseProgram";
 		
+		System.out.println(query);
+		
 		StatementResult result = this.communicator.readFromNeo(query);
 		ArrayList<String> programs = new ArrayList<String>();
 		while(result.hasNext()) {
@@ -98,13 +134,15 @@ public class FilterMethods {
 	 * @return array with matching topics
 	 */
 	public String[] filterTopic(String name) {
-		String query = "MATCH (topic: Topic) WHERE topic.name STARTS WITH \"" + name + "\"";
+		String query = "MATCH (topic: "+ Topic.TopicLabels.TOPIC.toString() +") WHERE topic."+ Topic.TopicLabels.TITLE.toString() + " STARTS WITH \"" + name + "\" ";
 		query += "RETURN topic";
+		
+		System.out.println(query);
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		ArrayList<String> topics = new ArrayList<String>();
 		while(result.hasNext()) {
-			topics.add(result.next().get("topics").get("name").toString());
+			topics.add(result.next().get("topic").get("name").toString());
 		}
 		
 		return topics.toArray(new String[topics.size()]);

@@ -119,8 +119,8 @@ public class GetMethods {
 		Course course = createCourse(row, "course");
 		
 		String developedQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
-		developedQuery += "MATCH(developedKC : KC)<-[r: DEVELOPED]-(course) RETURN developedKC";
-		System.out.println(developedQuery);
+		developedQuery += "MATCH(developedKC : KC)<-[r:" + Relations.DEVELOPED.toString() +"]-(course) RETURN developedKC";
+		//System.out.println(developedQuery);
 		result = this.communicator.readFromNeo(developedQuery);
 		
 		while(result.hasNext()) {
@@ -128,8 +128,8 @@ public class GetMethods {
 		}
 		
 		String requiredQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
-		requiredQuery += "MATCH(requiredKC : KC)<-[r: DEVELOPED]-(course) RETURN requiredKC";
-		System.out.println(requiredQuery);
+		requiredQuery += "MATCH(requiredKC : KC)<-[r: "+ Relations.REQUIRED.toString() +"]-(course) RETURN requiredKC";
+		//System.out.println(requiredQuery);
 		result = this.communicator.readFromNeo(requiredQuery);
 		
 		while(result.hasNext()) {
@@ -191,7 +191,8 @@ public class GetMethods {
 	 * @return
 	 */
 	public KC getKCwithTaxonomyLevel(String name, int taxonomyLevel) {
-		String query = "MATCH (node: Kc {name: \"" + name + "\", taxonomyLevel: \"" + taxonomyLevel + "\"}) RETURN node";
+		
+		String query = "MATCH (node: "+ KC.kc +" {name: \"" + name + "\", taxonomyLevel: \"" + taxonomyLevel + "\"}) RETURN node";
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		
@@ -201,4 +202,52 @@ public class GetMethods {
 		KC kc = createKC(row, "node");
 		return kc;
 	}
+
+	
+	/**
+	 * Get programSpecialization from database
+	 * 
+	 * 
+	 * @param specialization
+	 * @param courseDate
+	 *
+	 */
+	public ProgramSpecialization getProgramSpecialization(String specialization, CourseDate courseDate) {
+
+		String query = "MATCH (programSpecialization: ProgramSpecialization {specialization: \"" + specialization + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
+		query += "RETURN courseProgramSpecialization";
+
+		StatementResult result = this.communicator.readFromNeo(query);
+		Record row = result.next();
+		
+		int readingPeriods = row.get("programSpecialization").get("readingPeriods").asInt();
+		CourseOrder courseOrder = new CourseOrder(readingPeriods);
+
+		String inProgramSpecializationQuery = "MATCH (programSpecialization: ProgramSpecialization {specialization: \"" + specialization + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
+		inProgramSpecializationQuery += "MATCH(courseInprogramSpecialization : courseInSpecialization)<-[relation: IN_PROGRAMSPECIALIZATION]-(courseInprogramSpecialization) RETURN courseInProgramSpecialization, relation";
+		result = this.communicator.readFromNeo(inProgramSpecializationQuery);
+		
+		while(result.hasNext()) {
+			Record currentRow = result.next();
+			CourseSpecialization courseSpecialization = createCourseSpecialization(currentRow, "courseInProgramSpecialization");
+			courseOrder.setCourseAt(courseSpecialization, currentRow.get("relation").get("period").asInt(), currentRow.get("relation").get("pos").asInt());
+		}
+		
+		CourseProgramSpecialization courseProgramSpecialization = createCourseProgramSpecialization(courseOrder, row, "courseProgramSpecialization");
+		return courseProgramSpecialization;
+
+	}
+	@Deprecated
+	public Course getCourseNoKc(String courseCode, CourseDate courseDate) {
+
+		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
+		
+		Course course = this.communicator.readFromNeo(query);
+
+		return course;
+		
+	
+	}
+	//getCourseNoKc
+	//getTopic
 }

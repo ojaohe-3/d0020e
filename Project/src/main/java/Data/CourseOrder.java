@@ -114,6 +114,19 @@ public class CourseOrder {
 		}
 	}
 	
+	/**
+	 * This sets all the courses in this course order and deletes the old one.
+	 * The reference to the array is <b>NOT</b> copied, i.e. the reference is
+	 * the same as the input argument.
+	 * @param courses
+	 */
+	public void assignCourseOrder(Course[][] courses) {
+		if (courses == null) {
+			throw new IllegalArgumentException("The course array is non existent.");
+		}
+		this.courses = courses;
+	}
+	
 	public int getReadingPeriods() {
 		return this.readingPeriods;
 	}

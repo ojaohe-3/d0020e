@@ -24,6 +24,19 @@ public class DeleteMethods {
 	}
 	
 	/**
+	 * Clear the entire database. Only used for testing purposes.
+	 * @author Jesper.
+	 */
+	public void clear() {
+		
+		String query = "MATCH (n)-[r]-(m) DELETE n,r,m";
+		this.communicator.writeToNeo(query);
+		query = "MATCH (n) DELETE n";
+		this.communicator.writeToNeo(query);
+		
+	}
+	
+	/**
 	 * Delete course from neo with courseCode and startDate
 	 * 
 	 * @param courseCode
@@ -64,5 +77,28 @@ public class DeleteMethods {
 		
 	}
 	
-	 
+	public void deleteProgram(String name, CourseDate startDate) {
+		
+		String query = "MATCH (courseProgram: CourseProgram {name: \"" + name + "\", " + CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" })-[relations]-(nodes) DELETE courseProgram, relations";
+		
+		communicator.writeToNeo(query);
+		
+	}
+	
+	/**
+	 * Delete topic from database
+	 * 
+	 * @param name
+	 */
+	public void deleteTopic(String name) {
+		
+		String query = "MATCH (topic: Topic {name: \"" + name + "\"})<-[relations]-(nodes) DELETE topic, relations";
+		
+		communicator.writeToNeo(query);
+	
+	}
+	
+	public void deleteRelation() {
+		
+	}
 }
