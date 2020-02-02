@@ -1,7 +1,9 @@
 package Data;
 
 /**
- * 
+ * The course information is merely a data structure used for 
+ * storing many search results from the database. Do not use this as a 
+ * complete representation of a course.
  * @author Robin
  *
  */

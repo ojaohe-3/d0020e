@@ -20,8 +20,8 @@ public class FilterMethods {
 	/**
 	 * Generalized search function for courses. This should be the only search function for 
 	 * courses we need.
-	 * @param filter - This can be any value with the type {@link Course.CourseLabels}.
-	 * @param searchTerm - This is the actual search term for the filter.
+	 * @param filter - This can be any value of the type {@link Course.CourseLabels}.
+	 * @param searchTerm - This is the actual search term for the filter. All search results will contain this string.
 	 * @return An array containing the search results.
 	 * @author Robin
 	 */
@@ -42,7 +42,7 @@ public class FilterMethods {
 					Credits.valueOf(row.get(Course.CourseLabels.CREDIT.toString()).toString()), 
 					row.get(Course.CourseLabels.DESCRIPTION.toString()).toString(),
 					row.get(Course.CourseLabels.EXAMINER.toString()).toString(), 
-					new CourseDate(Integer.parseInt(row.get(Course.CourseLabels.YEAR.toString()).toString()), LP.valueOf(row.get(Course.CourseLabels.EXAMINER.toString()).toString())));
+					new CourseDate(Integer.parseInt(row.get(Course.CourseLabels.YEAR.toString()).toString()), LP.valueOf(row.get(Course.CourseLabels.LP.toString()).toString())));
 			result[i++] = information;
 		}
 		
@@ -50,9 +50,10 @@ public class FilterMethods {
 	}
 	
 	/**
-	 * 
-	 * @param filter
-	 * @param searchTerm
+	 * Generalized search function for programs (not specializations, yet). This should be the only search function for
+	 * programs we need.
+	 * @param filter - This can be any value of the type {@link CourseProgram.ProgramLabels}
+	 * @param searchTerm - This is the actual search term for the filter. All search results will contain this string.
 	 * @return An array containing all the search results.
 	 */
 	public ProgramInformation[] filterProgramByTag(CourseProgram.ProgramLabels filter, String searchTerm) {
@@ -64,10 +65,16 @@ public class FilterMethods {
 		ProgramInformation[] result = new ProgramInformation[resultList.size()];
 		int i = 0;
 		for (Record row : resultList) {
-			ProgramInformation information = new ProgramInformation(null, query, query, query, null, null, null);
+			ProgramInformation information = new ProgramInformation(row.get(CourseProgram.ProgramLabels.CODE.toString()).toString(), 
+					row.get(CourseProgram.ProgramLabels.NAME.toString()).toString(), 
+					row.get(CourseProgram.ProgramLabels.DESCRIPTION.toString()).toString(), 
+					new CourseDate(Integer.parseInt(row.get(CourseProgram.ProgramLabels.YEAR.toString()).toString()), LP.valueOf(row.get(CourseProgram.ProgramLabels.LP.toString()).toString())), 
+					Credits.valueOf(row.get(CourseProgram.ProgramLabels.CREDITS.toString()).toString()), 
+					CourseProgram.ProgramType.PROGRAM);
+			result[i] = information;
 		}
 		
-		return null;
+		return result;
 	}
 	
 	/**
