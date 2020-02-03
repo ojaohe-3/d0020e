@@ -32,8 +32,12 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+		Neo4JAPI neoapi = new Neo4JAPI("bolt://130.240.200.254:7687", "neo4j", "neo4j-d0020e");
+		
+		String[] s = neoapi.filterMethods.filterCourseByName(request.getParameter("filter"));
+		
 		response.setContentType("text/plain");
-		response.getWriter().write("This is the response from filter by course name");
+		response.getWriter().write("got : " + s.length + " first is : " + s[0]);
 		
 	}
 	
