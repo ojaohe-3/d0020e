@@ -209,7 +209,7 @@ public class GetMethods {
 	 * 
 	 * 
 	 * @param specialization
-	 * @param courseDate
+	 * @param code
 	 *
 	 */
 	public CourseProgram getProgramSpecialization(String specialization, CourseDate programDate, String code) {
@@ -236,8 +236,8 @@ public class GetMethods {
 		CourseProgram courseProgramSpecialization = createCourseProgramSpecialization(courseOrder, row, "programSpecialization");
 		return courseProgramSpecialization;
 	}
-
-		private CourseProgram createCourseProgramSpecialization(CourseOrder courseOrder, Record row, String nodename) {
+	@Deprecated
+	private CourseProgram createCourseProgramSpecialization(CourseOrder courseOrder, Record row, String nodename) {
 		
 		String name = row.get(nodename).get("name").toString();
 		String code = row.get(nodename).get("code").toString();
@@ -248,9 +248,10 @@ public class GetMethods {
 		LP lp = LP.valueOf(row.get(nodename).get("lp").toString());
 		CourseDate startDate = new CourseDate(year, lp);	
 		
-		CourseProgram courseProgram = new CourseProgram(courseOrder, name, code, description, startDate, credits, ProgramType.SPECIALIZATION);
-		
-		return courseProgramSpecialization;
+		CourseProgram courseProgram = new CourseProgram(courseOrder, name, code, description, startDate, credits, CourseProgram.ProgramType.SPECIALIZATION);
+
+			CourseProgram courseProgramSpecialization;
+			return courseProgramSpecialization;
 	}
 	@Deprecated
 	public Course getCourseNoKc(String courseCode, CourseDate courseDate) {

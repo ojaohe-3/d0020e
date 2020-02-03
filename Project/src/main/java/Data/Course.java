@@ -94,8 +94,8 @@ public class Course extends CourseInformation {
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		Course course = (Course) o;
-		return ((Course) o).courseInfo.equals(this.courseInfo);
+		CourseInformation course = (CourseInformation) o;
+		return ((Course) o).equals(this);
 	}
 
 	public String toJson() throws JsonProcessingException {

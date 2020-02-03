@@ -34,14 +34,14 @@ public class ModifyMethods {
 		communicator.writeToNeo(query);
 	}
 	
-	public void editProgram(String programCode,CourseDate startyear) {
+	public void editProgram(String programCode,CourseDate startyear, CourseProgram newProgram) {
 		String query = "MATCH (n:CourseProgram{ProgramCode:\""+  programCode+"\"}) SET n={";
-		query += CourseProgram.ProgramLabels.CODE.toString() +":"+CourseProgram.getCode();
-		query += CourseProgram.ProgramLabels.DESCRIPTION.toString() +":"+CourseProgram.getDescription();
-		query += CourseProgram.ProgramLabels.YEAR.toString() +":"+CourseProgram.getStartDate().getYear();
-		query += CourseProgram.ProgramLabels.LP.toString() +":"+CourseProgram.getStartDate().getPeriod();
-		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +":"+CourseProgram.getReading_periods();
-		query += CourseProgram.ProgramLabels.CREDITS.toString() +":"+CourseProgram.getCredits();
+		query += CourseProgram.ProgramLabels.CODE.toString() +"="+newProgram.getCode();
+		query += CourseProgram.ProgramLabels.DESCRIPTION.toString() +":"+newProgram.getDescription();
+		query += CourseProgram.ProgramLabels.YEAR.toString() +":"+newProgram.getStartDate().getYear();
+		query += CourseProgram.ProgramLabels.LP.toString() +":"+newProgram.getStartDate().getPeriod();
+		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +":"+newProgram.getCourseOrder().getReadingPeriods();
+		query += CourseProgram.ProgramLabels.CREDITS.toString() +":"+newProgram.getCredits();
 
 		query +="}";
 		communicator.writeToNeo(query);

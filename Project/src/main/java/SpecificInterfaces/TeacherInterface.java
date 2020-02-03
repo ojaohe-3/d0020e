@@ -2,6 +2,7 @@ package SpecificInterfaces;
 
 import Data.Course;
 import Data.CourseDate;
+import Data.CourseProgram;
 import Data.User;
 import neo4j_JVM_API.Neo4JAPI;
 
@@ -47,6 +48,25 @@ public class TeacherInterface extends UserInterface {
                 neoapi.modifyMethods.editCourse(courseCode,c);
             return true;
         }catch (Exception e){
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    protected boolean searchProgram(){
+        try {
+            neoapi.createMethods.createProgram(data);
+            return true;
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+    protected boolean searchKC(){
+        try {
+            neoapi.filterMethods.;
+            return true;
+        }catch (Exception e) {
             System.out.println(e.getMessage());
             return false;
         }
