@@ -1,9 +1,6 @@
 package SpecificInterfaces;
 
-import Data.Course;
-import Data.CourseDate;
-import Data.CourseProgram;
-import Data.User;
+import Data.*;
 import neo4j_JVM_API.Neo4JAPI;
 
 public class TeacherInterface extends UserInterface {
@@ -62,9 +59,9 @@ public class TeacherInterface extends UserInterface {
             return false;
         }
     }
-    protected boolean searchKC(){
+    protected boolean searchKC(KC.KCLabel field, String searchKey){
         try {
-            neoapi.filterMethods.;
+            neoapi.filterMethods.filterKCByTag(field,searchKey);
             return true;
         }catch (Exception e) {
             System.out.println(e.getMessage());

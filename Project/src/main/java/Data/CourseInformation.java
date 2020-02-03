@@ -27,7 +27,7 @@ public class CourseInformation extends JsonFactory {
 	 * @param examiner - The examiner
 	 * @param startPeriod - The staring period in the form of {@link CourseDate}
 	 */
-	public CourseInformation(String name, String courseCode, Credits credit, String description, String examiner, CourseDate startPeriod) {
+public CourseInformation(String name, String courseCode, Credits credit, String description, String examiner, CourseDate startPeriod) {
 		this.name = name;
 		this.courseCode = courseCode;
 		this.credit = credit;

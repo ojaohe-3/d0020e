@@ -231,18 +231,27 @@ public class FilterMethods {
 	 * @param topicTitle
 	 * @return String[] of available course names
 	 */
-	@Deprecated
-	public String[] getCourseNameByTopic(String topicTitle) {
+	public CourseInformation[] getCourseNameByTopic(String topicTitle) {
 		String query = "MATCH(node: Topic {title : \""+ topicTitle +"\"})<-[r]-(course) RETURN course ";
 		
 		StatementResult result = this.communicator.readFromNeo(query);
-		ArrayList<String> courseNames = new ArrayList<String>();
+		ArrayList<CourseInformation> courseNames = new ArrayList<CourseInformation>();
 		
 		while(result.hasNext()) {
 			Record row = result.next();
-			courseNames.add(row.get("course").get("name").asString());
+			courseNames.add(new CourseInformation(
+					row.get("course").get(CourseLabels.NAME.toString()).toString(),
+					row.get("course").get(CourseLabels.CODE.toString()).toString(),
+					Credits.getByString(row.get("course").get(CourseLabels.CREDIT.toString()).toString()),
+					row.get("course").get(CourseLabels.DESCRIPTION.toString()).toString(),
+					row.get("course").get(CourseLabels.EXAMINER.toString()).toString(),
+					new CourseDate(
+							Integer.parseInt(row.get("course").get(CourseLabels.YEAR.toString()).toString()),
+							LP.valueOf(LP.class,row.get("course").get(CourseLabels.LP.toString()).toString())
+					)
+			));
 		}
-		return courseNames.toArray(new String[courseNames.size()]);
+		return (CourseInformation[]) courseNames.toArray();
 		
 	}
 }

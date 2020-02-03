@@ -161,7 +161,7 @@ private final Neo4jCommunicator communicator;
 			}
 		}
 		if(!hasCourses) {
-			System.err.print("No ocurses : ");
+			System.err.print("No courses : ");
 			return;
 		}
 		for (int pos=0; pos < courses.length; pos++) {
@@ -240,7 +240,7 @@ private final Neo4jCommunicator communicator;
 	 * Add relations between a program specialization and it's courses.
 	 * The courses must be added to the program specialization before the 
 	 * connections are made.
-	 * @param program - The program specialization.
+	 * @param specialization - The program specialization.
 	 *
 	 */
 	@Deprecated
