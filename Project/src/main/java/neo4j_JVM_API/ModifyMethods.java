@@ -17,35 +17,6 @@ public class ModifyMethods {
 		this.communicator = communicator;
 	}
 	
-<<<<<<< HEAD
-	public void changeUserPrivileges(String username,boolean admin) {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.USERTAG +"="+(admin?1:0);
-		communicator.writeToNeo(query);
-	}
-	public void changeUserPassword(String username,String pwd)  {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.PASSWORD +"=" + Security.generateHash(pwd);
-		communicator.writeToNeo(query);
-	}
-	public void removeUser(String username) {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) DETACH DELETE n";
-		communicator.writeToNeo(query);
-	}
-
-	public void addCourseToUser(User user,Course data) {
-
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+user.getUsername()+
-				"}),(m:Course{"+
-				Course.CourseLabels.CODE+":\""+ data.getCourseCode()+"\", "+
-				Course.CourseLabels.YEAR +":"+data.getStartPeriod().getYear()+"," +
-				Course.CourseLabels.LP +":\""+data.getStartPeriod().getPeriod().name()+"\"" +
-				"}) CREATE (n)-[r:CAN_EDIT]->(m)";
-		communicator.writeToNeo(query);
-		user.addCourse(data);
-	}
-=======
-
->>>>>>> origin/UserMethods
-
 	/**
 	 * Edit a Specific KC to a new generated KC object
 	 * @param name name Selector
@@ -64,13 +35,13 @@ public class ModifyMethods {
 	}
 	
 	public void editProgram(String programCode,CourseDate startyear) {
-		String query = "MATCH (n:Program{ProgramCode:\""+  pogramCode+"\"}) SET n={";
-		query += Program.ProgramLabels.CODE.toString() +":"+nCourse.getProgramCode();
-		query += Program.ProgramLabels.DESCRIPTION.toString() +":"+nProgram.getDescription();
-		query +=  Program.CourseLabels.YEAR.toString() +":"+nProgram.getStartPeriod().getYear();
-		query +=Program.ProgramLabels.LP.toString() +":"+nProgram.getStartPeriod().getPeriod().name();
-		query += Program.ProgramLabels.READING_PERIODS.toString() +":"+nCourse.getReading_periods();
-		query +=  Program.ProgramLabels.CREDIT.toString() +":"+nProgram.getCredit();
+		String query = "MATCH (n:CourseProgram{ProgramCode:\""+  programCode+"\"}) SET n={";
+		query += CourseProgram.ProgramLabels.CODE.toString() +":"+CourseProgram.getCode();
+		query += CourseProgram.ProgramLabels.DESCRIPTION.toString() +":"+CourseProgram.getDescription();
+		query += CourseProgram.ProgramLabels.YEAR.toString() +":"+CourseProgram.getStartDate().getYear();
+		query += CourseProgram.ProgramLabels.LP.toString() +":"+CourseProgram.getStartDate().getPeriod();
+		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +":"+CourseProgram.getReading_periods();
+		query += CourseProgram.ProgramLabels.CREDITS.toString() +":"+CourseProgram.getCredits();
 
 		query +="}";
 		communicator.writeToNeo(query);
