@@ -150,7 +150,7 @@ public class UserMethods {
 	public Course[] getUserCourses(User user) {
 		String query = "MATCH (n:"+user.User+"{"+User.UserLables.USERNAME+"}),(m:"+Course.course+") WHERE (n)-[r:CAN_EDIT]->(m) return m";
 		StatementResult db = communicator.readFromNeo(query);
-		ArrayList<Course> courses = new ArrayList<>();
+		ArrayList<Course> courses = new ArrayList<Course>();
 		while(db.hasNext()){
 			Course c = createCourse(db.next(),"m");
 			courses.add(c);
