@@ -297,7 +297,8 @@ public class GetMethods {
 		
 		return courseProgramSpecialization;
 	}
-	/**
+
+
 	@deprecated
 	public Course getCourseNoKc(String courseCode, CourseDate courseDate) {
 
@@ -332,7 +333,4 @@ public class GetMethods {
 		return courseNoKc;
 	
 	}
-
-
-	*/
 }
