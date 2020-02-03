@@ -17,31 +17,6 @@ public class ModifyMethods {
 		this.communicator = communicator;
 	}
 	
-	public void changeUserPrivileges(String username,boolean admin) {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.USERTAG +"="+(admin?1:0);
-		communicator.writeToNeo(query);
-	}
-	public void changeUserPassword(String username,String pwd)  {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.PASSWORD +"=" + Security.generateHash(pwd);
-		communicator.writeToNeo(query);
-	}
-	public void removeUser(String username) {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) DETACH DELETE n";
-		communicator.writeToNeo(query);
-	}
-
-	public void addCourseToUser(User user,Course data) {
-
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+user.getUsername()+
-				"}),(m:Course{"+
-				Course.CourseLabels.CODE+":\""+ data.getCourseCode()+"\", "+
-				Course.CourseLabels.YEAR +":"+data.getStartPeriod().getYear()+"," +
-				Course.CourseLabels.LP +":\""+data.getStartPeriod().getPeriod().name()+"\"" +
-				"}) CREATE (n)-[r:CAN_EDIT]->(m)";
-		communicator.writeToNeo(query);
-		user.addCourse(data);
-	}
-
 	/**
 	 * Edit a Specific KC to a new generated KC object
 	 * @param name name Selector
@@ -59,8 +34,17 @@ public class ModifyMethods {
 		communicator.writeToNeo(query);
 	}
 	
-	public void editProgram() {
-		
+	public void editProgram(String programCode,CourseDate startyear, CourseProgram newProgram) {
+		String query = "MATCH (n:CourseProgram{ProgramCode:\""+  programCode+"\"}) SET n={";
+		query += CourseProgram.ProgramLabels.CODE.toString() +"="+newProgram.getCode();
+		query += CourseProgram.ProgramLabels.DESCRIPTION.toString() +":"+newProgram.getDescription();
+		query += CourseProgram.ProgramLabels.YEAR.toString() +":"+newProgram.getStartDate().getYear();
+		query += CourseProgram.ProgramLabels.LP.toString() +":"+newProgram.getStartDate().getPeriod();
+		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +":"+newProgram.getCourseOrder().getReadingPeriods();
+		query += CourseProgram.ProgramLabels.CREDITS.toString() +":"+newProgram.getCredits();
+
+		query +="}";
+		communicator.writeToNeo(query);
 	}
 
 	/**
@@ -75,9 +59,13 @@ public class ModifyMethods {
 		communicator.writeToNeo(query);
 	}
 	
-	public void removeProgram( String programCode,CourseDate start) {
+
+	public void removeProgram( String programCode,CourseDate startyear) {
+		String query  ="MATCH(n:Program{ProgramCode:\""+ programCode +"\", "+CourseProgram.ProgramLabels.YEAR+":\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
 		
+		communicator.writeToNeo(query);
 	}
+
 
 	/**
 	 *  Edit a Course at Selector. todo KCs handling

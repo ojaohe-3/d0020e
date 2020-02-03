@@ -18,6 +18,11 @@ public class CourseProgram extends ProgramInformation{
 		}
 	}
 	
+	public CourseProgram(CourseOrder courseOrder) {
+		super( null, null,null,null,null,null);
+		
+	}
+	
 	/**
 	 * 
 	 * @param courseOrder

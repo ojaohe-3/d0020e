@@ -2,18 +2,19 @@ package SpecificInterfaces;
 
 import Data.Course;
 import Data.CourseDate;
+import Data.CourseInformation;
 import neo4j_JVM_API.Neo4JAPI;
 
 /**
  * A class containing all the functionality that a user should be able to access without signing in
  * 
  * 
- * @author Jesper.
+ * @author Jesper. Johan RH
  *
  */
-public class UserInterface {
+public abstract class UserInterface {
 
-	private Neo4JAPI neoapi;
+	protected Neo4JAPI neoapi;
 	
 	/**
 	 * Constructor
@@ -29,8 +30,18 @@ public class UserInterface {
 	 * @param courseDate
 	 * @return
 	 */
-	public Course getCourseByCode(String courseCode, CourseDate courseDate) {
+	protected Course getCourseByCode(String courseCode, CourseDate courseDate) {
 		return this.neoapi.getMethods.getCourse(courseCode, courseDate);
+	}
+
+	/**
+	 * Get all courses with a course code
+	 * @author Johan RH
+	 * @param courseCode
+	 * @return
+	 */
+	protected String[] getCourseByCode(String courseCode) {
+		return this.neoapi.filterMethods.filterCourseByCode(courseCode);
 	}
 	
 	/**
@@ -38,7 +49,7 @@ public class UserInterface {
 	 * @param topic
 	 * @return
 	 */
-	public String[] getCoursesByTopic(String topic) {
+	protected String[] getCoursesByTopic(String topic) {
 		return this.neoapi.filterMethods.getCourseNameByTopic(topic);
 	}
 	
@@ -46,8 +57,12 @@ public class UserInterface {
 	 * Get all avaliable topics
 	 * @return
 	 */
-	public String[] getTopics() {
+	protected String[] getTopics() {
 		return this.neoapi.getMethods.getTopics();
 	}
-	
+
+
+	protected CourseInformation[] getCourseByTag(Course.CourseLabels tag, String searchTerm){
+		return this.neoapi.filterMethods.filterCourseByTag(tag,searchTerm);
+	}
 }

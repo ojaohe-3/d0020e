@@ -47,52 +47,6 @@ public class GetMethods {
         }
 		return resultArray.toArray(new String[resultArray.size()]);
 	}
-
-	/**
-	 * Login manager, todo load session when logged in
-	 * @param username Selector
-	 * @param password Input to test authentication
-	 * @return true if successful
-	 * @author Johan RH
-	 */
-	public boolean login(String username, String password)  {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
-		StatementResult result = communicator.readFromNeo(query);
-		if(!result.hasNext())
-			return false;
-		Record record = result.next();
-		String pwd = record.get("n").get(User.UserLables.PASSWORD.toString()).toString();
-		if(pwd.equals(Security.generateHash(password))) {
-			// session = getUser(username);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * get user object
-	 * @param username Selector
-	 * @author Johan RH
-	 * @return User object
-	 */
-	public User getUser(String username) {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
-		StatementResult result = communicator.readFromNeo(query);
-		if(!result.hasNext())
-			return null;
-		Record record = result.next();
-		User user = new User(
-				record.get('n').get(User.UserLables.USERNAME.toString()).toString(),
-				record.get('n').get(User.UserLables.PASSWORD.toString()).toString()
-				);
-		query = "MATCH(:User{"+ User.UserLables.USERNAME +":\""+username+"\"})-->(n) return n";
-		result = communicator.readFromNeo(query);
-		while (result.hasNext()){
-			user.addCourse(createCourse(result.next(),"n"));
-		}
-		//todo load admin tag
-		return user;
-	}
 	
 	/**
 	 * Get Program from database
@@ -144,7 +98,7 @@ public class GetMethods {
 		LP lp = LP.valueOf(row.get(nodename).get("lp").toString());
 		CourseDate startDate = new CourseDate(year, lp);	
 		
-		CourseProgram courseProgram = new CourseProgram(courseOrder, name, code, description, startDate, credits, ProgramType.PROGRAM);
+		CourseProgram courseProgram = new CourseProgram(courseOrder, name, code, description, startDate, credits);
 		
 		return courseProgram;
 	}
@@ -248,16 +202,17 @@ public class GetMethods {
 		KC kc = createKC(row, "node");
 		return kc;
 	}
+
 	
 	/**
 	 * Get programSpecialization from database
 	 * 
 	 * 
-	 * @param courseCode
-	 * @param courseDate
-	 * Behöver lägga till en programkod så använd inte än.
+	 * @param specialization
+	 * @param code
+	 *
 	 */
-	public CourseProgram getProgramSpecialization(String specialization, CourseDate programDate, String code) {
+	public ProgramSpecialization getProgramSpecialization(String specialization, CourseDate startDate, String code) {
 
 		String query = "MATCH (programSpecialization: ProgramSpecialization {specialization: \"" + specialization + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" , code : \"" + code + "\" }) ";
 		query += "RETURN courseProgramSpecialization";
@@ -278,11 +233,11 @@ public class GetMethods {
 			courseOrder.setCourseAt(course, currentRow.get("relation").get("period").asInt(), currentRow.get("relation").get("pos").asInt());
 		}
 		
-		CourseProgram courseProgramSpecialization = createCourseProgramSpecialization(courseOrder, row, "programSpecialization");
+		ProgramSpecialization courseProgramSpecialization = createProgramSpecialization(courseOrder, row, "programSpecialization");
 		return courseProgramSpecialization;
 	}
-
-		private CourseProgram createCourseProgramSpecialization(CourseOrder courseOrder, Record row, String nodename) {
+	
+	private ProgramSpecialization createProgramSpecialization(CourseOrder courseOrder, Record row, String nodename) {
 		
 		String name = row.get(nodename).get("name").toString();
 		String code = row.get(nodename).get("code").toString();
@@ -293,44 +248,8 @@ public class GetMethods {
 		LP lp = LP.valueOf(row.get(nodename).get("lp").toString());
 		CourseDate startDate = new CourseDate(year, lp);	
 		
-		CourseProgram courseProgram = new CourseProgram(courseOrder, name, code, description, startDate, credits, ProgramType.SPECIALIZATION);
+		ProgramSpecialization courseProgramSpecialization = new ProgramSpecialization(courseOrder, name, code, description, startDate, credits);
 		
 		return courseProgramSpecialization;
-	}
-
-
-	@deprecated
-	public Course getCourseNoKc(String courseCode, CourseDate courseDate) {
-
-		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
-		
-		StatementResult result = this.communicator.readFromNeo(query);
-		Record row = result.next();
-
-		CourseInformation courseNoKc = createCourseNoKc(row, "course")  
-
-		return courseNoKc;
-		
-	}
-
-	private CourseInformation createCourseNoKc(Record row, String nodename) {
-		
-		String name = row.get(nodename).get("name").toString();
-		String courseCode = row.get(nodename).get("courseCode").toString();
-		String creds = row.get(nodename).get("credit").toString();
-		
-		creds = creds.replaceAll("\"", "");
-		Credits credits = Credits.valueOf(creds);
-		
-		String description = row.get(nodename).get("description").toString();
-		String examiner = row.get(nodename).get("examiner").toString();
-		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"", ""));
-		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"", ""));
-		CourseDate startDate = new CourseDate(year, lp);
-		
-		CourseInformation courseNoKc = new CourseInformation(name, courseCode, credits, description, examiner, startDate);
-		
-		return courseNoKc;
-	
 	}
 }

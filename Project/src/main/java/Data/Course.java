@@ -1,6 +1,10 @@
 package Data;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * 
@@ -84,6 +88,12 @@ public class Course extends CourseInformation {
 		public String toString() {
 			return this.name;
 		}
+	}
+	public String toJson() throws JsonProcessingException {
+		ObjectMapper obj = new ObjectMapper();
+		String temp = obj.writeValueAsString(this);
+		System.out.println(temp);
+		return obj.writeValueAsString(this);
 	}
 
 }
