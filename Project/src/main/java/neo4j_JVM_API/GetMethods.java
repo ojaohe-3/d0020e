@@ -236,3 +236,20 @@ public class GetMethods {
 		ProgramSpecialization courseProgramSpecialization = createProgramSpecialization(courseOrder, row, "programSpecialization");
 		return courseProgramSpecialization;
 	}
+	
+	private ProgramSpecialization createProgramSpecialization(CourseOrder courseOrder, Record row, String nodename) {
+		
+		String name = row.get(nodename).get("name").toString();
+		String code = row.get(nodename).get("code").toString();
+		String description = row.get(nodename).get("description").toString();
+		String creds = row.get(nodename).get("credit").toString();
+		Credits credits = Credits.valueOf(creds);
+		int year = Integer.parseInt(row.get(nodename).get("year").toString());
+		LP lp = LP.valueOf(row.get(nodename).get("lp").toString());
+		CourseDate startDate = new CourseDate(year, lp);	
+		
+		ProgramSpecialization courseProgramSpecialization = new ProgramSpecialization(courseOrder, name, code, description, startDate, credits);
+		
+		return courseProgramSpecialization;
+	}
+}
