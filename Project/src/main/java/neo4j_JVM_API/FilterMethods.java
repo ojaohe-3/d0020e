@@ -27,8 +27,7 @@ public class FilterMethods {
 	 */
 	public CourseInformation[] filterCourseByTag(Course.CourseLabels filter, String searchTerm) {
 
-		String query = "MATCH (course: " + Course.course +") WHERE ";
-		query += "course." + filter + " CONTAINS \"" + searchTerm + "\" ";
+		String query = "MATCH (course: " + Course.course +") WHERE course." + filter + " CONTAINS \"" + searchTerm + "\" ";
 		
 		/* This gives us the full list of records returned from neo. */
 		List<Record> resultList = this.communicator.readFromNeo(query).list();
@@ -57,8 +56,7 @@ public class FilterMethods {
 	 * @return An array containing all the search results.
 	 */
 	public ProgramInformation[] filterProgramByTag(CourseProgram.ProgramLabels filter, String searchTerm) {
-		String query = "MATCH (program: " + CourseProgram.ProgramType.PROGRAM +") WHERE ";
-		query += "program." + filter + " CONTAINS \"" + searchTerm + "\" ";
+		String query = "MATCH (program: " + CourseProgram.ProgramType.PROGRAM +") WHERE program." + filter + " CONTAINS \"" + searchTerm + "\" ";
 		
 		/* This gives us the full list of records returned from neo. */
 		List<Record> resultList = this.communicator.readFromNeo(query).list();
@@ -78,11 +76,59 @@ public class FilterMethods {
 	}
 	
 	/**
+	 * Generalized search function for topics. This should be the only search function for 
+	 * topics we need.
+	 * @param filter - This can be any value of the form {@link Topic.TopicLabels}.
+	 * @param searchTerm - This is the actual search term for the filter. All search results will contain this string.
+	 * @return - An array containing the title of all search results.
+	 */
+	public String[] filterTopicByTitle(String searchTerm) {
+		String query = "MATCH (topic: " + Topic.TopicLabels.TOPIC +") WHERE topic." + Topic.TopicLabels.TITLE.toString() + " CONTAINS \"" + searchTerm + "\" ";
+		
+		/* This gives us the full list of records returned from neo. */
+		List<Record> resultList = this.communicator.readFromNeo(query).list();
+		String[] result = new String[resultList.size()];
+		int i = 0;
+		for (Record row : resultList) {
+			
+			result[i] = row.get(Topic.TopicLabels.TITLE.toString()).toString();
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * Generalized search function for KCs. This should be the only search function for 
+	 * KCs we need.
+	 * @param filter - This can be any value of the form {@link KC.KCLabel}
+	 * @param searchTerm - This is the actual search term for the filter. All search results will contain this string.
+	 * @return - An array containing the title of all search results.
+	 */
+	public KC[] filterKCByTag(KC.KCLabel filter, String searchTerm) {
+		String query = "MATCH (kc: " + KC.kc +") WHERE kc." + filter + " CONTAINS \"" + searchTerm + "\" ";
+		
+		/* This gives us the full list of records returned from neo. */
+		List<Record> resultList = this.communicator.readFromNeo(query).list();
+		KC[] result = new KC[resultList.size()];
+		int i = 0;
+		for (Record row : resultList) {
+			KC kc = new KC(row.get(KC.KCLabel.NAME.toString()).toString(),
+					row.get(KC.KCLabel.GENERAL_DESCRIPTION.toString()).toString(), 
+					Integer.parseInt(row.get(KC.KCLabel.TAXONOMYLEVEL.toString()).toString()), 
+					row.get(KC.KCLabel.TAXONOMY_DESCRIPTION.toString()).toString());
+			result[i] = kc;
+		}
+		
+		return result;
+	}
+	
+	/**
 	 * Filter course by code
 	 * 
 	 * @param code
 	 * @return array with matching course code
 	 */
+	@Deprecated
 	public String[] filterCourseByCode(String code) {
 		String query = "MATCH (course: Course) WHERE course.courseCode STARTS WITH \"" + code + "\" " ;
 		query += "RETURN course";
@@ -102,6 +148,7 @@ public class FilterMethods {
 	 * @param name
 	 * @return array with matching course name
 	 */
+	@Deprecated
 	public String[] filterCourseByName(String name) {
 		String query = "MATCH (course: Course) WHERE course.name STARTS WITH \"" + name + "\"";
 		query += "RETURN course";
@@ -121,6 +168,7 @@ public class FilterMethods {
 	 * @param code
 	 * @return array with matching program
 	 */
+	@Deprecated
 	public String[] filterProgramByCode(String code) {
 		String query = "MATCH (courseProgram: CourseProgram) WHERE courseProgram.code STARTS WITH \"" + code + "\"";
 		query += "RETURN courseProgram";
@@ -142,6 +190,7 @@ public class FilterMethods {
 	 * @param name
 	 * @return array with matching program
 	 */
+	@Deprecated
 	public String[] filterProgramByName(String name) {
 		String query = "MATCH (courseProgram: CourseProgram) WHERE courseProgram.name STARTS WITH \"" + name + "\"";
 		query += "RETURN courseProgram";
@@ -161,6 +210,7 @@ public class FilterMethods {
 	 * @param name
 	 * @return array with matching topics
 	 */
+	@Deprecated
 	public String[] filterTopic(String name) {
 		String query = "MATCH (topic: "+ Topic.TopicLabels.TOPIC.toString() +") WHERE topic."+ Topic.TopicLabels.TITLE.toString() + " STARTS WITH \"" + name + "\" ";
 		query += "RETURN topic";
@@ -175,21 +225,13 @@ public class FilterMethods {
 		
 		return topics.toArray(new String[topics.size()]);
 	}
-	
-	/**
-	 * Filter kc
-	 * 
-	 * @return array with matching kcs
-	 */
-	public void filterKC() {
-		
-	}
 
 	/**
 	 * Get names of courses that has a specific topic
 	 * @param topicTitle
 	 * @return String[] of available course names
 	 */
+	@Deprecated
 	public String[] getCourseNameByTopic(String topicTitle) {
 		String query = "MATCH(node: Topic {title : \""+ topicTitle +"\"})<-[r]-(course) RETURN course ";
 		
@@ -203,8 +245,4 @@ public class FilterMethods {
 		return courseNames.toArray(new String[courseNames.size()]);
 		
 	}
-
-    public String[] getCourseByTag(CourseLabels tag, String searchTerm) {
-		return null;
-    }
 }
