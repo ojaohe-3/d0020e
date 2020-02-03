@@ -1,20 +1,23 @@
 package Data;
 
+import com.fasterxml.jackson.core.JsonFactory;
+
 /**
- * The course information is merely a data structure used for 
- * storing many search results from the database. Do not use this as a 
+ * The course information is merely a data structure used for
+ * storing many search results from the database. Do not use this as a
  * complete representation of a course.
  * @author Robin
  *
  */
-public class CourseInformation {
+public class CourseInformation extends JsonFactory {
 	private String name;
 	private String courseCode;
 	private String description;
 	private String examiner;
 	private CourseDate startPeriod;
 	private Credits credit;
-	
+
+
 	/**
 	 * 
 	 * @param name - the name of the course
@@ -79,5 +82,20 @@ public class CourseInformation {
 
 	public void setCredit(Credits credit) {
 		this.credit = credit;
+	}
+
+
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		CourseInformation that = (CourseInformation) o;
+		return name.equals(that.name) &&
+				courseCode.equals(that.courseCode) &&
+				description.equals(that.description) &&
+				examiner.equals(that.examiner) &&
+				startPeriod.equals(that.startPeriod) &&
+				credit == that.credit;
 	}
 }

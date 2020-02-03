@@ -44,20 +44,6 @@ private final Neo4jCommunicator communicator;
 		String query = "CREATE (n: " + Topic.TopicLabels.TOPIC.toString() +" { " +Topic.TopicLabels.TITLE.toString()+ ":\""+ topic.toString() +"\"})";
 		this.communicator.writeToNeo(query);
 	}
-	
-	/**
-	 * Add a user. This method must prevent any unauthorized access and 
-	 * hacker attacks.
-	 */
-	public void addUser(User userObj) {
-		String query = "CREATE (n:"+ User.UserLables.USER +"{";
-		query +=    User.UserLables.USERNAME +":"+userObj.getUsername();
-		query += 	User.UserLables.PASSWORD +":" + userObj.getPassword() ;
-		query += 	User.UserLables.USERTAG +":" + (userObj.isAdmintag()?1:0) ;
-		query += 	"})";
-		communicator.writeToNeo(query);
-	}
-	
 	/**
 	 * Add a new course to the server. This is still a work in progress, so don't use it yet.
 	 * @param course - The selected course to create.

@@ -47,52 +47,6 @@ public class GetMethods {
         }
 		return resultArray.toArray(new String[resultArray.size()]);
 	}
-
-	/**
-	 * Login manager, todo load session when logged in
-	 * @param username Selector
-	 * @param password Input to test authentication
-	 * @return true if successful
-	 * @author Johan RH
-	 */
-	public boolean login(String username, String password)  {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
-		StatementResult result = communicator.readFromNeo(query);
-		if(!result.hasNext())
-			return false;
-		Record record = result.next();
-		String pwd = record.get("n").get(User.UserLables.PASSWORD.toString()).toString();
-		if(pwd.equals(Security.generateHash(password))) {
-			// session = getUser(username);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * get user object
-	 * @param username Selector
-	 * @author Johan RH
-	 * @return User object
-	 */
-	public User getUser(String username) {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
-		StatementResult result = communicator.readFromNeo(query);
-		if(!result.hasNext())
-			return null;
-		Record record = result.next();
-		User user = new User(
-				record.get('n').get(User.UserLables.USERNAME.toString()).toString(),
-				record.get('n').get(User.UserLables.PASSWORD.toString()).toString()
-				);
-		query = "MATCH(:User{"+ User.UserLables.USERNAME +":\""+username+"\"})-->(n) return n";
-		result = communicator.readFromNeo(query);
-		while (result.hasNext()){
-			user.addCourse(createCourse(result.next(),"n"));
-		}
-		//todo load admin tag
-		return user;
-	}
 	
 	/**
 	 * Get Program from database
@@ -248,14 +202,15 @@ public class GetMethods {
 		KC kc = createKC(row, "node");
 		return kc;
 	}
+
 	
 	/**
 	 * Get programSpecialization from database
 	 * 
 	 * 
-	 * @param courseCode
+	 * @param specialization
 	 * @param courseDate
-	 * Behöver lägga till en programkod så använd inte än.
+	 *
 	 */
 	public CourseProgram getProgramSpecialization(String specialization, CourseDate programDate, String code) {
 
@@ -297,7 +252,7 @@ public class GetMethods {
 		
 		return courseProgramSpecialization;
 	}
-	
+	@Deprecated
 	public Course getCourseNoKc(String courseCode, CourseDate courseDate) {
 
 		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
