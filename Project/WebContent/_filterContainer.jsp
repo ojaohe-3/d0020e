@@ -21,7 +21,7 @@
 	    <div class="radio">
 	      	  <label><input type="radio" name="optradio" id="courseFilterByCode">Filter by Course code</label>
 	    </div>
-	    <div class="radio disabled">
+	    <div class="radio">
 	          <label><input type="radio" name="optradio" id="courseFilterByTopic">Filter by c Topic</label>
 	    </div>
 	      
@@ -39,8 +39,8 @@
     
     <div id="program" class="tab-pane fade in">
       <h3>Program</h3>
-      		<div class="radio">
-		      <label><input type="radio" name="optradio" id="programFilterByName" checked>Filter by Program Name</label>
+      	<div class="radio">
+		      <label><input type="radio" name="optradio" id="programFilterByName">Filter by Program Name</label>
 	    </div>
 	    <div class="radio">
 	      	  <label><input type="radio" name="optradio" id="programFilterByCode">Filter by Program Code</label>
@@ -63,7 +63,7 @@
       <h3>Knowledge Component</h3>
       
       <div class="radio">
-		      <label><input type="radio" name="optradio" id="kcFilterByName" checked>Filter by KC Name</label>
+		      <label><input type="radio" name="optradio" id="kcFilterByName">Filter by KC Name</label>
 	    </div>
 	    <div class="radio">
 	          <label><input type="radio" name="optradio" id="kcFilterByTopic">Filter by kc Topic</label>
