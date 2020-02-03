@@ -90,14 +90,6 @@ public class Course extends CourseInformation {
 		}
 	}
 
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		Course course = (Course) o;
-		return ((Course) o).courseInfo.equals(this.courseInfo);
-	}
-
 	public String toJson() throws JsonProcessingException {
 		ObjectMapper obj = new ObjectMapper();
 		String temp = obj.writeValueAsString(this);
