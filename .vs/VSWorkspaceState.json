@@ -1,0 +1,15 @@
+{
+  "ExpandedNodes": [
+    "",
+    "\\Project",
+    "\\Project\\src",
+    "\\Project\\src\\main",
+    "\\Project\\src\\main\\java",
+    "\\Project\\src\\main\\java\\Data",
+    "\\Project\\src\\main\\java\\neo4j_JVM_API",
+    "\\Project\\src\\main\\java\\neoCommunicator",
+    "\\Project\\src\\main\\java\\SpecificInterfaces"
+  ],
+  "SelectedNode": "\\Project\\src\\main\\java\\Data\\CourseInformation.java",
+  "PreviewInSolutionExplorer": false
+}

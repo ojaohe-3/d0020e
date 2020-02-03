@@ -297,7 +297,7 @@ public class GetMethods {
 		
 		return courseProgramSpecialization;
 	}
-	
+	/**
 	public Course getCourseNoKc(String courseCode, CourseDate courseDate) {
 
 		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
@@ -333,5 +333,5 @@ public class GetMethods {
 	}
 
 
-	//getTopic
+	*/
 }
