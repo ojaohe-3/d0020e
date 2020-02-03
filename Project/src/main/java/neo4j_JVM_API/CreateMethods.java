@@ -109,9 +109,11 @@ private final Neo4jCommunicator communicator;
 	}
 	
 	/**
-	 * Add a new program in the database.
+	 * Add a new program in the database. This method can also be used for creating program specializations
+	 * Just make sure to create a connections between the program and the specialization afterwards.
 	 * @param program - The program you want to add.
 	 * @see Data.CourseProgram
+	 * @see #createProgramSpecializationRelation(String, CourseDate, ProgramSpecialization)
 	 */
 	public void createProgram(CourseProgram program) {
 		String query = "CREATE(n:" + program.getProgramType() + " {" +
@@ -124,6 +126,24 @@ private final Neo4jCommunicator communicator;
 				CourseProgram.ProgramLabels.READING_PERIODS.toString() + ":\"" + program.getCourseOrder().getReadingPeriods() + "\"})";
 		System.out.println(query);
 		communicator.writeToNeo(query);
+	}
+	
+	/**
+	 * Create a relation between a program specialization and a course program.
+	 * @param code
+	 * @param startDate
+	 * @param specialization - The specialization you just created.
+	 */
+	public void createProgramSpecializationRelation(String code, CourseDate startDate, ProgramSpecialization specialization) {
+		String query = "MATCH(program: " + CourseProgram.ProgramType.PROGRAM.toString() + "{" + CourseProgram.ProgramLabels.CODE.toString() + ": \"" + code + "\", " + 
+				CourseProgram.ProgramLabels.YEAR.toString()+ ": \"" + startDate.getYear() + "\", " + 
+				CourseProgram.ProgramLabels.LP.toString() + ": \"" + startDate.getPeriod().toString() + "\"}) ";
+		
+		query += "MATCH (specialization: " + CourseProgram.ProgramType.SPECIALIZATION.toString() +" {code: \"" + specialization.getCode() + "\", "+ 
+		CourseLabels.YEAR + " : \"" + specialization.getStartDate().getYear() + "\" , " + 
+				CourseLabels.LP + " : \"" + specialization.getStartDate().getPeriod().toString() + "\" }) ";
+		query += "CREATE (program) <- [r: " + Relations.SPECIALIZATION.toString() + "]-(specialization)";
+		this.communicator.writeToNeo(query);
 	}
 	
 	/**
@@ -223,12 +243,12 @@ private final Neo4jCommunicator communicator;
 	 */
 	@Deprecated
 	public void createProgramSpecialization(ProgramSpecialization specialization) {
-		String query = "CREATE(programSpecialization:" + ProgramSpecialization.ProgramType.SPECIALIZATION + " {" +
+		String query = "CREATE(programSpecialization:" + ProgramSpecialization.programSpecialization + " {" +
 				ProgramSpecialization.ProgramLabels.NAME.toString() + ":\"" + specialization.getName() + "\", " +
 				ProgramSpecialization.ProgramLabels.DESCRIPTION.toString() + ":\"" + specialization.getDescription() + "\", " +
-				ProgramSpecialization.ProgramLabels.CODE.toString() + ":\"" + specialization.getCode() + "\", " +
-				ProgramSpecialization.ProgramLabels.YEAR.toString() + ":\"" + specialization.getStartDate().getYear() + "\", " +
-				ProgramSpecialization.ProgramLabels.LP.toString() + ":\"" + specialization.getStartDate().getPeriod().toString() + "\", " +
+				ProgramSpecialization.ProgramLabels.COURSECODE.toString() + ":\"" + specialization.getCourseCode() + "\", " +
+				ProgramSpecialization.ProgramLabels.COURSEYEAR.toString() + ":\"" + specialization.getCourseStartDate().getYear() + "\", " +
+				ProgramSpecialization.ProgramLabels.COURSELP.toString() + ":\"" + specialization.getCourseStartDate().getPeriod().toString() + "\", " +
 				ProgramSpecialization.ProgramLabels.CREDITS.toString() + ":\"" + specialization.getCredits() + "\", " +
 				ProgramSpecialization.ProgramLabels.YEAR.toString() + ":\"" + specialization.getStartDate().getYear() + "\", " +
 				ProgramSpecialization.ProgramLabels.LP.toString() + ":\"" + specialization.getStartDate().getPeriod().toString() + "\"})";
@@ -249,11 +269,11 @@ private final Neo4jCommunicator communicator;
 		Course[][] courses = courseOrder.getCourseArray();
 		
 		/* find the program specialization*/
-		String query = "MATCH(program: " + ProgramSpecialization.ProgramType.SPECIALIZATION + "{" + ProgramSpecialization.ProgramLabels.CODE.toString() + ":\"" + specialization.getCode() + "\", " + 
+		String query = "MATCH(program: " + ProgramSpecialization.programSpecialization + "{" + ProgramSpecialization.ProgramLabels.COURSECODE.toString() + ":\"" + specialization.getCourseCode() + "\", " + 
 				ProgramSpecialization.ProgramLabels.YEAR.toString()+ ":\"" + specialization.getStartDate().getYear()+ "\", " + 
 				ProgramSpecialization.ProgramLabels.LP.toString() + "\"" + specialization.getStartDate().getPeriod().toString() + "\", " +
-				ProgramSpecialization.ProgramLabels.YEAR.toString()+ ":\"" + specialization.getStartDate().getYear()+ "\", " + 
-				ProgramSpecialization.ProgramLabels.LP.toString() + "\"" + specialization.getStartDate().getPeriod().toString() + "\", " +
+				ProgramSpecialization.ProgramLabels.COURSEYEAR.toString()+ ":\"" + specialization.getCourseStartDate().getYear()+ "\", " + 
+				ProgramSpecialization.ProgramLabels.COURSELP.toString() + "\"" + specialization.getCourseStartDate().getPeriod().toString() + "\", " +
 				ProgramSpecialization.ProgramLabels.NAME.toString() + "\"" + specialization.getName().toString() + "})";
 		
 		/* Create a match for every course in the course order and add a relation for that course. */
@@ -272,7 +292,7 @@ private final Neo4jCommunicator communicator;
 	}
 	
 	/**
-	 * Create a complete copy of a program for another starting year. Every course and 
+	 * Create a complete copy of a program (or specialization) for another starting year. Every course and 
 	 * KC will be replicated and moved relative to the new starting year.
 	 * @param program - The program you want to copy.
 	 * @param newYear - The year of the first study period. This is not relative to the old year.

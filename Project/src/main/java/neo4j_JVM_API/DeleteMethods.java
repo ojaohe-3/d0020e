@@ -2,11 +2,15 @@ package neo4j_JVM_API;
 
 import java.util.ArrayList;
 
+import javax.management.relation.Relation;
+
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
 
+import Data.Course;
 import Data.Course.CourseLabels;
 import Data.CourseDate;
+import Data.KC;
 import neoCommunicator.Neo4jCommunicator;
 
 /**
@@ -77,14 +81,33 @@ public class DeleteMethods {
 		
 	}
 	
-	public void deleteProgram(String name, CourseDate startDate) {
+	/**
+	 * Delete program from database
+	 * 
+	 * @param code
+	 * @param startDate
+	 */
+	public void deleteProgram(String code, CourseDate startDate) {
 		
-		String query = "MATCH (courseProgram: CourseProgram {name: \"" + name + "\", " + CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" })-[relations]-(nodes) DELETE courseProgram, relations";
+		String query = "MATCH (courseProgram: CourseProgram {code: \"" + code + "\", " + CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" })-[relations]-(nodes) DELETE courseProgram, relations";
 		
 		communicator.writeToNeo(query);
 		
 	}
 	
+	/**
+	 * Delete program specialization
+	 * 
+	 * @param name
+	 * @param startDate
+	 */
+	public void deleteProgramSpecialization(String name, CourseDate startDate, String code) {
+		
+		String query = "MATCH (programSpecialization: ProgramSpecialization {name: \"" + name + "\", " + CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" , code:" + code + "\" })-[relations]-(nodes) DELETE programSpecialization, relations";
+		
+		communicator.writeToNeo(query);
+		
+	}
 	/**
 	 * Delete topic from database
 	 * 
@@ -98,7 +121,55 @@ public class DeleteMethods {
 	
 	}
 	
-	public void deleteRelation() {
+	/**
+	 * Delete relations between course and kc
+	 * 
+	 * @param kc
+	 * @param course
+	 * @param startDate
+	 */
+	public void deleteRelationKC(String nameKC, int taxonomyLevel, String courseCode, CourseDate startDate, Relation relation) {
+		String query = "MATCH (kc: KC {name: \"" + nameKC + "\", taxonomyLevel:" + taxonomyLevel + "\"})-[relation: " + relation.toString() 
+		+ "]-(course: Course {" + Course.CourseLabels.CODE + ": \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() 
+		+ "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) DELETE relation";
+		
+		communicator.writeToNeo(query);
+	}
+	
+	/**
+	 * Delete relation between kc and topic
+	 * 
+	 * @param nameKC
+	 * @param topic
+	 */
+	public void deleteRelationKCToTopic(String nameKC, String topic) {
+		String query = "MATCH (topic: Topic {name: \"" + topic + "\"})<-[relation]-(kc: KC {name: \"" + nameKC + "\") DELETE relation";
+		
+		communicator.writeToNeo(query);
+	}
+	
+	/**
+	 * Delete relation between course and topic
+	 * 
+	 * @param courseCode
+	 * @param startDate
+	 * @param topic
+	 */
+	public void deleteRelationCourseToTopic(String courseCode, CourseDate startDate, String topic) {
+		String query = "MATCH (topic: Topic {name: \"" + topic + "\"})<-[relation]-(course: Course {" + Course.CourseLabels.CODE + ": \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\", " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) DELETE relation";
+		
+		communicator.writeToNeo(query);
+	}
+	
+	public void deleteRelationProgramToTopic(String programCode, CourseDate startDate, String topic) {
+		
+	}
+	
+	public void deleteRelationCourseInProgram() {
+		
+	}
+	
+	public void deleteRelationSpecialization() {
 		
 	}
 }
