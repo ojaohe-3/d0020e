@@ -10,6 +10,7 @@ import org.neo4j.driver.v1.StatementResult;
 import Data.Course;
 import Data.Course.CourseLabels;
 import Data.CourseDate;
+import Data.CourseProgram;
 import Data.KC;
 import neoCommunicator.Neo4jCommunicator;
 
@@ -161,15 +162,39 @@ public class DeleteMethods {
 		communicator.writeToNeo(query);
 	}
 	
+	/**
+	 * Delete relation between program and topic
+	 * 
+	 * @param programCode
+	 * @param startDate when the program starts
+	 * @param topic
+	 */
 	public void deleteRelationProgramToTopic(String programCode, CourseDate startDate, String topic) {
+		String query = "MATCH (topic: Topic {name: \"" + topic + "\"})<-[relation]-(program: " + CourseProgram.ProgramType.PROGRAM + " {" + CourseProgram.ProgramLabels.CODE + ": \"" + programCode + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\", " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) DELETE relation";
 		
+		communicator.writeToNeo(query);
 	}
 	
-	public void deleteRelationCourseInProgram() {
+	/**
+	 * Delete relation between course and program (IN_PROGRAM)
+	 * 
+	 * @param courseCode
+	 * @param courseStartDate
+	 * @param programCode
+	 * @param programStartDate
+	 * @param type - Define if Program or programSpecialization
+	 */
+	public void deleteRelationCourseInProgram(String courseCode, CourseDate courseStartDate, String programCode, CourseDate programStartDate, CourseProgram.ProgramType type) {
+		String query = "MATCH (program: " + type + " {" + CourseProgram.ProgramLabels.CODE + ": \"" + programCode + "\", "+ 
+				CourseLabels.YEAR + " : \"" + programStartDate.getYear() + "\", " + 
+				CourseLabels.LP + " :\"" + programStartDate.getPeriod() + 
+				"\" }})<-[relation]-(course: " + Course.course + " {" + 
+				Course.CourseLabels.CODE + ": \"" + courseCode + "\", "+ 
+				CourseLabels.YEAR + " : \"" + courseStartDate.getYear() + "\", " + 
+				CourseLabels.LP + " : \"" + courseStartDate.getPeriod() + 
+				"\" }) DELETE relation";
 		
+		communicator.writeToNeo(query);
 	}
-	
-	public void deleteRelationSpecialization() {
-		
-	}
+
 }
