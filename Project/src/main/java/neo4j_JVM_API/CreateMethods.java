@@ -243,12 +243,12 @@ private final Neo4jCommunicator communicator;
 	 */
 	@Deprecated
 	public void createProgramSpecialization(ProgramSpecialization specialization) {
-		String query = "CREATE(programSpecialization:" + ProgramSpecialization.programSpecialization + " {" +
+		String query = "CREATE(programSpecialization:" + ProgramSpecialization.ProgramType.SPECIALIZATION + " {" +
 				ProgramSpecialization.ProgramLabels.NAME.toString() + ":\"" + specialization.getName() + "\", " +
 				ProgramSpecialization.ProgramLabels.DESCRIPTION.toString() + ":\"" + specialization.getDescription() + "\", " +
-				ProgramSpecialization.ProgramLabels.COURSECODE.toString() + ":\"" + specialization.getCourseCode() + "\", " +
-				ProgramSpecialization.ProgramLabels.COURSEYEAR.toString() + ":\"" + specialization.getCourseStartDate().getYear() + "\", " +
-				ProgramSpecialization.ProgramLabels.COURSELP.toString() + ":\"" + specialization.getCourseStartDate().getPeriod().toString() + "\", " +
+				ProgramSpecialization.ProgramLabels.CODE.toString() + ":\"" + specialization.getCode() + "\", " +
+				ProgramSpecialization.ProgramLabels.YEAR.toString() + ":\"" + specialization.getStartDate().getYear() + "\", " +
+				ProgramSpecialization.ProgramLabels.LP.toString() + ":\"" + specialization.getStartDate().getPeriod().toString() + "\", " +
 				ProgramSpecialization.ProgramLabels.CREDITS.toString() + ":\"" + specialization.getCredits() + "\", " +
 				ProgramSpecialization.ProgramLabels.YEAR.toString() + ":\"" + specialization.getStartDate().getYear() + "\", " +
 				ProgramSpecialization.ProgramLabels.LP.toString() + ":\"" + specialization.getStartDate().getPeriod().toString() + "\"})";
@@ -269,11 +269,11 @@ private final Neo4jCommunicator communicator;
 		Course[][] courses = courseOrder.getCourseArray();
 		
 		/* find the program specialization*/
-		String query = "MATCH(program: " + ProgramSpecialization.programSpecialization + "{" + ProgramSpecialization.ProgramLabels.COURSECODE.toString() + ":\"" + specialization.getCourseCode() + "\", " + 
+		String query = "MATCH(program: " + ProgramSpecialization.ProgramType.SPECIALIZATION + "{" + ProgramSpecialization.ProgramLabels.CODE.toString() + ":\"" + specialization.getCode() + "\", " + 
 				ProgramSpecialization.ProgramLabels.YEAR.toString()+ ":\"" + specialization.getStartDate().getYear()+ "\", " + 
 				ProgramSpecialization.ProgramLabels.LP.toString() + "\"" + specialization.getStartDate().getPeriod().toString() + "\", " +
-				ProgramSpecialization.ProgramLabels.COURSEYEAR.toString()+ ":\"" + specialization.getCourseStartDate().getYear()+ "\", " + 
-				ProgramSpecialization.ProgramLabels.COURSELP.toString() + "\"" + specialization.getCourseStartDate().getPeriod().toString() + "\", " +
+				ProgramSpecialization.ProgramLabels.YEAR.toString()+ ":\"" + specialization.getStartDate().getYear()+ "\", " + 
+				ProgramSpecialization.ProgramLabels.LP.toString() + "\"" + specialization.getStartDate().getPeriod().toString() + "\", " +
 				ProgramSpecialization.ProgramLabels.NAME.toString() + "\"" + specialization.getName().toString() + "})";
 		
 		/* Create a match for every course in the course order and add a relation for that course. */
