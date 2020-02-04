@@ -2,6 +2,7 @@ package SpecificInterfaces;
 
 import Data.Course;
 import Data.CourseDate;
+import Data.KC;
 import Data.User;
 import neo4j_JVM_API.Neo4JAPI;
 
@@ -10,7 +11,7 @@ public class TeacherInterface extends UserInterface {
     protected final Data.User User;
 
     /**
-     * TeacherInterface
+     * TeacherInterface Teachers available functions
      * @author Johan RH
      * @param neoapi
      */
@@ -20,7 +21,7 @@ public class TeacherInterface extends UserInterface {
     }
 
     /**
-     * Final commit to be writen in the database
+     * Final commit to be written in the database
      * @param c course to create
      * @return
      */
@@ -35,8 +36,8 @@ public class TeacherInterface extends UserInterface {
     }
 
     /**
-     * Edit an already commited course object, User passed must have correct privilege
-     * @param courseCode selector statment
+     * Edit an already committed course object, User passed must have correct privilege
+     * @param courseCode selector statement
      * @param startperiod period
      * @return
      */
@@ -52,6 +53,15 @@ public class TeacherInterface extends UserInterface {
         }
     }
 
+    /**
+     * Search KC
+     * @param field the attribute to search on
+     * @param searchKey search key
+     * @return
+     */
+    protected KC[] searchKC(KC.KCLabel field, String searchKey){
+        return neoapi.filterMethods.filterKCByTag(field,searchKey);
+    }
     private boolean hasWritePermission(Course course){
         for (Course o:User.getCourses()) {
             if(o.equals(course))

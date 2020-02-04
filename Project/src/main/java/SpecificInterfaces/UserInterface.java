@@ -1,7 +1,6 @@
 package SpecificInterfaces;
 
-import Data.Course;
-import Data.CourseDate;
+import Data.*;
 import neo4j_JVM_API.Neo4JAPI;
 
 /**
@@ -33,22 +32,13 @@ public abstract class UserInterface {
 		return this.neoapi.getMethods.getCourse(courseCode, courseDate);
 	}
 
-	/**
-	 * Get all courses with a course code
-	 * @author Johan RH
-	 * @param courseCode
-	 * @return
-	 */
-	protected String[] getCourseByCode(String courseCode) {
-		return this.neoapi.filterMethods.filterCourseByCode(courseCode);
-	}
 	
 	/**
 	 *  Get course names from courses related to a topic
 	 * @param topic
 	 * @return
 	 */
-	protected String[] getCoursesByTopic(String topic) {
+	protected CourseInformation[] getCoursesByTopic(String topic) {
 		return this.neoapi.filterMethods.getCourseNameByTopic(topic);
 	}
 	
@@ -83,4 +73,12 @@ public abstract class UserInterface {
 	protected String[]  getCourseByTag(Course.CourseLabels tag, String searchTerm){
 		return this.neoapi.filterMethods.getCourseByTag(tag,searchTerm);
 	}
+
+	protected ProgramInformation[] searchProgram(CourseProgram.ProgramLabels field, String searchKey){
+		return neoapi.filterMethods.filterProgramByTag(field,searchKey);
+	}
+	protected KC[] searchKcTopic(String topic){
+		return neoapi.filterMethods.filterKCByTopic(topic);
+	}
+
 }
