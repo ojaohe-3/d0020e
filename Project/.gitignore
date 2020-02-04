@@ -3,9 +3,7 @@
 *.project
 *.iml
 *.settings
-<<<<<<< HEAD
-=======
 /.settings
 /.idea
-db.conf
->>>>>>> 0e448a83b056bc5a6d35cfa464bae9ffe30115d9
+*.conf
+*.properties

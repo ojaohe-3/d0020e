@@ -48,15 +48,7 @@ public class TeacherInterface extends UserInterface {
             return false;
         }
     }
-    /**
-     * Search KC
-     * @param field the attribute to search on
-     * @param searchKey search key
-     * @return
-     */
-    protected KC[] searchKC(KC.KCLabel field, String searchKey){
-        return neoapi.filterMethods.filterKCByTag(field,searchKey);
-    }
+
     private boolean hasWritePermission(Course course){
         for (Course o:User.getCourses()) {
             if(o.equals(course))

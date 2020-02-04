@@ -43,23 +43,48 @@ public abstract class UserInterface {
 	}
 	
 	/**
-	 * Get all avaliable topics
+	 * Get all available topics
 	 * @return
 	 */
 	protected String[] getTopics() {
 		return this.neoapi.getMethods.getTopics();
 	}
 
-
+	/**
+	 * get information of course nodes by search question
+	 * @param tag attribute selected
+	 * @param searchTerm search key
+	 * @return
+	 */
 	protected CourseInformation[] getCourseByTag(Course.CourseLabels tag, String searchTerm){
 		return this.neoapi.filterMethods.filterCourseByTag(tag,searchTerm);
 	}
 
-	protected ProgramInformation[] searchProgram(CourseProgram.ProgramLabels field, String searchKey){
-		return neoapi.filterMethods.filterProgramByTag(field,searchKey);
+	/**
+	 * Search for programs by attribute tag and search key returning all related tags
+	 * @param tag search on what attribute
+	 * @param searchKey Search question
+	 * @return
+	 */
+	protected ProgramInformation[] searchProgram(CourseProgram.ProgramLabels tag, String searchKey){
+		return neoapi.filterMethods.filterProgramByTag(tag,searchKey);
 	}
+
+	/**
+	 * Find through topic All related KCs
+	 * @param topic Exact topic name
+	 * @return
+	 */
 	protected KC[] searchKcTopic(String topic){
 		return neoapi.filterMethods.filterKCByTopic(topic);
 	}
-
+	/**
+	 * Search KC
+	 * @param tag the attribute to search on
+	 * @param searchKey search key
+	 * @return
+	 */
+	protected KC[] searchKC(KC.KCLabel tag, String searchKey){
+		return neoapi.filterMethods.filterKCByTag(tag,searchKey);
+	}
 }
