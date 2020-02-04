@@ -209,12 +209,12 @@ public class GetMethods {
 	 * 
 	 * 
 	 * @param specialization
-	 * @param courseDate
+	 * @param code
 	 *
 	 */
-	public ProgramSpecialization getProgramSpecialization(String specialization, CourseDate courseDate) {
+	public ProgramSpecialization getProgramSpecialization(String specialization, CourseDate startDate, String code) {
 
-		String query = "MATCH (programSpecialization: ProgramSpecialization {specialization: \"" + specialization + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
+		String query = "MATCH (programSpecialization: ProgramSpecialization {specialization: \"" + specialization + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" , code : \"" + code + "\" }) ";
 		query += "RETURN courseProgramSpecialization";
 
 		StatementResult result = this.communicator.readFromNeo(query);
@@ -223,31 +223,33 @@ public class GetMethods {
 		int readingPeriods = row.get("programSpecialization").get("readingPeriods").asInt();
 		CourseOrder courseOrder = new CourseOrder(readingPeriods);
 
-		String inProgramSpecializationQuery = "MATCH (programSpecialization: ProgramSpecialization {specialization: \"" + specialization + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
-		inProgramSpecializationQuery += "MATCH(courseInprogramSpecialization : courseInSpecialization)<-[relation: IN_PROGRAMSPECIALIZATION]-(courseInprogramSpecialization) RETURN courseInProgramSpecialization, relation";
-		result = this.communicator.readFromNeo(inProgramSpecializationQuery);
+		String inProgramQuery = "MATCH (programSpecialization: ProgramSpecialization {code: \"" + code + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\"}) ";
+		inProgramQuery += "MATCH(courseInProgram : Course)<-[relation: IN_PROGRAM]-(programSpecialization) RETURN courseInProgram, relation";
+		result = this.communicator.readFromNeo(inProgramQuery);
 		
 		while(result.hasNext()) {
 			Record currentRow = result.next();
-			CourseSpecialization courseSpecialization = createCourseSpecialization(currentRow, "courseInProgramSpecialization");
-			courseOrder.setCourseAt(courseSpecialization, currentRow.get("relation").get("period").asInt(), currentRow.get("relation").get("pos").asInt());
+			Course course = createCourse(currentRow, "courseInProgram");
+			courseOrder.setCourseAt(course, currentRow.get("relation").get("period").asInt(), currentRow.get("relation").get("pos").asInt());
 		}
 		
-		CourseProgramSpecialization courseProgramSpecialization = createCourseProgramSpecialization(courseOrder, row, "courseProgramSpecialization");
+		ProgramSpecialization courseProgramSpecialization = createProgramSpecialization(courseOrder, row, "programSpecialization");
 		return courseProgramSpecialization;
-
 	}
-	@Deprecated
-	public Course getCourseNoKc(String courseCode, CourseDate courseDate) {
-
-		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
-		
-		Course course = this.communicator.readFromNeo(query);
-
-		return course;
-		
 	
+	private ProgramSpecialization createProgramSpecialization(CourseOrder courseOrder, Record row, String nodename) {
+		
+		String name = row.get(nodename).get("name").toString();
+		String code = row.get(nodename).get("code").toString();
+		String description = row.get(nodename).get("description").toString();
+		String creds = row.get(nodename).get("credit").toString();
+		Credits credits = Credits.valueOf(creds);
+		int year = Integer.parseInt(row.get(nodename).get("year").toString());
+		LP lp = LP.valueOf(row.get(nodename).get("lp").toString());
+		CourseDate startDate = new CourseDate(year, lp);	
+		
+		ProgramSpecialization courseProgramSpecialization = new ProgramSpecialization(courseOrder, name, code, description, startDate, credits);
+		
+		return courseProgramSpecialization;
 	}
-	//getCourseNoKc
-	//getTopic
 }

@@ -1,9 +1,5 @@
 package SpecificInterfaces;
-
-import Data.Course;
-import Data.CourseDate;
-import Data.KC;
-import Data.User;
+import Data.*;
 import neo4j_JVM_API.Neo4JAPI;
 
 public class TeacherInterface extends UserInterface {
@@ -52,7 +48,6 @@ public class TeacherInterface extends UserInterface {
             return false;
         }
     }
-
     /**
      * Search KC
      * @param field the attribute to search on

@@ -1,14 +1,7 @@
 package Data;
 
-public class CourseProgram {
-
+public class CourseProgram extends ProgramInformation{
 	private CourseOrder courseOrder;
-	private String code;
-	private String name;
-	private String description;
-	private CourseDate startDate;
-	private Credits credits;
-	private ProgramType programType;
 
 	public static enum ProgramType {
 		PROGRAM("CourseProgram"),
@@ -18,12 +11,16 @@ public class CourseProgram {
 		private ProgramType(String programType) {
 			this.programType = programType;
 		}
+		
+		@Override
+		public String toString() {
+			return this.programType;
+		}
 	}
 	
-	
 	public CourseProgram(CourseOrder courseOrder) {
-		this.courseOrder = courseOrder;
-		this.programType = ProgramType.PROGRAM;
+		super( null, null,null,null,null,null);
+		
 	}
 	
 	/**
@@ -36,24 +33,19 @@ public class CourseProgram {
 	 * @param credits
 	 */
 	public CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits) {
+		super( code, name, description, startDate, credits, ProgramType.PROGRAM);
 		this.courseOrder = courseOrder;
-		this.code = code;
-		this.name = name;
-		this.description = description;
-		this.startDate = startDate;
-		this.credits = credits;
-		this.programType = ProgramType.PROGRAM;
+		
+	}
+	
+	public CourseProgram( String code, String name, String description, CourseDate startDate, Credits credits) {
+		super( code, name, description, startDate, credits, ProgramType.PROGRAM);
 		
 	}
 	
 	protected CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits, ProgramType type) {
+		super( code, name, description, startDate, credits, type);
 		this.courseOrder = courseOrder;
-		this.code = code;
-		this.name = name;
-		this.description = description;
-		this.startDate = startDate;
-		this.credits = credits;
-		this.programType = type;
 	}
 	
 	public CourseOrder getCourseOrder() {
@@ -64,62 +56,6 @@ public class CourseProgram {
 	public void setCourseOrder(CourseOrder courseOrder) {
 		this.courseOrder = courseOrder;
 	}
-
-
-	public String getName() {
-		return name;
-	}
-
-
-	public void setName(String name) {
-		this.name = name;
-	}
-	
-	public String getCode() {
-		return code;
-	}
-
-
-	public void setCode(String code) {
-		this.code = code;
-	}
-
-
-	public String getDescription() {
-		return description;
-	}
-
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-
-	public Credits getCredits() {
-		return credits;
-	}
-
-
-	public void setCredits(Credits credits) {
-		this.credits = credits;
-	}
-
-	public CourseDate getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(CourseDate startDate) {
-		this.startDate = startDate;
-	}
-	
-	public ProgramType getProgramType() {
-		return programType;
-	}
-
-	public void setProgramType(ProgramType programType) {
-		this.programType = programType;
-	}
-
 
 	public static enum ProgramLabels {
 		NAME("name"), CODE("code"), DESCRIPTION("description"), YEAR("year"), LP("lp"), READING_PERIODS("readingPeriods"), CREDITS("credits");

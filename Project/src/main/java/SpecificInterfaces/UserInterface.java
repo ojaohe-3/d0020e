@@ -1,6 +1,6 @@
 package SpecificInterfaces;
-
 import Data.*;
+
 import neo4j_JVM_API.Neo4JAPI;
 
 /**
@@ -50,28 +50,9 @@ public abstract class UserInterface {
 		return this.neoapi.getMethods.getTopics();
 	}
 
-	/**
-	 * Get all Program Given Name
-	 * @author Johan RH
-	 * @param programName
-	 * @return
-	 */
-	protected String[] getProgramByName(String programName){
-		return this.neoapi.filterMethods.filterProgramByName(programName);
-	}
-	/**
-	 * Get all Program Given Code
-	 * @author Johan RH
-	 * @param programCode
-	 * @return
-	 */
-	protected String[] getProgramByCode(String programCode){
-		return this.neoapi.filterMethods.filterCourseByCode(programCode);
-	}
 
-
-	protected String[]  getCourseByTag(Course.CourseLabels tag, String searchTerm){
-		return this.neoapi.filterMethods.getCourseByTag(tag,searchTerm);
+	protected CourseInformation[] getCourseByTag(Course.CourseLabels tag, String searchTerm){
+		return this.neoapi.filterMethods.filterCourseByTag(tag,searchTerm);
 	}
 
 	protected ProgramInformation[] searchProgram(CourseProgram.ProgramLabels field, String searchKey){
