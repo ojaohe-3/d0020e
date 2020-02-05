@@ -42,6 +42,8 @@ public class FilterMethods {
 		int i = 0;
 		for (Record row : resultList) {
 			
+			// Tror felet är att det ska stå row.get("course").get(Course.CourseLabels.Name.........)
+			
 			CourseInformation information = new CourseInformation(row.get(Course.CourseLabels.NAME.toString()).toString(), 
 					row.get(Course.CourseLabels.NAME.toString()).toString(), 
 					
