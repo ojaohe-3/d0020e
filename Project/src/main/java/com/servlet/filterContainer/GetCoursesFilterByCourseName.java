@@ -67,7 +67,7 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 			System.out.println(jArray.toString());
 		} catch (JSONException ex) { }
 		
-		
+
 		
 	}
 	
