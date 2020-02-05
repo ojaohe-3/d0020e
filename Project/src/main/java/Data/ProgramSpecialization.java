@@ -1,8 +1,10 @@
 package Data;
 
+@Deprecated
 public class ProgramSpecialization {
 
-	private CourseProgram courseProgram;
+	private String courseCode;
+	private CourseDate courseStartDate;
 	private String name;
 	private String description;
 	private CourseOrder courseOrder;
@@ -11,12 +13,14 @@ public class ProgramSpecialization {
 	
 	public static final String programSpecialization = "programSpecialization";
 	
-	public ProgramSpecialization(CourseProgram courseProgram) {
-		this.courseProgram = courseProgram;
+	public ProgramSpecialization(String courseCode, CourseDate courseStartDate) {
+		this.courseCode = courseCode;
+		this.courseStartDate = courseStartDate;
 	}
 	
-	public ProgramSpecialization(CourseProgram courseProgram, String name, String description, CourseOrder courseOrder, CourseDate startDate, Credits credits) {
-		this.courseProgram = courseProgram;
+	public ProgramSpecialization(String courseCode, CourseDate courseStartDate, String name, String description, CourseOrder courseOrder, CourseDate startDate, Credits credits) {
+		this.courseCode = courseCode;
+		this.courseStartDate = courseStartDate;
 		this.name = name;
 		this.description = description;
 		this.courseOrder = courseOrder;
@@ -24,13 +28,7 @@ public class ProgramSpecialization {
 		this.credits = credits;
 	}
 	
-	public CourseProgram getCourseProgram() {
-		return courseProgram;
-	}
-
-	public void setCourseProgram(CourseProgram courseProgram) {
-		this.courseProgram = courseProgram;
-	}
+	
 
 	public String getName() {
 		return name;
@@ -72,8 +70,25 @@ public class ProgramSpecialization {
 		this.credits = credits;
 	}
 	
+	public String getCourseCode() {
+		return courseCode;
+	}
+
+	public void setCourseCode(String courseCode) {
+		this.courseCode = courseCode;
+	}
+
+	public void setCourseStartDate(CourseDate courseStartDate) {
+		this.courseStartDate = courseStartDate;
+	}
+	
+	public CourseDate getCourseStartDate() {
+		return courseStartDate;
+	}
+
+	
 	public static enum ProgramLabels {
-		NAME("name"), DESCRIPTION("description"), YEAR("year"), LP("lp"), CREDITS("credits"), COURSEPROGRAM("courseProgram");
+		NAME("name"), DESCRIPTION("description"), YEAR("year"), LP("lp"), CREDITS("credits"), COURSECODE("courseCode"), COURSEYEAR("courseStartYear"), COURSELP("courseStartLp");
 		private String label;
 		private ProgramLabels (String label) {
 			this.label = label;

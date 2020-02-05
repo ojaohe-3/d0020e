@@ -37,6 +37,7 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 		String[] s = neoapi.filterMethods.filterCourseByName(request.getParameter("filter"));
 
 		
+		
 		response.setContentType("text/plain");
 		response.getWriter().write("got : " + s.length + " first is : " + s[0]);
 		

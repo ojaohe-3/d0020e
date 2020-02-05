@@ -6,7 +6,7 @@ import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
 
 import Data.Course.CourseLabels;
-import Data.Topic;
+import Data.*;
 import neoCommunicator.Neo4jCommunicator;
 
 public class FilterMethods {
@@ -14,6 +14,27 @@ public class FilterMethods {
 	
 	public FilterMethods(Neo4jCommunicator communicator){
 		this.communicator = communicator;
+	}
+	
+	/**
+	 * Generalized search function for courses.
+	 * @param filters - these can be any value with the type {@link Course.CourseLabels}.
+	 * @param searchTerms - These are the actual search terms for every filter. Remember to 
+	 * put them in the same order as the filters.
+	 * @return Nothing, so far. this is a TODO
+	 * @author Robin
+	 */
+	public String[] filterCourseByTags(Course.CourseLabels[] filters, String[] searchTerms) {
+		if (searchTerms.length == 0) {
+			throw new IllegalArgumentException();
+		}
+		String query = "MATCH (course: " + Course.course +") WHERE ";
+		query += "AND course." + filters[0] + " STARTS WITH \"" + searchTerms[0] + "\" ";
+		for (int i = 1 ; i < filters.length; i++) {
+			//this.generateSearchTerm(filters[], searchTerms[0], variable);
+			query += "AND course." + filters[i] + " STARTS WITH \"" + searchTerms[i] + "\" ";
+		}
+		return null;
 	}
 	
 	/**

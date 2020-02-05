@@ -9,7 +9,7 @@
     <li class="active"><a data-toggle="pill" href="#course">Course</a></li>
     <li><a data-toggle="pill" href="#program">Program</a></li>
     <li><a data-toggle="pill" href="#KC">Knowledge Component</a></li>
-    <li><a data-toggle="pill" href="#topic">Topic ??</a></li>
+    <!-- <li><a data-toggle="pill" href="#topic">Topic ??</a></li> -->
   </ul>
   
   <div class="tab-content">
@@ -79,7 +79,7 @@
       
     </div>
     
-    
+    <!-- 
     <div id="topic" class="tab-pane fade in">
       <h3>Topic ??</h3>
       
