@@ -1,6 +1,10 @@
 package Data;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 /**
  * 
@@ -9,13 +13,7 @@ import java.util.ArrayList;
  * @author Jesper
  *
  */
-public class Course {
-	private String name;
-	private String courseCode;
-	private String description;
-	private String examiner;
-	private CourseDate startPeriod;
-	private Credits credit;
+public class Course extends CourseInformation {
 	private ArrayList<KC> requiredKC = new ArrayList<KC>();
 	private ArrayList<KC> developedKC = new ArrayList<KC>();
 	
@@ -23,6 +21,7 @@ public class Course {
 	 * Database name for a course.
 	 */
 	public static final String course = "Course";
+	
 	/**
 	 * Constructor
 	 * 
@@ -34,12 +33,16 @@ public class Course {
 	 * @param startPeriod an object of type {@link CourseOrder}
 	 */
 	public Course(String name, String courseCode, Credits credit, String description, String examiner, CourseDate startPeriod) {
-		this.name = name;
-		this.courseCode = courseCode;
-		this.credit = credit;
-		this.description = description;
-		this.examiner = examiner;
-		this.startPeriod = startPeriod;
+		super(name,courseCode,credit,description,examiner,startPeriod);
+	}
+	
+	/**
+	 * Create a full course from course information.
+	 * @param information
+	 * @see 
+	 */
+	public Course(CourseInformation information) {
+		super(information.getName(), information.getCourseCode(), information.getCredit(), information.getDescription(), information.getExaminer(), information.getStartPeriod());
 	}
 	
 	public void setRequiredKC(KC kc) {
@@ -66,54 +69,6 @@ public class Course {
 		return developedKC;
 	}
 	
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getCourseCode() {
-		return courseCode;
-	}
-
-	public void setCourseCode(String courseCode) {
-		this.courseCode = courseCode;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public String getExaminer() {
-		return examiner;
-	}
-
-	public void setExaminer(String examiner) {
-		this.examiner = examiner;
-	}
-
-	public CourseDate getStartPeriod() {
-		return startPeriod;
-	}
-
-	public void setStartPeriod(CourseDate startPeriod) {
-		this.startPeriod = startPeriod;
-	}
-
-	public Credits getCredit() {
-		return credit;
-	}
-
-	public void setCredit(Credits credit) {
-		this.credit = credit;
-	}
-	
 	/**
 	 * I don't wanna use strings everywhere and keep track of how 
 	 * how to spell stuff, so I made this. It's basically just a few
@@ -133,6 +88,12 @@ public class Course {
 		public String toString() {
 			return this.name;
 		}
+	}
+	public String toJson() throws JsonProcessingException {
+		ObjectMapper obj = new ObjectMapper();
+		String temp = obj.writeValueAsString(this);
+		System.out.println(temp);
+		return obj.writeValueAsString(this);
 	}
 
 }

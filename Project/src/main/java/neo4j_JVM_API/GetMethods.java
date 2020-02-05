@@ -47,52 +47,6 @@ public class GetMethods {
         }
 		return resultArray.toArray(new String[resultArray.size()]);
 	}
-
-	/**
-	 * Login manager, todo load session when logged in
-	 * @param username Selector
-	 * @param password Input to test authentication
-	 * @return true if successful
-	 * @author Johan RH
-	 */
-	public boolean login(String username, String password)  {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
-		StatementResult result = communicator.readFromNeo(query);
-		if(!result.hasNext())
-			return false;
-		Record record = result.next();
-		String pwd = record.get("n").get(User.UserLables.PASSWORD.toString()).toString();
-		if(pwd.equals(Security.generateHash(password))) {
-			// session = getUser(username);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * get user object
-	 * @param username Selector
-	 * @author Johan RH
-	 * @return User object
-	 */
-	public User getUser(String username) {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
-		StatementResult result = communicator.readFromNeo(query);
-		if(!result.hasNext())
-			return null;
-		Record record = result.next();
-		User user = new User(
-				record.get('n').get(User.UserLables.USERNAME.toString()).toString(),
-				record.get('n').get(User.UserLables.PASSWORD.toString()).toString()
-				);
-		query = "MATCH(:User{"+ User.UserLables.USERNAME +":\""+username+"\"})-->(n) return n";
-		result = communicator.readFromNeo(query);
-		while (result.hasNext()){
-			user.addCourse(createCourse(result.next(),"n"));
-		}
-		//todo load admin tag
-		return user;
-	}
 	
 	/**
 	 * Get Program from database
@@ -248,18 +202,19 @@ public class GetMethods {
 		KC kc = createKC(row, "node");
 		return kc;
 	}
+
 	
 	/**
 	 * Get programSpecialization from database
 	 * 
 	 * 
-	 * @param courseCode
-	 * @param courseDate
-	 * Behöver lägga till en programkod så använd inte än.
+	 * @param specialization
+	 * @param code
+	 *
 	 */
-	public ProgramSpecialization getProgramSpecialization(String specialization, CourseDate courseDate) {
+	public ProgramSpecialization getProgramSpecialization(String specialization, CourseDate startDate, String code) {
 
-		String query = "MATCH (programSpecialization: ProgramSpecialization {specialization: \"" + specialization + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
+		String query = "MATCH (programSpecialization: ProgramSpecialization {specialization: \"" + specialization + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" , code : \"" + code + "\" }) ";
 		query += "RETURN courseProgramSpecialization";
 
 		StatementResult result = this.communicator.readFromNeo(query);
@@ -268,31 +223,33 @@ public class GetMethods {
 		int readingPeriods = row.get("programSpecialization").get("readingPeriods").asInt();
 		CourseOrder courseOrder = new CourseOrder(readingPeriods);
 
-		String inProgramSpecializationQuery = "MATCH (programSpecialization: ProgramSpecialization {specialization: \"" + specialization + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
-		inProgramSpecializationQuery += "MATCH(courseInprogramSpecialization : courseInSpecialization)<-[relation: IN_PROGRAMSPECIALIZATION]-(courseInprogramSpecialization) RETURN courseInProgramSpecialization, relation";
-		result = this.communicator.readFromNeo(inProgramSpecializationQuery);
+		String inProgramQuery = "MATCH (programSpecialization: ProgramSpecialization {code: \"" + code + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\"}) ";
+		inProgramQuery += "MATCH(courseInProgram : Course)<-[relation: IN_PROGRAM]-(programSpecialization) RETURN courseInProgram, relation";
+		result = this.communicator.readFromNeo(inProgramQuery);
 		
 		while(result.hasNext()) {
 			Record currentRow = result.next();
-			CourseSpecialization courseSpecialization = createCourseSpecialization(currentRow, "courseInProgramSpecialization");
-			courseOrder.setCourseAt(courseSpecialization, currentRow.get("relation").get("period").asInt(), currentRow.get("relation").get("pos").asInt());
+			Course course = createCourse(currentRow, "courseInProgram");
+			courseOrder.setCourseAt(course, currentRow.get("relation").get("period").asInt(), currentRow.get("relation").get("pos").asInt());
 		}
 		
-		CourseProgramSpecialization courseProgramSpecialization = createCourseProgramSpecialization(courseOrder, row, "courseProgramSpecialization");
+		ProgramSpecialization courseProgramSpecialization = createProgramSpecialization(courseOrder, row, "programSpecialization");
 		return courseProgramSpecialization;
-
 	}
 	
-	public Course getCourseNoKc(String courseCode, CourseDate courseDate) {
-
-		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
+	private ProgramSpecialization createProgramSpecialization(CourseOrder courseOrder, Record row, String nodename) {
 		
-		Course course = this.communicator.readFromNeo(query);
-
-		return course;
+		String name = row.get(nodename).get("name").toString();
+		String code = row.get(nodename).get("code").toString();
+		String description = row.get(nodename).get("description").toString();
+		String creds = row.get(nodename).get("credit").toString();
+		Credits credits = Credits.valueOf(creds);
+		int year = Integer.parseInt(row.get(nodename).get("year").toString());
+		LP lp = LP.valueOf(row.get(nodename).get("lp").toString());
+		CourseDate startDate = new CourseDate(year, lp);	
 		
-	
+		ProgramSpecialization courseProgramSpecialization = new ProgramSpecialization(courseOrder, name, code, description, startDate, credits);
+		
+		return courseProgramSpecialization;
 	}
-	//getCourseNoKc
-	//getTopic
 }

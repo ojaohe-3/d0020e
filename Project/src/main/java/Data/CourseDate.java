@@ -1,10 +1,20 @@
 package Data;
 
+/**
+ * This represents a starting date of a course or program.
+ * @author <b>UNKNOWN</b>
+ *
+ */
 public class CourseDate {
 
 	private int year;
 	private LP period;
 	
+	/**
+	 * Create a date with year and study period.
+	 * @param year
+	 * @param period - The starting period in the form of {@link LP}
+	 */
 	public CourseDate(int year, LP period) {
 		this.year = year;
 		this.period = period;

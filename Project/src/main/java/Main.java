@@ -23,7 +23,7 @@ public class Main {
 	public static void main(String[] args) throws IOException {
 		
 		// Setup database connection
-		neoapi = new Neo4JAPI("bolt://130.240.200.254:7687", "neo4j", "neo4j-d0020e");
+		//neoapi = new Neo4JAPI("bolt://130.240.200.254:7687", "neo4j", "neo4j-d0020e");
 		
 		//neoapi.createMethods.clear(); <-- I moved this to Deletemethods. Greetings from Robin the code cop.
 		createCourses();
