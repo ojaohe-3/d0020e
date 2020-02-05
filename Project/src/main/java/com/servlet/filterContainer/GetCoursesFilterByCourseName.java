@@ -57,6 +57,8 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 				jobj.put(CourseLabels.CREDIT.toString(), ci.getCredit());
 				
 				jArray.put(jobj);
+			
+				
 				
 			}
 			response.setContentType("text/json");
