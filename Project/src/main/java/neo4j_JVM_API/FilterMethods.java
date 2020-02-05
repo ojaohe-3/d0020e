@@ -78,7 +78,6 @@ public class FilterMethods {
 	/**
 	 * Generalized search function for topics. This should be the only search function for 
 	 * topics we need.
-	 * @param filter - This can be any value of the form {@link Topic.TopicLabels}.
 	 * @param searchTerm - This is the actual search term for the filter. All search results will contain this string.
 	 * @return - An array containing the title of all search results.
 	 */
