@@ -2,6 +2,10 @@ package SpecificInterfaces;
 import Data.*;
 
 import neo4j_JVM_API.Neo4JAPI;
+import neoCommunicator.Neo4jCommunicator;
+import neoCommunicator.Neo4jConfigLoader;
+
+import java.io.IOException;
 
 /**
  * A class containing all the functionality that a user should be able to access without signing in
@@ -16,10 +20,13 @@ public abstract class UserInterface {
 	
 	/**
 	 * Constructor
-	 * @param neoapi
 	 */
-	public UserInterface(Neo4JAPI neoapi) {
-		this.neoapi = neoapi;
+	public UserInterface() {
+		try {
+			this.neoapi = Neo4jConfigLoader.getApi();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -43,7 +50,7 @@ public abstract class UserInterface {
 	}
 	
 	/**
-	 * Get all available topics
+	 * Get all available♦♣ topics
 	 * @return
 	 */
 	protected String[] getTopics() {

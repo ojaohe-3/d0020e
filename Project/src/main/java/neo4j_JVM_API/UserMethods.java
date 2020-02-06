@@ -104,6 +104,13 @@ public class UserMethods {
 		communicator.writeToNeo(query);
 		user.addCourse(data);
 	}
+
+	/**
+	 * Create a course that gives user write privilege, Does not create relations between kcs and course, condouct it to object and pass it to
+	 * CreateRelation method in CreateMethods API
+	 * @param user UserObject references User Privilege on compile time.
+	 * @param data Course To commit.
+	 */
 	public void createCourseWithUser(User user,Course data) {
 		user.addCourse(data);
 		String query = "MATCH(n:User{" + User.UserLables.USERNAME + ":" + user.getUsername() +

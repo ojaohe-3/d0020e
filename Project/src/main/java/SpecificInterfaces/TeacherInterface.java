@@ -9,10 +9,9 @@ public class TeacherInterface extends UserInterface {
     /**
      * TeacherInterface Teachers available functions
      * @author Johan RH
-     * @param neoapi
      */
-    public TeacherInterface(Neo4JAPI neoapi, User user) {
-        super(neoapi);
+    public TeacherInterface(User user) {
+        super();
         this.User = user;
     }
 
@@ -24,6 +23,7 @@ public class TeacherInterface extends UserInterface {
     protected boolean createCourse(Course c){
         try {
             this.neoapi.userMethods.createCourseWithUser(User,c);
+            this.neoapi.createMethods.createCourseKCrelation(c);
             return true;
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -41,13 +41,15 @@ public class TeacherInterface extends UserInterface {
         try {
             Course c = neoapi.getMethods.getCourse(courseCode,startperiod);
             if(hasWritePermission(c))
-                neoapi.modifyMethods.editCourse(courseCode,c);
+                neoapi.modifyMethods.editCourse(courseCode,startperiod,c);
             return true;
         }catch (Exception e){
             System.out.println(e.getMessage());
             return false;
         }
     }
+
+
 
     private boolean hasWritePermission(Course course){
         for (Course o:User.getCourses()) {

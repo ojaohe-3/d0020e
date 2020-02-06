@@ -10,10 +10,9 @@ public class AdminInterface extends TeacherInterface {
     /**
      * Constructor
      *
-     * @param neoapi
      */
-    public AdminInterface(Neo4JAPI neoapi, Data.User user) {
-        super(neoapi,user);
+    public AdminInterface(Data.User user) {
+        super(user);
     }
 
     public boolean addProgram(CourseProgram data){
