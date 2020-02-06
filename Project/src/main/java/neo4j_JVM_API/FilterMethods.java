@@ -45,12 +45,12 @@ public class FilterMethods {
 			// Tror felet är att det ska stå row.get("course").get(Course.CourseLabels.Name.........)
 			
 			CourseInformation information = new CourseInformation(row.get(Course.CourseLabels.NAME.toString()).toString(), 
-					row.get(Course.CourseLabels.NAME.toString()).toString(), 
+					row.get("course").get(Course.CourseLabels.NAME.toString()).toString(), 
 					
 					//Credits.valueOf(row.get(Course.CourseLabels.CREDIT.toString()).toString()), 
 					Credits.SEVEN,
-					row.get(Course.CourseLabels.DESCRIPTION.toString()).toString(),
-					row.get(Course.CourseLabels.EXAMINER.toString()).toString(), 
+					row.get("course").get(Course.CourseLabels.DESCRIPTION.toString()).toString(),
+					row.get("course").get(Course.CourseLabels.EXAMINER.toString()).toString(), 
 					new CourseDate(2019, LP.ONE) );
 					//new CourseDate(Integer.parseInt(row.get(Course.CourseLabels.YEAR.toString()).toString()),
 					//LP.valueOf(row.get(Course.CourseLabels.LP.toString()).toString())));
