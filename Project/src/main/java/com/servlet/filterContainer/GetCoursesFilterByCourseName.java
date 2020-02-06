@@ -2,10 +2,6 @@ package com.servlet.filterContainer;
 
 import java.io.IOException;
 
-<<<<<<< HEAD
-
-=======
->>>>>>> branch 'Neoapi_filter_c_tset' of https://github.com/ojaohe-3/d0020e
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -72,10 +68,7 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 			
 			System.out.println(jArray.toString());
 		} catch (JSONException ex) { }
-<<<<<<< HEAD
-		
-=======
->>>>>>> branch 'Neoapi_filter_c_tset' of https://github.com/ojaohe-3/d0020e
+
 
 		
 	}
