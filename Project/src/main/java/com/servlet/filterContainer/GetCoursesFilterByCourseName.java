@@ -2,11 +2,9 @@ package com.servlet.filterContainer;
 
 import java.io.IOException;
 
-<<<<<<< HEAD
-=======
 import org.json.JSONArray;
 import org.json.JSONException;
->>>>>>> 2d086a82f36a9ecbb5e28903792bf09e2fad21e5
+
 import org.json.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
@@ -70,12 +68,7 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 			
 			System.out.println(jArray.toString());
 		} catch (JSONException ex) { }
-		
-<<<<<<< HEAD
 
-=======
-		
->>>>>>> 2d086a82f36a9ecbb5e28903792bf09e2fad21e5
 		
 	}
 	
