@@ -2,6 +2,8 @@ package com.servlet.filterContainer;
 
 import java.io.IOException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.servlet.annotation.WebServlet;
@@ -39,10 +41,33 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 		
 		CourseInformation[] courses = Neo4JAPI.filterMethods.filterCourseByTag(CourseLabels.NAME, request.getParameter("filter").toString());
 		
-		JSONObject json = new JSONObject();
+		System.out.println("Got from db : " + courses.length);
 		
-		response.setContentType("text/plain");
-		response.getWriter().write("");
+		try {
+			JSONArray jArray = new JSONArray();
+			
+			for(CourseInformation ci: courses) {
+				JSONObject jobj = new JSONObject();
+				
+				jobj.put(CourseLabels.NAME.toString(), ci.getName());
+				jobj.put(CourseLabels.CODE.toString(), ci.getCourseCode());
+				jobj.put(CourseLabels.LP.toString(), ci.getStartPeriod().getPeriod());
+				jobj.put(CourseLabels.YEAR.toString(), ci.getStartPeriod().getYear());
+				jobj.put(CourseLabels.EXAMINER.toString(), ci.getExaminer());
+				jobj.put(CourseLabels.CREDIT.toString(), ci.getCredit());
+				
+				jArray.put(jobj);
+			
+				
+				
+			}
+			response.setContentType("text/json");
+			response.getWriter().write(jArray.toString());
+			
+			System.out.println(jArray.toString());
+		} catch (JSONException ex) { }
+		
+		
 		
 	}
 	

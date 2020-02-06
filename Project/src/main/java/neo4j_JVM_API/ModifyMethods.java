@@ -17,13 +17,30 @@ public class ModifyMethods {
 		this.communicator = communicator;
 	}
 	
-	/**
+
+		 /**
+	 * Takes in the name of the KC and its taxonomylevel and changes it's description
+	 * @param kc takes in the kc object and change to the desired values
+	 * @author Tommy A
+	 */
+	 public void editKC(KC kc) {
+
+		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " + 
+		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 
+		KC.KCLabel.GENERAL_DESCRIPTION.toString() + "= \"" + kc.getGeneralDescription() + "\", kc." +
+		KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + "= \"" + kc.getTaxonomyDescription "\"";
+	 
+		communicator.writeToNeo(query);
+	 }
+
+	 /**
 	 * Edit a Specific KC to a new generated KC object
 	 * @param name name Selector
 	 * @param taxlvl Taxonomy level Selector
 	 * @param kcData New Object to change selected element
 	 * @author Johan RH
 	 */
+	/*
 	public void editKC(String name, int taxlvl, KC kcData) {
 		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME +":\""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL +":"+taxlvl+"}) SET n={";
 		query += KC.KCLabel.NAME+":\""+kcData.getName()+"\",";
@@ -33,6 +50,7 @@ public class ModifyMethods {
 
 		communicator.writeToNeo(query);
 	}
+	*/
 	
 	public void editProgram(String programCode,CourseDate startyear, CourseProgram newProgram) {
 		String query = "MATCH (n:CourseProgram{ProgramCode:\""+  programCode+"\"}) SET n={";
@@ -46,26 +64,6 @@ public class ModifyMethods {
 		query +="}";
 		communicator.writeToNeo(query);
 	}
-
-	/**
-	 * Remove and detach selected KC object
-	 * @param name name selector
-	 * @param taxlvl taxonomy level selector
-	 * @author Johan RH, Markus
-	 */
-	public void removeKC(String name, int taxlvl) {
-		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME.toString() +": \""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL.toString() + ": \""+ taxlvl +"\"}) DETACH DELETE n";
-		
-		communicator.writeToNeo(query);
-	}
-	
-
-	public void removeProgram( String programCode,CourseDate startyear) {
-		String query  ="MATCH(n:Program{ProgramCode:\""+ programCode +"\", "+CourseProgram.ProgramLabels.YEAR+":\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
-		
-		communicator.writeToNeo(query);
-	}
-
 
 	/**
 	 *  Edit a Course at Selector. todo KCs handling
@@ -94,9 +92,31 @@ public class ModifyMethods {
 	 * @param startyear Starting Year object, What year, period?
 	 * @author Johan RH
 	 */
+	 //Moved to DeleteMethods
+	 @deprecated
 	public void removeCourse(String couseID, CourseDate startyear) {
 		String query  ="MATCH(n:"+Course.course+"{"+Course.CourseLabels.CODE.toString()+":\""+ couseID +"\", "+ Course.CourseLabels.YEAR.toString() + " :\""+ startyear.getYear() +"\", "+ Course.CourseLabels.LP +": \""+ startyear.getPeriod() +"\" }) DETACH DELETE n";
 		
+		
+		communicator.writeToNeo(query);
+	}
+		/**
+	 * Remove and detach selected KC object
+	 * @param name name selector
+	 * @param taxlvl taxonomy level selector
+	 * @author Johan RH, Markus
+	 */
+	 //moved to DeleteMethods
+	 @deprecated
+	public void removeKC(String name, int taxlvl) {
+		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME.toString() +": \""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL.toString() + ": \""+ taxlvl +"\"}) DETACH DELETE n";
+		
+		communicator.writeToNeo(query);
+	}
+	//moved to DeleteMethods
+	@deprecated
+	public void removeProgram( String programCode,CourseDate startyear) {
+		String query  ="MATCH(n:Program{ProgramCode:\""+ programCode +"\", "+CourseProgram.ProgramLabels.YEAR+":\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
 		
 		communicator.writeToNeo(query);
 	}

@@ -18,7 +18,15 @@ $(document).ready(function() {
 						filter : $("#searchCourse").val()
 					},
 					success : function(response) {
-						$('#course_search_results').text(response);
+						
+						
+						var s = "";
+						for(i in response) {
+							s += "<h2>" + response.object[i] + "</h2>";
+						}
+						$('#course_search_results').text(s);
+						
+						
 					}
 
 				});

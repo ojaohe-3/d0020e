@@ -197,4 +197,5 @@ public class DeleteMethods {
 		communicator.writeToNeo(query);
 	}
 
+
 }
