@@ -1,7 +1,6 @@
 package com.servlet.filterContainer;
 
 import java.io.IOException;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import Data.Course;
 import Data.CourseInformation;
 import Data.Course.CourseLabels;
 import neo4j_JVM_API.Neo4JAPI;

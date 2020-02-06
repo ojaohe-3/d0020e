@@ -240,7 +240,7 @@ public class FilterMethods {
 	 * @return String[] of available course names
 	 * @author Johan RH
 	 */
-	public CourseInformation[] getCourseByTopic(String topicTitle) {
+	public CourseInformation[] filterCourseByTopic(String topicTitle) {
 		String query = "MATCH(node: Topic {title : \""+ topicTitle +"\"})<-[r]-(course:Course) RETURN course ";
 		StatementResult result = this.communicator.readFromNeo(query);
 		ArrayList<CourseInformation> courseNames = new ArrayList<CourseInformation>();
@@ -263,7 +263,35 @@ public class FilterMethods {
 		
 	}
 
-
+	/**
+	 * Filter program by topic
+	 * 
+	 * @param topicTitle
+	 * @return
+	 */
+	public ProgramInformation[] filterProgramByTopic(String topicTitle) {
+		String query = "MATCH(topic: Topic {title : \""+ topicTitle +"\"})<-[r]-(program: CourseProgram) RETURN program ";
+		StatementResult result = this.communicator.readFromNeo(query);
+		ArrayList<CourseInformation> programs = new ArrayList<CourseInformation>();
+		
+		while(result.hasNext()) {
+			Record row = result.next();
+			programs.add(new CourseInformation(
+					row.get("course").get(CourseLabels.NAME.toString()).toString(),
+					row.get("course").get(CourseLabels.CODE.toString()).toString(),
+					Credits.getByString(row.get("course").get(CourseLabels.CREDIT.toString()).toString()),
+					row.get("course").get(CourseLabels.DESCRIPTION.toString()).toString(),
+					row.get("course").get(CourseLabels.EXAMINER.toString()).toString(),
+					new CourseDate(
+							Integer.parseInt(row.get("course").get(CourseLabels.YEAR.toString()).toString()),
+							LP.valueOf(LP.class,row.get("course").get(CourseLabels.LP.toString()).toString())
+					)
+			));
+		}
+		return (ProgramInformation[]) programs.toArray();
+		
+	}
+	
 	public KC[] filterKCByTopic(String topic) {
 		String query = "MATCH(node: Topic {title : \""+ topic +"\"})<-[r]-(kc:"+KC.kc+") RETURN kc ";
 
