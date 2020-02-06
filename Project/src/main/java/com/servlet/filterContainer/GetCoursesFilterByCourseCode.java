@@ -24,6 +24,9 @@ public class GetCoursesFilterByCourseCode extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Send JSON array with all matching courses when searching for course by code
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		CourseInformation[] courses = Neo4JAPI.filterMethods.filterCourseByTag(CourseLabels.CODE, request.getParameter("filter"));

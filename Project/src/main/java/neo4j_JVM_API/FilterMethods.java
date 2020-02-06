@@ -18,6 +18,11 @@ public class FilterMethods {
 	}
 	
 	/**
+	 * 			CREDITS NOT WORKING ..
+	 * 
+ * 			aND COurseDate. .
+	 * 
+	 * 
 	 * Generalized search function for courses. This should be the only search function for 
 	 * courses we need.
 	 * @param filter - This can be any value of the type {@link Course.CourseLabels}.
@@ -27,7 +32,7 @@ public class FilterMethods {
 	 */
 	public CourseInformation[] filterCourseByTag(Course.CourseLabels filter, String searchTerm) {
 
-		String query = "MATCH (course: " + Course.course +") WHERE course." + filter + " CONTAINS \"" + searchTerm + "\" ";
+		String query = "MATCH (course: " + Course.course +") WHERE course." + filter + " CONTAINS \"" + searchTerm + "\" RETURN course";
 		
 		/* This gives us the full list of records returned from neo. */
 		List<Record> resultList = this.communicator.readFromNeo(query).list();
@@ -36,12 +41,21 @@ public class FilterMethods {
 		CourseInformation[] result = new CourseInformation[resultList.size()];
 		int i = 0;
 		for (Record row : resultList) {
+			
+			// Tror felet är att det ska stå row.get("course").get(Course.CourseLabels.Name.........)
+			
 			CourseInformation information = new CourseInformation(row.get(Course.CourseLabels.NAME.toString()).toString(), 
-					row.get(Course.CourseLabels.NAME.toString()).toString(), 
-					Credits.valueOf(row.get(Course.CourseLabels.CREDIT.toString()).toString()), 
-					row.get(Course.CourseLabels.DESCRIPTION.toString()).toString(),
-					row.get(Course.CourseLabels.EXAMINER.toString()).toString(), 
-					new CourseDate(Integer.parseInt(row.get(Course.CourseLabels.YEAR.toString()).toString()), LP.valueOf(row.get(Course.CourseLabels.LP.toString()).toString())));
+					row.get("course").get(Course.CourseLabels.NAME.toString()).toString(), 
+					
+					//Credits.valueOf(row.get(Course.CourseLabels.CREDIT.toString()).toString()), 
+					Credits.SEVEN,
+					row.get("course").get(Course.CourseLabels.DESCRIPTION.toString()).toString(),
+					row.get("course").get(Course.CourseLabels.EXAMINER.toString()).toString(), 
+					new CourseDate(2019, LP.ONE) );
+					//new CourseDate(Integer.parseInt(row.get(Course.CourseLabels.YEAR.toString()).toString()),
+					//LP.valueOf(row.get(Course.CourseLabels.LP.toString()).toString())));
+					
+			
 			result[i++] = information;
 		}
 		
