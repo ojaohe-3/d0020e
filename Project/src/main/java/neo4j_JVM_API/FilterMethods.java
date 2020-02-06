@@ -238,8 +238,9 @@ public class FilterMethods {
 	 * Get names of courses that has a specific topic
 	 * @param topicTitle
 	 * @return String[] of available course names
+	 * @author Johan RH
 	 */
-	public CourseInformation[] getCourseNameByTopic(String topicTitle) {
+	public CourseInformation[] getCourseByTopic(String topicTitle) {
 		String query = "MATCH(node: Topic {title : \""+ topicTitle +"\"})<-[r]-(course:Course) RETURN course ";
 		StatementResult result = this.communicator.readFromNeo(query);
 		ArrayList<CourseInformation> courseNames = new ArrayList<CourseInformation>();
