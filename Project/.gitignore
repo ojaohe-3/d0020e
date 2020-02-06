@@ -5,5 +5,5 @@
 *.settings
 /.settings
 /.idea
-db.conf
-db.properties
+*.conf
+*.properties

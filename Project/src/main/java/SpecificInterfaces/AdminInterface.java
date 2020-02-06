@@ -10,10 +10,9 @@ public class AdminInterface extends TeacherInterface {
     /**
      * Constructor
      *
-     * @param neoapi
      */
-    public AdminInterface(Neo4JAPI neoapi, Data.User user) {
-        super(neoapi,user);
+    public AdminInterface(Data.User user) {
+        super(user);
     }
 
     public boolean addProgram(CourseProgram data){
@@ -28,6 +27,23 @@ public class AdminInterface extends TeacherInterface {
     public boolean addKC(KC data){
         try {
             neoapi.createMethods.createKC(data);
+            return true;
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Modify Knowelage component
+     * @param name Name of KC Selector
+     * @param taxlvl Level Of KC Selector
+     * @param newdata New Data
+     * @return
+     */
+    public boolean modifyKC(String name, int taxlvl, KC newdata){
+        try {
+            neoapi.modifyMethods.editKC(name, taxlvl, newdata);
             return true;
         }catch (Exception e) {
             System.out.println(e.getMessage());

@@ -240,8 +240,7 @@ public class FilterMethods {
 	 * @return String[] of available course names
 	 */
 	public CourseInformation[] getCourseNameByTopic(String topicTitle) {
-		String query = "MATCH(node: Topic {title : \""+ topicTitle +"\"})<-[r]-(course) RETURN course ";
-		
+		String query = "MATCH(node: Topic {title : \""+ topicTitle +"\"})<-[r]-(course:Course) RETURN course ";
 		StatementResult result = this.communicator.readFromNeo(query);
 		ArrayList<CourseInformation> courseNames = new ArrayList<CourseInformation>();
 		
@@ -261,5 +260,25 @@ public class FilterMethods {
 		}
 		return (CourseInformation[]) courseNames.toArray();
 		
+	}
+
+
+	public KC[] filterKCByTopic(String topic) {
+		String query = "MATCH(node: Topic {title : \""+ topic +"\"})<-[r]-(kc:"+KC.kc+") RETURN kc ";
+
+		StatementResult result = this.communicator.readFromNeo(query);
+		ArrayList<KC> KCs = new ArrayList<KC>();
+
+		while(result.hasNext()) {
+			Record row = result.next();
+			KCs.add(new KC(
+					row.get("kc").get(KC.KCLabel.NAME.toString()).toString(),
+					row.get("kc").get(KC.KCLabel.GENERAL_DESCRIPTION.toString()).toString(),
+					Integer.parseInt(row.get("kc").get(KC.KCLabel.TAXONOMYLEVEL.toString()).toString()),
+					row.get("kc").get(KC.KCLabel.TAXONOMY_DESCRIPTION.toString()).toString()
+					));
+		}
+		return (KC[]) KCs.toArray();
+
 	}
 }

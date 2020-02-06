@@ -1,5 +1,4 @@
 package SpecificInterfaces;
-
 import Data.*;
 import neo4j_JVM_API.Neo4JAPI;
 
@@ -8,23 +7,23 @@ public class TeacherInterface extends UserInterface {
     protected final Data.User User;
 
     /**
-     * TeacherInterface
+     * TeacherInterface Teachers available functions
      * @author Johan RH
-     * @param neoapi
      */
-    public TeacherInterface(Neo4JAPI neoapi, User user) {
-        super(neoapi);
+    public TeacherInterface(User user) {
+        super();
         this.User = user;
     }
 
     /**
-     * Final commit to be writen in the database
+     * Final commit to be written in the database
      * @param c course to create
      * @return
      */
     protected boolean createCourse(Course c){
         try {
             this.neoapi.userMethods.createCourseWithUser(User,c);
+            this.neoapi.createMethods.createCourseKCrelation(c);
             return true;
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -33,8 +32,8 @@ public class TeacherInterface extends UserInterface {
     }
 
     /**
-     * Edit an already commited course object, User passed must have correct privilege
-     * @param courseCode selector statment
+     * Edit an already committed course object, User passed must have correct privilege
+     * @param courseCode selector statement
      * @param startperiod period
      * @return
      */
@@ -42,7 +41,7 @@ public class TeacherInterface extends UserInterface {
         try {
             Course c = neoapi.getMethods.getCourse(courseCode,startperiod);
             if(hasWritePermission(c))
-                neoapi.modifyMethods.editCourse(courseCode,c);
+                neoapi.modifyMethods.editCourse(courseCode,startperiod,c);
             return true;
         }catch (Exception e){
             System.out.println(e.getMessage());
@@ -50,24 +49,7 @@ public class TeacherInterface extends UserInterface {
         }
     }
 
-    protected boolean searchProgram(){
-        try {
-            neoapi.createMethods.createProgram(data);
-            return true;
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
-    protected boolean searchKC(KC.KCLabel field, String searchKey){
-        try {
-            neoapi.filterMethods.filterKCByTag(field,searchKey);
-            return true;
-        }catch (Exception e) {
-            System.out.println(e.getMessage());
-            return false;
-        }
-    }
+
 
     private boolean hasWritePermission(Course course){
         for (Course o:User.getCourses()) {

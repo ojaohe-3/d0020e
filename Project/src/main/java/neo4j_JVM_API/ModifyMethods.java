@@ -85,11 +85,14 @@ public class ModifyMethods {
 	 *  Edit a Course at Selector. todo KCs handling
 	 *  Make sure that the edges and internal object match.
 	 * @param courseID Course Code ex D0020E, Selector
+	 * @param period Period Selector
 	 * @param nCourse new Course object, will write the new object
 	 * @author Johan RH
 	 */
-	public void editCourse(String courseID,Course nCourse) {
-		String query = "MATCH (n:"+Course.course+"{CourseCode:\""+ courseID+"\"} SET n={";
+	public void editCourse(String courseID, CourseDate period,Course nCourse) {
+		String query = "MATCH (n:"+Course.course+"{"+ Course.CourseLabels.CODE +"\""+ courseID+"\","+
+				Course.CourseLabels.YEAR +":"+period.getYear()+","+
+				Course.CourseLabels.LP +":\""+period.getPeriod().name()+"\"} SET n={";
 		query += Course.CourseLabels.CODE.toString() +":"+nCourse.getCourseCode();
 		query +=  Course.CourseLabels.CREDIT.toString() +":"+nCourse.getCredit();
 		query += Course.CourseLabels.DESCRIPTION.toString() +":"+nCourse.getDescription();
