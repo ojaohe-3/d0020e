@@ -22,7 +22,7 @@ $(document).ready(function() {
 						
 						var s = "";
 						for(i in response) {
-							s += "<h2>" + response.object[i] + "</h2>";
+							s += "<h2>" + response[i].courseCode + "</h2>";
 						}
 						$('#course_search_results').text(s);
 						
