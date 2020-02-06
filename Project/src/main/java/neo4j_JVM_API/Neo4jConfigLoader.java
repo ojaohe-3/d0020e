@@ -1,6 +1,4 @@
-package neoCommunicator;
-
-import neo4j_JVM_API.Neo4JAPI;
+package neo4j_JVM_API;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -14,6 +12,7 @@ import java.util.Properties;
 public class Neo4jConfigLoader {
     private static String CONF_PATH = "db.properties";
     private static config CONF = null;
+    private static Neo4JAPI API= null;
     /**
      * Generate a new API for every caller, will load every time
      * @return
@@ -21,8 +20,9 @@ public class Neo4jConfigLoader {
      */
     public static Neo4JAPI getApi() throws IOException {
         config c = loadConfig();
-        Neo4JAPI api = new Neo4JAPI(c.getBOLTURL(),c.USERNAME,c.getPWD());
-        return api;
+        if(API == null)
+            API= new Neo4JAPI(c.getBOLTURL(),c.USERNAME,c.getPWD());
+        return API;
     }
 
     /**

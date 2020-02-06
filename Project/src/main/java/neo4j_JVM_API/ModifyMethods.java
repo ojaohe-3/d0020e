@@ -18,10 +18,44 @@ public class ModifyMethods {
 	}
 	
 	/**
+<<<<<<< Updated upstream
+=======
+	 * Takes in the name of the KC and its taxonomylevel and changes it's description
+	 * @param kc takes in the kc object and change genereal description and taxonomy description to the desired values
+	 * @author Tommy A
+	 */
+	 public void editKC(KC kc) {
+
+		String query = "MATCH(kc: KC {"+ KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " +
+		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 
+		KC.KCLabel.GENERAL_DESCRIPTION.toString() + "= \"" + kc.getGeneralDescription() + "\", kc." +
+		KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + "= \"" + kc.getTaxonomyDescription() + "\"";
+	 
+		communicator.writeToNeo(query);
+	 }
+
+	 /**
+	 * Searches after the node from kcName but uses taxonomylevel from the object to change the name of the KC.
+	 * @param kcName is the current name in the database
+	 * @param kc contains the new name for the KC node, uses the old taxonomylevel
+	 * @author Tommy A
+	 */
+
+	 public void editKCName(KC kc, String kcName) {
+
+		String query = "MATCH(kc: KC {"+ KC.KCLabel.NAME.toString() + ": \"" + kcName + "\", " +
+		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." +
+		KC.KCLabel.NAME.toString() + "= \"" + kc.getName() + "\""; 
+
+		communicator.writeToNeo(query);
+	 }
+
+	 /**
+>>>>>>> Stashed changes
 	 * Edit a Specific KC to a new generated KC object
-	 * @param name name Selector
-	 * @param taxlvl Taxonomy level Selector
-	 * @param kcData New Object to change selected element
+	 * @param programCode name Selector
+	 * @param newProgram Taxonomy level Selector
+	 * @param startyear New Object to change selected element
 	 * @author Johan RH
 	 */
 	public void editKC(String name, int taxlvl, KC kcData) {
@@ -97,10 +131,38 @@ public class ModifyMethods {
 	 * @param startyear Starting Year object, What year, period?
 	 * @author Johan RH
 	 */
+<<<<<<< Updated upstream
+=======
+	 //Moved to DeleteMethods
+	 @Deprecated
+>>>>>>> Stashed changes
 	public void removeCourse(String couseID, CourseDate startyear) {
 		String query  ="MATCH(n:"+Course.course+"{"+Course.CourseLabels.CODE.toString()+":\""+ couseID +"\", "+ Course.CourseLabels.YEAR.toString() + " :\""+ startyear.getYear() +"\", "+ Course.CourseLabels.LP +": \""+ startyear.getPeriod() +"\" }) DETACH DELETE n";
 		
 		
 		communicator.writeToNeo(query);
 	}
+<<<<<<< Updated upstream
+=======
+		/**
+	 * Remove and detach selected KC object
+	 * @param name name selector
+	 * @param taxlvl taxonomy level selector
+	 * @author Johan RH, Markus
+	 */
+	 //moved to DeleteMethods
+	 @Deprecated
+	public void removeKC(String name, int taxlvl) {
+		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME.toString() +": \""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL.toString() + ": \""+ taxlvl +"\"}) DETACH DELETE n";
+		
+		communicator.writeToNeo(query);
+	}
+	//moved to DeleteMethods
+	@Deprecated
+	public void removeProgram( String programCode,CourseDate startyear) {
+		String query  ="MATCH(n:Program{ProgramCode:\""+ programCode +"\", "+CourseProgram.ProgramLabels.YEAR+":\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
+		
+		communicator.writeToNeo(query);
+	}
+>>>>>>> Stashed changes
 }

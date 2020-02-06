@@ -14,12 +14,19 @@ import neoCommunicator.Neo4jCommunicator;
 public class Neo4JAPI {
 	
 	private final Neo4jCommunicator communicator;
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 	public final UserMethods userMethods;
 	public final GetMethods getMethods;
 	public final CreateMethods createMethods;
 	public final ModifyMethods modifyMethods;
+<<<<<<< Updated upstream
 	public final FilterMethods filterMethods;
+=======
+	public final FilterMethods filterMethods ;
+>>>>>>> Stashed changes
 	
 	
 	public Neo4JAPI(String uri, String user, String password) {

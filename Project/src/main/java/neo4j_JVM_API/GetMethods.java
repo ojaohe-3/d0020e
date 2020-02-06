@@ -252,4 +252,46 @@ public class GetMethods {
 		
 		return courseProgramSpecialization;
 	}
+<<<<<<< Updated upstream
 }
+=======
+
+
+
+	@Deprecated
+	public Course getCourseNoKc(String courseCode, CourseDate courseDate) {
+
+		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
+		
+		StatementResult result = this.communicator.readFromNeo(query);
+		Record row = result.next();
+
+		CourseInformation courseNoKc = createCourseNoKc(row, "course");
+
+		return (Course) courseNoKc;
+		
+	}
+
+	private CourseInformation createCourseNoKc(Record row, String nodename) {
+		
+		String name = row.get(nodename).get("name").toString();
+		String courseCode = row.get(nodename).get("courseCode").toString();
+		String creds = row.get(nodename).get("credit").toString();
+		
+		creds = creds.replaceAll("\"", "");
+		Credits credits = Credits.valueOf(creds);
+		
+		String description = row.get(nodename).get("description").toString();
+		String examiner = row.get(nodename).get("examiner").toString();
+		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"", ""));
+		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"", ""));
+		CourseDate startDate = new CourseDate(year, lp);
+		
+		CourseInformation courseNoKc = new CourseInformation(name, courseCode, credits, description, examiner, startDate);
+		
+		return courseNoKc;
+	
+	}
+}
+
+>>>>>>> Stashed changes

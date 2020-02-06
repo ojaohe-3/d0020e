@@ -1,9 +1,15 @@
 package SpecificInterfaces;
 import Data.*;
+<<<<<<< Updated upstream
 
+=======
+import Data.Course;
+import Data.CourseDate;
+import Data.CourseProgram;
+import Data.CourseInformation;
+>>>>>>> Stashed changes
 import neo4j_JVM_API.Neo4JAPI;
-import neoCommunicator.Neo4jCommunicator;
-import neoCommunicator.Neo4jConfigLoader;
+import neo4j_JVM_API.Neo4jConfigLoader;
 
 import java.io.IOException;
 
@@ -16,17 +22,20 @@ import java.io.IOException;
  */
 public abstract class UserInterface {
 
-	protected Neo4JAPI neoapi;
-	
+	protected static Neo4JAPI neoapi;
+
+	static {
+		try {
+			neoapi = Neo4jConfigLoader.getApi();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	/**
 	 * Constructor
 	 */
 	public UserInterface() {
-		try {
-			this.neoapi = Neo4jConfigLoader.getApi();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 	
 	/**
@@ -36,7 +45,7 @@ public abstract class UserInterface {
 	 * @return
 	 */
 	protected Course getCourseByCode(String courseCode, CourseDate courseDate) {
-		return this.neoapi.getMethods.getCourse(courseCode, courseDate);
+		return neoapi.getMethods.getCourse(courseCode, courseDate);
 	}
 
 	
@@ -46,7 +55,11 @@ public abstract class UserInterface {
 	 * @return
 	 */
 	protected CourseInformation[] getCoursesByTopic(String topic) {
+<<<<<<< Updated upstream
 		return this.neoapi.filterMethods.getCourseNameByTopic(topic);
+=======
+		return neoapi.filterMethods.filterCourseByTopic(topic);
+>>>>>>> Stashed changes
 	}
 	
 	/**

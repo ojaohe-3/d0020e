@@ -7,9 +7,8 @@ public class indexController extends UserInterface {
     /**
      * Constructor
      *
-     * @param neoapi
      */
-    public indexController(Neo4JAPI neoapi) {
-        super(neoapi);
+    public indexController() {
+        super();
     }
 }
