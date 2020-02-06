@@ -122,10 +122,6 @@ public class FilterMethods {
 	}
 	
 	/**
-<<<<<<< HEAD
->>>>>>> Stashed changes
-=======
->>>>>>> origin/Neo_API
 	 * Filter course by code
 	 * 
 	 * @param code
