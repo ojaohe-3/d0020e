@@ -1,6 +1,8 @@
 package Data;
 
-import com.fasterxml.jackson.core.JsonFactory;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * The course information is merely a data structure used for
@@ -9,13 +11,13 @@ import com.fasterxml.jackson.core.JsonFactory;
  * @author Robin
  *
  */
-public class CourseInformation extends JsonFactory {
-	private String name;
-	private String courseCode;
-	private String description;
-	private String examiner;
-	private CourseDate startPeriod;
-	private Credits credit;
+public class CourseInformation {
+	protected String name;
+	protected String courseCode;
+	protected String description;
+	protected String examiner;
+	protected CourseDate startPeriod;
+	protected Credits credit;
 
 
 	/**
@@ -85,7 +87,23 @@ public CourseInformation(String name, String courseCode, Credits credit, String 
 	}
 
 
+	public String getAsJson(){
+		JSONObject obj = new JSONObject();
 
+		try {
+			obj.put(Course.CourseLabels.CODE.toString(),courseCode);
+			obj.put(Course.CourseLabels.NAME.toString(),name);
+			obj.put(Course.CourseLabels.DESCRIPTION.toString(),description);
+			obj.put(Course.CourseLabels.EXAMINER.toString(),examiner);
+			obj.put(Course.CourseLabels.CREDIT.toString(),credit);
+			obj.put(Course.CourseLabels.LP.toString(),startPeriod.getPeriod());
+			obj.put(Course.CourseLabels.YEAR.toString(), startPeriod.getYear());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return obj.toString();
+
+	}
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

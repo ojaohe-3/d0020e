@@ -2,6 +2,8 @@ package Data;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -89,11 +91,24 @@ public class Course extends CourseInformation {
 			return this.name;
 		}
 	}
-	public String toJson() throws JsonProcessingException {
-		ObjectMapper obj = new ObjectMapper();
-		String temp = obj.writeValueAsString(this);
-		System.out.println(temp);
-		return obj.writeValueAsString(this);
-	}
+	@Override
+	public String getAsJson(){
+		JSONObject obj = new JSONObject();
 
+		try {
+			obj.put(Course.CourseLabels.CODE.toString(),courseCode);
+			obj.put(Course.CourseLabels.NAME.toString(),name);
+			obj.put(Course.CourseLabels.DESCRIPTION.toString(),description);
+			obj.put(Course.CourseLabels.EXAMINER.toString(),examiner);
+			obj.put(Course.CourseLabels.CREDIT.toString(),credit);
+			obj.put(Course.CourseLabels.LP.toString(),startPeriod.getPeriod());
+			obj.put(Course.CourseLabels.YEAR.toString(), startPeriod.getYear());
+			obj.put("Required",requiredKC);
+			obj.put("Developed",developedKC);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		return obj.toString();
+
+	}
 }
