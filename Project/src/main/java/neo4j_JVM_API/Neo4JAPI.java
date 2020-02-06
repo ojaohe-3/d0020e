@@ -20,6 +20,9 @@ public class Neo4JAPI {
 	public static final CreateMethods createMethods = new CreateMethods(communicator);
 	public static final ModifyMethods modifyMethods = new ModifyMethods(communicator);
 	public static final FilterMethods filterMethods = new FilterMethods(communicator);
+
+	public Neo4JAPI(String bolturl, String username, String pwd) {
+	}
 	
 	
 	/*public Neo4JAPI(String uri, String user, String password) {

@@ -36,14 +36,12 @@ public class AdminInterface extends TeacherInterface {
 
     /**
      * Modify Knowelage component
-     * @param name Name of KC Selector
-     * @param taxlvl Level Of KC Selector
      * @param newdata New Data
      * @return
      */
-    public boolean modifyKC(String name, int taxlvl, KC newdata){
+    public boolean modifyKC(KC newdata){
         try {
-            neoapi.modifyMethods.editKC(name, taxlvl, newdata);
+            neoapi.modifyMethods.editKC(newdata);
             return true;
         }catch (Exception e) {
             System.out.println(e.getMessage());
