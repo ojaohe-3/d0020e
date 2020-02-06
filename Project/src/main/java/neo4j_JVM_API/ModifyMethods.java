@@ -18,9 +18,9 @@ public class ModifyMethods {
 	}
 	
 
-		 /**
+	/**
 	 * Takes in the name of the KC and its taxonomylevel and changes it's description
-	 * @param kc takes in the kc object and change to the desired values
+	 * @param kc takes in the kc object and change genereal description and taxonomy description to the desired values
 	 * @author Tommy A
 	 */
 	 public void editKC(KC kc) {
@@ -30,6 +30,22 @@ public class ModifyMethods {
 		KC.KCLabel.GENERAL_DESCRIPTION.toString() + "= \"" + kc.getGeneralDescription() + "\", kc." +
 		KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + "= \"" + kc.getTaxonomyDescription "\"";
 	 
+		communicator.writeToNeo(query);
+	 }
+
+	 /**
+	 * Searches after the node from kcName but uses taxonomylevel from the object to change the name of the KC.
+	 * @param kcName is the current name in the database
+	 * @param kc contains the new name for the KC node, uses the old taxonomylevel
+	 * @author Tommy A
+	 */
+
+	 public void editKCName(KC kc, String kcName) {
+
+		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kcName + "\", " + 
+		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." +
+		KC.KCLabel.NAME.toString() + "= \"" + kc.getName() + "\""; 
+
 		communicator.writeToNeo(query);
 	 }
 
