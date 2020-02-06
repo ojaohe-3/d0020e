@@ -190,7 +190,7 @@ private final Neo4jCommunicator communicator;
 				if(c != null) {
 					
 
-					query += "CREATE (program)<-[r"+ pos + "" + period +": "+ Relations.IN_PROGRAM.toString() + " { pos: \"" + pos + "\", period :\"" + period + "\"}]" + "-(course" + pos + "" + period +") ";
+					query += "CREATE (program)<-[r"+ pos + "" + period +": "+ Relations.IN_PROGRAM.toString() + " { "+Relations.YEAR+": \"" + pos + "\", "+Relations.PERIOD+" :\"" + period + "\"}]" + "-(course" + pos + "" + period +") ";
 			
 				}
 				

@@ -10,7 +10,9 @@ public enum Relations {
 	REQUIRED("REQUIRED"),
 	BELONGS_TO("BELONGS_TO"),
 	IN_PROGRAM("IN_PROGRAM"),
-	SPECIALIZATION("SPECIALIZATION");
+	SPECIALIZATION("SPECIALIZATION"),
+	YEAR("year"),
+	PERIOD("period");
 	
 	private String relation;
 	private Relations(String relation) {
