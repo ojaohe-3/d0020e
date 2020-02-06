@@ -55,6 +55,7 @@ public class FilterMethods {
 					//new CourseDate(Integer.parseInt(row.get(Course.CourseLabels.YEAR.toString()).toString()),
 					//LP.valueOf(row.get(Course.CourseLabels.LP.toString()).toString())));
 					
+			
 			result[i++] = information;
 		}
 		
