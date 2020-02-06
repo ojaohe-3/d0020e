@@ -24,7 +24,8 @@ $(document).ready(function() {
 						for(i in response) {
 							s += "<div class=\"SearchResult\">" + response[i].name + " :  " + response[i].courseCode + "</div>";
 						}
-						$('#course_search_results').text(s);
+						$('#course_search_results').text("");
+						$('#course_search_results').after(s);
 						
 						
 					}

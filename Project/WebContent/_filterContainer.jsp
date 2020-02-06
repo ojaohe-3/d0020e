@@ -9,11 +9,10 @@
     <li class="active"><a data-toggle="pill" href="#course">Course</a></li>
     <li><a data-toggle="pill" href="#program">Program</a></li>
     <li><a data-toggle="pill" href="#KC">Knowledge Component</a></li>
-<<<<<<< HEAD
+
     <li><a data-toggle="pill" href="#topic">Topic ??</a></li>
-=======
     <!-- <li><a data-toggle="pill" href="#topic">Topic ??</a></li> -->
->>>>>>> 2d086a82f36a9ecbb5e28903792bf09e2fad21e5
+
   </ul>
   
   <div class="tab-content">
@@ -83,11 +82,7 @@
       
     </div>
     
-<<<<<<< HEAD
-    
-=======
     <!-- 
->>>>>>> 2d086a82f36a9ecbb5e28903792bf09e2fad21e5
     <div id="topic" class="tab-pane fade in">
       <h3>Topic ??</h3>
       

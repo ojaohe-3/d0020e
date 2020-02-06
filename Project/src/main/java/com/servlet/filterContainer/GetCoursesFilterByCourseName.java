@@ -51,11 +51,11 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 			for(CourseInformation ci: courses) {
 				JSONObject jobj = new JSONObject();
 				
-				jobj.put(CourseLabels.NAME.toString(), ci.getName());
-				jobj.put(CourseLabels.CODE.toString(), ci.getCourseCode());
+				jobj.put(CourseLabels.NAME.toString(), ci.getName().replaceAll("\"", ""));
+				jobj.put(CourseLabels.CODE.toString(), ci.getCourseCode().replaceAll("\"", ""));
 				jobj.put(CourseLabels.LP.toString(), ci.getStartPeriod().getPeriod());
 				jobj.put(CourseLabels.YEAR.toString(), ci.getStartPeriod().getYear());
-				jobj.put(CourseLabels.EXAMINER.toString(), ci.getExaminer());
+				jobj.put(CourseLabels.EXAMINER.toString(), ci.getExaminer().replaceAll("\"", ""));
 				jobj.put(CourseLabels.CREDIT.toString(), ci.getCredit());
 				
 				jArray.put(jobj);
@@ -65,6 +65,7 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 			}
 			response.setContentType("text/json");
 			response.getWriter().write(jArray.toString());
+			
 			
 			System.out.println(jArray.toString());
 		} catch (JSONException ex) { }
