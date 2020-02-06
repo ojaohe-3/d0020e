@@ -70,7 +70,26 @@ public class Course extends CourseInformation {
 	public ArrayList<KC> getDevelopedKC() {
 		return developedKC;
 	}
-	
+
+	/**
+	 * Creates Json but does not return as string but object to help nested types
+	 * @return
+	 * @throws JSONException
+	 */
+	public JSONObject getJsonObject() throws JSONException {
+		JSONObject obj = new JSONObject();
+		obj.put(Course.CourseLabels.CODE.toString(),courseCode);
+		obj.put(Course.CourseLabels.NAME.toString(),name);
+		obj.put(Course.CourseLabels.DESCRIPTION.toString(),description);
+		obj.put(Course.CourseLabels.EXAMINER.toString(),examiner);
+		obj.put(Course.CourseLabels.CREDIT.toString(),credit);
+		obj.put(Course.CourseLabels.LP.toString(),startPeriod.getPeriod());
+		obj.put(Course.CourseLabels.YEAR.toString(), startPeriod.getYear());
+		obj.put("Required",requiredKC);
+		obj.put("Developed",developedKC);
+		return obj;
+	}
+
 	/**
 	 * I don't wanna use strings everywhere and keep track of how 
 	 * how to spell stuff, so I made this. It's basically just a few
@@ -92,22 +111,18 @@ public class Course extends CourseInformation {
 		}
 	}
 	@Override
-	public String getAsJson(){
+	public String getAsJson() throws JSONException {
 		JSONObject obj = new JSONObject();
+		obj.put(Course.CourseLabels.CODE.toString(),courseCode);
+		obj.put(Course.CourseLabels.NAME.toString(),name);
+		obj.put(Course.CourseLabels.DESCRIPTION.toString(),description);
+		obj.put(Course.CourseLabels.EXAMINER.toString(),examiner);
+		obj.put(Course.CourseLabels.CREDIT.toString(),credit);
+		obj.put(Course.CourseLabels.LP.toString(),startPeriod.getPeriod());
+		obj.put(Course.CourseLabels.YEAR.toString(), startPeriod.getYear());
+		obj.put("Required",requiredKC);
+		obj.put("Developed",developedKC);
 
-		try {
-			obj.put(Course.CourseLabels.CODE.toString(),courseCode);
-			obj.put(Course.CourseLabels.NAME.toString(),name);
-			obj.put(Course.CourseLabels.DESCRIPTION.toString(),description);
-			obj.put(Course.CourseLabels.EXAMINER.toString(),examiner);
-			obj.put(Course.CourseLabels.CREDIT.toString(),credit);
-			obj.put(Course.CourseLabels.LP.toString(),startPeriod.getPeriod());
-			obj.put(Course.CourseLabels.YEAR.toString(), startPeriod.getYear());
-			obj.put("Required",requiredKC);
-			obj.put("Developed",developedKC);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
 		return obj.toString();
 
 	}

@@ -255,7 +255,7 @@ public class GetMethods {
 
 
 
-	@deprecated
+	@Deprecated
 	public Course getCourseNoKc(String courseCode, CourseDate courseDate) {
 
 		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
@@ -265,7 +265,7 @@ public class GetMethods {
 
 		CourseInformation courseNoKc = createCourseNoKc(row, "course")  
 
-		return courseNoKc;
+		return (Course) courseNoKc;
 		
 	}
 

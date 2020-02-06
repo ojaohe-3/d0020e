@@ -87,7 +87,7 @@ public CourseInformation(String name, String courseCode, Credits credit, String 
 	}
 
 
-	public String getAsJson(){
+	public String getAsJson() throws JSONException {
 		JSONObject obj = new JSONObject();
 
 		try {
