@@ -263,7 +263,7 @@ public class GetMethods {
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
 
-		CourseInformation courseNoKc = createCourseNoKc(row, "course")  
+		CourseInformation courseNoKc = createCourseNoKc(row, "course");
 
 		return (Course) courseNoKc;
 		

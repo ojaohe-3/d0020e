@@ -50,7 +50,7 @@ public abstract class UserInterface {
 	 * @return
 	 */
 	protected CourseInformation[] getCoursesByTopic(String topic) {
-		return this.neoapi.filterMethods.getCourseByTopic(topic);
+		return this.neoapi.filterMethods.filterCourseByTopic(topic);
 	}
 	
 	/**

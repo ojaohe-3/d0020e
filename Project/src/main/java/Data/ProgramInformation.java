@@ -100,6 +100,6 @@ public class ProgramInformation {
 		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits.name());
 		obj.put(CourseProgram.ProgramLabels.LP.toString(),startDate.getPeriod().name());
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),startDate.getYear());
-
+		return obj.toString();
 	}
 }
