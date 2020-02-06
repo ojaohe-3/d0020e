@@ -22,7 +22,7 @@ $(document).ready(function() {
 						
 						var s = "";
 						for(i in response) {
-							s += "<h2>" + response.object[i] + "</h2>";
+							s += "<div class=\"SearchResult\">" + response[i].name + " :  " + response[i].courseCode + "</div>";
 						}
 						$('#course_search_results').text(s);
 						
