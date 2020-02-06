@@ -1,4 +1,4 @@
-package com.servlet;
+package com.servlet.filterContainer;
 
 import java.io.IOException;
 
@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Data.Course;
-import neo4j_JVM_API.Neo4JAPI;
-
+import neo4j_JVM_API.*;
+import neoCommunicator.Neo4jCommunicator;
 
 /**
  * 
@@ -32,16 +32,8 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		
-		//Replace this.
-		//Neo4JAPI neoapi = new Neo4JAPI("bolt://130.240.200.254:7687", "neo4j", "neo4j-d0020e");
-		
-		//String[] courses = neoapi.filterMethods.filterCourseByName(request.getParameter("filter").trim());
-		
-		String s = "response  HEj johan";
-		
 		response.setContentType("text/plain");
-		response.getWriter().write(s);
+		response.getWriter().write("This is the response from filter by course name");
 		
 	}
 	
