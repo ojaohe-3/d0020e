@@ -25,10 +25,8 @@ public class ModifyMethods {
 	 */
 	 public void editKC(KC kc) {
 
-		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " + 
-		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 
-		KC.KCLabel.GENERAL_DESCRIPTION.toString() + "= \"" + kc.getGeneralDescription() + "\", kc." +
-		KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + "= \"" + kc.getTaxonomyDescription "\"";
+		String query = "MATCH(kc: KC {" + KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\"}) SET kc." + 
+		KC.KCLabel.GENERAL_DESCRIPTION.toString() + "= \"" + kc.getGeneralDescription() + "\"";
 	 
 		communicator.writeToNeo(query);
 	 }
@@ -40,14 +38,28 @@ public class ModifyMethods {
 	 * @author Tommy A
 	 */
 
-	 public void editKCName(KC kc, String kcName) {
+	public void editKCName(KC kc, String kcName) {
 
-		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kcName + "\", " + 
-		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." +
+		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kcName + "\"}) SET kc." +
 		KC.KCLabel.NAME.toString() + "= \"" + kc.getName() + "\""; 
 
 		communicator.writeToNeo(query);
 	 }
+
+	 /**
+	 *Change the taxonomyDescription of KC with a specific TAXONOMYLEVEL
+	 *@param kc
+	 *@author Robin, Tommy
+	 */
+
+	 public void editKCTaxonomyDescription(KC kc) {
+
+		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " + 
+		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 
+		KC.KCLabel.TAXONOMY_DESCRIPTION + "= \"" + kc.getTaxonomyDescription() + "\"";
+	 }
+
+
 
 	 /**
 	 * Edit a Specific KC to a new generated KC object
@@ -135,5 +147,27 @@ public class ModifyMethods {
 		String query  ="MATCH(n:Program{ProgramCode:\""+ programCode +"\", "+CourseProgram.ProgramLabels.YEAR+":\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
 		
 		communicator.writeToNeo(query);
+	}
+
+	/**
+	*Changes reading order of a course in a program, PS the courses startperiod needs to be changed before using this method
+	*@param course
+	*@param Program
+	*@author Robin, Tommy
+	*/
+	public void editInProgramCourseRelation(CourseInformation course, ProgramInformation program) {
+		
+		String query = "MATCH (courseProgram:" + CourseProgram.program + "{code: \"" + code + "\", "+ 
+		CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + 
+		CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" })-[r:" + CourseLabels.IN_PROGRAM + "]-(course: Course {courseCode: \"" + courseCode + "\", "+ 
+		CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + 
+		CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" })"; 
+
+		if(communicator.readFromNeo(query+ "RETURN r").hasNext()){
+		
+		query += "SET r."+ Relations.YEAR+" = \"" +course.getStartDate().getYear() "\", r."+ Relations.PERIOD+" = \"" +course.getStartDate().getPeriod() "\"";
+		
+		communicator.writeToNeo(query);
+		}
 	}
 }
