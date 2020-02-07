@@ -1,6 +1,8 @@
 package Data;
 
 import Data.CourseProgram.ProgramType;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * This holds all the information associated with a program. No courses or
@@ -10,12 +12,12 @@ import Data.CourseProgram.ProgramType;
  */
 public class ProgramInformation {
 	
-	private String code;
-	private String name;
-	private String description;
-	private CourseDate startDate;
-	private Credits credits;
-	private ProgramType programType;
+	protected String code;
+	protected String name;
+	protected String description;
+	protected CourseDate startDate;
+	protected Credits credits;
+	protected ProgramType programType;
 	
 	/**
 	 * 
@@ -90,4 +92,14 @@ public class ProgramInformation {
 		this.programType = programType;
 	}
 
+	public String getAsJson() throws JSONException {
+		JSONObject obj = new JSONObject();
+		obj.put(CourseProgram.ProgramLabels.NAME.toString(),name);
+		obj.put(CourseProgram.ProgramLabels.CODE.toString(),code);
+		obj.put(CourseProgram.ProgramLabels.DESCRIPTION.toString(),description);
+		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits.name());
+		obj.put(CourseProgram.ProgramLabels.LP.toString(),startDate.getPeriod().name());
+		obj.put(CourseProgram.ProgramLabels.NAME.toString(),startDate.getYear());
+		return obj.toString();
+	}
 }

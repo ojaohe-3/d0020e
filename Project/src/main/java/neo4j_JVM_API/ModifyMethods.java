@@ -25,10 +25,10 @@ public class ModifyMethods {
 	 */
 	 public void editKC(KC kc) {
 
-		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " + 
+		String query = "MATCH(kc: KC {"+KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " +
 		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 
 		KC.KCLabel.GENERAL_DESCRIPTION.toString() + "= \"" + kc.getGeneralDescription() + "\", kc." +
-		KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + "= \"" + kc.getTaxonomyDescription "\"";
+		KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + "= \"" + kc.getTaxonomyDescription() +"\"";
 	 
 		communicator.writeToNeo(query);
 	 }
@@ -42,7 +42,7 @@ public class ModifyMethods {
 
 	 public void editKCName(KC kc, String kcName) {
 
-		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kcName + "\", " + 
+		String query = "MATCH(kc: KC {" +KC.KCLabel.NAME.toString() + ": \"" + kcName + "\", " +
 		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." +
 		KC.KCLabel.NAME.toString() + "= \"" + kc.getName() + "\""; 
 
@@ -112,7 +112,7 @@ public class ModifyMethods {
 	 * @author Johan RH
 	 */
 	 //Moved to DeleteMethods
-	 @deprecated
+	 @Deprecated
 	public void removeCourse(String couseID, CourseDate startyear) {
 		String query  ="MATCH(n:"+Course.course+"{"+Course.CourseLabels.CODE.toString()+":\""+ couseID +"\", "+ Course.CourseLabels.YEAR.toString() + " :\""+ startyear.getYear() +"\", "+ Course.CourseLabels.LP +": \""+ startyear.getPeriod() +"\" }) DETACH DELETE n";
 		
@@ -126,14 +126,14 @@ public class ModifyMethods {
 	 * @author Johan RH, Markus
 	 */
 	 //moved to DeleteMethods
-	 @deprecated
+	 @Deprecated
 	public void removeKC(String name, int taxlvl) {
 		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME.toString() +": \""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL.toString() + ": \""+ taxlvl +"\"}) DETACH DELETE n";
 		
 		communicator.writeToNeo(query);
 	}
 	//moved to DeleteMethods
-	@deprecated
+	@Deprecated
 	public void removeProgram( String programCode,CourseDate startyear) {
 		String query  ="MATCH(n:Program{ProgramCode:\""+ programCode +"\", "+CourseProgram.ProgramLabels.YEAR+":\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
 		

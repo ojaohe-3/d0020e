@@ -14,15 +14,18 @@ import java.util.Properties;
 public class Neo4jConfigLoader {
     private static String CONF_PATH = "db.properties";
     private static config CONF = null;
+    private static Neo4JAPI API;
     /**
-     * Generate a new API for every caller, will load every time
+     * Init New API, will load every time API does not hold and API, Object retaining API should not allow sharing of said api
      * @return
      * @throws IOException
      */
     public static Neo4JAPI getApi() throws IOException {
         config c = loadConfig();
-        Neo4JAPI api = new Neo4JAPI(c.getBOLTURL(),c.USERNAME,c.getPWD());
-        return api;
+        if(API == null) {
+            Neo4JAPI api = new Neo4JAPI(c.getBOLTURL(),c.USERNAME,c.getPWD());
+        }
+        return API;
     }
 
     /**
