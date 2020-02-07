@@ -17,7 +17,7 @@ import Data.LP;
 import neo4j_JVM_API.Neo4JAPI;
 
 
-@WebServlet("GetCourse/byCodeAndDate")
+@WebServlet("/GetCourse/byCodeYearLP")
 public class GetCourseByCodeYearLP extends HttpServlet {
 
 	/**
@@ -27,7 +27,10 @@ public class GetCourseByCodeYearLP extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException { 
 		
+		
+
 		Course course = Neo4JAPI.getMethods.getCourse(request.getParameter("courseCode"), new CourseDate(Integer.parseInt(request.getParameter("year")), LP.valueOf(request.getParameter("lp"))));
+		
 		
 		try {
 			response.setContentType("text/json");

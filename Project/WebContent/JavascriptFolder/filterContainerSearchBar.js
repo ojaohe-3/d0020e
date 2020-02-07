@@ -21,7 +21,7 @@ $(document).ready(function() {
 	
 						var s = "";
 						for(i in response) {
-							s += "<div class=\"SearchResult\" id=\"course\" onclick=\"courseClicked('response[i].courseCode', 'response[i].year', 'response[i].lp')\"> <b>" + response[i].name + "</b> - " + response[i].courseCode ;
+							s += "<div class=\"SearchResult\" id=\"course\" onclick=\"courseClicked('"+response[i].courseCode +"', '"+ response[i].year + "', '" + response[i].lp+ "')\"> <b>" + response[i].name + "</b> - " + response[i].courseCode ;
 							s += "<div class=\"SearchResultExpander\"> Year : " + response[i].year +" </br> LP : " + response[i].lp + " </br> Examiner : " + response[i].examiner + " </br> Credits : " + response[i].credit + "</div></div>";
 						}
 						$('#course_search_results').html('');
@@ -42,7 +42,7 @@ $(document).ready(function() {
 						
 						var s = "";
 						for(i in response) {
-							s += "<div class=\"SearchResult\" id=\"course\" onclick=\"courseClicked('response[i].courseCode', 'response[i].year', 'response[i].lp')\"> <b>" + response[i].name + "</b> - " + response[i].courseCode ;
+							s += "<div class=\"SearchResult\" id=\"course\" onclick=\"courseClicked('"+response[i].courseCode +"', '"+ response[i].year + "', '" + response[i].lp+ "')\"> <b>" + response[i].name + "</b> - " + response[i].courseCode ;
 							s += "<div class=\"SearchResultExpander\"> Year : " + response[i].year +" </br> LP : " + response[i].lp + " </br> Examiner : " + response[i].examiner + " </br> Credits : " + response[i].credit + "</div></div>";
 						}
 						$('#course_search_results').html('');
@@ -62,7 +62,7 @@ $(document).ready(function() {
 						
 						var s = "";
 						for(i in response) {
-							s += "<div class=\"SearchResult\" id=\"course\" onclick=\"courseClicked('response[i].courseCode', 'response[i].year', 'response[i].lp')\"> <b>" + response[i].name + "</b> - " + response[i].courseCode ;
+							s += "<div class=\"SearchResult\" id=\"course\" onclick=\"courseClicked('" + response[i].courseCode + "', '"+ response[i].year + "', '" + response[i].lp+ "')\"> <b>" + response[i].name + "</b> - " + response[i].courseCode ;
 							s += "<div class=\"SearchResultExpander\"> Year : " + response[i].year +" </br> LP : " + response[i].lp + " </br> Examiner : " + response[i].examiner + " </br> Credits : " + response[i].credit + "</div></div>";
 						}
 						$('#course_search_results').html('');

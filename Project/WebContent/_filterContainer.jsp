@@ -1,5 +1,5 @@
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerNavbar.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerFunctions.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerSearchBar.js"></script>
 
 

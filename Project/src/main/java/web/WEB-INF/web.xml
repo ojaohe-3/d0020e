@@ -56,7 +56,7 @@
     
     <servlet-mapping>
    		 <servlet-name>GetCourseByCodeYearLP</servlet-name>
-        <url-pattern>project/GetCourse/byCodeAndDate</url-pattern>
+        <url-pattern>project/GetCourse/byCodeYearLP</url-pattern>
     </servlet-mapping>
     
 

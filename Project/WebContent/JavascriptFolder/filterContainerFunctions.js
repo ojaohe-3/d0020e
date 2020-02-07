@@ -7,7 +7,7 @@ function courseClicked(code, year, lp) {
 	
 	$.ajax({
 
-		url : 'GetCourse/byCodeAndDate',
+		url : 'GetCourse/byCodeYearLP',
 		data : {
 			courseCode : code,
 			year : year,
@@ -15,7 +15,7 @@ function courseClicked(code, year, lp) {
 		},
 		success : function(response) {
 			// Should call a function in the canvas with the response
-			$('#debug').html(response);
+			$('#debug').html("response : " + response);
 		}
 	});
 }
