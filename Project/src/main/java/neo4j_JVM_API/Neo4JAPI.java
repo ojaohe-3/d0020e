@@ -13,7 +13,7 @@ import neoCommunicator.Neo4jCommunicator;
  */
 public class Neo4JAPI {
 	
-	private static final Neo4jCommunicator communicator = new Neo4jCommunicator("bolt://130.240.200.254:7687", "neo4j", "neo4j-d0020e");;
+	private static final Neo4jCommunicator communicator = new Neo4jCommunicator("bolt://localhost:7687", "neo4j", "admin");;
 
 	public static final UserMethods userMethods = new UserMethods(communicator);
 	public static final GetMethods getMethods = new GetMethods(communicator);

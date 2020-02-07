@@ -29,6 +29,8 @@ public class GetCoursesFilterByTopic extends HttpServlet {
 
 		CourseInformation[] courses = Neo4JAPI.filterMethods.filterCourseByTopic(request.getParameter("filter"));
 			
+		System.out.println(courses.length);
+		
 		try {
 			JSONArray array = new JSONArray();
 			for (CourseInformation course : courses) {
