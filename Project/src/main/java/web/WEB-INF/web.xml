@@ -53,5 +53,11 @@
    		 <servlet-name>GetProgramsFilterByTopic</servlet-name>
         <url-pattern>project/GetProgram/FilterByTopic</url-pattern>
     </servlet-mapping>
+    
+    <servlet-mapping>
+   		 <servlet-name>GetCourseByCodeYearLP</servlet-name>
+        <url-pattern>project/GetCourse/byCodeAndDate</url-pattern>
+    </servlet-mapping>
+    
 
 </web-app>

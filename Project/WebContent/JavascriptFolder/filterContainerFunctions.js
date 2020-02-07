@@ -9,7 +9,9 @@ function courseClicked(code, year, lp) {
 
 		url : 'GetCourse/byCodeAndDate',
 		data : {
-			courseCode : 
+			courseCode : code,
+			year : year,
+			lp : lp
 		},
 		success : function(response) {
 			
