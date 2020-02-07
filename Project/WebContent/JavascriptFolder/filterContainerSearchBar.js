@@ -18,14 +18,14 @@ $(document).ready(function() {
 						filter : $("#searchCourse").val()
 					},
 					success : function(response) {
-						
-						
+	
 						var s = "";
 						for(i in response) {
-							s += "<div class=\"SearchResult\">" + response[i].name + " :  " + response[i].courseCode + "</div>";
+							s += "<div class=\"SearchResult\" id=\"course\"> <b>" + response[i].name + "</b> - " + response[i].courseCode ;
+							s += "<div class=\"SearchResultExpander\"> Year : " + response[i].year +" </br> LP : " + response[i].lp + " </br> Examiner : " + response[i].examiner + " </br> Credits : " + response[i].credit + "</div></div>";
 						}
-						$('#course_search_results').text("");
-						$('#course_search_results').after(s);
+						$('#course_search_results').html('');
+						$('#course_search_results').html(s);
 						
 						
 					}
@@ -39,7 +39,15 @@ $(document).ready(function() {
 						filter : $("#searchCourse").val()
 					},
 					success : function(response) {
-						$('#course_search_results').text(response);
+						
+						var s = "";
+						for(i in response) {
+							s += "<div class=\"SearchResult\" id=\"course\"> <b>" + response[i].name + "</b> - " + response[i].courseCode ;
+							s += "<div class=\"SearchResultExpander\"> Year : " + response[i].year +" </br> LP : " + response[i].lp + " </br> Examiner : " + response[i].examiner + " </br> Credits : " + response[i].credit + "</div></div>";
+						}
+						$('#course_search_results').html('');
+						$('#course_search_results').html(s);
+						
 					}
 
 				});
@@ -51,12 +59,21 @@ $(document).ready(function() {
 						filter : $("#searchCourse").val()
 					},
 					success : function(response) {
-						$('#course_search_results').text(response);
+						
+						var s = "";
+						for(i in response) {
+							s += "<div class=\"SearchResult\" id=\"course\"> <b>" + response[i].name + "</b> - " + response[i].courseCode ;
+							s += "<div class=\"SearchResultExpander\"> Year : " + response[i].year +" </br> LP : " + response[i].lp + " </br> Examiner : " + response[i].examiner + " </br> Credits : " + response[i].credit + "</div></div>";
+						}
+						$('#course_search_results').html('');
+						$('#course_search_results').html(s);
 					}
 
 				});
 			} 
 				
+		} else {
+			$('#course_search_results').html('');
 		} 
 		
 	});
@@ -73,7 +90,13 @@ $(document).ready(function() {
 						filter : $("#searchProgram").val()
 					},
 					success : function(response) {
-						$('#program_search_results').text(response);
+						var s = "";
+						for(i in response) {
+							s += "<div class=\"SearchResult\" id=\"program\"> <b>" + response[i].name + "</b> - " + response[i].code ;
+							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
+						}
+						$('#program_search_results').html('');
+						$('#program_search_results').html(s);
 					}
 
 				});
@@ -103,6 +126,8 @@ $(document).ready(function() {
 				});
 			} 
 				
+		} else {
+			$('#program_search_results').html('');
 		} 
 		
 	});
@@ -120,7 +145,14 @@ $(document).ready(function() {
 						filter : $("#searchKC").val()
 					},
 					success : function(response) {
-						$('#kc_search_results').text(response);
+						//$('#kc_search_results').text(response);
+						var s = "";
+						for(i in response) {
+							s += "<div class=\"SearchResult\" id=\"kc\"> <b>" + response[i].name + "</b>";
+							s += "<div class=\"SearchResultExpander\"> Description : " + response[i].generalDescription +"</div></div>";
+						}
+						$('#kc_search_results').html('');
+						$('#kc_search_results').html(s);
 					}
 
 				});
@@ -132,11 +164,20 @@ $(document).ready(function() {
 						filter : $("#searchKC").val()
 					},
 					success : function(response) {
-						$('#kc_search_results').text(response);
+						//$('#kc_search_results').text(response);
+						var s = "";
+						for(i in response) {
+							s += "<div class=\"SearchResult\" id=\"kc\"> <b>" + response[i].name + "</b>";
+							s += "<div class=\"SearchResultExpander\"> Description : " + response[i].generalDescription +"</div></div>";
+						}
+						$('#kc_search_results').html('');
+						$('#kc_search_results').html(s);
 					}
 
 				});
-			}
+			} 
+		} else {
+			$('#kc_search_results').html('');
 		} 
 		
 	});

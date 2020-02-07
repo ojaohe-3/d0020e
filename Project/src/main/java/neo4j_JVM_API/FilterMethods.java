@@ -8,6 +8,8 @@ import org.neo4j.driver.v1.StatementResult;
 import org.neo4j.driver.v1.Value;
 
 import Data.Course.CourseLabels;
+import Data.CourseProgram.ProgramLabels;
+import Data.CourseProgram.ProgramType;
 import Data.*;
 import neoCommunicator.Neo4jCommunicator;
 
@@ -74,8 +76,8 @@ public class FilterMethods {
 			ProgramInformation information = new ProgramInformation(prog.get(CourseProgram.ProgramLabels.CODE.toString()).toString(), 
 					prog.get(CourseProgram.ProgramLabels.NAME.toString()).toString(), 
 					prog.get(CourseProgram.ProgramLabels.DESCRIPTION.toString()).toString(), 
-					new CourseDate(Integer.parseInt(prog.get(CourseProgram.ProgramLabels.YEAR.toString()).toString()), LP.valueOf(prog.get(CourseProgram.ProgramLabels.LP.toString()).toString())), 
-					Credits.valueOf(prog.get(CourseProgram.ProgramLabels.CREDITS.toString()).toString()), 
+					new CourseDate(Integer.parseInt(prog.get(CourseProgram.ProgramLabels.YEAR.toString()).toString().replaceAll("\"", "")), LP.valueOf(prog.get(CourseProgram.ProgramLabels.LP.toString()).toString().replaceAll("\"", ""))), 
+					Credits.valueOf(prog.get(CourseProgram.ProgramLabels.CREDITS.toString()).toString().replaceAll("\"", "")), 
 					CourseProgram.ProgramType.PROGRAM);
 			result[i] = information;
 		}
@@ -122,7 +124,7 @@ public class FilterMethods {
 			Value tempKC = row.get("kc");
 			KC kc = new KC(tempKC.get(KC.KCLabel.NAME.toString()).toString(),
 					tempKC.get(KC.KCLabel.GENERAL_DESCRIPTION.toString()).toString(), 
-					Integer.parseInt(row.get(KC.KCLabel.TAXONOMYLEVEL.toString()).toString()), 
+					Integer.parseInt(tempKC.get(KC.KCLabel.TAXONOMYLEVEL.toString()).toString().replaceAll("\"", "")), 
 					tempKC.get(KC.KCLabel.TAXONOMY_DESCRIPTION.toString()).toString());
 			result[i] = kc;
 		}
@@ -242,6 +244,8 @@ public class FilterMethods {
 	 */
 	public CourseInformation[] filterCourseByTopic(String topicTitle) {
 		String query = "MATCH(node: Topic {title : \""+ topicTitle +"\"})<-[r]-(course:Course) RETURN course ";
+		
+		
 		StatementResult result = this.communicator.readFromNeo(query);
 		ArrayList<CourseInformation> courseNames = new ArrayList<CourseInformation>();
 		
@@ -254,12 +258,12 @@ public class FilterMethods {
 					row.get("course").get(CourseLabels.DESCRIPTION.toString()).toString(),
 					row.get("course").get(CourseLabels.EXAMINER.toString()).toString(),
 					new CourseDate(
-							Integer.parseInt(row.get("course").get(CourseLabels.YEAR.toString()).toString()),
-							LP.valueOf(LP.class,row.get("course").get(CourseLabels.LP.toString()).toString())
+							Integer.parseInt(row.get("course").get(CourseLabels.YEAR.toString()).toString().replaceAll("\"", "")),
+							LP.valueOf(row.get("course").get(CourseLabels.LP.toString()).toString().replaceAll("\"", ""))
 					)
 			));
 		}
-		return (CourseInformation[]) courseNames.toArray();
+		return courseNames.toArray(new CourseInformation[courseNames.size()]);
 		
 	}
 
@@ -270,25 +274,25 @@ public class FilterMethods {
 	 * @return
 	 */
 	public ProgramInformation[] filterProgramByTopic(String topicTitle) {
-		String query = "MATCH(topic: Topic {title : \""+ topicTitle +"\"})<-[r]-(program: CourseProgram) RETURN program ";
+		String query = "MATCH(topic: Topic {title : \""+ topicTitle +"\"})<-[r]-(courseProgram: CourseProgram) RETURN courseProgram ";
+		
 		StatementResult result = this.communicator.readFromNeo(query);
-		ArrayList<CourseInformation> programs = new ArrayList<CourseInformation>();
+		ArrayList<ProgramInformation> programs = new ArrayList<ProgramInformation>();
 		
 		while(result.hasNext()) {
 			Record row = result.next();
-			programs.add(new CourseInformation(
-					row.get("course").get(CourseLabels.NAME.toString()).toString(),
-					row.get("course").get(CourseLabels.CODE.toString()).toString(),
-					Credits.getByString(row.get("course").get(CourseLabels.CREDIT.toString()).toString()),
-					row.get("course").get(CourseLabels.DESCRIPTION.toString()).toString(),
-					row.get("course").get(CourseLabels.EXAMINER.toString()).toString(),
+			programs.add(new ProgramInformation(
+					row.get("courseProgram").get(ProgramLabels.NAME.toString()).toString(),
+					row.get("courseProgram").get(ProgramLabels.CODE.toString()).toString(),
+					row.get("courseProgram").get(ProgramLabels.DESCRIPTION.toString()).toString(),
 					new CourseDate(
-							Integer.parseInt(row.get("course").get(CourseLabels.YEAR.toString()).toString()),
-							LP.valueOf(LP.class,row.get("course").get(CourseLabels.LP.toString()).toString())
-					)
+							Integer.parseInt(row.get("courseProgram").get(ProgramLabels.YEAR.toString()).toString().replaceAll("\"", "")),
+							LP.valueOf(row.get("courseProgram").get(ProgramLabels.LP.toString()).toString().replaceAll("\"", ""))),
+					Credits.getByString(row.get("courseProgram").get(ProgramLabels.CREDITS.toString()).toString()),
+					ProgramType.PROGRAM
 			));
 		}
-		return (ProgramInformation[]) programs.toArray();
+		return programs.toArray(new ProgramInformation[programs.size()]);
 		
 	}
 	
@@ -303,11 +307,11 @@ public class FilterMethods {
 			KCs.add(new KC(
 					row.get("kc").get(KC.KCLabel.NAME.toString()).toString(),
 					row.get("kc").get(KC.KCLabel.GENERAL_DESCRIPTION.toString()).toString(),
-					Integer.parseInt(row.get("kc").get(KC.KCLabel.TAXONOMYLEVEL.toString()).toString()),
+					Integer.parseInt(row.get("kc").get(KC.KCLabel.TAXONOMYLEVEL.toString()).toString().replaceAll("\"", "")),
 					row.get("kc").get(KC.KCLabel.TAXONOMY_DESCRIPTION.toString()).toString()
 					));
 		}
-		return (KC[]) KCs.toArray();
+		return KCs.toArray(new KC[KCs.size()]);
 
 	}
 }
