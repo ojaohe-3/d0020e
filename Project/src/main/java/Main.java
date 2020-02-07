@@ -37,6 +37,7 @@ public class Main {
 		//addTopicsToCourses();
 		//addTopicsToKCs();
 		
+
 		readCourses();
 		readKCs();
 		
@@ -44,10 +45,14 @@ public class Main {
 		
 		filterTest();
 		
-		System.in.read();
+		editKC();
+
+		//System.in.read();
 		
 		deleteCourses();
 		deleteKCs();
+
+		
 	}
 	
 	public static void print(String s ) {
@@ -296,5 +301,23 @@ public class Main {
 		print("kcs deleted");
 	}
 	
+	public static void editKC(KC[] kcs) {
+
+
+
+		for(KC kc: kcs) {
+				
+				String temp = kc.getName();
+				kc.setDescription(kc.getDescription()+"newDescription");
+				kc.setName(kc.getName()+"newName");
+				neoapi.modifyMethods.editKCName(kc, temp);
+
+				neoapi.modifyMethods.editKCDescription(kc);
+
+		}
+		print("kcs edited") ;
+		
+		
+	}
 	
 }
