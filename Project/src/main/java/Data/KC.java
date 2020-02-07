@@ -98,6 +98,6 @@ public class KC {
 	@Override
 	public String toString() {
 
-		return getAsJSON();
+		return getAsJSON();//.replaceAll("\"","");
 	}
 }
