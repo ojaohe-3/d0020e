@@ -108,7 +108,13 @@ $(document).ready(function() {
 						filter : $("#searchProgram").val()
 					},
 					success : function(response) {
-						$('#program_search_results').text(response);
+						var s = "";
+						for(i in response) {
+							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked()\"> <b>" + response[i].name + "</b> - " + response[i].code ;
+							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
+						}
+						$('#program_search_results').html('');
+						$('#program_search_results').html(s);
 					}
 
 				});
@@ -120,7 +126,13 @@ $(document).ready(function() {
 						filter : $("#searchProgram").val()
 					},
 					success : function(response) {
-						$('#program_search_results').text(response);
+						var s = "";
+						for(i in response) {
+							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked()\"> <b>" + response[i].name + "</b> - " + response[i].code ;
+							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
+						}
+						$('#program_search_results').html('');
+						$('#program_search_results').html(s);
 					}
 
 				});
