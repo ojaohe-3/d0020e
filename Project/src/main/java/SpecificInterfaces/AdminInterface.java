@@ -34,5 +34,16 @@ public class AdminInterface extends TeacherInterface {
             return false;
         }
     }
+    @Deprecated
+    public boolean addProgramSpecialization(){
+
+        try {
+            return true;
+        }catch (Exception e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+    }
+
 
 }
