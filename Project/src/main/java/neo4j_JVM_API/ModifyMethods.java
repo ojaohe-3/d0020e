@@ -17,38 +17,58 @@ public class ModifyMethods {
 		this.communicator = communicator;
 	}
 	
-	public void changeUserPrivileges(String username,boolean admin) {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.USERTAG +"="+(admin?1:0);
-		communicator.writeToNeo(query);
-	}
-	public void changeUserPassword(String username,String pwd)  {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.PASSWORD +"=" + Security.generateHash(pwd);
-		communicator.writeToNeo(query);
-	}
-	public void removeUser(String username) {
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+username+"}) DETACH DELETE n";
-		communicator.writeToNeo(query);
-	}
-
-	public void addCourseToUser(User user,Course data) {
-
-		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":"+user.getUsername()+
-				"}),(m:Course{"+
-				Course.CourseLabels.CODE+":\""+ data.getCourseCode()+"\", "+
-				Course.CourseLabels.YEAR +":"+data.getStartPeriod().getYear()+"," +
-				Course.CourseLabels.LP +":\""+data.getStartPeriod().getPeriod().name()+"\"" +
-				"}) CREATE (n)-[r:CAN_EDIT]->(m)";
-		communicator.writeToNeo(query);
-		user.addCourse(data);
-	}
 
 	/**
+	 * Takes in the name of the KC and its taxonomylevel and changes it's description
+	 * @param kc takes in the kc object and change genereal description and taxonomy description to the desired values
+	 * @author Tommy A
+	 */
+	 public void editKC(KC kc) {
+
+		String query = "MATCH(kc: KC {" + KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\"}) SET kc." + 
+		KC.KCLabel.GENERAL_DESCRIPTION.toString() + "= \"" + kc.getGeneralDescription() + "\"";
+	 
+		communicator.writeToNeo(query);
+	 }
+
+	 /**
+	 * Searches after the node from kcName but uses taxonomylevel from the object to change the name of the KC.
+	 * @param kcName is the current name in the database
+	 * @param kc contains the new name for the KC node, uses the old taxonomylevel
+	 * @author Tommy A
+	 */
+
+	public void editKCName(KC kc, String kcName) {
+
+		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kcName + "\"}) SET kc." +
+		KC.KCLabel.NAME.toString() + "= \"" + kc.getName() + "\""; 
+
+		communicator.writeToNeo(query);
+	 }
+
+	 /**
+	 *Change the taxonomyDescription of KC with a specific TAXONOMYLEVEL
+	 *@param kc
+	 *@author Robin, Tommy
+	 */
+
+	 public void editKCTaxonomyDescription(KC kc) {
+
+		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " + 
+		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 
+		KC.KCLabel.TAXONOMY_DESCRIPTION + "= \"" + kc.getTaxonomyDescription() + "\"";
+	 }
+
+
+
+	 /**
 	 * Edit a Specific KC to a new generated KC object
 	 * @param name name Selector
 	 * @param taxlvl Taxonomy level Selector
 	 * @param kcData New Object to change selected element
 	 * @author Johan RH
 	 */
+	/*
 	public void editKC(String name, int taxlvl, KC kcData) {
 		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME +":\""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL +":"+taxlvl+"}) SET n={";
 		query += KC.KCLabel.NAME+":\""+kcData.getName()+"\",";
@@ -58,39 +78,20 @@ public class ModifyMethods {
 
 		communicator.writeToNeo(query);
 	}
+	*/
 	
-	public void editProgram(String programCode,CourseDate startyear) {
-		String query = "MATCH (n:Program{ProgramCode:\""+  pogramCode+"\"} SET n={";
-		query += Program.ProgramLabels.CODE.toString() +":"+nCourse.getProgramCode();
-		query += Program.ProgramLabels.DESCRIPTION.toString() +":"+nProgram.getDescription();
-		query +=  Program.CourseLabels.YEAR.toString() +"="+nProgram.getStartPeriod().getYear();
-		query +=Program.ProgramLabels.LP.toString() +"="+nProgram.getStartPeriod().getPeriod().name();
-		query += Program.ProgramLabels.READING_PERIODS.toString() +"="+nCourse.getReading_periods();
-		query +=  Program.ProgramLabels.CREDIT.toString() +":"+nProgram.getCredit();
+	public void editProgram(String programCode,CourseDate startyear, CourseProgram newProgram) {
+		String query = "MATCH (n:CourseProgram{ProgramCode:\""+  programCode+"\"}) SET n={";
+		query += CourseProgram.ProgramLabels.CODE.toString() +"="+newProgram.getCode();
+		query += CourseProgram.ProgramLabels.DESCRIPTION.toString() +":"+newProgram.getDescription();
+		query += CourseProgram.ProgramLabels.YEAR.toString() +":"+newProgram.getStartDate().getYear();
+		query += CourseProgram.ProgramLabels.LP.toString() +":"+newProgram.getStartDate().getPeriod();
+		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +":"+newProgram.getCourseOrder().getReadingPeriods();
+		query += CourseProgram.ProgramLabels.CREDITS.toString() +":"+newProgram.getCredits();
 
 		query +="}";
 		communicator.writeToNeo(query);
 	}
-
-	/**
-	 * Remove and detach selected KC object
-	 * @param name name selector
-	 * @param taxlvl taxonomy level selector
-	 * @author Johan RH, Markus
-	 */
-	public void removeKC(String name, int taxlvl) {
-		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME.toString() +": \""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL.toString() + ": \""+ taxlvl +"\"}) DETACH DELETE n";
-		
-		communicator.writeToNeo(query);
-	}
-	
-
-	public void removeProgram( String programCode,CourseDate startyear) {
-		String query  ="MATCH(n:Program{ProgramCode:\""+ programCode +"\", "+CourseProgram.ProgramLabels.YEAR+":\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
-		
-		communicator.writeToNeo(query);
-	}
-
 
 	/**
 	 *  Edit a Course at Selector. todo KCs handling
@@ -119,10 +120,54 @@ public class ModifyMethods {
 	 * @param startyear Starting Year object, What year, period?
 	 * @author Johan RH
 	 */
+	 //Moved to DeleteMethods
+	 @deprecated
 	public void removeCourse(String couseID, CourseDate startyear) {
 		String query  ="MATCH(n:"+Course.course+"{"+Course.CourseLabels.CODE.toString()+":\""+ couseID +"\", "+ Course.CourseLabels.YEAR.toString() + " :\""+ startyear.getYear() +"\", "+ Course.CourseLabels.LP +": \""+ startyear.getPeriod() +"\" }) DETACH DELETE n";
 		
 		
 		communicator.writeToNeo(query);
+	}
+		/**
+	 * Remove and detach selected KC object
+	 * @param name name selector
+	 * @param taxlvl taxonomy level selector
+	 * @author Johan RH, Markus
+	 */
+	 //moved to DeleteMethods
+	 @deprecated
+	public void removeKC(String name, int taxlvl) {
+		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME.toString() +": \""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL.toString() + ": \""+ taxlvl +"\"}) DETACH DELETE n";
+		
+		communicator.writeToNeo(query);
+	}
+	//moved to DeleteMethods
+	@deprecated
+	public void removeProgram( String programCode,CourseDate startyear) {
+		String query  ="MATCH(n:Program{ProgramCode:\""+ programCode +"\", "+CourseProgram.ProgramLabels.YEAR+":\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
+		
+		communicator.writeToNeo(query);
+	}
+
+	/**
+	*Changes reading order of a course in a program, PS the courses startperiod needs to be changed before using this method
+	*@param course
+	*@param Program
+	*@author Robin, Tommy
+	*/
+	public void editInProgramCourseRelation(CourseInformation course, ProgramInformation program) {
+		
+		String query = "MATCH (courseProgram:" + CourseProgram.program + "{code: \"" + code + "\", "+ 
+		CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + 
+		CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" })-[r:" + CourseLabels.IN_PROGRAM + "]-(course: Course {courseCode: \"" + courseCode + "\", "+ 
+		CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + 
+		CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" })"; 
+
+		if(communicator.readFromNeo(query+ "RETURN r").hasNext()){
+		
+		query += "SET r."+ Relations.YEAR+" = \"" +course.getStartDate().getYear() "\", r."+ Relations.PERIOD+" = \"" +course.getStartDate().getPeriod() "\"";
+		
+		communicator.writeToNeo(query);
+		}
 	}
 }

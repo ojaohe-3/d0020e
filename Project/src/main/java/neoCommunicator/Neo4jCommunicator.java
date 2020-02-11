@@ -2,7 +2,7 @@ package neoCommunicator;
 import org.neo4j.driver.v1.*;
 
 
-class Neo4jCommunicator implements AutoCloseable {
+public class Neo4jCommunicator implements AutoCloseable {
 
     private final Driver driver;
 
@@ -23,7 +23,7 @@ class Neo4jCommunicator implements AutoCloseable {
      * @param query
      */
     
-    protected synchronized void writeToNeo(final String query) {
+    public synchronized void writeToNeo(final String query) {
     	try ( Session session = driver.session() ) {
             session.writeTransaction( new TransactionWork<String>() {
                 @Override
@@ -44,7 +44,7 @@ class Neo4jCommunicator implements AutoCloseable {
      * @param query The Cipher query to execute
      * @return Statement result containing the returned nodes from the query
      */
-    protected synchronized StatementResult readFromNeo(final String query) {
+    public synchronized StatementResult readFromNeo(final String query) {
     	
     	try ( Session session = driver.session() ) {
             StatementResult result = session.readTransaction( new TransactionWork<StatementResult>() {
