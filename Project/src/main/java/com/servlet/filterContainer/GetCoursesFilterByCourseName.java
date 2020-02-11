@@ -2,12 +2,19 @@ package com.servlet.filterContainer;
 
 import java.io.IOException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import org.json.JSONObject;
+
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import Data.Course;
+import Data.Course.CourseLabels;
+import Data.CourseInformation;
 import neo4j_JVM_API.*;
 import neoCommunicator.Neo4jCommunicator;
 
@@ -15,8 +22,7 @@ import neoCommunicator.Neo4jCommunicator;
  * 
  * Will handle the Filter course by course name
  * 
- * 			For testing I am creating a new  Neoapi, remove it later.. 
- * 
+ * 			Using a static Neo4jAPI..
  * @author Jesper
  *
  *
@@ -32,14 +38,39 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		Neo4JAPI neoapi = new Neo4JAPI("bolt://130.240.200.254:7687", "neo4j", "neo4j-d0020e");
-		
-		String[] s = neoapi.filterMethods.filterCourseByName(request.getParameter("filter"));
+		CourseInformation[] courses = Neo4JAPI.filterMethods.filterCourseByTag(CourseLabels.NAME, request.getParameter("filter").toString());
 
-		
-		
+		JSONObject json = new JSONObject();
 		response.setContentType("text/plain");
-		response.getWriter().write("got : " + s.length + " first is : " + s[0]);
+		response.getWriter().write("");
+		System.out.println("Got from db : " + courses.length);
+		
+		try {
+			JSONArray jArray = new JSONArray();
+			
+			for(CourseInformation ci: courses) {
+				JSONObject jobj = new JSONObject();
+				
+				jobj.put(CourseLabels.NAME.toString(), ci.getName().replaceAll("\"", ""));
+				jobj.put(CourseLabels.CODE.toString(), ci.getCourseCode().replaceAll("\"", ""));
+				jobj.put(CourseLabels.LP.toString(), ci.getStartPeriod().getPeriod());
+				jobj.put(CourseLabels.YEAR.toString(), ci.getStartPeriod().getYear());
+				jobj.put(CourseLabels.EXAMINER.toString(), ci.getExaminer().replaceAll("\"", ""));
+				jobj.put(CourseLabels.CREDIT.toString(), ci.getCredit());
+				
+				jArray.put(jobj);
+			
+				
+				
+			}
+			response.setContentType("text/json");
+			response.getWriter().write(jArray.toString());
+			
+			
+			System.out.println(jArray.toString());
+		} catch (JSONException ex) { }
+
+
 		
 	}
 	

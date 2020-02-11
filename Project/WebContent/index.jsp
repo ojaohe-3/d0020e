@@ -14,5 +14,8 @@
   </head>
   <body>
    <%@include  file="_filterContainer.jsp" %>
+   
+   
+   <div class="container" style="background-color:yellow;" id="debug"></div>
   </body>
 </html>

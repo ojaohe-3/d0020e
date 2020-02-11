@@ -1,5 +1,5 @@
 
-<script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerNavbar.js"></script>
+<script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerFunctions.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerSearchBar.js"></script>
 
 
@@ -9,7 +9,10 @@
     <li class="active"><a data-toggle="pill" href="#course">Course</a></li>
     <li><a data-toggle="pill" href="#program">Program</a></li>
     <li><a data-toggle="pill" href="#KC">Knowledge Component</a></li>
+
+    <li><a data-toggle="pill" href="#topic">Topic ??</a></li>
     <!-- <li><a data-toggle="pill" href="#topic">Topic ??</a></li> -->
+
   </ul>
   
   <div class="tab-content">

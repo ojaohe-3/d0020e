@@ -9,6 +9,7 @@ import Data.Credits;
 import Data.KC;
 import Data.LP;
 import neo4j_JVM_API.Neo4JAPI;
+import org.json.JSONException;
 
 public class Main {
 	
@@ -21,9 +22,19 @@ public class Main {
 	static Neo4JAPI neoapi;
 	
 	public static void main(String[] args) throws IOException {
-		
+		Course test = new Course("hello","ddddd",Credits.SEVEN,"hello there cowboy","man", new CourseDate(102,LP.ONE));
+		test.setRequiredKC(new KC("wow","wowowo",2,"no"));
+		test.setRequiredKC(new KC("2323","wowo33wo",25,"n2o"));
+		test.setDevelopedKC(new KC("wow","wowowo",3,"yes"));
+
+		try {
+			System.out.println(test.getAsJson());
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
+		/*
 		// Setup database connection
-		neoapi = new Neo4JAPI("bolt://130.240.200.254:7687", "neo4j", "neo4j-d0020e");
+		//neoapi = new Neo4JAPI("bolt://130.240.200.254:7687", "neo4j", "neo4j-d0020e");
 		
 		//neoapi.createMethods.clear(); <-- I moved this to Deletemethods. Greetings from Robin the code cop.
 		createCourses();
@@ -51,8 +62,8 @@ public class Main {
 		
 		deleteCourses();
 		deleteKCs();
+		*/
 
-		
 	}
 	
 	public static void print(String s ) {

@@ -1,5 +1,8 @@
 package Data;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 /**
  * KC = Knowledge component. Knowledge components can either be
  * created or required by a course, i.e. KCs are the result of every course.
@@ -64,7 +67,19 @@ public class KC {
 		this.taxonomyDescription = taxonomyDescription;
 	}
 
+	public String getAsJSON(){
+		JSONObject object = new JSONObject();
+		try {
+			object.put(KCLabel.NAME.toString(),name);
+			object.put(KCLabel.TAXONOMYLEVEL.toString(), taxonomyLevel);
+			object.put(KCLabel.GENERAL_DESCRIPTION.toString(), generalDescription);
+			object.put(KCLabel.TAXONOMY_DESCRIPTION.toString(), taxonomyDescription);
+		} catch (JSONException e) {
+			e.printStackTrace();
+		}
 
+		return object.toString();
+	}
 	public static enum KCLabel {
 		NAME("name"),  GENERAL_DESCRIPTION("generalDescription"), TAXONOMY_DESCRIPTION("taxonomyDescription"), TAXONOMYLEVEL("taxonomyLevel");
 		private String name;
@@ -78,5 +93,11 @@ public class KC {
 		public String toString() {
 			return this.name;
 		}
+	}
+
+	@Override
+	public String toString() {
+
+		return getAsJSON();//.replaceAll("\"","");
 	}
 }

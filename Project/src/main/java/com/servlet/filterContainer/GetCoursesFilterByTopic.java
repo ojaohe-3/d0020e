@@ -1,13 +1,17 @@
 package com.servlet.filterContainer;
 
 import java.io.IOException;
-
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import Data.Course;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import Data.CourseInformation;
+import Data.Course.CourseLabels;
 import neo4j_JVM_API.Neo4JAPI;
 
 @WebServlet("/GetCourses/FilterByTopic")
@@ -18,10 +22,32 @@ public class GetCoursesFilterByTopic extends HttpServlet {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Send JSON array with all matching courses when searching for course by topic
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		response.setContentType("text/plain");
-		response.getWriter().write("This is the response from filter by topic");
+		CourseInformation[] courses = Neo4JAPI.filterMethods.filterCourseByTopic(request.getParameter("filter"));
+			
+		System.out.println(courses.length);
+		
+		try {
+			JSONArray array = new JSONArray();
+			for (CourseInformation course : courses) {
+			    JSONObject obj = new JSONObject();
+			    obj.put(CourseLabels.NAME.toString(), course.getName().replaceAll("\"", ""));
+			    obj.put(CourseLabels.CODE.toString(), course.getCourseCode().replaceAll("\"", ""));
+			    obj.put(CourseLabels.YEAR.toString(), course.getStartPeriod().getYear());
+			    obj.put(CourseLabels.LP.toString(), course.getStartPeriod().getPeriod());
+			    obj.put(CourseLabels.CREDIT.toString(), course.getCredit());
+			    obj.put(CourseLabels.EXAMINER.toString(), course.getExaminer().replaceAll("\"", ""));
+			    array.put(obj);
+			}
+			response.setContentType("text/json");
+			response.getWriter().write(array.toString());
+		} catch (JSONException exception) {}
+		
+		
 		
 	}
 	

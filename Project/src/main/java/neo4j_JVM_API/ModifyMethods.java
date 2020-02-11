@@ -25,8 +25,11 @@ public class ModifyMethods {
 	 */
 	 public void editKCDescription(KC kc) {
 
-		String query = "MATCH(kc: KC {" + KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\"}) SET kc." + 
-		KC.KCLabel.GENERAL_DESCRIPTION.toString() + "= \"" + kc.getGeneralDescription() + "\"";
+
+		String query = "MATCH(kc: KC {"+KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " +
+		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 
+		KC.KCLabel.GENERAL_DESCRIPTION.toString() + "= \"" + kc.getGeneralDescription() + "\", kc." +
+		KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + "= \"" + kc.getTaxonomyDescription() +"\"";
 	 
 		communicator.writeToNeo(query);
 	 }
@@ -40,7 +43,8 @@ public class ModifyMethods {
 
 	public void editKCName(KC kc, String kcName) {
 
-		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kcName + "\"}) SET kc." +
+		String query = "MATCH(kc: KC {" +KC.KCLabel.NAME.toString() + ": \"" + kcName + "\", " +
+		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." +
 		KC.KCLabel.NAME.toString() + "= \"" + kc.getName() + "\""; 
 
 		communicator.writeToNeo(query);
@@ -54,8 +58,8 @@ public class ModifyMethods {
 
 	 public void editKCTaxonomyDescription(KC kc) {
 
-		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " + 
-		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 
+		String query = "MATCH(kc: KC {"+KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " +
+		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." +
 		KC.KCLabel.TAXONOMY_DESCRIPTION + "= \"" + kc.getTaxonomyDescription() + "\"";
 	 }
 
@@ -97,11 +101,14 @@ public class ModifyMethods {
 	 *  Edit a Course at Selector. todo KCs handling
 	 *  Make sure that the edges and internal object match.
 	 * @param courseID Course Code ex D0020E, Selector
+	 * @param period Period Selector
 	 * @param nCourse new Course object, will write the new object
 	 * @author Johan RH
 	 */
-	public void editCourse(String courseID,Course nCourse) {
-		String query = "MATCH (n:"+Course.course+"{CourseCode:\""+ courseID+"\"} SET n={";
+	public void editCourse(String courseID, CourseDate period,Course nCourse) {
+		String query = "MATCH (n:"+Course.course+"{"+ Course.CourseLabels.CODE +"\""+ courseID+"\","+
+				Course.CourseLabels.YEAR +":"+period.getYear()+","+
+				Course.CourseLabels.LP +":\""+period.getPeriod().name()+"\"} SET n={";
 		query += Course.CourseLabels.CODE.toString() +":"+nCourse.getCourseCode();
 		query +=  Course.CourseLabels.CREDIT.toString() +":"+nCourse.getCredit();
 		query += Course.CourseLabels.DESCRIPTION.toString() +":"+nCourse.getDescription();
@@ -121,7 +128,7 @@ public class ModifyMethods {
 	 * @author Johan RH
 	 */
 	 //Moved to DeleteMethods
-	 @deprecated
+	 @Deprecated
 	public void removeCourse(String couseID, CourseDate startyear) {
 		String query  ="MATCH(n:"+Course.course+"{"+Course.CourseLabels.CODE.toString()+":\""+ couseID +"\", "+ Course.CourseLabels.YEAR.toString() + " :\""+ startyear.getYear() +"\", "+ Course.CourseLabels.LP +": \""+ startyear.getPeriod() +"\" }) DETACH DELETE n";
 		
@@ -135,14 +142,14 @@ public class ModifyMethods {
 	 * @author Johan RH, Markus
 	 */
 	 //moved to DeleteMethods
-	 @deprecated
+	 @Deprecated
 	public void removeKC(String name, int taxlvl) {
 		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME.toString() +": \""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL.toString() + ": \""+ taxlvl +"\"}) DETACH DELETE n";
 		
 		communicator.writeToNeo(query);
 	}
 	//moved to DeleteMethods
-	@deprecated
+	@Deprecated
 	public void removeProgram( String programCode,CourseDate startyear) {
 		String query  ="MATCH(n:Program{ProgramCode:\""+ programCode +"\", "+CourseProgram.ProgramLabels.YEAR+":\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
 		
@@ -156,12 +163,12 @@ public class ModifyMethods {
 	*@author Robin, Tommy
 	*/
 	public void editInProgramCourseRelation(CourseInformation course, ProgramInformation program) {
-		
-		String query = "MATCH (courseProgram:" + CourseProgram.program + "{code: \"" + code + "\", "+ 
-		CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + 
-		CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" })-[r:" + CourseLabels.IN_PROGRAM + "]-(course: Course {courseCode: \"" + courseCode + "\", "+ 
-		CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + 
-		CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" })"; 
+
+		String query = "MATCH (courseProgram:" + CourseProgram.program + "{code: \"" + code + "\", "+
+		Course.CourseLabels.YEAR + " : \"" +startDate.getYear() + "\" , " +
+		Course.CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" })-[r:" + CourseLabels.IN_PROGRAM + "]-(course: Course {courseCode: \"" + courseCode + "\", "+
+		Course.CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " +
+		Course.CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" })";
 
 		if(communicator.readFromNeo(query+ "RETURN r").hasNext()){
 		

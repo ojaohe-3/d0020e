@@ -1,9 +1,12 @@
 package SpecificInterfaces;
-
+import Data.*;
 import Data.Course;
 import Data.CourseDate;
 import Data.CourseInformation;
+import Data.CourseProgram;
 import neo4j_JVM_API.Neo4JAPI;
+import neoCommunicator.Neo4jConfigLoader;
+import java.io.IOException;
 
 /**
  * A class containing all the functionality that a user should be able to access without signing in
@@ -18,10 +21,13 @@ public abstract class UserInterface {
 	
 	/**
 	 * Constructor
-	 * @param neoapi
 	 */
-	public UserInterface(Neo4JAPI neoapi) {
-		this.neoapi = neoapi;
+	public UserInterface() {
+		try {
+			this.neoapi = Neo4jConfigLoader.getApi();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/**
@@ -41,7 +47,7 @@ public abstract class UserInterface {
 	 * @return
 	 */
 	protected CourseInformation[] getCoursesByTopic(String topic) {
-		return this.neoapi.filterMethods.getCourseNameByTopic(topic);
+		return this.neoapi.filterMethods.filterCourseByTopic(topic);
 	}
 	
 	/**
@@ -52,8 +58,41 @@ public abstract class UserInterface {
 		return this.neoapi.getMethods.getTopics();
 	}
 
+	/**
+	 * get information of course nodes by search question
+	 * @param tag attribute selected
+	 * @param searchTerm search key
+	 * @return
+	 */
 	protected CourseInformation[] getCourseByTag(Course.CourseLabels tag, String searchTerm){
 		return this.neoapi.filterMethods.filterCourseByTag(tag,searchTerm);
 	}
 
+	/**
+	 * Search for programs by attribute tag and search key returning all related tags
+	 * @param tag search on what attribute
+	 * @param searchKey Search question
+	 * @return
+	 */
+	protected ProgramInformation[] searchProgram(CourseProgram.ProgramLabels tag, String searchKey){
+		return neoapi.filterMethods.filterProgramByTag(tag,searchKey);
+	}
+
+	/**
+	 * Find through topic All related KCs
+	 * @param topic Exact topic name
+	 * @return
+	 */
+	protected KC[] searchKcTopic(String topic){
+		return neoapi.filterMethods.filterKCByTopic(topic);
+	}
+	/**
+	 * Search KC
+	 * @param tag the attribute to search on
+	 * @param searchKey search key
+	 * @return
+	 */
+	protected KC[] searchKC(KC.KCLabel tag, String searchKey){
+		return neoapi.filterMethods.filterKCByTag(tag,searchKey);
+	}
 }

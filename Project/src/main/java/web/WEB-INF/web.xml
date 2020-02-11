@@ -9,14 +9,15 @@
     </servlet>  
     <servlet-mapping>
         <servlet-name>indexServlet</servlet-name>
-        <url-pattern>index.jsp</url-pattern>
+		<url-pattern>index.jsp</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
    		 <servlet-name>GetCoursesFilterByCourseName</servlet-name>
         <url-pattern>project/GetCourses/FilterByCourseName</url-pattern>
     </servlet-mapping>
-    
+
     <servlet-mapping>
    		 <servlet-name>GetCoursesFilterByCourseCode</servlet-name>
         <url-pattern>project/GetCourses/FilterByCourseCode</url-pattern>
@@ -26,7 +27,7 @@
    		 <servlet-name>GetCoursesFilterByTopic</servlet-name>
         <url-pattern>project/GetCourses/FilterByTopic</url-pattern>
     </servlet-mapping>
-   
+
    <servlet-mapping>
    		 <servlet-name>GetKCsFilterByTopic</servlet-name>
         <url-pattern>project/GetKCs/FilterByTopic</url-pattern>
@@ -53,6 +54,10 @@
         <url-pattern>project/GetProgram/FilterByTopic</url-pattern>
     </servlet-mapping>
     
+    <servlet-mapping>
+   		 <servlet-name>GetCourseByCodeYearLP</servlet-name>
+        <url-pattern>project/GetCourse/byCodeYearLP</url-pattern>
+    </servlet-mapping>
     
 
 </web-app>

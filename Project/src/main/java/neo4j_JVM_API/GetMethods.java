@@ -255,7 +255,7 @@ public class GetMethods {
 
 
 
-	@deprecated
+	@Deprecated
 	public Course getCourseNoKc(String courseCode, CourseDate courseDate) {
 
 		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
@@ -263,9 +263,9 @@ public class GetMethods {
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
 
-		CourseInformation courseNoKc = createCourseNoKc(row, "course")  
+		CourseInformation courseNoKc = createCourseNoKc(row, "course");
 
-		return courseNoKc;
+		return (Course) courseNoKc;
 		
 	}
 
