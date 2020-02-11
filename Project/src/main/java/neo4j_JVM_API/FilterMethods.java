@@ -6,6 +6,7 @@ import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
 
 import Data.Course.CourseLabels;
+import Data.Topic;
 import neoCommunicator.Neo4jCommunicator;
 
 public class FilterMethods {
@@ -22,7 +23,7 @@ public class FilterMethods {
 	 * @return array with matching course code
 	 */
 	public String[] filterCourseByCode(String code) {
-		String query = "MATCH (course: Course) WHERE course.courseCode STARTS WITH \"" + code + "\"";
+		String query = "MATCH (course: Course) WHERE course.courseCode STARTS WITH \"" + code + "\" " ;
 		query += "RETURN course";
 		
 		StatementResult result = this.communicator.readFromNeo(query);
@@ -63,6 +64,8 @@ public class FilterMethods {
 		String query = "MATCH (courseProgram: CourseProgram) WHERE courseProgram.code STARTS WITH \"" + code + "\"";
 		query += "RETURN courseProgram";
 		
+		System.out.println(query);
+		
 		StatementResult result = this.communicator.readFromNeo(query);
 		ArrayList<String> programs = new ArrayList<String>();
 		while(result.hasNext()) {
@@ -98,13 +101,15 @@ public class FilterMethods {
 	 * @return array with matching topics
 	 */
 	public String[] filterTopic(String name) {
-		String query = "MATCH (topic: Topic) WHERE topic.name STARTS WITH \"" + name + "\"";
+		String query = "MATCH (topic: "+ Topic.TopicLabels.TOPIC.toString() +") WHERE topic."+ Topic.TopicLabels.TITLE.toString() + " STARTS WITH \"" + name + "\" ";
 		query += "RETURN topic";
+		
+		System.out.println(query);
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		ArrayList<String> topics = new ArrayList<String>();
 		while(result.hasNext()) {
-			topics.add(result.next().get("topics").get("name").toString());
+			topics.add(result.next().get("topic").get("name").toString());
 		}
 		
 		return topics.toArray(new String[topics.size()]);
@@ -117,6 +122,25 @@ public class FilterMethods {
 	 * @return array with matching kcs
 	 */
 	public void filterKC() {
+		
+	}
+
+	/**
+	 * Get names of courses that has a specific topic
+	 * @param topicTitle
+	 * @return String[] of available course names
+	 */
+	public String[] getCourseNameByTopic(String topicTitle) {
+		String query = "MATCH(node: Topic {title : \""+ topicTitle +"\"})<-[r]-(course) RETURN course ";
+		
+		StatementResult result = this.communicator.readFromNeo(query);
+		ArrayList<String> courseNames = new ArrayList<String>();
+		
+		while(result.hasNext()) {
+			Record row = result.next();
+			courseNames.add(row.get("course").get("name").asString());
+		}
+		return courseNames.toArray(new String[courseNames.size()]);
 		
 	}
 }

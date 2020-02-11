@@ -42,7 +42,7 @@ public class GetMethods {
 		while ( result.hasNext() ) {
 			
 			Record row = result.next();
-			
+
             resultArray.add(row.get("node").get("title").toString());
         }
 		return resultArray.toArray(new String[resultArray.size()]);
@@ -54,10 +54,9 @@ public class GetMethods {
 	 * @param password Input to test authentication
 	 * @return true if successful
 	 * @author Johan RH
-	 * @throws NoSuchAlgorithmException
 	 */
-	public boolean login(String username, String password) throws NoSuchAlgorithmException {
-		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
+	public boolean login(String username, String password)  {
+		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
 		StatementResult result = communicator.readFromNeo(query);
 		if(!result.hasNext())
 			return false;
@@ -77,7 +76,7 @@ public class GetMethods {
 	 * @return User object
 	 */
 	public User getUser(String username) {
-		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
+		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
 		StatementResult result = communicator.readFromNeo(query);
 		if(!result.hasNext())
 			return null;
@@ -158,8 +157,7 @@ public class GetMethods {
 	 * @return course
 	 */
 	public Course getCourse(String courseCode, CourseDate courseDate) {
-		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
-		query += "RETURN course";
+		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
@@ -167,7 +165,8 @@ public class GetMethods {
 		Course course = createCourse(row, "course");
 		
 		String developedQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
-		developedQuery += "MATCH(developedKC : KC)<-[r: DEVELOPED]-(course) RETURN developedKC";
+		developedQuery += "MATCH(developedKC : KC)<-[r:" + Relations.DEVELOPED.toString() +"]-(course) RETURN developedKC";
+		//System.out.println(developedQuery);
 		result = this.communicator.readFromNeo(developedQuery);
 		
 		while(result.hasNext()) {
@@ -175,7 +174,8 @@ public class GetMethods {
 		}
 		
 		String requiredQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
-		developedQuery += "MATCH(requiredKC : KC)<-[r: DEVELOPED]-(course) RETURN requiredKC";
+		requiredQuery += "MATCH(requiredKC : KC)<-[r: "+ Relations.REQUIRED.toString() +"]-(course) RETURN requiredKC";
+		//System.out.println(requiredQuery);
 		result = this.communicator.readFromNeo(requiredQuery);
 		
 		while(result.hasNext()) {
@@ -196,7 +196,7 @@ public class GetMethods {
 		
 		String generalDescription = row.get(nodename).get("generalDescription").toString();
 		String taxonomyDescription = row.get(nodename).get("taxonomyDescription").toString();
-		int taxonomyLevel = row.get(nodename).get("taxonomyLevel").asInt();
+		int taxonomyLevel = Integer.parseInt(row.get(nodename).get("taxonomyLevel").toString().replaceAll("\"", ""));
 		String name = row.get(nodename).get("name").asString();		
 		
 		KC kc = new KC(name, generalDescription, taxonomyLevel, taxonomyDescription);
@@ -213,11 +213,14 @@ public class GetMethods {
 		String name = row.get(nodename).get("name").toString();
 		String courseCode = row.get(nodename).get("courseCode").toString();
 		String creds = row.get(nodename).get("credit").toString();
+		
+		creds = creds.replaceAll("\"", "");
 		Credits credits = Credits.valueOf(creds);
+		
 		String description = row.get(nodename).get("description").toString();
 		String examiner = row.get(nodename).get("examiner").toString();
-		int year = Integer.parseInt(row.get(nodename).get("year").toString());
-		LP lp = LP.valueOf(row.get(nodename).get("lp").toString());
+		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"", ""));
+		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"", ""));
 		CourseDate startDate = new CourseDate(year, lp);
 		
 		Course course = new Course(name, courseCode, credits, description, examiner, startDate);
@@ -234,7 +237,8 @@ public class GetMethods {
 	 * @return
 	 */
 	public KC getKCwithTaxonomyLevel(String name, int taxonomyLevel) {
-		String query = "MATCH (node: Kc {name: \"" + name + "\", taxonomyLevel: \"" + taxonomyLevel + "\"}) RETURN node";
+		
+		String query = "MATCH (node: "+ KC.kc +" {name: \"" + name + "\", taxonomyLevel: \"" + taxonomyLevel + "\"}) RETURN node";
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		

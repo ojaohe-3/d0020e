@@ -2,8 +2,9 @@ package neo4j_JVM_API;
 
 import java.util.ArrayList;
 
+import Data.*;
+import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
-
 import Data.Course;
 import Data.CourseDate;
 import Data.CourseOrder;
@@ -12,6 +13,7 @@ import Data.Credits;
 import Data.KC;
 import Data.LP;
 import Data.Relations;
+import Data.Topic;
 import Data.Course.CourseLabels;
 import neoCommunicator.Neo4jCommunicator;
 
@@ -24,35 +26,11 @@ public class CreateMethods {
 
 private final Neo4jCommunicator communicator;
 
-	public static void main(String[] args) {
-		/*Course course = new Course("Math course", "D0009M", Credits.FIFTEEN, "you do math", "Stefan", new CourseDate(2019, LP.TWO));
-		
-		KC kc = new KC("maeth", "Calulations", 1, "counting to 4");
-		KC kc2 = new KC("extra maeth", "Division", 3, "Divide 4 by 2");
-		KC kc3 = new KC("super maeth", "Multiplication", 4, "Multiply 4 by 2");
-		course.setRequiredKC(kc);
-		course.setDevelopedKC(kc2);
-		course.setDevelopedKC(kc3);
-		
-		CreateMethods methods = new CreateMethods(null);
-		methods.createCourse(course);
-		methods.createKC(kc);
-		methods.createKC(kc2);
-		methods.createKC(kc3);
-		methods.createCourseKCrelation(course);
-		*/
-		Neo4jCommunicator communicator = new Neo4jCommunicator();
-		CreateMethods methods = new CreateMethods(null);
-		CourseOrder order = new CourseOrder(12);
-		CourseProgram program = new CourseProgram(order, "TCDAA", "Computer engineering", "We are the definitive nerds", new CourseDate(2019,LP.ONE), Credits.THIRTY);
-		
-		
-		methods.createProgram(program);
-	}
+	
 	
 	/**
 	 * 
-	 * @param The communicator used when calling the database.
+	 * @param communicator  used when calling the database.
 	 * @see neoCommunicator.Neo4jCommunicator
 	 */
 	public CreateMethods(Neo4jCommunicator communicator){
@@ -60,18 +38,24 @@ private final Neo4jCommunicator communicator;
 	}
 	
 	/**
-	 * Add a topic.
+	 * Add a topic to the database.
 	 */
-	public void addTopic() {
-		throw new RuntimeException("This function is not finished yet.");
+	public void addTopic(String topic) {
+		String query = "CREATE (n: " + Topic.TopicLabels.TOPIC.toString() +" { " +Topic.TopicLabels.TITLE.toString()+ ":\""+ topic.toString() +"\"})";
+		this.communicator.writeToNeo(query);
 	}
 	
 	/**
 	 * Add a user. This method must prevent any unauthorized access and 
 	 * hacker attacks.
 	 */
-	public void addUser() {
-		throw new RuntimeException("This function is not finished yet.");
+	public void addUser(User userObj) {
+		String query = "CREATE (n:"+ User.UserLables.USER +"{";
+		query +=    User.UserLables.USERNAME +":"+userObj.getUsername();
+		query += 	User.UserLables.PASSWORD +":" + userObj.getPassword() ;
+		query += 	User.UserLables.USERTAG +":" + (userObj.isAdmintag()?1:0) ;
+		query += 	"})";
+		communicator.writeToNeo(query);
 	}
 	
 	/**
@@ -81,7 +65,7 @@ private final Neo4jCommunicator communicator;
 	 * @see Data.Course
 	 */
 	public void createCourse(Course course) {
-		String query = "MATCH (course: Course {courseCode: \"" + course.getCourseCode() + "\", "+ CourseLabels.YEAR + " : \"" + course.getStartPeriod().getYear() + "\" , " + CourseLabels.LP + " : \"" + course.getStartPeriod().getPeriod() + "\" }) ";
+		String query = "MATCH (course: Course {courseCode: \"" + course.getCourseCode() + "\", "+ CourseLabels.YEAR + " : \"" + course.getStartPeriod().getYear() + "\" , " + CourseLabels.LP + " : \"" + course.getStartPeriod().getPeriod() + "\" }) RETURN course";
 		StatementResult result = this.communicator.readFromNeo(query);
 		
 		/* Check if a course exist already. */
@@ -109,6 +93,7 @@ private final Neo4jCommunicator communicator;
 	 * @see Data.KC
 	 */
 	public void createKC (KC kc) {
+		
 		String query = "CREATE(n:" +KC.kc + "{" +
 			KC.KCLabel.NAME.toString() + ":\"" + kc.getName()+"\", " + 
 			KC.KCLabel.GENERAL_DESCRIPTION.toString()+ ":\"" + kc.getGeneralDescription() + "\", " + 
@@ -117,12 +102,24 @@ private final Neo4jCommunicator communicator;
 		communicator.writeToNeo(query);
 	}
 	
+
 	/**
-	 * 
-	 * 
+	 * Add multiple variants of the same KC to the database. 
+	 * Instead of the KC's internal taxonomy level, a selections of multiple levels can be used.
+	 * @param kc - The KC source.
+	 * @param taxonomyLevels - Every level you want to add.
+	 * @see Data.KC
 	 */
-	public void createKCgroup() {
-		throw new RuntimeException("This function is not finished yet.");
+	public void createKCgroup(KC kc, int... taxonomyLevels) {
+		String query = "";
+		for (int lv : taxonomyLevels) {
+			query += "CREATE(n:" +KC.kc + "{" +
+					KC.KCLabel.NAME.toString() + ":\"" + kc.getName()+"\", " + 
+					KC.KCLabel.GENERAL_DESCRIPTION.toString()+ ":\"" + kc.getGeneralDescription() + "\", " + 
+					KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + lv + "\", " + 
+					KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + ":\"" + kc.getTaxonomyDescription() + "\"})";
+		}
+		communicator.writeToNeo(query);
 	}
 	
 	/**
@@ -140,6 +137,7 @@ private final Neo4jCommunicator communicator;
 				CourseProgram.ProgramLabels.LP.toString() + ":\"" + program.getStartDate().getPeriod().toString() + "\", " +		
 				CourseProgram.ProgramLabels.READING_PERIODS.toString() + ":\"" + program.getCourseOrder().getReadingPeriods() + "\"})";
 		System.out.println(query);
+		communicator.writeToNeo(query);
 	}
 	
 	/**
@@ -153,30 +151,76 @@ private final Neo4jCommunicator communicator;
 		CourseOrder courseOrder = program.getCourseOrder();
 		Course[][] courses = courseOrder.getCourseArray();
 		
-		String query = "MATH(cp: " + CourseProgram.courseProgram + "{" + CourseProgram.ProgramLabels.CODE.toString() + ":\"" + program.getCode() + "\", " + 
-				CourseProgram.ProgramLabels.YEAR.toString()+ ":\"" + program.getStartDate().getYear()+ "\", " + 
-				CourseProgram.ProgramLabels.LP.toString() + "\"" + program.getStartDate().getPeriod().toString()+ "})";
+		/* find the program */
+		String query = "MATCH(program: " + CourseProgram.courseProgram + "{" + CourseProgram.ProgramLabels.CODE.toString() + ": \"" + program.getCode() + "\", " + 
+				CourseProgram.ProgramLabels.YEAR.toString()+ ": \"" + program.getStartDate().getYear()+ "\", " + 
+				CourseProgram.ProgramLabels.LP.toString() + ": \"" + program.getStartDate().getPeriod().toString()+ "\"}) ";
 		
-		for (int x=0; x < courses.length; x++) {
-			for (int y = 0; y < courses.length; y++) {
-				query += "MATCH ()";
+		/* Create a match for every course in the course order and add a relation for that course. */
+		Course c = null;	// temporary pointer.
+		boolean hasCourses = false;
+		for (int pos=0; pos < courses.length; pos++) {
+			for (int period = 0; period < courses[pos].length; period++) {
+				c = courses[pos][period];
+				if(c != null) {
+					hasCourses = true;
+					query += "MATCH (course" + pos + "" + period + ": " + Course.course +" {" +CourseLabels.CODE.toString() + ": \""+c.getCourseCode()+"\", "+
+					Course.CourseLabels.YEAR.toString() +": \"" + c.getStartPeriod().getYear()+"\","+
+					Course.CourseLabels.LP.toString() + ": \""+c.getStartPeriod().getPeriod().toString()+"\"}) ";
+					
+	
+			
+				}
+				
 			}
 		}
+		if(!hasCourses) {
+			System.err.print("No ocurses : ");
+			return;
+		}
+		for (int pos=0; pos < courses.length; pos++) {
+			for (int period = 0; period < courses[pos].length; period++) {
+				c = courses[pos][period];
+				if(c != null) {
+					
+
+					query += "CREATE (program)<-[r"+ pos + "" + period +": "+ Relations.IN_PROGRAM.toString() + " { pos: \"" + pos + "\", period :\"" + period + "\"}]" + "-(course" + pos + "" + period +") ";
+			
+				}
+				
+			}
+		}
+		
+		
+		this.communicator.writeToNeo(query);
+		
+		
 	}
 	
+	
+	public void clear() {
+		
+		String query = "MATCH (n)-[r]-(m) DELETE n,r,m";
+		this.communicator.writeToNeo(query);
+		query = "MATCH (n) DELETE n";
+		this.communicator.writeToNeo(query);
+		
+	}
 	/**
 	 * Add a relation between a course and a KC to the database. 
 	 * The KCs must be added as required or developed to the desired 
 	 * course first.
 	 * @param course - The course used for the relations.
 	 * @see Data.Course
-	 */
+	 */	
 	public void createCourseKCrelation(Course course) {
 		ArrayList<KC> developed = course.getDevelopedKC();
 		ArrayList<KC> required = course.getRequiredKC();
 		String query = "MATCH (course: " + Course.course +" {" +CourseLabels.CODE.toString() + ":\""+course.getCourseCode()+"\", "+
 				Course.CourseLabels.YEAR.toString() +":\"" + course.getStartPeriod().getYear()+"\","+
 				Course.CourseLabels.LP.toString() + ":\""+course.getStartPeriod().getPeriod().toString()+"\"})";
+		
+		/* the first two loops create a match for every required and developed KC.*/
 		for (int i = 0; i < required.size(); i++) {
 			query += " MATCH ( kc" + i + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + required.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + required.get(i).getTaxonomyLevel()+ "\"})";
 		}
@@ -184,6 +228,7 @@ private final Neo4jCommunicator communicator;
 			query += " MATCH ( kc" + (i+required.size()) + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + developed.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + developed.get(i).getTaxonomyLevel()+ "\"})";
 		}
 		
+		/* these loops create a relation between the matched KCs and the course. */
 		for (int i = 0; i < required.size(); i++) {
 			query += "CREATE (course)-[r" + i + ":" + Relations.REQUIRED.toString() + "]->(kc" + i + ")";
 		}

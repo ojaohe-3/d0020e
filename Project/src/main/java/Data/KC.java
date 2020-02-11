@@ -66,7 +66,7 @@ public class KC {
 
 
 	public static enum KCLabel {
-		NAME("name"),  GENERAL_DESCRIPTION("generaldescription"), TAXONOMY_DESCRIPTION("taxonomydescription"), TAXONOMYLEVEL("taxonomylevel");
+		NAME("name"),  GENERAL_DESCRIPTION("generalDescription"), TAXONOMY_DESCRIPTION("taxonomyDescription"), TAXONOMYLEVEL("taxonomyLevel");
 		private String name;
 
 
