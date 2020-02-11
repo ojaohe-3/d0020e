@@ -23,7 +23,7 @@ public class ModifyMethods {
 	 * @param kc takes in the kc object and change genereal description and taxonomy description to the desired values
 	 * @author Tommy A
 	 */
-	 public void editKC(KC kc) {
+	 public void editKCDescription(KC kc) {
 
 		String query = "MATCH(kc: KC {" + KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\"}) SET kc." + 
 		KC.KCLabel.GENERAL_DESCRIPTION.toString() + "= \"" + kc.getGeneralDescription() + "\"";
