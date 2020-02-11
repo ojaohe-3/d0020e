@@ -17,6 +17,7 @@ import Data.Topic;
 import Data.Course.CourseLabels;
 import neoCommunicator.Neo4jCommunicator;
 
+
 /**
  * Internal class for create functions.
  * @author Jesper, Robin
