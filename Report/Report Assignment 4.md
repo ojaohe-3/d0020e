@@ -6,7 +6,7 @@ Wilma Krutrök - wilkru-7@student.ltu.se<br>
 Jesper Nilsson - ejeino-7@student.ltu.se<br>
 Johan Rodahl Holmgren - ojaohe-3@student.ltu.se<br></p>
 <br><br>
-    January 8, 2020
+    February 13, 2020
 </center><div style="page-break-after: always; break-after: page;"></div>
 
 ## 1. Introduction
@@ -67,17 +67,14 @@ GitHub issues has been used for group members to know which function is most cri
 
 ## 3.2. Project implementation
 
-To work with the project the group have regular meetings where the scrum master leads the meeting, assign tasks and have the final word when voting. All tasks are assigned as issues in GitHub together with the documentation. The Git master has responsibility to merge everything into the master branch and to make sure everything is correct. Once a week a follow up meeting with the project owner is scheduled. At the meeting the work since last time is presented and feedback is received. After the feedback the group together with the project owner discuss what should be done until the next meeting.
+To work with the project the group have regular meetings where the scrum master leads the meeting, assigns tasks and has the final word when voting. All tasks are assigned as issues in GitHub together with the documentation. The Git master has the responsibility to merge everything into the master branch and to make sure everything is correct. Once a week a follow up meeting with the project owner is scheduled. At the meeting the work since last time is presented and feedback is received. After the feedback the group together with the project owner discuss what should be done until the next meeting.
 
-## THIS IS NEW
 For sprint 1 the group have been working together in the assigned project room at the  university. This work style have made it easy to work in small groups of two or three and ask other group members for help, which also made it possible to work together or individually depending on the task. The group has found this to be an efficient method because everyone has been synchronized and learned from each other to optimize the workload. 
 
 Things that could have done better is to make better documentation for what has been done and what has been tested and ready to use. Communication is something that could have worked better since communication is essential in teams and can always be improved. 
 
 
-## AND THIS
-
-3.2.1 Sprint 1
+### 3.2.1 Sprint 1
 For sprint 1 the main focus was on the backend. Including the communication with the database Neo4J and creating interfaces for the web to get the data in the correct format. The goal was to make sure that Neo4J could be used for the project and make it possible to have dynamic data storage. Another main reason to start with the backend is to obtain solid structure to work with when starting to implement the front end. This makes sure that every group member is using the backend in the same way, which in turn minimizes potential bugs. Neo4j is schemaless and because of that it is important that rules are set up for how the data is stored. To solve this problem an API with functions were created that makes sure that all data follows the same schema. To make sure that users from the web only have access to the functions they should have an interface between the web and the API was implemented. 
 
 The planned stories for sprint 1 (Story 1-4) have been completed. For each week the group planned around seven meetings to work on the sprint. Every meeting started and ended with a scrum meeting where everyone was asked what they wanted to work with and if any problems had occurred. After every scrum meeting time was allocated for discussion and re-planning before continuing with working on the planned tasks. Some time has also been used for creating test-benches and finding bugs. 
@@ -469,6 +466,14 @@ Cross-functional testing is done by testing different functions which should not
 ### 4.2.4. Development description
 
 To test the system for regression the following stories for automated unit level and automated system level testing have been described. The stories are divided into tasks, with estimated time to finish, priority to be finished and risk. Where risk is defined as a summary of different requirements, implementation and dependency risks. 
+
+## 4.3. Ethics
+The system stores for example passwords for users which is sensitive information. Therefore it is important to provide the users security that can guarantee to keep the sensitive data secure. The planned implementations in sprint 1 and sprint 2 do not store any personal data. Further implementations may store information such as individual programs and student grades. Implementing such functionality must increase the security for the whole system, because it may be sensitive for the users. This kind of data can be seen as harmless, but it can also be used by organizations for tracking human behavior and targeted advertisement. 
+
+To obtain the highest quality for security it is important to test the system and make sure that passwords and other potentially sensitive data only can be accessed by an authorized user. For example should a password, once it is hashed and stored in the database never leave the server. When a user is logging in, the server is responsible to compare the hashed password in the database with the hash from the user input, and not the web browser. 
+
+Before using parts of the system with sensitive information all methods have been tested to see that no information is accessed in the wrong way. If this is not done right and does not cover all exposed functionality then the sensitive information is at risk. Therefore it is important to keep track of what has been tested and what has not to make sure it is known both what is known and what is not. 
+
 
 #### Automated unit level testing
 
