@@ -466,14 +466,7 @@ Cross-functional testing is done by testing different functions which should not
 ### 4.2.4. Development description
 
 To test the system for regression the following stories for automated unit level and automated system level testing have been described. The stories are divided into tasks, with estimated time to finish, priority to be finished and risk. Where risk is defined as a summary of different requirements, implementation and dependency risks. 
-
-## 4.3. Ethics
-The system stores for example passwords for users which is sensitive information. Therefore it is important to provide the users security that can guarantee to keep the sensitive data secure. The planned implementations in sprint 1 and sprint 2 do not store any personal data. Further implementations may store information such as individual programs and student grades. Implementing such functionality must increase the security for the whole system, because it may be sensitive for the users. This kind of data can be seen as harmless, but it can also be used by organizations for tracking human behavior and targeted advertisement. 
-
-To obtain the highest quality for security it is important to test the system and make sure that passwords and other potentially sensitive data only can be accessed by an authorized user. For example should a password, once it is hashed and stored in the database never leave the server. When a user is logging in, the server is responsible to compare the hashed password in the database with the hash from the user input, and not the web browser. 
-
-Before using parts of the system with sensitive information all methods have been tested to see that no information is accessed in the wrong way. If this is not done right and does not cover all exposed functionality then the sensitive information is at risk. Therefore it is important to keep track of what has been tested and what has not to make sure it is known both what is known and what is not. 
-
+ 
 
 #### Automated unit level testing
 
@@ -537,7 +530,12 @@ Automatic test of all functions involved when getting a graph from the database 
 
 **Estimated time:** 4h, **Risk:** 4/10, **Dependency:** No dependency
 
+## 4.3. Ethics
+The system stores for example passwords for users which is sensitive information. Therefore it is important to provide the users security that can guarantee to keep the sensitive data secure. The planned implementations in sprint 1 and sprint 2 do not store any personal data. Further implementations may store information such as individual programs and student grades. Implementing such functionality must increase the security for the whole system, because it may be sensitive for the users. This kind of data can be seen as harmless, but it can also be used by organizations for tracking human behavior and targeted advertisement. 
 
+To obtain the highest quality for security it is important to test the system and make sure that passwords and other potentially sensitive data only can be accessed by an authorized user. For example should a password, once it is hashed and stored in the database never leave the server. When a user is logging in, the server is responsible to compare the hashed password in the database with the hash from the user input, and not the web browser. 
+
+Before using parts of the system with sensitive information all methods have been tested to see that no information is accessed in the wrong way. If this is not done right and does not cover all exposed functionality then the sensitive information is at risk. Therefore it is important to keep track of what has been tested and what has not to make sure it is known both what is known and what is not.
 
 
 
