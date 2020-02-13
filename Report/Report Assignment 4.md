@@ -472,7 +472,7 @@ To test the system for regression the following stories for automated unit level
 
 Unit level testing is small parts of a code tested in isolation to make sure that the modules are working properly. This will make it easier to detect bugs and this kind of testing is usually performed by developers. 
 
-##### Story 1
+##### Story 9
 
 **Title:** Test of the Neo4J API. <br>**Intended use:** Automatically create, edit and delete nodes and relationships using the developed API. <br>**Desired properties:** Will cover all possible inputs for the API. <br>**Test case:** Run the test with both valid and invalid input <br>**Estimated time:** 18h, **Risk:** 8/10, **Prio:** High.
 
@@ -480,19 +480,19 @@ Unit level testing is small parts of a code tested in isolation to make sure tha
 
 ##### Tasks
 
-###### 1.1
+###### 9.1
 
 **What to do:** Create a script that starts the Neo4J module.<br>
 
 **Estimated time: ** 4h, **Risk:** 8/10, **Dependency: ** No dependency
 
-###### 1.2
+###### 9.2
 
 **What to do:** Make a script to create, modify and remove KC, program and courses in the module Neo4J.<br>
 
 **Estimated time:** 9h, **Risk:** 8/10, **Dependency:** No dependency
 
-###### 1.3
+###### 9.3
 
 **What to do:** Create a script that checks if the data in the database is correct after create, modify and remove KC, program and courses in the module Neo4J.<br>
 
@@ -502,7 +502,7 @@ Unit level testing is small parts of a code tested in isolation to make sure tha
 
 System testing involves several modules in one test. It could be used to test a function for the user to execute that will start functions in other modules of the system to give the asked output. 
 
-##### Story 2
+##### Story 10
 
 **Title:**<br>
 
@@ -518,13 +518,13 @@ Automatic test of all functions involved when getting a graph from the database 
 
 ##### Tasks
 
-###### 2.1
+###### 10.1
 
 **What to do:** Develop a python script to call the system with all possible inputs and some invalid input.<br>
 
 **Estimated time:** 4h, **Risk:** 4/10, **Dependency:** No dependency
 
-###### 2.2
+###### 10.2
 
 **What to do:** Use the script from above to check that the graphical view is working.<br>
 
