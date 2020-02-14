@@ -30,11 +30,11 @@ public class CourseInformation {
 	 * @param startPeriod - The staring period in the form of {@link CourseDate}
 	 */
 public CourseInformation(String name, String courseCode, Credits credit, String description, String examiner, CourseDate startPeriod) {
-		this.name = name;
-		this.courseCode = courseCode;
+		this.name = name.replaceAll("\"","");
+		this.courseCode = courseCode.replaceAll("\"","");
 		this.credit = credit;
-		this.description = description;
-		this.examiner = examiner;
+		this.description = description.replaceAll("\"","");
+		this.examiner = examiner.replaceAll("\"","");
 		this.startPeriod = startPeriod;
 	}
 	
@@ -43,7 +43,7 @@ public CourseInformation(String name, String courseCode, Credits credit, String 
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.name = name.replaceAll("\"","");
 	}
 
 	public String getCourseCode() {
@@ -51,7 +51,7 @@ public CourseInformation(String name, String courseCode, Credits credit, String 
 	}
 
 	public void setCourseCode(String courseCode) {
-		this.courseCode = courseCode;
+		this.courseCode = courseCode.replaceAll("\"","");
 	}
 
 	public String getDescription() {
@@ -59,7 +59,7 @@ public CourseInformation(String name, String courseCode, Credits credit, String 
 	}
 
 	public void setDescription(String description) {
-		this.description = description;
+		this.description = description.replaceAll("\"","");
 	}
 
 	public String getExaminer() {
@@ -67,7 +67,7 @@ public CourseInformation(String name, String courseCode, Credits credit, String 
 	}
 
 	public void setExaminer(String examiner) {
-		this.examiner = examiner;
+		this.examiner = examiner.replaceAll("\"","");
 	}
 
 	public CourseDate getStartPeriod() {

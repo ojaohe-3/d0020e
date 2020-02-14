@@ -45,12 +45,12 @@ public class FilterMethods {
 		int i = 0;
 		for (Record row : resultList) {
 			Value course = row.get("course");
-			CourseInformation information = new CourseInformation(course.get(Course.CourseLabels.NAME.toString()).toString(),
-					course.get(Course.CourseLabels.CODE.toString()).toString(),
+			CourseInformation information = new CourseInformation(course.get(Course.CourseLabels.NAME.toString()).toString().replaceAll("\"",""),
+					course.get(Course.CourseLabels.CODE.toString()).toString().replaceAll("\"",""),
 					Credits.valueOf(course.get(Course.CourseLabels.CREDIT.toString()).toString().replaceAll("\"", "") ),
-					course.get(Course.CourseLabels.DESCRIPTION.toString()).toString(),
-					course.get(Course.CourseLabels.EXAMINER.toString()).toString(),
-					new CourseDate(Integer.parseInt(    course.get(Course.CourseLabels.YEAR.toString()).toString().replaceAll("\"", "")   ), LP.valueOf(course.get(Course.CourseLabels.LP.toString()).toString().replaceAll("\"", ""))));
+					course.get(Course.CourseLabels.DESCRIPTION.toString()).toString().replaceAll("\"",""),
+					course.get(Course.CourseLabels.EXAMINER.toString()).toString().replaceAll("\"",""),
+					new CourseDate(Integer.parseInt(course.get(Course.CourseLabels.YEAR.toString()).toString().replaceAll("\"", "")   ), LP.valueOf(course.get(Course.CourseLabels.LP.toString()).toString().replaceAll("\"", ""))));
 			result[i++] = information;
 		}
 		

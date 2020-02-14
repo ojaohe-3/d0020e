@@ -15,7 +15,7 @@
 
     <servlet-mapping>
    		 <servlet-name>GetCoursesFilterByCourseName</servlet-name>
-        <url-pattern>project/GetCourses/FilterByCourseName</url-pattern>
+        <url-pattern>project.GetCourses.FilterByCourseName</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>

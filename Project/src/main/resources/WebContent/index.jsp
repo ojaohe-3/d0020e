@@ -14,8 +14,8 @@
   </head>
   <body>
    <%@include  file="_filterContainer.jsp" %>
-   
-   
+
+   <%@include file="_graphCanvas.jsp"%>
    <div class="container" style="background-color:yellow;" id="debug"></div>
   </body>
 </html>

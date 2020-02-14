@@ -1,13 +1,7 @@
 import java.io.IOException;
 import java.util.ArrayList;
 
-import Data.Course;
-import Data.CourseDate;
-import Data.CourseOrder;
-import Data.CourseProgram;
-import Data.Credits;
-import Data.KC;
-import Data.LP;
+import Data.*;
 import neo4j_JVM_API.Neo4JAPI;
 import neoCommunicator.Neo4jConfigLoader;
 import org.json.JSONException;
@@ -39,21 +33,21 @@ public class Main {
 		//neoapi = new Neo4JAPI("");
 		
 		//neoapi.createMethods.clear(); <-- I moved this to Deletemethods. Greetings from Robin the code cop.
-		createCourses();
-		createTopics();
-		createKCs();
+		//createCourses();
+		//createTopics();
+		//createKCs();
 		
-		createRelationsBetweenCoursesAndKCs();
+		//createRelationsBetweenCoursesAndKCs();
 		
-		createCourseProgram("courseprgroma 1", "TIDAG");
+		//createCourseProgram("courseprgroma 1", "TIDAG");
 		
 		//addTopicsToCourses();
 		//addTopicsToKCs();
 		
 
 		readCourses();
+
 		readKCs();
-		
 		readTopics();
 		
 		filterTest();
@@ -61,7 +55,7 @@ public class Main {
 		//System.in.read();
 		
 		deleteCourses();
-		deleteKCs();
+		//deleteKCs();
 
 
 	}
@@ -247,24 +241,22 @@ public class Main {
 	
 	public static void readCourses() {
 		
-		for(Course course : courses) {
-			Course c = neoapi.getMethods.getCourse(course.getCourseCode(), course.getStartPeriod());
-			
+			CourseInformation[] temp = neoapi.filterMethods.filterCourseByTag(Course.CourseLabels.NAME,"");
+			courses = new Course[temp.length];
+		for (int i = 0; i < temp.length; i++) {
+			courses[i] = neoapi.getMethods.getCourse(temp[i].getCourseCode(),temp[i].getStartPeriod());
+		}
+
 			/*printCourse(c);
 			print("Developed KCs");
 			printKCs(c.getDevelopedKC());
 			print("Required KCs");
 			printKCs(c.getRequiredKC());*/
-		}
+
 	}
 	
 	public static void readKCs() {
-		for(KC kc: kcs) {
-			if(kc != null) {
-				KC k = neoapi.getMethods.getKCwithTaxonomyLevel(kc.getName(), kc.getTaxonomyLevel());
-				//printKC(k);
-			}
-		}
+		kcs = neoapi.filterMethods.filterKCByTag(KC.KCLabel.NAME,"");
 	}
 	
 	public static void readTopics() {
