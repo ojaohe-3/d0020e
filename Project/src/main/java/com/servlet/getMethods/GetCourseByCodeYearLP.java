@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import neoCommunicator.Neo4jConfigLoader;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,7 +30,7 @@ public class GetCourseByCodeYearLP extends HttpServlet {
 		
 		
 
-		Course course = Neo4JAPI.getMethods.getCourse(request.getParameter("courseCode"), new CourseDate(Integer.parseInt(request.getParameter("year")), LP.valueOf(request.getParameter("lp"))));
+		Course course = Neo4jConfigLoader.getApi().getMethods.getCourse(request.getParameter("courseCode"), new CourseDate(Integer.parseInt(request.getParameter("year")), LP.valueOf(request.getParameter("lp"))));
 		
 		
 		try {

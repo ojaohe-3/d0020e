@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import neoCommunicator.Neo4jConfigLoader;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,7 +32,7 @@ public class GetProgramFilterByCode extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		ProgramInformation[] programs = Neo4JAPI.filterMethods.filterProgramByTag(ProgramLabels.CODE, request.getParameter("filter"));
+		ProgramInformation[] programs = Neo4jConfigLoader.getApi().filterMethods.filterProgramByTag(ProgramLabels.CODE, request.getParameter("filter"));
 		
 		try {
 			JSONArray array = new JSONArray();

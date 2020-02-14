@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import neoCommunicator.Neo4jConfigLoader;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +30,7 @@ public class GetCoursesFilterByCourseCode extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		CourseInformation[] courses = Neo4JAPI.filterMethods.filterCourseByTag(CourseLabels.CODE, request.getParameter("filter"));
+		CourseInformation[] courses = Neo4jConfigLoader.getApi().filterMethods.filterCourseByTag(CourseLabels.CODE, request.getParameter("filter"));
 			
 		try {
 			JSONArray array = new JSONArray();

@@ -2,6 +2,7 @@ package com.servlet.filterContainer;
 
 import java.io.IOException;
 
+import neoCommunicator.Neo4jConfigLoader;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -38,7 +39,7 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		CourseInformation[] courses = Neo4JAPI.filterMethods.filterCourseByTag(CourseLabels.NAME, request.getParameter("filter").toString());
+		CourseInformation[] courses = Neo4jConfigLoader.getApi().filterMethods.filterCourseByTag(CourseLabels.NAME, request.getParameter("filter").toString());
 
 		JSONObject json = new JSONObject();
 		response.setContentType("text/plain");

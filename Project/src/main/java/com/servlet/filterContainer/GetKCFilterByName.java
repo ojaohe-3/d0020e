@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import neoCommunicator.Neo4jConfigLoader;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +30,7 @@ public class GetKCFilterByName extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		KC[] kcs = Neo4JAPI.filterMethods.filterKCByTag(KC.KCLabel.NAME, request.getParameter("filter"));
+		KC[] kcs = Neo4jConfigLoader.getApi().filterMethods.filterKCByTag(KC.KCLabel.NAME, request.getParameter("filter"));
 		
 		try {
 			JSONArray array = new JSONArray();

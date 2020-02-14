@@ -2,9 +2,8 @@ package neoCommunicator;
 
 import neo4j_JVM_API.Neo4JAPI;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+
 import java.util.Properties;
 
 /**
@@ -23,7 +22,7 @@ public class Neo4jConfigLoader {
     public static Neo4JAPI getApi() throws IOException {
         config c = loadConfig();
         if(API == null) {
-            Neo4JAPI api = new Neo4JAPI(c.getBOLTURL(),c.USERNAME,c.getPWD());
+            API = new Neo4JAPI(new Neo4jCommunicator(c.getBOLTURL(),c.getUSERNAME(),c.getPWD()));
         }
         return API;
     }
@@ -40,10 +39,18 @@ public class Neo4jConfigLoader {
         String uname;
         String pwd;
         String url;
+
         InputStream inputStream = null;
         try {
+
+            File f = new File(System.getProperty("user.dir"));
+            File[] matchingFiles = f.listFiles(new FilenameFilter() {
+                public boolean accept(File dir, String name) {
+                    return name.startsWith("db") && name.endsWith("properties");
+                }
+            });
             Properties prop = new Properties();
-            inputStream = Neo4jConfigLoader.class.getClass().getResourceAsStream(CONF_PATH);
+            inputStream = new FileInputStream(matchingFiles[0]);
 
             if (inputStream != null) {
                 prop.load(inputStream);
@@ -52,9 +59,9 @@ public class Neo4jConfigLoader {
             }
 
             // get the property value and print it out
-            uname  = prop.getProperty("username");
-            pwd = prop.getProperty("psw");
-            url = prop.getProperty("db_server");
+            uname  = prop.getProperty("username").replaceAll("\"","");
+            pwd = prop.getProperty("psw").replaceAll("\"","");
+            url = prop.getProperty("db_server").replaceAll("\"","");
 
         } catch (Exception e) {
             System.out.println("Exception: " + e);
