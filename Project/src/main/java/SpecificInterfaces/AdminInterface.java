@@ -52,7 +52,7 @@ public class AdminInterface extends TeacherInterface {
      */
     public boolean modifyKC(KC newdata){
         try {
-            neoapi.modifyMethods.editKC(newdata);
+            //neoapi.modifyMethodseditKC(newdata);
             return true;
         }catch (Exception e) {
             System.out.println(e.getMessage());

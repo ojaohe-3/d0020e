@@ -43,7 +43,7 @@ public class Neo4jConfigLoader {
         InputStream inputStream = null;
         try {
             Properties prop = new Properties();
-            inputStream = Neo4jConfigLoader.class.getClassLoader().getResourceAsStream(CONF_PATH);
+            inputStream = Neo4jConfigLoader.class.getClass().getResourceAsStream(CONF_PATH);
 
             if (inputStream != null) {
                 prop.load(inputStream);

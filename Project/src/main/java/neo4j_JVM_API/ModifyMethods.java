@@ -65,13 +65,7 @@ public class ModifyMethods {
 
 
 
-	 /**
-	 * Edit a Specific KC to a new generated KC object
-	 * @param name name Selector
-	 * @param taxlvl Taxonomy level Selector
-	 * @param kcData New Object to change selected element
-	 * @author Johan RH
-	 */
+
 	/*
 	public void editKC(String name, int taxlvl, KC kcData) {
 		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME +":\""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL +":"+taxlvl+"}) SET n={";
@@ -159,9 +153,9 @@ public class ModifyMethods {
 	/**
 	*Changes reading order of a course in a program, PS the courses startperiod needs to be changed before using this method
 	*@param course
-	*@param Program
+	*@param program
 	*@author Robin, Tommy
-	*/
+	*//*
 	public void editInProgramCourseRelation(CourseInformation course, ProgramInformation program) {
 
 		String query = "MATCH (courseProgram:" + CourseProgram.program + "{code: \"" + code + "\", "+
@@ -176,5 +170,5 @@ public class ModifyMethods {
 		
 		communicator.writeToNeo(query);
 		}
-	}
+	}*/
 }
