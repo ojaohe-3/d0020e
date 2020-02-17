@@ -308,26 +308,21 @@ function course_delete() {
 /*
  * Create a new course
  */
-function course_create() {
-	var input = prompt("coursename;coursecode;LP(1-4);year;credits;examiner;description");
+function kc_create() {
+	var input = prompt("name;generalDescription;Topic");
 	
 	var data = input.split(";");
 	
-	if(data.length == 7 ){
+	if(data.length == 3){
 		
 		$.ajax({
 			url : 'admin',
 			type : "POST",
 			data : {
-				head : "COURSE",
+				head : "KC",
 				method : "CREATE",
-				courseName : data[0],
-				courseCode : data[1],
-				lp : data[2],
-				year : data[3],
-				credits : data[4],
-				examiner : data[5],
-				description : data[6]
+				name : data[0],
+				
 			},
 			success : function(response) {
 				document.getElementById("log").innerHTML += "CREATE COURSE " + data[0]  +"</br>";
@@ -343,9 +338,9 @@ function course_create() {
 /*
  * Modify Course
  * 
- * Don't know how to do this in a gr8 way
+ *  NOT FINNISHED :)
  */
-function course_modify() {
+function kc_modify() {
 	var input = prompt("newcoursename;coursecode;LP(1-4);year;newcredits;newexaminer;newdescription \n This was not great...");
 	
 	var data = input.split(";");
@@ -379,10 +374,12 @@ function course_modify() {
 }
 
 /*
- * Delete Course
+ * Delete KC
+ * 
+ *  NOT FINNISHED
  */
-function course_delete() {
-	var input = prompt("courseCode;lp(1-4);year");
+function kc_delete() {
+	var input = prompt("");
 	
 	var data = input.split(";");
 	
@@ -392,14 +389,12 @@ function course_delete() {
 			url : 'admin',
 			type : "POST",
 			data : {
-				head : "COURSE",
+				head : "KC",
 				method : "DELETE",
-				courseCode : data[0],
-				lp : data[1],
-				year : data[2]
+				
 			},
 			success : function(response) {
-				document.getElementById("log").innerHTML += "DELETE COURSE with code " + data[0]  +"</br>";
+				document.getElementById("log").innerHTML += "DELETE KCs with name " + data[0]  +"</br>";
 				document.getElementById("output").innerHTML += response + "</br>";
 			}
 
