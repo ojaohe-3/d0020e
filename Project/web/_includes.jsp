@@ -4,3 +4,13 @@
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/site.css">
 
+<nav class="navbar navbar-inverse">
+
+	<ul class="nav navbar-nav navbar-right">
+		<ul>	
+			<li><a href="/project/login"> <span class="glyphicon glyphicon-log-in"></span>Login</a></li>
+		</ul>
+	</ul>
+
+
+</nav>
