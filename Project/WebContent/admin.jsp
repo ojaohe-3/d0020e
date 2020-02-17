@@ -24,6 +24,7 @@
 				<li><button onclick="user_command()">Remove Relation To Course</button></li>
 			</ul>
 		</div>
+		
 		<div class="col-md-4">
 			<ul>
 			<h4>Course</h4>
