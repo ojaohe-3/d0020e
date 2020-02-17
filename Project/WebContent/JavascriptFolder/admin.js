@@ -3,4 +3,9 @@
  */
 
 
-prompt("whats your name?");
+function user_command() {
+	var input = prompt("" );
+	
+	document.getElementById("log").innerHTML += input + "</br>";
+	
+}
