@@ -179,17 +179,16 @@ $(document).ready(function() {
 						//$('#kc_search_results').text(response);
 						var s = "";
 						for(i in response) {
-							s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"kcClicked()\"> <b>" + response[i].name + "</b>";
-							s += "<div class=\"SearchResultExpander\"> Description : " + response[i].generalDescription +"</div></div>";
+							s += "<div class=\"SearchResult\" id=\"topic\" onclick=\"topicClicked()\"> <b>" + response[i].name + "</b></div>";
 						}
-						$('#kc_search_results').html('');
-						$('#kc_search_results').html(s);
+						$('#topic_search_results').html('');
+						$('#topic_search_results').html(s);
 					}
 
 				});
 			} 
 		} else {
-			$('#kc_search_results').html('');
+			$('#topic_search_results').html('');
 		} 
 		
 	});
