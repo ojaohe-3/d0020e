@@ -13,9 +13,20 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+	<servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>project/login</url-pattern>
+    </servlet-mapping>
+
+	<servlet-mapping>
+        <servlet-name>Admin</servlet-name>
+        <url-pattern>project/admin</url-pattern>
+    </servlet-mapping>
+	
+
     <servlet-mapping>
    		 <servlet-name>GetCoursesFilterByCourseName</servlet-name>
-        <url-pattern>project.GetCourses.FilterByCourseName</url-pattern>
+        <url-pattern>project/GetCourses/FilterByCourseName</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
