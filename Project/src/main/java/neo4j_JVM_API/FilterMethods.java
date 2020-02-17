@@ -122,10 +122,10 @@ public class FilterMethods {
 		int i = 0;
 		for (Record row : resultList) {
 			Value tempKC = row.get("kc");
-			KC kc = new KC(tempKC.get(KC.KCLabel.NAME.toString()).toString(),
-					tempKC.get(KC.KCLabel.GENERAL_DESCRIPTION.toString()).toString(), 
+			KC kc = new KC(tempKC.get(KC.KCLabel.NAME.toString()).toString().replaceAll("\"",""),
+					tempKC.get(KC.KCLabel.GENERAL_DESCRIPTION.toString()).toString().replaceAll("\"",""),
 					Integer.parseInt(tempKC.get(KC.KCLabel.TAXONOMYLEVEL.toString()).toString().replaceAll("\"", "")), 
-					tempKC.get(KC.KCLabel.TAXONOMY_DESCRIPTION.toString()).toString());
+					tempKC.get(KC.KCLabel.TAXONOMY_DESCRIPTION.toString()).toString().replaceAll("\"",""));
 			result[i] = kc;
 		}
 		
