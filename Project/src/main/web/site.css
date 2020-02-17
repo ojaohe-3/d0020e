@@ -28,3 +28,7 @@ body {
 	display : block;
 	padding: 5px;
 }
+.wrapper{
+	display: flex;
+	align-items: stretch
+}
