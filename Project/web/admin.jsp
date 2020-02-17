@@ -17,7 +17,7 @@
 		<div class="col-md-4">
 			<ul>
 				<h4>User</h4>
-				<li><button onclick="user_create())">Create</button></li>
+				<li><button onclick="user_create()">Create</button></li>
 				<li><button onclick="user_modify_password()">Modify</button></li>
 				<li><button onclick="user_modify_username()">Modify</button></li>
 				<li><button onclick="user_delete()">Delete</button></li>
