@@ -47,6 +47,7 @@ public class Main {
 		filterTest();
 		
 		editKC(kcs);
+		editNameKC(kcs);
 
 		//System.in.read();
 		
@@ -304,13 +305,12 @@ public class Main {
 	
 	public static void editKC(KC[] kcs) {
 
-
-
 		for(KC kc: kcs) {
 				
 				String temp = kc.getName();
 				kc.setGeneralDescription(kc.getGeneralDescription()+"newDescription");
 				kc.setName(kc.getName()+"newName");
+				
 				neoapi.modifyMethods.editKCName(kc, temp);
 
 				neoapi.modifyMethods.editKCDescription(kc);
@@ -318,7 +318,23 @@ public class Main {
 		}
 		print("kcs edited") ;
 		
-		
 	}
+	
+	public static void editKCTaxDesc(KC[] kcs) {
+		
+		for(KC kc: kcs) {
+			
+			
+			
+			kc.setTaxonomyDescription(kc.getTaxonomyDescription()+"A brand new Taxonomy description");
+			//kc.setName(kc.getName()+"newName");
+			
+			neoapi.modifyMethods.editKCTaxonomyDescription(kc);
+			
+		}
+		print("kcs taxonomyDescriptions edited") ;
+	}
+	
+	
 	
 }
