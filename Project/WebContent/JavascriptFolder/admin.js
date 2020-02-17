@@ -1,0 +1,6 @@
+/**
+ * 
+ */
+
+
+prompt("whats your name?");
