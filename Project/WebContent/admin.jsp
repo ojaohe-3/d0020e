@@ -4,8 +4,14 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/admin.js"></script>
 
+<style>
 
+	button {
+		min-width: 250px;
+		
+	}
 
+</style>
 
 <html>
 	<head>
@@ -38,7 +44,8 @@
 			<ul>
 				<h4>KC</h4>
 				<li><button onclick="kc_create()()">Create</button></li>
-				<li><button onclick="kc_modify()">Modify</button></li>
+				<li><button onclick="kc_modify_general()">Modify General description</button></li>
+				<li><button onclick="kc_modify_taxonomy()">Modify Taxonomy description</button></li>
 				<li><button onclick="kc_delete())">Delete</button></li>
 			</ul>
 		</div>
