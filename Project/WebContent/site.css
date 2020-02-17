@@ -2,22 +2,20 @@
 
 
 body {
-	background-color : lightblue;
+	background-color : lightgray;
 }
 
 .SearchResult {
-	
-	background-color : gray;
-	margin-bottom : 5px;
-	height: 20px;
+	background-color : #404040;
+	padding : 5px;
+	height: 30px;
 	display: block;
-	width: 50%;
 }
 
 .SearchResult:hover {
-	
-	background-color : lightgray;
-	height: 100px;
+	background-color : orange;
+	color: white;
+	height: auto;
 }
 
 .SearchResultExpander {
@@ -26,5 +24,4 @@ body {
 
 .SearchResult:hover .SearchResultExpander {
 	display : block;
-	padding: 5px;
 }
