@@ -49,7 +49,7 @@ public class TeacherInterface extends UserInterface {
             return false;
         }
     }
-
+/**
     protected boolean searchProgram(){
         try {
             neoapi.createMethods.createProgram(data);
@@ -59,6 +59,7 @@ public class TeacherInterface extends UserInterface {
             return false;
         }
     }
+    */
     protected boolean searchKC(KC.KCLabel field, String searchKey){
         try {
             neoapi.filterMethods.filterKCByTag(field,searchKey);

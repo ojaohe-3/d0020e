@@ -49,7 +49,9 @@ public abstract class UserInterface {
 	 * @param topic
 	 * @return
 	 */
-	protected String[] getCoursesByTopic(String topic) {
+	
+	//CourseInformation var String förrut
+	protected CourseInformation[] getCoursesByTopic(String topic) {
 		return this.neoapi.filterMethods.getCourseNameByTopic(topic);
 	}
 	

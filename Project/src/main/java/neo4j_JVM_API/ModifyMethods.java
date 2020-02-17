@@ -1,6 +1,7 @@
 package neo4j_JVM_API;
 
 import Data.*;
+import Data.Course.CourseLabels;
 import neoCommunicator.Neo4jCommunicator;
 
 
@@ -40,7 +41,7 @@ public class ModifyMethods {
 
 	public void editKCName(KC kc, String kcName) {
 
-		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kcName + "\"}) SET kc." +
+		String query = "MATCH(kc: KC {" + KC.KCLabel.NAME.toString() + ": \"" + kcName + "\"}) SET kc." +
 		KC.KCLabel.NAME.toString() + "= \"" + kc.getName() + "\""; 
 
 		communicator.writeToNeo(query);
@@ -54,9 +55,11 @@ public class ModifyMethods {
 
 	 public void editKCTaxonomyDescription(KC kc) {
 
-		String query = "MATCH(kc: KC {"KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " + 
+		String query = "MATCH(kc: KC {" + KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " + 
 		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 
 		KC.KCLabel.TAXONOMY_DESCRIPTION + "= \"" + kc.getTaxonomyDescription() + "\"";
+		
+		communicator.writeToNeo(query);
 	 }
 
 
@@ -121,7 +124,7 @@ public class ModifyMethods {
 	 * @author Johan RH
 	 */
 	 //Moved to DeleteMethods
-	 @deprecated
+	 @Deprecated
 	public void removeCourse(String couseID, CourseDate startyear) {
 		String query  ="MATCH(n:"+Course.course+"{"+Course.CourseLabels.CODE.toString()+":\""+ couseID +"\", "+ Course.CourseLabels.YEAR.toString() + " :\""+ startyear.getYear() +"\", "+ Course.CourseLabels.LP +": \""+ startyear.getPeriod() +"\" }) DETACH DELETE n";
 		
@@ -135,14 +138,14 @@ public class ModifyMethods {
 	 * @author Johan RH, Markus
 	 */
 	 //moved to DeleteMethods
-	 @deprecated
+	 @Deprecated
 	public void removeKC(String name, int taxlvl) {
 		String query = "MATCH(n:"+ KC.kc+"{"+ KC.KCLabel.NAME.toString() +": \""+name+"\","+ KC.KCLabel.TAXONOMYLEVEL.toString() + ": \""+ taxlvl +"\"}) DETACH DELETE n";
 		
 		communicator.writeToNeo(query);
 	}
 	//moved to DeleteMethods
-	@deprecated
+	@Deprecated
 	public void removeProgram( String programCode,CourseDate startyear) {
 		String query  ="MATCH(n:Program{ProgramCode:\""+ programCode +"\", "+CourseProgram.ProgramLabels.YEAR+":\""+ startyear.getYear() +" "+ startyear.getPeriod().name() +"\"})" +"DETACH DELETE n";
 		
@@ -157,15 +160,15 @@ public class ModifyMethods {
 	*/
 	public void editInProgramCourseRelation(CourseInformation course, ProgramInformation program) {
 		
-		String query = "MATCH (courseProgram:" + CourseProgram.program + "{code: \"" + code + "\", "+ 
-		CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + 
-		CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" })-[r:" + CourseLabels.IN_PROGRAM + "]-(course: Course {courseCode: \"" + courseCode + "\", "+ 
-		CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + 
-		CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" })"; 
+		String query = "MATCH (courseProgram:" +  CourseProgram.ProgramType.PROGRAM + "{code: \"" +  CourseProgram.ProgramLabels.CODE + "\", "+ 
+		CourseLabels.YEAR + " : \"" + program.getStartDate().getYear() + "\" , " + 
+		CourseLabels.LP + " : \"" + program.getStartDate().getPeriod() + "\" })-[r:" + Relations.IN_PROGRAM + "]-(course: Course {courseCode: \"" + course.getCourseCode() + "\", "+ 
+		CourseLabels.YEAR + " : \"" + course.getStartPeriod().getYear() + "\" , " + 
+		CourseLabels.LP + " : \"" + course.getStartPeriod().getPeriod() + "\" })"; 
 
 		if(communicator.readFromNeo(query+ "RETURN r").hasNext()){
 		
-		query += "SET r."+ Relations.YEAR+" = \"" +course.getStartDate().getYear() "\", r."+ Relations.PERIOD+" = \"" +course.getStartDate().getPeriod() "\"";
+		query += "SET r."+ Relations.YEAR+" = \"" +course.getStartPeriod().getYear() + "\", r."+ Relations.PERIOD+" = \"" +course.getStartPeriod().getPeriod() + "\"";
 		
 		communicator.writeToNeo(query);
 		}

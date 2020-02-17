@@ -1,3 +1,4 @@
+/**
 package Data;
 
 import org.jboss.arquillian.container.test.api.Deployment;
@@ -22,3 +23,4 @@ public class CourseTest {
     public void toJson() {
     }
 }
+*/
