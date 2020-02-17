@@ -26,7 +26,7 @@ public class DeleteMethods {
 	
 	public DeleteMethods(Neo4jCommunicator communicator){
 		this.communicator = communicator;
-	}
+	} 
 	
 	/**
 	 * Clear the entire database. Only used for testing purposes.
