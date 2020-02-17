@@ -309,11 +309,11 @@ function course_delete() {
  * Create a new course
  */
 function kc_create() {
-	var input = prompt("name;generalDescription;Topic");
+	var input = prompt("name;generalDescription;Topic;taxonomyDescription1;taxonomyDescription2;taxonomyDescription3");
 	
 	var data = input.split(";");
 	
-	if(data.length == 3){
+	if(data.length == 6){
 		
 		$.ajax({
 			url : 'admin',
@@ -322,10 +322,15 @@ function kc_create() {
 				head : "KC",
 				method : "CREATE",
 				name : data[0],
+				generalDescription : data[1],
+				topic : data[2],
+				taxonomyDesc1 : data[3],
+				taxonomyDesc2 : data[4],
+				taxonomyDesc3 : data[5]
 				
 			},
 			success : function(response) {
-				document.getElementById("log").innerHTML += "CREATE COURSE " + data[0]  +"</br>";
+				document.getElementById("log").innerHTML += "CREATE KC " + data[0]  +"</br>";
 				document.getElementById("output").innerHTML += response + "</br>";
 			}
 
@@ -336,33 +341,58 @@ function kc_create() {
 	}
 }
 /*
- * Modify Course
- * 
- *  NOT FINNISHED :)
+ * Modify general description for KC
  */
-function kc_modify() {
-	var input = prompt("newcoursename;coursecode;LP(1-4);year;newcredits;newexaminer;newdescription \n This was not great...");
+function kc_modify_general() {
+	var input = prompt("name;newDescription");
 	
 	var data = input.split(";");
 	
-	if(data.length == 7 ){
+	if(data.length == 2 ){
 		
 		$.ajax({
 			url : 'admin',
 			type : "POST",
 			data : {
-				head : "COURSE",
-				method : "MODIFY",
-				courseName : data[0],
-				courseCode : data[1],
-				lp : data[2],
-				year : data[3],
-				credits : data[4],
-				examiner : data[5],
-				description : data[6]
+				head : "KC",
+				method : "MODIFY_GENERAL_DESC",
+				name : data[0],
+				generalDescription : data[1]
 			},
 			success : function(response) {
-				document.getElementById("log").innerHTML += "MODIFY COURSE " + data[0]  +"</br>";
+				document.getElementById("log").innerHTML += "MODIFY GENERAL DESCRIPTION FOR KC " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+/*
+ * Modify taxonomy description
+ */
+function kc_modify_taxonomy() {
+	var input = prompt("name;taxonomyLevel;newTaxonomyDescription");
+	
+	var data = input.split(";");
+	
+	if(data.length == 3 ){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "KC",
+				method : "MODIFY_TAXONOMY_DESC",
+				name : data[0],
+				taxonomyLevel : data[1],
+				newtaxonomyDesc : data[2]
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "MODIFY TAXONOMY DESCRIPTION FOR KC " + data[0]  + "WITH taxonomyLevel : " + data[1] + "</br>";
 				document.getElementById("output").innerHTML += response + "</br>";
 			}
 
@@ -375,15 +405,13 @@ function kc_modify() {
 
 /*
  * Delete KC
- * 
- *  NOT FINNISHED
  */
 function kc_delete() {
-	var input = prompt("");
+	var input = prompt("name;taxonomyLevel");
 	
 	var data = input.split(";");
 	
-	if(data.length == 3 ){
+	if(data.length == 2 ){
 		
 		$.ajax({
 			url : 'admin',
@@ -391,6 +419,8 @@ function kc_delete() {
 			data : {
 				head : "KC",
 				method : "DELETE",
+				name : data[0],
+				taxonomyLevel : data[1]
 				
 			},
 			success : function(response) {
