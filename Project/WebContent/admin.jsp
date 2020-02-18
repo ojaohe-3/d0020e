@@ -57,6 +57,7 @@
 			<ul>
 				<h4>Program</h4>
 				<li><button onclick="program_create()">Create</button></li>
+				<li><button onclick="program_create_specialization()">Create</button></li>
 				<li><button onclick="program_modify())">Modify</button></li>
 				<li><button onclick="program_delete()">Delete</button></li>
 				<li><button onclick="program_copy_from_year()">Copy From Year</button></li>
@@ -68,9 +69,11 @@
 	</div>
 	
 	
+	<div class="row">
+		<div class="col-sm-4" id="log"> <h4>log</h4> </div>
+		<div class="col-sm-4" id="output"> <h4>Responses</h4> </div>
+	</div>
 	
-	<div id="log"></div>
-	<div id="output"></div>
 	
 	
 	</body>

@@ -475,6 +475,40 @@ function program_create() {
 	}
 }
 
+function program_create_specialization() {
+	var input = prompt("name;programCode;startYear;startLP;credits;description");
+	
+	var data = input.split(";");
+	
+	if(data.length == 6){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "CREATE",
+				name : data[0],
+				programCode : data[1],
+				startYear : data[2],
+				startLP : data[3],
+				credits : data[4],
+				description : data[5]
+				
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "CREATE SPECIALIZATION " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
 function program_delete() {
 	var input = prompt("code;year;lp");
 	
