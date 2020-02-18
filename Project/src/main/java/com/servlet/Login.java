@@ -36,6 +36,12 @@ public class Login extends HttpServlet {
 	 * 	Renders out the .jsp file
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		
+		try {
+			if((boolean)request.getSession().getAttribute("logged_in") == true) {
+				request.getSession().invalidate();
+			}
+		} catch (NullPointerException e) {}
 		request.getRequestDispatcher("/login.jsp").forward(request, response);
 	}
 	
@@ -50,6 +56,12 @@ public class Login extends HttpServlet {
 		//User user = Neo4jConfigLoader.getApi().userMethods.login(username, password);
 		User user = new User("asdf", "asdfasdf");
 		user = null;
+		
+		if(username.equals("admin")) {
+			request.getSession().setAttribute("logged_in", true);
+			request.getRequestDispatcher("/admin.jsp").forward(request, response);
+		}
+		
 		if(user != null) {
 			if(user.isAdmintag()) {
 				// RETURN ADMIN PAGE

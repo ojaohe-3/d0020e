@@ -7,7 +7,7 @@
 <style>
 
 	button {
-		min-width: 250px;
+		min-width: 300px;
 		
 	}
 
@@ -20,7 +20,7 @@
 	</head>
 	<body>
 	
-	<h>Welcome to the admin page</h>
+	<h1>Welcome to the admin page</h1>
 	<h3>Dont forget to use ';' as separator</h3>
 	
 	<div class="container-fluid">
