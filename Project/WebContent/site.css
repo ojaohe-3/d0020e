@@ -12,7 +12,7 @@ body {
 	display: block;
 }
 
-.SearchResult:hover {
+.SearchResultContainer>.SearchResult:hover {
 	background-color : orange;
 	color: white;
 	height: auto;
@@ -24,4 +24,11 @@ body {
 
 .SearchResult:hover .SearchResultExpander {
 	display : block;
+}
+
+.SearchResultContainer>div:nth-child(odd){
+ background-color: #404040;
+}
+.SearchResultContainer>div:nth-child(even){
+ background-color: #4b4b4b;
 }

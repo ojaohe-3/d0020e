@@ -93,8 +93,9 @@
 				<input type="text" class="searchBar" id="searchTopic" placeholder="Search... ">
 			  </form>
 
-		  <div id="topic_search_results">
-		</div>
+			<div id="topic_search_results">
+			
+			</div>
 		</div>
 
 	  </div>

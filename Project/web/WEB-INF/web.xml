@@ -52,17 +52,22 @@
     
     <servlet-mapping>
    		 <servlet-name>GetProgramsFilterByCode</servlet-name>
-        <url-pattern>project/GetProgram/FilterByCode</url-pattern>
+        <url-pattern>project/GetPrograms/FilterByCode</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
    		 <servlet-name>GetProgramsFilterByName</servlet-name>
-        <url-pattern>project/GetProgram/FilterByName</url-pattern>
+        <url-pattern>project/GetPrograms/FilterByName</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
    		 <servlet-name>GetProgramsFilterByTopic</servlet-name>
-        <url-pattern>project/GetProgram/FilterByTopic</url-pattern>
+        <url-pattern>project/GetPrograms/FilterByTopic</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+   		 <servlet-name>GetTopicsFilterByName</servlet-name>
+        <url-pattern>project/GetTopics/FilterByName</url-pattern>
     </servlet-mapping>
     
     <servlet-mapping>
