@@ -1,6 +1,7 @@
 package neo4j_JVM_API;
 
 import Data.*;
+import Data.Course.CourseLabels;
 import neoCommunicator.Neo4jCommunicator;
 
 
@@ -155,20 +156,20 @@ public class ModifyMethods {
 	*@param course
 	*@param program
 	*@author Robin, Tommy
-	*//*
+	*/
 	public void editInProgramCourseRelation(CourseInformation course, ProgramInformation program) {
 
-		String query = "MATCH (courseProgram:" + CourseProgram.program + "{code: \"" + code + "\", "+
-		Course.CourseLabels.YEAR + " : \"" +startDate.getYear() + "\" , " +
-		Course.CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" })-[r:" + CourseLabels.IN_PROGRAM + "]-(course: Course {courseCode: \"" + courseCode + "\", "+
-		Course.CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " +
-		Course.CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" })";
+		String query = "MATCH (courseProgram:" +  CourseProgram.ProgramType.PROGRAM + "{code: \"" +  CourseProgram.ProgramLabels.CODE + "\", "+
+		CourseLabels.YEAR + " : \"" + program.getStartDate().getYear() + "\" , " +
+		CourseLabels.LP + " : \"" + program.getStartDate().getPeriod() + "\" })-[r:" + Relations.IN_PROGRAM + "]-(course: Course {courseCode: \"" + course.getCourseCode() + "\", "+
+		CourseLabels.YEAR + " : \"" + course.getStartPeriod().getYear() + "\" , " +
+		CourseLabels.LP + " : \"" + course.getStartPeriod().getPeriod() + "\" })";
 
 		if(communicator.readFromNeo(query+ "RETURN r").hasNext()){
-		
-		query += "SET r."+ Relations.YEAR+" = \"" +course.getStartDate().getYear() "\", r."+ Relations.PERIOD+" = \"" +course.getStartDate().getPeriod() "\"";
-		
-		communicator.writeToNeo(query);
+
+			query += "SET r."+ Relations.YEAR+" = \"" +course.getStartPeriod().getYear() + "\", r."+ Relations.PERIOD+" = \"" +course.getStartPeriod().getPeriod() + "\"";
+
+			communicator.writeToNeo(query);
 		}
-	}*/
+	}
 }
