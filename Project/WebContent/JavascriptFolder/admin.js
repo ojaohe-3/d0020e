@@ -435,3 +435,142 @@ function kc_delete() {
 	}
 }
 
+// END KC
+
+
+
+// BEGIN PROGRAM 
+
+function program_create() {
+	var input = prompt("name;code;startYear;startLP;credits;description");
+	
+	var data = input.split(";");
+	
+	if(data.length == 6){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "CREATE",
+				name : data[0],
+				code : data[1],
+				startYear : data[2],
+				startLP : data[3],
+				credits : data[4],
+				description : data[5]
+				
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "CREATE PROGRAM " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+function program_delete() {
+	var input = prompt("code;year;lp");
+	
+	var data = input.split(";");
+	
+	if(data.length == 3){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "DELETE",
+				code : data[0],
+				year : data[1],
+				lp : data[2]
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "CREATE PROGRAM WITH CODE " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+function program_copy_from_year() {
+	var input = prompt("code;fromYear;fromLP;toYear;toLP");
+	
+	var data = input.split(";");
+	
+	if(data.length == 5){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "COPY_FROM_YEAR",
+				code : data[0],
+				fromYear : data[1],
+				fromLP : data[2],
+				toYear : data[3],
+				toLP : data[4]
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "CREATE COPY OF PROGRAM " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+function program_add_course() {
+	var input = prompt("programCode;programStartYear;programStartLP;courseCode;courseYear;courseLP");
+	
+	var data = input.split(";");
+	
+	if(data.length == 6){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "ADD_COURSE",
+				programCode : data[0],
+				programStartYear : data[1],
+				programSartLP : data[2],
+				courseCode : data[3],
+				courseYear : data[4],
+				courseLP : data[5]
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "ADD COURSE " + data[3] + " TO PROGRAM " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+
+
+
+

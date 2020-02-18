@@ -19,13 +19,17 @@
 		<title>Admin page</title>
 	</head>
 	<body>
+	
+	<h>Welcome to the admin page</h>
+	<h3>Dont forget to use ';' as separator</h3>
+	
 	<div class="container-fluid">
 		<div class="col-md-4">
 			<ul>
 				<h4>User</h4>
 				<li><button onclick="user_create()">Create</button></li>
-				<li><button onclick="user_modify_password()">Modify</button></li>
-				<li><button onclick="user_modify_username()">Modify</button></li>
+				<li><button onclick="user_modify_password()">Modify Password</button></li>
+				<li><button onclick="user_modify_username()">Modify Username</button></li>
 				<li><button onclick="user_delete()">Delete</button></li>
 				<li><button onclick="user_set_course_relation()">Set Relation To Course</button></li>
 				<li><button onclick="user_delete_course_relation()">Remove Relation To Course</button></li>
@@ -56,6 +60,7 @@
 				<li><button onclick="program_modify())">Modify</button></li>
 				<li><button onclick="program_delete()">Delete</button></li>
 				<li><button onclick="program_copy_from_year()">Copy From Year</button></li>
+				<li><button onclick="program_add_course()">Add Course to program</button></li>
 			</ul>
 		</div>
 	
