@@ -5,6 +5,6 @@
 </canvas>
 
 
-<script src="js/canvasButton.js"></script>
-<script src="js/CourseObject.js"></script>
-<script src="js/GraphicCanvas.js"></script>
+<script src="JavascriptFolder/canvasButton.js"></script>
+<script src="JavascriptFolder/CourseObject.js"></script>
+<script src="JavascriptFolder/GraphicCanvas.js"></script>
