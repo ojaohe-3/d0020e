@@ -1,9 +1,6 @@
 package com.servlet;
 
-import Data.Course;
-import Data.KC;
-import Data.ProgramSpecialization;
-import Data.User;
+import Data.*;
 import neoCommunicator.Neo4jConfigLoader;
 
 import javax.servlet.ServletException;
@@ -103,6 +100,16 @@ public class Admin extends HttpServlet {
 
 		}
 		if (request.equals("SET_RELATION_TO_COURSE")) {
+			String userName = request.getParameter("userName");
+			String courseCode = request.getParameter("courseCode");
+			String lp = request.getParameter("lp");
+			String year = request.getParameter("year");
+
+			int Year = Integer.parseInt(year);
+			CourseDate Year = CourseDate.parseCourseDate()
+			CourseDate courseDate = new CourseDate(lp, year);
+
+
 
 		}
 		if (request.equals("REMOVE_RELATION_TO_COURSE")) {
