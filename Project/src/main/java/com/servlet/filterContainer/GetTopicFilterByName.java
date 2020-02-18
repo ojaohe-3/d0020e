@@ -36,7 +36,7 @@ public class GetTopicFilterByName extends HttpServlet {
 			JSONArray array = new JSONArray();
 			for (Topic topic : topics) {
 			    JSONObject obj = new JSONObject();
-			    obj.put(Topic.TopicLabels.TITLE.toString(), topic.toString());
+			    obj.put(Topic.TopicLabels.TITLE.toString(), topic.toString().replaceAll("\"", ""));
 			    array.put(obj);
 			}
 			response.setContentType("text/json");
