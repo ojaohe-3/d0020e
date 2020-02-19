@@ -21,11 +21,10 @@ public class ModifyMethods {
 
 	/**
 	 * Takes in the name of the KC and its taxonomylevel and changes it's description
-	 * @param kc takes in the kc object and change genereal description and taxonomy description to the desired values
+	 * @param kc takes in the kc object and change general description and taxonomy description to the desired values
 	 * @author Tommy A
 	 */
 	 public void editKCDescription(KC kc) {
-
 
 		String query = "MATCH(kc: KC {"+KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " +
 		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 

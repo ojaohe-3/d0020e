@@ -364,9 +364,10 @@ private final Neo4jCommunicator communicator;
 		newCourseOrder.assignCourseOrder(newCourses);
 		this.createProgram(newProgram);
 		this.createProgramCourseRelation(newProgram);
-		
-		
+
 	}
+
+
 }
 
 
