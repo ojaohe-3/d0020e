@@ -45,6 +45,24 @@ private final Neo4jCommunicator communicator;
 		String query = "CREATE (n: " + Topic.TopicLabels.TOPIC.toString() +" { " +Topic.TopicLabels.TITLE.toString()+ ":\""+ topic.toString() +"\"})";
 		this.communicator.writeToNeo(query);
 	}
+	
+	/**
+	 * 
+	 * Create a relationship between a KC and a topic
+	 * 
+	 * @param kc
+	 * @param topic
+	 */
+	public void createTopicToKCRelation(KC kc, String topic) {
+		String query = "MATCH(kc : KC { "+ KC.KCLabel.NAME + ": \"" + kc.getName()  + "\"})" ;
+		query += "MATCH (topic: Topic {title : \"" + topic + "\"}) ";
+		query += "CREATE (kc)-[r:" + Relations.BELONGS_TO + "]->(topic)";
+		
+		this.communicator.writeToNeo(query);
+	}
+	
+	
+	
 	/**
 	 * Add a new course to the server. This is still a work in progress, so don't use it yet.
 	 * @param course - The selected course to create.

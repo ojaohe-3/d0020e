@@ -17,6 +17,8 @@ import neoCommunicator.Neo4jConfigLoader;
 
 
 /**
+ * 		Needs to fix the doPost
+ * 
  * 	Responsible for the login page and handling login attempts.
  * 
  * @author Jesper
@@ -48,6 +50,8 @@ public class Login extends HttpServlet {
 	/**
 	 * 	Handles the login
 	 * 
+	 * 	This is dummy code..
+	 * 
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String username = request.getParameter("username");
@@ -57,8 +61,11 @@ public class Login extends HttpServlet {
 		User user = new User("asdf", "asdfasdf");
 		user = null;
 		
+		
+		boolean forwarded = false;
 		if(username.equals("admin")) {
 			request.getSession().setAttribute("logged_in", true);
+			forwarded = true;
 			request.getRequestDispatcher("/admin.jsp").forward(request, response);
 		}
 		
@@ -70,13 +77,14 @@ public class Login extends HttpServlet {
 			}
 		}
 		
-		Map<String, String> error = new HashMap<String, String>();
+		if(!forwarded) {
+			Map<String, String> error = new HashMap<String, String>();
+			
+			request.setAttribute("error", error);
+			error.put("err", "Invalid login attempt");
+			request.getRequestDispatcher("/login.jsp").forward(request, response);
 		
-		request.setAttribute("error", error);
-		error.put("err", "Invalid login attempt");
-		request.getRequestDispatcher("/login.jsp").forward(request, response);
-		
-		
+		}
 		
 		
 	}
