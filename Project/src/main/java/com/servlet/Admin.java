@@ -53,9 +53,7 @@ public class Admin extends HttpServlet {
 		String head = request.getParameter("head");
 
 		if (head.equals("USER")) {
-
 			user(request);
-
 		}
 		if (head.equals("COURSE")) {
 			course(request);
@@ -65,11 +63,9 @@ public class Admin extends HttpServlet {
 		}
 		if (head.equals("PROGRAM")) {
 			program(request);
-
 		}
-
-
 	}
+
 	private String user(HttpServletRequest request) throws IOException {
 
 		if (request.equals("CREATE")) {
@@ -79,9 +75,8 @@ public class Admin extends HttpServlet {
 			Neo4jConfigLoader.getApi().userMethods.addUser(new User(userName, password));
 
 			return "User " + userName + " created";
-
-
 		}
+
 		if (request.equals("DELETE")) {
 			String userName = request.getParameter("userName");
 
@@ -90,6 +85,7 @@ public class Admin extends HttpServlet {
 			return "User " + userName + " removed";
 
 		}
+
 		if (request.equals("MODIFY")) {
 			String userName = request.getParameter("userName");
 			String  password = request.getParameter("password");
@@ -98,8 +94,8 @@ public class Admin extends HttpServlet {
 
 			return "User " + userName + "'s password has been changed";
 
-
 		}
+
 		if (request.equals("SET_RELATION_TO_COURSE")) {
 			String userName = request.getParameter("userName");
 			String courseCode = request.getParameter("courseCode");
@@ -123,13 +119,19 @@ public class Admin extends HttpServlet {
 		if (request.equals("REMOVE_RELATION_TO_COURSE")) {
 			String userName = request.getParameter("userName");
 			String courseCode = request.getParameter("courseCode");
+			String lp = request.getParameter("lp");
+			String year = request.getParameter("year");
+
+			LP period = LP.getByString(lp);
+			int Year = Integer.parseInt(year);
+
+
 
 			return "User " + userName + " can now make changes to " ;
 		} else {
 
-			return "The input must be either DELETE, MODIFY, SET_RELATION_TO_COURSE or REMOVE_RELATION_TO_COURSE";
+			return "The input must be either CREATE, DELETE, MODIFY, SET_RELATION_TO_COURSE or REMOVE_RELATION_TO_COURSE";
 		}
-
 	}
 
 	private String course(HttpServletRequest request) throws IOException {
@@ -155,6 +157,7 @@ public class Admin extends HttpServlet {
 
 			return "Course " + courseCode + " created";
 		}
+
 		if(request.equals("DELETE")) {
 			String courseCode = request.getParameter("courseCode");
 			String lp = request.getParameter("lp");
@@ -173,8 +176,10 @@ public class Admin extends HttpServlet {
 		//Lämnar denna tillsvidare
 		if(request.equals("MODIFY")) {
 
-		}
+		} else {
 
+
+		}
 
 	}
 
@@ -199,7 +204,9 @@ public class Admin extends HttpServlet {
 
 			Neo4jConfigLoader.getApi().createMethods.addTopic(topic);
 
-			Neo4jConfigLoader.getApi().createMethods.createToKCRelation(kc_level_1, topic);
+			Neo4jConfigLoader.getApi().createMethods.createTopicToKCRelation(kc_level_1, topic);
+			Neo4jConfigLoader.getApi().createMethods.createTopicToKCRelation(kc_level_2, topic);
+			Neo4jConfigLoader.getApi().createMethods.createTopicToKCRelation(kc_level_3, topic);
 
 			return "KC named " + KCName + " has been created";
 
@@ -236,27 +243,46 @@ public class Admin extends HttpServlet {
 		if(request.equals("MODIFY_GENERAL_DESC")) {
 
 			String KCName = request.getParameter("name");
-			String taxonomyDesc = request.getParameter("taxonomyDesc1");
-			String taxonomyDesc2 = request.getParameter("taxonomyDesc2");
-			String taxonomyDesc3 = request.getParameter("taxonomyDesc3");
+			String generalDesc = request.getParameter("generalDescription");
 
+			KC kcTaxonomy1 = Neo4jConfigLoader.getApi().getMethods.getKCwithTaxonomyLevel(KCName, 1);
+			KC kcTaxonomy2 = Neo4jConfigLoader.getApi().getMethods.getKCwithTaxonomyLevel(KCName, 2);
+			KC kcTaxonomy3 = Neo4jConfigLoader.getApi().getMethods.getKCwithTaxonomyLevel(KCName, 3);
 
+			kcTaxonomy1.setGeneralDescription(generalDesc);
+			kcTaxonomy2.setGeneralDescription(generalDesc);
+			kcTaxonomy3.setGeneralDescription(generalDesc);
 
-			KC kc_level_1 = new KC(KCName, generalDescription, 1, taxonomyDesc);
-			KC kc_level_2 = new KC(KCName, generalDescription, 2, taxonomyDesc2);
-			KC kc_level_3 = new KC(KCName, generalDescription, 3, taxonomyDesc3);
+			Neo4jConfigLoader.getApi().modifyMethods.editKCDescription(kcTaxonomy1);
+			Neo4jConfigLoader.getApi().modifyMethods.editKCDescription(kcTaxonomy2);
+			Neo4jConfigLoader.getApi().modifyMethods.editKCDescription(kcTaxonomy3);
 
-
-
-
-			KC kc =
+			return "General description for " + KCName + " has been changed";
 		}
 
-
+		return "The input must be either CREATE, DELETE, MODIFY, MODIFY_TAXONOMY_DESC or MODIFY_GENERAL_DESC";
 	}
 
 	private void program(HttpServletRequest request) {
 
+		if(request.equals("CREATE")) {
+
+		}
+		if(request.equals("DELETE")) {
+
+		}
+		if(request.equals("COPY_FROM_YEAR")) {
+
+		}
+		if(request.equals("MODIFY")) {
+
+		}
+		if(request.equals("ADD_COURSE")) {
+
+		}
+		if(request.equals("CREATE_SPECIAL")) {
+
+		}
 	}
 
 
