@@ -1,13 +1,11 @@
 package com.servlet.getMethods;
 
+import Data.CourseDate;
 import Data.CourseProgram;
+import Data.LP;
 import neoCommunicator.Neo4jConfigLoader;
 import org.json.JSONException;
-import org.json.JSONObject;
-
 import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -17,15 +15,17 @@ import java.io.IOException;
 @WebServlet("/GetProgram/getCourses")
 public class GetCourseProgram extends HttpServlet {
 
-    @Override
-    public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
-        super.service(req, res);
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+        String code = request.getParameter("code");
+        int year = Integer.parseInt(request.getParameter("startyear"));
+        LP lp = LP.valueOf(request.getParameter("startperiod"));
+        CourseProgram data = Neo4jConfigLoader.getApi().getMethods.getProgram(code,
+                new CourseDate(year, lp));
         try {
-            JSONObject obj = new JSONObject();
-            obj.put("g","g");
-            res.setContentType("text/json");
-            res.getWriter().write("hello");
+            String json = data.getAsJson().replaceAll("\\\\","");
+            response.setContentType("text/json");
+            response.getWriter().write(json);
 
         } catch (JSONException e) { }
     }
