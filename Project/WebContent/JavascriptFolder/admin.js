@@ -235,8 +235,8 @@ function course_create() {
 /*
  * Modify Course
  * 
- * Don't know how to do this in a gr8 way
  */
+
 function course_modify() {
 	var input = prompt("oldCourseCode;oldLP;oldYear;newCourseName;newCourseCode;newLP;newYear;newExaminer");
 	
@@ -270,6 +270,40 @@ function course_modify() {
 		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
 	}
 }
+function course_modify() {
+	var input = prompt("oldCourseCode;oldLP,oldYear;newCourseName;newCourseCode;newLP;newYear;newExaminer");
+	
+	var data = input.split(";");
+	
+	if(data.length == 8 ){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "COURSE",
+				method : "MODIFY",
+				oldCourseCode : data[0],
+				oldLP : data[1],
+				oldYear : data[2],
+				newCourseName : data[3],
+				newCourseCode : data[4],
+				newLP : data[5],
+				newYear : data[6],
+				newExaminer : data[7]
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "MODIFY COURSE with code " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
 
 /*
  * Delete Course
@@ -605,6 +639,41 @@ function program_add_course() {
 	}
 }
 
+function program_modify() {
+	var input = prompt("oldCode;oldStartYear;oldStartLP;newName;newCode;newStartYear;newStartLP;newDescription;newCredits");
+	
+	var data = input.split(";");
+	
+	if(data.length == 9){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "MODIFY",
+				oldCode : data[0],
+				oldStartYear : data[1],
+				oldStartLP : data[2],
+				newName : data[3],
+				newCode : data[4],
+				newStartYear : data[5],
+				newStartLP : data[6],
+				newDescription : data[7],
+				newCredits : data[8]
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "MODIFY PROGRAM" + data[3] + "</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
 
 
 
