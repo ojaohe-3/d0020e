@@ -6,6 +6,7 @@
  * 
  */
 
+// Funkar inte för namn med mellanslag
 $(document).ready(function() {
 	// ---- Search Course ----
 	$('#searchCourse').on('keyup', function() {
@@ -19,15 +20,14 @@ $(document).ready(function() {
 					},
 					success : function(response) {
 	
-						var s = "";
+						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"course\" onclick=\"courseClicked('"+response[i].courseCode +"', '"+ response[i].year + "', '" + response[i].lp+ "')\"> <b>" + response[i].name + "</b> - " + response[i].courseCode ;
 							s += "<div class=\"SearchResultExpander\"> Year : " + response[i].year +" </br> LP : " + response[i].lp + " </br> Examiner : " + response[i].examiner + " </br> Credits : " + response[i].credit + "</div></div>";
 						}
+						s += "</div>";
 						$('#course_search_results').html('');
 						$('#course_search_results').html(s);
-						
-						
 					}
 
 				});
@@ -40,11 +40,12 @@ $(document).ready(function() {
 					},
 					success : function(response) {
 						
-						var s = "";
+						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"course\" onclick=\"courseClicked('"+response[i].courseCode +"', '"+ response[i].year + "', '" + response[i].lp+ "')\"> <b>" + response[i].name + "</b> - " + response[i].courseCode ;
 							s += "<div class=\"SearchResultExpander\"> Year : " + response[i].year +" </br> LP : " + response[i].lp + " </br> Examiner : " + response[i].examiner + " </br> Credits : " + response[i].credit + "</div></div>";
 						}
+						s += "</div>";
 						$('#course_search_results').html('');
 						$('#course_search_results').html(s);
 						
@@ -60,11 +61,12 @@ $(document).ready(function() {
 					},
 					success : function(response) {
 						
-						var s = "";
+						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"course\" onclick=\"courseClicked('" + response[i].courseCode + "', '"+ response[i].year + "', '" + response[i].lp+ "')\"> <b>" + response[i].name + "</b> - " + response[i].courseCode ;
 							s += "<div class=\"SearchResultExpander\"> Year : " + response[i].year +" </br> LP : " + response[i].lp + " </br> Examiner : " + response[i].examiner + " </br> Credits : " + response[i].credit + "</div></div>";
 						}
+						s += "</div>";
 						$('#course_search_results').html('');
 						$('#course_search_results').html(s);
 					}
@@ -90,11 +92,12 @@ $(document).ready(function() {
 						filter : $("#searchProgram").val()
 					},
 					success : function(response) {
-						var s = "";
+						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked()\"> <b>" + response[i].name + "</b> - " + response[i].code ;
 							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
 						}
+						s += "</div>";
 						$('#program_search_results').html('');
 						$('#program_search_results').html(s);
 					}
@@ -108,11 +111,12 @@ $(document).ready(function() {
 						filter : $("#searchProgram").val()
 					},
 					success : function(response) {
-						var s = "";
+						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked()\"> <b>" + response[i].name + "</b> - " + response[i].code ;
 							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
 						}
+						s += "</div>";
 						$('#program_search_results').html('');
 						$('#program_search_results').html(s);
 					}
@@ -126,11 +130,12 @@ $(document).ready(function() {
 						filter : $("#searchProgram").val()
 					},
 					success : function(response) {
-						var s = "";
+						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked()\"> <b>" + response[i].name + "</b> - " + response[i].code ;
 							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
 						}
+						s += "</div>";
 						$('#program_search_results').html('');
 						$('#program_search_results').html(s);
 					}
@@ -158,11 +163,12 @@ $(document).ready(function() {
 					},
 					success : function(response) {
 						//$('#kc_search_results').text(response);
-						var s = "";
+						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"kcClicked()\"> <b>" + response[i].name + "</b>";
 							s += "<div class=\"SearchResultExpander\"> Description : " + response[i].generalDescription +"</div></div>";
 						}
+						s += "</div>";
 						$('#kc_search_results').html('');
 						$('#kc_search_results').html(s);
 					}
@@ -177,11 +183,12 @@ $(document).ready(function() {
 					},
 					success : function(response) {
 						//$('#kc_search_results').text(response);
-						var s = "";
+						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"kcClicked()\"> <b>" + response[i].name + "</b>";
 							s += "<div class=\"SearchResultExpander\"> Description : " + response[i].generalDescription +"</div></div>";
 						}
+						s += "</div>";
 						$('#kc_search_results').html('');
 						$('#kc_search_results').html(s);
 					}
@@ -194,4 +201,33 @@ $(document).ready(function() {
 		
 	});
 	// -- end Search Kc --
+	// -- Search Topic ---
+	
+	$('#searchTopic').on('keyup', function() {
+		if($("#searchTopic").val().length > 3) {
+			if($("#topicFilterByName").is(':checked')) {
+				$.ajax({
+					
+					url : 'GetTopics/FilterByName',
+					data : {
+						filter : $("#searchTopic").val()
+					},
+					success : function(response) {
+						var s = "<div class=\"SearchResultContainer\">";
+						for(i in response) {
+							s += "<div class=\"SearchResult\" id=\"topic\" onclick=\"topicClicked()\"> <b>" + response[i].title + "</b></div>";
+						}
+						s += "</div>";
+						$('#topic_search_results').html('');
+						$('#topic_search_results').html(s);
+					}
+
+				});
+			} 
+		} else {
+			$('#topic_search_results').html('');
+		} 
+		
+	});
+	// -- end Search Topic --
 });
