@@ -20,8 +20,9 @@ public class Neo4jConfigLoader {
      * @throws IOException
      */
     public static Neo4JAPI getApi() throws IOException {
-        config c = loadConfig();
+
         if(API == null) {
+            config c = loadConfig();
             API = new Neo4JAPI(new Neo4jCommunicator(c.getBOLTURL(),c.getUSERNAME(),c.getPWD()));
         }
         return API;
