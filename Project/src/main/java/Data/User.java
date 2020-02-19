@@ -52,6 +52,16 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
+    
+    /**
+     * 
+     *  Compares if username and password is equal
+     * @param withUser The user to compare with
+     * @return
+     */
+    public boolean CompareForLogin(User withUser) {
+    	return (this.username == withUser.username) && (this.password == withUser.password);
+    }
 
     public static enum UserLables {
         USERNAME("Username"),  USERTAG("Usertag"), PASSWORD("Password"),USER("User");

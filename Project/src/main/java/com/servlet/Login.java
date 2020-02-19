@@ -50,41 +50,40 @@ public class Login extends HttpServlet {
 	/**
 	 * 	Handles the login
 	 * 
-	 * 	This is dummy code..
-	 * 
+	 * 	@author Jesper
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		
-		//User user = Neo4jConfigLoader.getApi().userMethods.login(username, password);
-		User user = new User("asdf", "asdfasdf");
-		user = null;
+		User loginAttempt = new User(username, password);
 		
+		User isLoggedIn = Neo4jConfigLoader.getApi().userMethods.login2(loginAttempt);
 		
-		boolean forwarded = false;
-		if(username.equals("admin")) {
-			request.getSession().setAttribute("logged_in", true);
-			forwarded = true;
-			request.getRequestDispatcher("/admin.jsp").forward(request, response);
-		}
-		
-		if(user != null) {
-			if(user.isAdmintag()) {
-				// RETURN ADMIN PAGE
-			} else {
-				// RETURN TEACHER PAGE
-			}
-		}
-		
-		if(!forwarded) {
+		// If login method returns null the user is not valid
+		if(isLoggedIn == null) {
 			Map<String, String> error = new HashMap<String, String>();
 			
 			request.setAttribute("error", error);
 			error.put("err", "Invalid login attempt");
 			request.getRequestDispatcher("/login.jsp").forward(request, response);
-		
+		} else {
+			request.getSession().setAttribute("logged_in", true);
+			if(isLoggedIn.isAdmintag()) {
+				request.getSession().setAttribute("is_admin", true);
+				request.getRequestDispatcher("/admin.jsp").forward(request, response);
+			} else {
+				request.getSession().setAttribute("is_admin", false);
+				
+				/*
+				 * This should be teacher.jsp when finnished
+				 */
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
+			}
+				
+			
 		}
+		
 		
 		
 	}

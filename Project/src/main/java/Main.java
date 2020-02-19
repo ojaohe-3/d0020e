@@ -29,12 +29,12 @@ public class Main {
 		}
 		neoapi = Neo4jConfigLoader.getApi();
 
-		User admin = new User("admin", "password");
+		/*User admin = new User("admin", "password");
 		admin.setAdmintag(true);
 		User teacher = new User("teacher", "password");
 		
 		neoapi.userMethods.addUser(admin);
-		neoapi.userMethods.addUser(teacher);
+		neoapi.userMethods.addUser(teacher);*/
 		
 		
 		// Setup database connection

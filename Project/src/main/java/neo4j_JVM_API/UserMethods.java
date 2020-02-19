@@ -1,6 +1,7 @@
 package neo4j_JVM_API;
 
 import Data.*;
+import Data.User.UserLables;
 import neoCommunicator.Neo4jCommunicator;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
@@ -167,6 +168,42 @@ public class UserMethods {
 			return u;
 		}
 		return null;
+	}
+	
+	/**
+	 * Made another Login method that not read in courses
+	 * @param user containing username and hashed password
+	 * @return Information for the logged in user, including admin tag
+	 * 
+	 *  @author JSPr
+	 */
+	public User login2(User user) {
+		
+		String query = "MATCH (user: " + UserLables.USER + " { username: \"" + user.getUsername() + "\" }) RETURN user";
+		
+		StatementResult result = communicator.readFromNeo(query);
+		if(result.hasNext()) {
+			
+			Record record = result.next();
+			String password = record.get("user").get(User.UserLables.PASSWORD.toString()).toString();
+			String username = record.get("user").get(User.UserLables.USERNAME.toString()).toString();
+			int isAdmin = Integer.parseInt(record.get("user").get(User.UserLables.USERTAG.toString()).toString());
+			
+			User newUser = new User(username, password);
+			newUser.setAdmintag(1 == isAdmin);
+			
+			if(user.CompareForLogin(newUser)) {
+				return newUser;
+			} else {
+				return null;
+			}
+			
+			
+		} else {
+			return null;
+		}
+		
+		
 	}
 
 	/**
