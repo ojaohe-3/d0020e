@@ -255,7 +255,7 @@ function course_modify() {
 				oldYear : data[2],
 				newCourseName : data[3],
 				newCourseCode : data[4],
-				newLP : data[5];
+				newLP : data[5],
 				newYear : data[6],
 				newExaminer : data[7]
 			},
