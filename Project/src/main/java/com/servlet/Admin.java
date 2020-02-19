@@ -125,9 +125,11 @@ public class Admin extends HttpServlet {
 			LP period = LP.getByString(lp);
 			int Year = Integer.parseInt(year);
 
+			CourseDate courseDate = new CourseDate(Year, period);
 
+			Neo4jConfigLoader.getApi().userMethods.deleteRelationShipBetweenUserAndCourse(courseCode, userName, courseDate);
 
-			return "User " + userName + " can now make changes to " ;
+			return "User " + userName + " can no longer make changes to " +courseCode;
 		} else {
 
 			return "The input must be either CREATE, DELETE, MODIFY, SET_RELATION_TO_COURSE or REMOVE_RELATION_TO_COURSE";
@@ -173,8 +175,32 @@ public class Admin extends HttpServlet {
 			return "Course " + courseCode + " has been deleted.";
 		}
 
-		//Lämnar denna tillsvidare
 		if(request.equals("MODIFY")) {
+			String oldCourseCode = request.getParameter("oldCourseCode");
+			String oldLP = request.getParameter("oldLP");
+			String oldYear = request.getParameter("oldYear");
+			String newCourseName = request.getParameter("newCourseName");
+			String newCourseCode = request.getParameter("newCourseCode");
+			String newLP = request.getParameter("newLP");
+			String newYear = request.getParameter("newYear");
+			String newExaminer = request.getParameter("newExaminer");
+
+			LP oldPeriod = LP.getByString(oldLP);
+			int oldCourseYear = Integer.parseInt(oldYear);
+			CourseDate oldCourseDate = new CourseDate(oldCourseYear, oldPeriod);
+			LP newPeriod = LP.getByString(newLP);
+			int newCourseYear = Integer.parseInt(newYear);
+			CourseDate newCourseDate = new CourseDate(newCourseYear, newPeriod);
+
+			Course oldCourse = Neo4jConfigLoader.getApi().getMethods.getCourse(oldCourseCode, oldCourseDate);
+			Credits copyOfOldCredits = oldCourse.getCredit();
+			String copyOfDescription = oldCourse.getDescription();
+
+			Course newCourse = new Course(newCourseName, newCourseCode, copyOfOldCredits, copyOfDescription, newExaminer, newCourseDate);
+
+			Neo4jConfigLoader.getApi().modifyMethods.editCourse(oldCourseCode, oldCourseDate, newCourse);
+
+			return "The course with coursecode " + oldCourseCode + " has been modified";
 
 		} else {
 
@@ -263,17 +289,64 @@ public class Admin extends HttpServlet {
 		return "The input must be either CREATE, DELETE, MODIFY, MODIFY_TAXONOMY_DESC or MODIFY_GENERAL_DESC";
 	}
 
-	private void program(HttpServletRequest request) {
+	private String program(HttpServletRequest request) throws IOException {
 
 		if(request.equals("CREATE")) {
+			String programName = request.getParameter("name");
+			String programCode = request.getParameter("code");
+			String startYear = request.getParameter("startYear");
+			String startLP = request.getParameter("startLP");
+			String description = request.getParameter("description");
+			String credits = request.getParameter("credits");
+
+			LP period = LP.getByString(startLP);
+			int Year = Integer.parseInt(startYear);
+			Credits hp = Credits.getByString(credits);
+
+			CourseDate courseDate = new CourseDate(Year, period);
+			CourseProgram program = new CourseProgram(programCode, programName, description, courseDate, hp);
+
+			Neo4jConfigLoader.getApi().createMethods.createProgram(program);
+
+			return "The program named " + programName + " has been created";
 
 		}
 		if(request.equals("DELETE")) {
 
+			String programCode = request.getParameter("code");
+			String year = request.getParameter("year");
+			String lp = request.getParameter("lp");
+
+			LP period = LP.getByString(lp);
+			int Year = Integer.parseInt(year);
+
+			CourseDate courseDate = new CourseDate(Year, period);
+
+			Neo4jConfigLoader.getApi().deleteMethods.deleteProgram(programCode, courseDate);
+
+			return "The program with program code " + programCode + " has been removed";
 		}
+
 		if(request.equals("COPY_FROM_YEAR")) {
+			String programCode = request.getParameter("code");
+			String fromYear = request.getParameter("fromYear");
+			String fromLP = request.getParameter("fromLP");
+			String toYear = request.getParameter("toYear");
+
+			LP fromPeriod = LP.getByString(fromLP);
+			int previousYear = Integer.parseInt(fromYear);
+			int nextYear = Integer.parseInt(toYear);
+
+			CourseDate earlierProgramDate = new CourseDate(previousYear, fromPeriod);
+
+			CourseProgram oldProgram = Neo4jConfigLoader.getApi().getMethods.getProgram(programCode, earlierProgramDate);
+
+			Neo4jConfigLoader.getApi().createMethods.createCopyOfProgrambyYear(oldProgram, nextYear);
+
+			return "A new program with program code " + programCode + " has been created for year "+ toYear;
 
 		}
+
 		if(request.equals("MODIFY")) {
 
 		}

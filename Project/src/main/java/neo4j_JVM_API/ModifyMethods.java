@@ -104,10 +104,10 @@ public class ModifyMethods {
 				Course.CourseLabels.YEAR +":"+period.getYear()+","+
 				Course.CourseLabels.LP +":\""+period.getPeriod().name()+"\"} SET n={";
 		query += Course.CourseLabels.CODE.toString() +":"+nCourse.getCourseCode();
-		query +=  Course.CourseLabels.CREDIT.toString() +":"+nCourse.getCredit();
+		query += Course.CourseLabels.CREDIT.toString() +":"+nCourse.getCredit();
 		query += Course.CourseLabels.DESCRIPTION.toString() +":"+nCourse.getDescription();
-		query +=Course.CourseLabels.LP.toString() +"="+nCourse.getStartPeriod().getPeriod().name();
-		query +=  Course.CourseLabels.YEAR.toString() +"="+nCourse.getStartPeriod().getYear();
+		query += Course.CourseLabels.LP.toString() +"="+nCourse.getStartPeriod().getPeriod().name();
+		query += Course.CourseLabels.YEAR.toString() +"="+nCourse.getStartPeriod().getYear();
 		query += Course.CourseLabels.EXAMINER.toString() +"="+nCourse.getExaminer();
 		query += Course.CourseLabels.NAME.toString() +"="+nCourse.getName();
 
