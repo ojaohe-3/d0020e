@@ -29,13 +29,14 @@ let obj2 = new CourseObject({"name": "hej", "code":"800813","examiner":"ulf"}, {
   });
   obj.draw(ctx);
   obj2.draw(ctx);
+
+
+
   canvas.addEventListener('click', function(evt) {
     var mousePos = getMousePos(canvas, evt);
 
     if (obj.button.isInside(mousePos, dpi)) {
         alert('clicked inside rect');
-    }else{
-        //alert('clicked outside rect');
     }
 }, false);
 
