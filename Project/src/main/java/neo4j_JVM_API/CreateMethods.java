@@ -27,8 +27,8 @@ public class CreateMethods {
 
 private final Neo4jCommunicator communicator;
 
-	
-	
+
+
 	/**
 	 * 
 	 * @param communicator  used when calling the database.
@@ -54,13 +54,14 @@ private final Neo4jCommunicator communicator;
 	public void createCourse(Course course) {
 		String query = "MATCH (course: Course {courseCode: \"" + course.getCourseCode() + "\", "+ CourseLabels.YEAR + " : \"" + course.getStartPeriod().getYear() + "\" , " + CourseLabels.LP + " : \"" + course.getStartPeriod().getPeriod() + "\" }) RETURN course";
 		StatementResult result = this.communicator.readFromNeo(query);
-		
+		String StartStatment = "CREATE";
+
 		/* Check if a course exist already. */
 		if (result.hasNext()) {
-			throw new IllegalArgumentException("The course exists already for the same year and study period.");
+			StartStatment="MERGE";
 		}
-		
-		query = "CREATE(n:" + Course.course+"{"+
+
+		query = StartStatment+"(n:" + Course.course+"{"+
 		Course.CourseLabels.NAME.toString() + ":\"" + course.getName().toString() + "\", " +
 		Course.CourseLabels.CREDIT.toString() + ":\"" + course.getCredit().toString() + "\", " +
 		Course.CourseLabels.DESCRIPTION.toString() + ":\"" + course.getDescription().toString() + "\", " +
@@ -154,7 +155,7 @@ private final Neo4jCommunicator communicator;
 	 * @param program - The course program.
 	 * @see Data.CourseProgram
 	 */
-	public void createProgramCourseRelation(CourseProgram program) {
+	public void createProgramCourseRelations(CourseProgram program) {
 		CourseOrder courseOrder = program.getCourseOrder();
 		Course[][] courses = courseOrder.getCourseArray();
 		
@@ -204,6 +205,20 @@ private final Neo4jCommunicator communicator;
 		
 	}
 
+
+	public void createProgramCourseRelation(CourseProgram program,Course course) {
+		program.getCourseOrder().setCourseAt(course);
+		String query = "MATCH(program:"+program.getProgramType()+"{"+ CourseProgram.ProgramLabels.CODE +":\""+program.getCode()+"\","+CourseProgram.ProgramLabels.LP+":\""+
+				program.getStartDate().getPeriod().toString()+"\","+ CourseProgram.ProgramLabels.YEAR+":\""+program.getStartDate().getYear()+"\"}),";
+
+		query += "(course:"+Course.course+"{"+Course.CourseLabels.CODE+":\""+course.getCourseCode()+"\","+ CourseLabels.LP.toString()+":\""+course.getStartPeriod().getPeriod().toString()
+				+"\","+CourseLabels.YEAR+":\""+course.getStartPeriod().getYear()+"\"}) CREATE (program)<-[r:"+Relations.IN_PROGRAM+"]-(course)";
+
+
+		this.communicator.writeToNeo(query);
+
+
+	}
 	/**
 	 * Add relations between a course and all it's KCs to the database. 
 	 * The KCs must be added as required or developed to the desired 
@@ -329,7 +344,7 @@ private final Neo4jCommunicator communicator;
 		CourseOrder newCourseOrder = new CourseOrder(program.getCourseOrder().getReadingPeriods());
 		newCourseOrder.assignCourseOrder(newCourses);
 		this.createProgram(newProgram);
-		this.createProgramCourseRelation(newProgram);
+		this.createProgramCourseRelations(newProgram);
 		
 		
 	}
