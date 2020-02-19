@@ -17,9 +17,9 @@ public class UserMethods {
 
 	public void addUser(User userObj) {
 		String query = "CREATE (n:"+ User.UserLables.USER +"{";
-		query +=    User.UserLables.USERNAME +":"+userObj.getUsername();
-		query += 	User.UserLables.PASSWORD +":" + userObj.getPassword() ;
-		query += 	User.UserLables.USERTAG +":" + (userObj.isAdmintag()?1:0) ;
+		query +=    User.UserLables.USERNAME +": \""+userObj.getUsername() + "\", ";
+		query += 	User.UserLables.PASSWORD +": \"" + userObj.getPassword() + "\", ";
+		query += 	User.UserLables.USERTAG +": \"" + (userObj.isAdmintag()?1:0) + "\"";
 		query += 	"})";
 		communicator.writeToNeo(query);
 	}

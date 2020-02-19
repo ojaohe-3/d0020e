@@ -29,6 +29,14 @@ public class Main {
 		}
 		neoapi = Neo4jConfigLoader.getApi();
 
+		User admin = new User("admin", "password");
+		admin.setAdmintag(true);
+		User teacher = new User("teacher", "password");
+		
+		neoapi.userMethods.addUser(admin);
+		neoapi.userMethods.addUser(teacher);
+		
+		
 		// Setup database connection
 		//neoapi = new Neo4JAPI("");
 		
@@ -45,16 +53,16 @@ public class Main {
 		//addTopicsToKCs();
 		
 
-		readCourses();
+		//readCourses();
 
-		readKCs();
-		readTopics();
+		//readKCs();
+		//readTopics();
 		
-		filterTest();
+		//filterTest();
 
 		//System.in.read();
 		
-		deleteCourses();
+		//deleteCourses();
 		//deleteKCs();
 
 
