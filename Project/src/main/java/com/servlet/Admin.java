@@ -36,9 +36,18 @@ public class Admin extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		
-		System.out.println("WARNING, NOT CHECKING IF ADMIN IS LOGGED IN");
+		try { 
+			if((boolean)request.getSession().getAttribute("is_admin") == true) {
+				request.getRequestDispatcher("/admin.jsp").forward(request, response);
+			} else {
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
+			}
+			
+		} catch(NullPointerException e) {
+			
+		}
 		
-		request.getRequestDispatcher("/admin.jsp").forward(request, response);
+		
 	}
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
