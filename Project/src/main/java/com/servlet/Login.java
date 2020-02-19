@@ -14,8 +14,6 @@ import Data.User;
 import neo4j_JVM_API.Neo4JAPI;
 import neoCommunicator.Neo4jConfigLoader;
 
-
-
 /**
  * 		Needs to fix the doPost
  * 
@@ -48,7 +46,9 @@ public class Login extends HttpServlet {
 	}
 	
 	/**
-	 * 	Handles the login
+	 * 	Handles the login and sets session cookie for logged_in and is_admin
+	 * 	
+	 * 	When Teacher.jsp is finished, change the commented code below
 	 * 
 	 * 	@author Jesper
 	 */
