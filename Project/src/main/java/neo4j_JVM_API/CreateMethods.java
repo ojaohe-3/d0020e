@@ -62,6 +62,22 @@ private final Neo4jCommunicator communicator;
 	}
 	
 	
+	/**
+	 * Create a relationship between a course and a topic
+	 * @param course
+	 * @param topic
+	 */
+	public void createTopicToCourseRelation(Course course, String topic) {
+		
+		String query = "MATCH (course: Course {" + Course.CourseLabels.CODE +" : \"" + course.getCourseCode() + "\", "+ Course.CourseLabels.LP + ": \"" + course.getStartPeriod().getPeriod() + "\", " + Course.CourseLabels.YEAR + ": \"" + course.getStartPeriod().getYear() + "\"  }) ";
+		query += "MATCH (topic: Topic {title : \"" + topic + "\"}) ";
+		query += "CREATE (course)-[r:"+ Relations.BELONGS_TO +"]->(topic)";
+		
+		this.communicator.writeToNeo(query);
+
+	}
+	
+	
 	
 	/**
 	 * Add a new course to the server. This is still a work in progress, so don't use it yet.
