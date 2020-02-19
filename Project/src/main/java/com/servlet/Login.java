@@ -57,6 +57,7 @@ public class Login extends HttpServlet {
 		String password = request.getParameter("password");
 		
 		User loginAttempt = new User(username, password);
+		loginAttempt.hashPassword();
 		
 		User isLoggedIn = Neo4jConfigLoader.getApi().userMethods.login2(loginAttempt);
 		
