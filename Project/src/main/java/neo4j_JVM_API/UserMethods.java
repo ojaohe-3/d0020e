@@ -179,18 +179,20 @@ public class UserMethods {
 	 */
 	public User login2(User user) {
 		
-		String query = "MATCH (user: " + UserLables.USER + " { username: \"" + user.getUsername() + "\" }) RETURN user";
+		String query = "MATCH (user: " + UserLables.USER + " { "+ User.UserLables.USERNAME +": \"" + user.getUsername() + "\" }) RETURN user";
 		
 		StatementResult result = communicator.readFromNeo(query);
 		if(result.hasNext()) {
 			
 			Record record = result.next();
-			String password = record.get("user").get(User.UserLables.PASSWORD.toString()).toString();
-			String username = record.get("user").get(User.UserLables.USERNAME.toString()).toString();
-			int isAdmin = Integer.parseInt(record.get("user").get(User.UserLables.USERTAG.toString()).toString());
+			String password = record.get("user").get(User.UserLables.PASSWORD.toString()).toString().replaceAll("\"", "");
+			String username = record.get("user").get(User.UserLables.USERNAME.toString()).toString().replaceAll("\"", "");
+			
+			int isAdmin = Integer.parseInt(record.get("user").get(User.UserLables.USERTAG.toString()).toString().replaceAll("\"", ""));
 			
 			User newUser = new User(username, password);
 			newUser.setAdmintag(1 == isAdmin);
+			
 			
 			if(user.CompareForLogin(newUser)) {
 				return newUser;
