@@ -104,6 +104,26 @@ public class UserMethods {
 		communicator.writeToNeo(query);
 		user.addCourse(data);
 	}
+	
+	/**
+	 * 
+	 * 	Delete a relationship between a user and a course
+	 * 
+	 * @param username
+	 * @param courseCode
+	 * @param courseDate
+	 */
+	public void deleteRelationShipBetweenUserAndCourse(String username, String courseCode, CourseDate courseDate) {
+		
+		String query = "MATCH (user: User { " + User.UserLables.USERNAME + ": \"" + username + "\" }) ";
+		query += "MATCH (course: Course { " + Course.CourseLabels.CODE + ": \"" + courseCode + "\", " + Course.CourseLabels.LP + ": \"" + courseDate.getPeriod() + "\", " + Course.CourseLabels.YEAR + ": \"" + courseDate.getYear()+"\" })";
+		query += "MATCH (user)-[r]-(course) DELETE r";
+		
+		communicator.writeToNeo(query);
+		
+	}
+	
+	
 
 	/**
 	 * Create a course that gives user write privilege, Does not create relations between kcs and course, condouct it to object and pass it to

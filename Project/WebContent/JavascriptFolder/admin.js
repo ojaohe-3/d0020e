@@ -238,11 +238,11 @@ function course_create() {
  * Don't know how to do this in a gr8 way
  */
 function course_modify() {
-	var input = prompt("newcoursename;coursecode;LP(1-4);year;newcredits;newexaminer;newdescription \n This was not great...");
+	var input = prompt("oldCourseCode;oldLP;oldYear;newCourseName;newCourseCode;newLP;newYear;newExaminer");
 	
 	var data = input.split(";");
 	
-	if(data.length == 7 ){
+	if(data.length == 8 ){
 		
 		$.ajax({
 			url : 'admin',
@@ -250,13 +250,14 @@ function course_modify() {
 			data : {
 				head : "COURSE",
 				method : "MODIFY",
-				courseName : data[0],
-				courseCode : data[1],
-				lp : data[2],
-				year : data[3],
-				credits : data[4],
-				examiner : data[5],
-				description : data[6]
+				oldCourseCode : data[0],
+				oldLP : data[1],
+				oldYear : data[2],
+				newCourseName : data[3],
+				newCourseCode : data[4],
+				newLP : data[5];
+				newYear : data[6],
+				newExaminer : data[7]
 			},
 			success : function(response) {
 				document.getElementById("log").innerHTML += "MODIFY COURSE " + data[0]  +"</br>";
