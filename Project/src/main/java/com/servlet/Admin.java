@@ -203,8 +203,7 @@ public class Admin extends HttpServlet {
 			return "The course with coursecode " + oldCourseCode + " has been modified";
 
 		} else {
-
-
+				return "The input must be either CREATE, DELETE or MODIFY";
 		}
 
 	}
@@ -348,12 +347,91 @@ public class Admin extends HttpServlet {
 		}
 
 		if(request.equals("MODIFY")) {
+			String oldProgramCode = request.getParameter("oldCode");
+			String programStartYearYear = request.getParameter("programStartYear");
+			String programStartLP = request.getParameter("programStartLP");
+			String newName = request.getParameter("newName");
+			String newCode = request.getParameter("newCode");
+			String newStartYear = request.getParameter("newStartYear");
+			String newStartLP = request.getParameter("newStartLP");
+			String newDescription = request.getParameter("newDescription");
+			String newCredits = request.getParameter("newCredits");
+
+			LP fromPeriod = LP.getByString(programStartLP);
+			int previousYear = Integer.parseInt(programStartYearYear);
+			int nextYear = Integer.parseInt(newStartYear);
+			LP newStartPeriod = LP.getByString(newStartLP);
+
+			CourseDate earlierProgramDate = new CourseDate(previousYear, fromPeriod);
+			CourseDate newProgramDate = new CourseDate(nextYear, newStartPeriod);
+
+			Credits newCreditPoints = Credits.getByString(newCredits);
+
+			CourseProgram updatedProgram = new CourseProgram(newCode, newName,newDescription, newProgramDate, newCreditPoints);
+
+			Neo4jConfigLoader.getApi().modifyMethods.editProgram(oldProgramCode, earlierProgramDate, updatedProgram);
+
+			return "The program known as " + oldProgramCode + " has been updated";
 
 		}
 		if(request.equals("ADD_COURSE")) {
+			String programCode = request.getParameter("programCode");
+			String programStartYear = request.getParameter("programStartYear");
+			String programStartLP = request.getParameter("programStartLP");
+			String courseCode = request.getParameter("courseCode");
+			String courseYear = request.getParameter("courseYear");
+			String courseLP = request.getParameter("courseLP");
+
+			int programYear = Integer.parseInt(programStartYear);
+			LP programStartPeriod = LP.getByString(programStartLP);
+			int course_Year = Integer.parseInt(courseYear);
+			LP coursePeriod = LP.getByString(courseLP);
+
+			CourseDate programStartDate = new CourseDate(programYear, programStartPeriod);
+			CourseDate courseDate = new CourseDate(course_Year, coursePeriod);
+
+			CourseProgram courseProgram = Neo4jConfigLoader.getApi().getMethods.getProgram(programCode, programStartDate);
+			Course course = Neo4jConfigLoader.getApi().getMethods.getCourse(courseCode, courseDate);
+
+			CourseInformation courseInformation = new CourseInformation(course.getName(), course.getCourseCode(), course.getCredit(), course.getDescription(), course.getExaminer(), course.getStartPeriod());
+			ProgramInformation programInformation = new ProgramInformation(courseProgram.getCode(), courseProgram.getName(), courseProgram.getDescription(), courseProgram.getStartDate(), courseProgram.getCredits(), courseProgram.getProgramType());
+
+			Neo4jConfigLoader.getApi().modifyMethods.editInProgramCourseRelation(courseInformation, programInformation);
+
+			return "The relationship between " + programCode + " and " + courseCode + " has been modified";
 
 		}
 		if(request.equals("CREATE_SPECIAL")) {
+			String name = request.getParameter("name");
+			String programCode = request.getParameter("programCode");
+			String startProgramYear = request.getParameter("startProgramYear");
+			String startProgramLP = request.getParameter("startProgramLP");
+			String specYear = request.getParameter("specYear");
+			String specLP = request.getParameter("specLP");
+			String description = request.getParameter("description");
+			String credits = request.getParameter("credits");
+			String readingPeriods = request.getParameter("readingPeriods");
+
+			int programYear = Integer.parseInt(startProgramYear);
+			LP programStartPeriod = LP.getByString(startProgramLP);
+			int specialYear = Integer.parseInt(specYear);
+			LP specialPeriod = LP.getByString(specLP);
+			CourseDate programDate = new CourseDate(programYear, programStartPeriod);
+			CourseDate specDate = new CourseDate(specialYear, specialPeriod);
+			Credits currentCredits = Credits.getByString(credits);
+
+			CourseProgram programSpecialization = new CourseProgram(programCode, name, description, specDate, currentCredits);
+
+			Neo4jConfigLoader.getApi().createMethods.createProgram(programSpecialization);
+
+			ProgramSpecialization programSpecialization1 = Neo4jConfigLoader.getApi().getMethods.getProgramSpecialization(name, specDate,programCode);
+
+			Neo4jConfigLoader.getApi().createMethods.createProgramSpecializationRelation(programCode, programDate, programSpecialization1);
+
+			return "A relationship between the program " + programCode + " and the specialization " + name + " has been created";
+
+		} else {
+			return "The input must be either CREATE, DELETE, COPY_FROM_YEAR, MODIFY, SET_RELATION_TO_COURSE, ADD_COURSE or CREATE_SPECIAL";
 
 		}
 	}
