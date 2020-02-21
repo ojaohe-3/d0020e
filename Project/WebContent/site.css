@@ -1,0 +1,34 @@
+@charset "UTF-8";
+
+
+body {
+	background-color : lightgray;
+}
+
+.SearchResult {
+	background-color : #404040;
+	padding : 5px;
+	height: 30px;
+	display: block;
+}
+
+.SearchResultContainer>.SearchResult:hover {
+	background-color : orange;
+	color: white;
+	height: auto;
+}
+
+.SearchResultExpander {
+	display : none;
+}
+
+.SearchResult:hover .SearchResultExpander {
+	display : block;
+}
+
+.SearchResultContainer>div:nth-child(odd){
+ background-color: #404040;
+}
+.SearchResultContainer>div:nth-child(even){
+ background-color: #4b4b4b;
+}

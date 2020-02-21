@@ -34,7 +34,8 @@ public class Neo4jConfigLoader {
      * @throws IOException
      */
     private static config loadConfig() throws IOException {
-        if(CONF!=null)
+    	return new config("neo4j", "neo4j-d0020e", "bolt://130.240.200.253:7687");
+        /*if(CONF!=null)
             return CONF;
 
         String uname;
@@ -72,7 +73,7 @@ public class Neo4jConfigLoader {
         }
 
         config temp = new config(uname,pwd,url);
-        return temp;
+        return temp;*/
     }
 
     /**

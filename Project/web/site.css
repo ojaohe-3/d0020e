@@ -1,0 +1,40 @@
+@charset "UTF-8";
+
+
+body {
+	background-color : lightblue;
+}
+
+.SearchResult {
+	
+	background-color : gray;
+	margin-bottom : 5px;
+	height: 20px;
+	display: block;
+	width: 50%;
+}
+
+.SearchResult:hover {
+	
+	background-color : lightgray;
+	height: 100px;
+}
+
+.SearchResultExpander {
+	display : none;
+}
+
+.SearchResult:hover .SearchResultExpander {
+	display : block;
+	padding: 5px;
+}
+.wrapper{
+	display: flex;
+	align-items: stretch
+}
+canvas{
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+}

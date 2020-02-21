@@ -7,7 +7,6 @@ import neoCommunicator.Neo4jConfigLoader;
 import org.json.JSONException;
 
 public class Main {
-
     final static int AMOUNT_OF_COURSE_CREATED = 24;
     final static int AMOUNT_OF_KCS_CREATED = 24;
     static Course[] courses;
