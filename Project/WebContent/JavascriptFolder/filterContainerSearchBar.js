@@ -94,7 +94,7 @@ $(document).ready(function() {
 					success : function(response) {
 						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
-							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"('"+response[i].code+"','" +response[i].year+"','"+response[i].lp+"'')\"> <b>" + response[i].name + "</b> - " + response[i].code ;
+							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked('"+response[i].code+"','" +response[i].year+"','"+response[i].lp+"')\"> <b>" + response[i].name + "</b> - " + response[i].code ;
 							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
 						}
 						s += "</div>";
@@ -113,7 +113,7 @@ $(document).ready(function() {
 					success : function(response) {
 						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
-							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked('"+response[i].code+"','" +response[i].year+"','"+response[i].lp+")\"> <b>" + response[i].name + "</b> - " + response[i].code ;
+							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked('"+response[i].code+"','" +response[i].year+"','"+response[i].lp+"')\"> <b>" + response[i].name + "</b> - " + response[i].code ;
 							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
 						}
 						s += "</div>";

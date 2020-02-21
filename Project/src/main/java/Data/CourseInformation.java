@@ -87,7 +87,7 @@ public CourseInformation(String name, String courseCode, Credits credit, String 
 	}
 
 
-	public String getAsJson() throws JSONException {
+	public JSONObject getAsJson() throws JSONException {
 		JSONObject obj = new JSONObject();
 
 		try {
@@ -101,7 +101,7 @@ public CourseInformation(String name, String courseCode, Credits credit, String 
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
-		return obj.toString();
+		return obj;
 
 	}
 	@Override
