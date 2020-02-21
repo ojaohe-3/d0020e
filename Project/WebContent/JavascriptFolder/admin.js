@@ -511,7 +511,7 @@ function program_create() {
 }
 
 function program_create_specialization() {
-	var input = prompt("name;programCode;startYear;specializationYear;startLP;credits;description");
+	var input = prompt("name;programCode;startYear;specializationYear;startLP;credits;description;readingPeriods");
 	
 	var data = input.split(";");
 	
@@ -526,10 +526,11 @@ function program_create_specialization() {
 				name : data[0],
 				programCode : data[1],
 				startYear : data[2],
-				startLP : data[3],
-				credits : data[4],
-				description : data[5],
-				specYear : data[6]
+				startLP : data[4],
+				credits : data[5],
+				description : data[6],
+				specYear : data[3],
+				readingPeriods : data[7];
 				
 			},
 			success : function(response) {
