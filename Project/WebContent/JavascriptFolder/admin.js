@@ -530,7 +530,7 @@ function program_create_specialization() {
 				credits : data[5],
 				description : data[6],
 				specYear : data[3],
-				readingPeriods : data[7];
+				readingPeriods : data[7]
 				
 			},
 			success : function(response) {
