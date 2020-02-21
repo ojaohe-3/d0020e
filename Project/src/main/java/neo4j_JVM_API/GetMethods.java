@@ -62,17 +62,22 @@ public class GetMethods {
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
 		
-		int readingPeriods = row.get("courseProgram").get("readingPeriods").asInt();
+		int readingPeriods = Integer.parseInt(row.get("courseProgram").get("readingPeriods").toString().replaceAll("\"",""));
 		CourseOrder courseOrder = new CourseOrder(readingPeriods);
 		
-		String inProgramQuery = "MATCH (courseProgram: CourseProgram {code: \"" + code + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
-		inProgramQuery += "MATCH(courseInProgram : Course)<-[relation: IN_PROGRAM]-(courseProgram) RETURN courseInProgram, relation";
+		String inProgramQuery = "MATCH (courseProgram: CourseProgram {"+CourseProgram.ProgramLabels.CODE+": \"" + code + "\", "+ CourseProgram.ProgramLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseProgram.ProgramLabels.LP + " : \"" + startDate.getPeriod() + "\" })";
+		inProgramQuery += "-[relation:IN_PROGRAM]-(courseInProgram:Course) RETURN courseInProgram";
 		result = this.communicator.readFromNeo(inProgramQuery);
-		
+		String tempCode;
+		CourseDate tempDate;
 		while(result.hasNext()) {
 			Record currentRow = result.next();
-			Course course = createCourse(currentRow, "courseInProgram");
-			courseOrder.setCourseAt(course, currentRow.get("relation").get("period").asInt(), currentRow.get("relation").get("pos").asInt());
+			tempCode = currentRow.get("courseInProgram").get(CourseLabels.CODE.toString()).toString().replaceAll("\"","");
+			tempDate = new CourseDate(
+					Integer.parseInt(currentRow.get("courseInProgram").get(CourseLabels.YEAR.toString()).toString().replaceAll("\"","")),
+					LP.valueOf(currentRow.get("courseInProgram").get(CourseLabels.LP.toString()).toString().replaceAll("\"","")));
+			Course course = getCourse(tempCode,tempDate);
+			courseOrder.setCourseAt(course);
 		}
 		
 		CourseProgram courseProgram = createCourseProgram(courseOrder, row, "courseProgram");
@@ -89,13 +94,13 @@ public class GetMethods {
 	 */
 	private CourseProgram createCourseProgram(CourseOrder courseOrder, Record row, String nodename) {
 		
-		String name = row.get(nodename).get("name").toString();
-		String code = row.get(nodename).get("code").toString();
-		String description = row.get(nodename).get("description").toString();
-		String creds = row.get(nodename).get("credit").toString();
+		String name = row.get(nodename).get("name").toString().replaceAll("\"","");
+		String code = row.get(nodename).get("code").toString().replaceAll("\"","");
+		String description = row.get(nodename).get("description").toString().replaceAll("\"","");
+		String creds = row.get(nodename).get("credits").toString().replaceAll("\"","");
 		Credits credits = Credits.valueOf(creds);
-		int year = Integer.parseInt(row.get(nodename).get("year").toString());
-		LP lp = LP.valueOf(row.get(nodename).get("lp").toString());
+		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"",""));
+		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"",""));
 		CourseDate startDate = new CourseDate(year, lp);	
 		
 		CourseProgram courseProgram = new CourseProgram(courseOrder, name, code, description, startDate, credits);
@@ -230,7 +235,7 @@ public class GetMethods {
 		while(result.hasNext()) {
 			Record currentRow = result.next();
 			Course course = createCourse(currentRow, "courseInProgram");
-			courseOrder.setCourseAt(course, currentRow.get("relation").get("period").asInt(), currentRow.get("relation").get("pos").asInt());
+			courseOrder.setCourseAt(course);
 		}
 		
 		ProgramSpecialization courseProgramSpecialization = createProgramSpecialization(courseOrder, row, "programSpecialization");

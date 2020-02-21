@@ -30,15 +30,27 @@ public class CourseOrder {
 	 * 	Sets course at the given position
 	 * 
 	 * @param course
-	 * @param period
-	 * @param pos
 	 */
-	public void setCourseAt(Course course, int period, int pos) {
-		if(period < this.readingPeriods && pos < COURSES_PER_PERIOD) {
-			
-			this.courses[pos][period] = course;
-			
+	public void setCourseAt(Course course) {
+		int pos = -1;
+		int period;
+		switch (course.getStartPeriod().getPeriod()){
+			case ONE:period=1;break;
+			case TWO:period=2;break;
+			case THREE:period=3;break;
+			case FOUR:period=4;break;
+			default:period =-1;//throws error
 		}
+
+		for (int i = 0; i < COURSES_PER_PERIOD; i++) {
+			if(this.courses[i][period] == null){
+				pos = i;
+				break;
+			}
+		}
+		this.courses[pos][period] = course;
+			
+
 	}
 	
 	/**

@@ -92,7 +92,7 @@ public class ProgramInformation {
 		this.programType = programType;
 	}
 
-	public String getAsJson() throws JSONException {
+	public JSONObject getAsJson() throws JSONException {
 		JSONObject obj = new JSONObject();
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),name);
 		obj.put(CourseProgram.ProgramLabels.CODE.toString(),code);
@@ -100,6 +100,6 @@ public class ProgramInformation {
 		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits.name());
 		obj.put(CourseProgram.ProgramLabels.LP.toString(),startDate.getPeriod().name());
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),startDate.getYear());
-		return obj.toString();
+		return obj;
 	}
 }

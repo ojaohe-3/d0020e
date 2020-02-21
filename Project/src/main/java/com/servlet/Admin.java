@@ -134,6 +134,7 @@ public class Admin extends HttpServlet {
 
 			return "The input must be either CREATE, DELETE, MODIFY, SET_RELATION_TO_COURSE or REMOVE_RELATION_TO_COURSE";
 		}
+		return "hej";
 	}
 
 	private String course(HttpServletRequest request) throws IOException {
