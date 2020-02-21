@@ -4,6 +4,7 @@
 <%@ page import="Data.Course" %>
 
 <link rel="stylesheet" href="filterContainer.css">
+<link rel="stylesheet" href="site.css">
 
 <html>
 <head>
@@ -21,7 +22,7 @@
     <div class="container-fluid" id="my_courses">
     <h3>My Courses</h3> <hr>
     
-	    <div class="course_list">
+	    <div class="course_list pre-scrollable">
 	    	
 	    	<%
 	    		
@@ -30,7 +31,7 @@
 	    		if(courses != null) {
 	    			for(Course course: courses) {
 		    			
-		    			String s = "<div class=\"SearchResult\" id=\"course_edit\" onclick=\"courseClickedEdit('" + course.getCourseCode() + "', '"+ course.getStartPeriod().getYear() + "', '" + course.getStartPeriod().getPeriod() + "')\">  <b>" + course.getName() + "</b> - " + course.getCourseCode();
+		    			String s = "<div style=\"max-width:200px\" class=\"SearchResult\" id=\"course_edit\" onclick=\"courseClickedEdit('" + course.getCourseCode() + "', '"+ course.getStartPeriod().getYear() + "', '" + course.getStartPeriod().getPeriod() + "')\">  <b>" + course.getName() + "</b> - " + course.getCourseCode();
 						s += "<div class=\"SearchResultExpander\"> Year : " + course.getStartPeriod().getYear() +" </br> LP : " + course.getStartPeriod().getPeriod() + " </br> Examiner : " + course.getExaminer() + " </br> Credits : " + course.getCredit() + "</div></div>";
 		    			
 						out.print(s);
