@@ -22,7 +22,25 @@ function courseClicked(code, year, lp) {
 	});
 }
 
-function programClicked() {
+function programClicked(code,year,lp) {
+	console.log(code);
+	console.log(year);
+	console.log(lp);
+
+	$.ajax({
+
+		url : '/GetProgram/getCourses',
+		data : {
+			code : code,
+			startyear : year,
+			startperiod : lp
+		},
+		success : function(response) {
+			// Should call a function in the canvas with the response
+			console.log(response);
+			$('#debug').html("response : " + response);
+		}
+	});
 	
 }
 

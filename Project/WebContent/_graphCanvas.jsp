@@ -1,6 +1,10 @@
 <!-- Konva drag and drop canvas objects-->
-<script src="https://unpkg.com/konva@4.1.4/konva.min.js"></script>
 <canvas id="graph">
 
 
 </canvas>
+
+
+<script src="JavascriptFolder/canvasButton.js"></script>
+<script src="JavascriptFolder/CourseObject.js"></script>
+<script src="JavascriptFolder/GraphicCanvas.js"></script>

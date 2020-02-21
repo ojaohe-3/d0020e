@@ -108,6 +108,7 @@ public class Admin extends HttpServlet {
 		if (request.equals("REMOVE_RELATION_TO_COURSE")) {
 
 		}
+		return "hej";
 	}
 
 	private void course() {
