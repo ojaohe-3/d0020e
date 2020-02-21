@@ -22,7 +22,7 @@ function courseClickedEdit(code, year, lp) {
 		},
 		success : function(response) {
 			// Should call a function in the canvas with the response
-			$('#debug').html("response : " + response);
+			
 		}
 	});
 	
