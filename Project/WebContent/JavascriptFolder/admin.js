@@ -511,11 +511,11 @@ function program_create() {
 }
 
 function program_create_specialization() {
-	var input = prompt("name;programCode;startYear;startLP;credits;description");
+	var input = prompt("name;programCode;startYear;specializationYear;startLP;credits;description");
 	
 	var data = input.split(";");
 	
-	if(data.length == 6){
+	if(data.length == 7){
 		
 		$.ajax({
 			url : 'admin',
@@ -528,8 +528,8 @@ function program_create_specialization() {
 				startYear : data[2],
 				startLP : data[3],
 				credits : data[4],
-				description : data[5]
-				
+				description : data[5],
+				specYear : data[6]
 				
 			},
 			success : function(response) {
