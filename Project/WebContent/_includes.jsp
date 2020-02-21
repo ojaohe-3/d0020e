@@ -3,12 +3,13 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath}/site.css">
+<link href="https://fonts.googleapis.com/css?family=Luckiest+Guy&display=swap" rel="stylesheet">
 
 <nav class="navbar navbar-inverse">
 	<div class="container-fluid">
 		<div class="navbar-header">
 			<div class="navbar-brand">
-				<a href="/project"> <small><s>KronoX</s></small>  <big><b>Study Planner</b></big> </a>
+				<a href="/project"> <small><s>KronoX</s></small>  <big><b style="font-family: Luckiest Guy";>Study Planner</b></big> </a>
 			</div>
 		</div>
 		
