@@ -1,3 +1,4 @@
+
 /*
  *  Creating a user
  */
@@ -235,14 +236,14 @@ function course_create() {
 /*
  * Modify Course
  * 
- * Don't know how to do this in a gr8 way
  */
+
 function course_modify() {
-	var input = prompt("newcoursename;coursecode;LP(1-4);year;newcredits;newexaminer;newdescription \n This was not great...");
+	var input = prompt("oldCourseCode;oldLP;oldYear;newCourseName;newCourseCode;newLP;newYear;newExaminer");
 	
 	var data = input.split(";");
 	
-	if(data.length == 7 ){
+	if(data.length == 8 ){
 		
 		$.ajax({
 			url : 'admin',
@@ -250,13 +251,14 @@ function course_modify() {
 			data : {
 				head : "COURSE",
 				method : "MODIFY",
-				courseName : data[0],
-				courseCode : data[1],
-				lp : data[2],
-				year : data[3],
-				credits : data[4],
-				examiner : data[5],
-				description : data[6]
+				oldCourseCode : data[0],
+				oldLP : data[1],
+				oldYear : data[2],
+				newCourseName : data[3],
+				newCourseCode : data[4],
+				newLP : data[5],
+				newYear : data[6],
+				newExaminer : data[7]
 			},
 			success : function(response) {
 				document.getElementById("log").innerHTML += "MODIFY COURSE " + data[0]  +"</br>";
@@ -269,6 +271,40 @@ function course_modify() {
 		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
 	}
 }
+function course_modify() {
+	var input = prompt("oldCourseCode;oldLP,oldYear;newCourseName;newCourseCode;newLP;newYear;newExaminer");
+	
+	var data = input.split(";");
+	
+	if(data.length == 8 ){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "COURSE",
+				method : "MODIFY",
+				oldCourseCode : data[0],
+				oldLP : data[1],
+				oldYear : data[2],
+				newCourseName : data[3],
+				newCourseCode : data[4],
+				newLP : data[5],
+				newYear : data[6],
+				newExaminer : data[7]
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "MODIFY COURSE with code " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
 
 /*
  * Delete Course
@@ -308,29 +344,29 @@ function course_delete() {
 /*
  * Create a new course
  */
-function course_create() {
-	var input = prompt("coursename;coursecode;LP(1-4);year;credits;examiner;description");
+function kc_create() {
+	var input = prompt("name;generalDescription;Topic;taxonomyDescription1;taxonomyDescription2;taxonomyDescription3");
 	
 	var data = input.split(";");
 	
-	if(data.length == 7 ){
+	if(data.length == 6){
 		
 		$.ajax({
 			url : 'admin',
 			type : "POST",
 			data : {
-				head : "COURSE",
+				head : "KC",
 				method : "CREATE",
-				courseName : data[0],
-				courseCode : data[1],
-				lp : data[2],
-				year : data[3],
-				credits : data[4],
-				examiner : data[5],
-				description : data[6]
+				name : data[0],
+				generalDescription : data[1],
+				topic : data[2],
+				taxonomyDesc1 : data[3],
+				taxonomyDesc2 : data[4],
+				taxonomyDesc3 : data[5]
+				
 			},
 			success : function(response) {
-				document.getElementById("log").innerHTML += "CREATE COURSE " + data[0]  +"</br>";
+				document.getElementById("log").innerHTML += "CREATE KC " + data[0]  +"</br>";
 				document.getElementById("output").innerHTML += response + "</br>";
 			}
 
@@ -341,33 +377,26 @@ function course_create() {
 	}
 }
 /*
- * Modify Course
- * 
- * Don't know how to do this in a gr8 way
+ * Modify general description for KC
  */
-function course_modify() {
-	var input = prompt("newcoursename;coursecode;LP(1-4);year;newcredits;newexaminer;newdescription \n This was not great...");
+function kc_modify_general() {
+	var input = prompt("name;newDescription");
 	
 	var data = input.split(";");
 	
-	if(data.length == 7 ){
+	if(data.length == 2 ){
 		
 		$.ajax({
 			url : 'admin',
 			type : "POST",
 			data : {
-				head : "COURSE",
-				method : "MODIFY",
-				courseName : data[0],
-				courseCode : data[1],
-				lp : data[2],
-				year : data[3],
-				credits : data[4],
-				examiner : data[5],
-				description : data[6]
+				head : "KC",
+				method : "MODIFY_GENERAL_DESC",
+				name : data[0],
+				generalDescription : data[1]
 			},
 			success : function(response) {
-				document.getElementById("log").innerHTML += "MODIFY COURSE " + data[0]  +"</br>";
+				document.getElementById("log").innerHTML += "MODIFY GENERAL DESCRIPTION FOR KC " + data[0]  +"</br>";
 				document.getElementById("output").innerHTML += response + "</br>";
 			}
 
@@ -379,10 +408,10 @@ function course_modify() {
 }
 
 /*
- * Delete Course
+ * Modify taxonomy description
  */
-function course_delete() {
-	var input = prompt("courseCode;lp(1-4);year");
+function kc_modify_taxonomy() {
+	var input = prompt("name;taxonomyLevel;newTaxonomyDescription");
 	
 	var data = input.split(";");
 	
@@ -392,14 +421,14 @@ function course_delete() {
 			url : 'admin',
 			type : "POST",
 			data : {
-				head : "COURSE",
-				method : "DELETE",
-				courseCode : data[0],
-				lp : data[1],
-				year : data[2]
+				head : "KC",
+				method : "MODIFY_TAXONOMY_DESC",
+				name : data[0],
+				taxonomyLevel : data[1],
+				newtaxonomyDesc : data[2]
 			},
 			success : function(response) {
-				document.getElementById("log").innerHTML += "DELETE COURSE with code " + data[0]  +"</br>";
+				document.getElementById("log").innerHTML += "MODIFY TAXONOMY DESCRIPTION FOR KC " + data[0]  + "WITH taxonomyLevel : " + data[1] + "</br>";
 				document.getElementById("output").innerHTML += response + "</br>";
 			}
 
@@ -409,4 +438,244 @@ function course_delete() {
 		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
 	}
 }
+
+/*
+ * Delete KC
+ */
+function kc_delete() {
+	var input = prompt("name;taxonomyLevel");
+	
+	var data = input.split(";");
+	
+	if(data.length == 2 ){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "KC",
+				method : "DELETE",
+				name : data[0],
+				taxonomyLevel : data[1]
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "DELETE KCs with name " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+// END KC
+
+
+
+// BEGIN PROGRAM 
+
+function program_create() {
+	var input = prompt("name;code;startYear;startLP;credits;description");
+	
+	var data = input.split(";");
+	
+	if(data.length == 6){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "CREATE",
+				name : data[0],
+				code : data[1],
+				startYear : data[2],
+				startLP : data[3],
+				credits : data[4],
+				description : data[5]
+				
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "CREATE PROGRAM " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+function program_create_specialization() {
+	var input = prompt("name;programCode;startYear;startLP;credits;description");
+	
+	var data = input.split(";");
+	
+	if(data.length == 6){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "CREATE",
+				name : data[0],
+				programCode : data[1],
+				startYear : data[2],
+				startLP : data[3],
+				credits : data[4],
+				description : data[5]
+				
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "CREATE SPECIALIZATION " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+function program_delete() {
+	var input = prompt("code;year;lp");
+	
+	var data = input.split(";");
+	
+	if(data.length == 3){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "DELETE",
+				code : data[0],
+				year : data[1],
+				lp : data[2]
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "CREATE PROGRAM WITH CODE " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+function program_copy_from_year() {
+	var input = prompt("code;fromYear;fromLP;toYear;toLP");
+	
+	var data = input.split(";");
+	
+	if(data.length == 5){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "COPY_FROM_YEAR",
+				code : data[0],
+				fromYear : data[1],
+				fromLP : data[2],
+				toYear : data[3],
+				toLP : data[4]
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "CREATE COPY OF PROGRAM " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+function program_add_course() {
+	var input = prompt("programCode;programStartYear;programStartLP;courseCode;courseYear;courseLP");
+	
+	var data = input.split(";");
+	
+	if(data.length == 6){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "ADD_COURSE",
+				programCode : data[0],
+				programStartYear : data[1],
+				programSartLP : data[2],
+				courseCode : data[3],
+				courseYear : data[4],
+				courseLP : data[5]
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "ADD COURSE " + data[3] + " TO PROGRAM " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+function program_modify() {
+	var input = prompt("oldCode;oldStartYear;oldStartLP;newName;newCode;newStartYear;newStartLP;newDescription;newCredits");
+	
+	var data = input.split(";");
+	
+	if(data.length == 9){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "MODIFY",
+				oldCode : data[0],
+				oldStartYear : data[1],
+				oldStartLP : data[2],
+				newName : data[3],
+				newCode : data[4],
+				newStartYear : data[5],
+				newStartLP : data[6],
+				newDescription : data[7],
+				newCredits : data[8]
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "MODIFY PROGRAM" + data[3] + "</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+
+
 

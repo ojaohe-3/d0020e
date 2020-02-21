@@ -3,14 +3,72 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-    <servlet>
-        <servlet-name>indexServlet</servlet-name>
-        <servlet-class>com.servlet.IndexServlet</servlet-class>
-    </servlet>
     <servlet-mapping>
         <servlet-name>indexServlet</servlet-name>
+		<url-pattern>index.jsp</url-pattern>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+	<servlet-mapping>
+        <servlet-name>Login</servlet-name>
+        <url-pattern>project/login</url-pattern>
+    </servlet-mapping>
+
+	<servlet-mapping>
+        <servlet-name>Admin</servlet-name>
+        <url-pattern>project/admin</url-pattern>
+    </servlet-mapping>
+	
+
+    <servlet-mapping>
+   		 <servlet-name>GetCoursesFilterByCourseName</servlet-name>
+        <url-pattern>project/GetCourses/FilterByCourseName</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+   		 <servlet-name>GetCoursesFilterByCourseCode</servlet-name>
+        <url-pattern>project/GetCourses/FilterByCourseCode</url-pattern>
+    </servlet-mapping>
+   
+   <servlet-mapping>
+   		 <servlet-name>GetCoursesFilterByTopic</servlet-name>
+        <url-pattern>project/GetCourses/FilterByTopic</url-pattern>
+    </servlet-mapping>
+
+   <servlet-mapping>
+   		 <servlet-name>GetKCsFilterByTopic</servlet-name>
+        <url-pattern>project/GetKCs/FilterByTopic</url-pattern>
+    </servlet-mapping>
     
+	<servlet-mapping>
+   		 <servlet-name>GetKCsFilterByName</servlet-name>
+        <url-pattern>project/GetKCs/FilterByName</url-pattern>
+    </servlet-mapping>
+    
+    
+    <servlet-mapping>
+   		 <servlet-name>GetProgramsFilterByCode</servlet-name>
+        <url-pattern>project/GetPrograms/FilterByCode</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+   		 <servlet-name>GetProgramsFilterByName</servlet-name>
+        <url-pattern>project/GetPrograms/FilterByName</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+   		 <servlet-name>GetProgramsFilterByTopic</servlet-name>
+        <url-pattern>project/GetPrograms/FilterByTopic</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+   		 <servlet-name>GetTopicsFilterByName</servlet-name>
+        <url-pattern>project/GetTopics/FilterByName</url-pattern>
+    </servlet-mapping>
+    
+    <servlet-mapping>
+   		 <servlet-name>GetCourseByCodeYearLP</servlet-name>
+        <url-pattern>project/GetCourse/byCodeYearLP</url-pattern>
+    </servlet-mapping>
+
 </web-app>

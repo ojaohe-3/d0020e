@@ -1,6 +1,7 @@
 package neo4j_JVM_API;
 
 import Data.*;
+import Data.User.UserLables;
 import neoCommunicator.Neo4jCommunicator;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
@@ -17,9 +18,9 @@ public class UserMethods {
 
 	public void addUser(User userObj) {
 		String query = "CREATE (n:"+ User.UserLables.USER +"{";
-		query +=    User.UserLables.USERNAME +":"+userObj.getUsername();
-		query += 	User.UserLables.PASSWORD +":" + userObj.getPassword() ;
-		query += 	User.UserLables.USERTAG +":" + (userObj.isAdmintag()?1:0) ;
+		query +=    User.UserLables.USERNAME +": \""+userObj.getUsername() + "\", ";
+		query += 	User.UserLables.PASSWORD +": \"" + userObj.getPassword() + "\", ";
+		query += 	User.UserLables.USERTAG +": \"" + (userObj.isAdmintag()?1:0) + "\"";
 		query += 	"})";
 		communicator.writeToNeo(query);
 	}
@@ -104,6 +105,26 @@ public class UserMethods {
 		communicator.writeToNeo(query);
 		user.addCourse(data);
 	}
+	
+	/**
+	 * 
+	 * 	Delete a relationship between a user and a course
+	 * 
+	 * @param username
+	 * @param courseCode
+	 * @param courseDate
+	 */
+	public void deleteRelationShipBetweenUserAndCourse(String username, String courseCode, CourseDate courseDate) {
+		
+		String query = "MATCH (user: User { " + User.UserLables.USERNAME + ": \"" + username + "\" }) ";
+		query += "MATCH (course: Course { " + Course.CourseLabels.CODE + ": \"" + courseCode + "\", " + Course.CourseLabels.LP + ": \"" + courseDate.getPeriod() + "\", " + Course.CourseLabels.YEAR + ": \"" + courseDate.getYear()+"\" })";
+		query += "MATCH (user)-[r]-(course) DELETE r";
+		
+		communicator.writeToNeo(query);
+		
+	}
+	
+	
 
 	/**
 	 * Create a course that gives user write privilege, Does not create relations between kcs and course, condouct it to object and pass it to
@@ -148,21 +169,61 @@ public class UserMethods {
 		}
 		return null;
 	}
+	
+	/**
+	 * Made another Login method that not read in courses
+	 * @param user containing username and hashed password
+	 * @return Information for the logged in user, including admin tag
+	 * 
+	 *  @author JSPr
+	 */
+	public User login2(User user) {
+		
+		String query = "MATCH (user: " + UserLables.USER + " { "+ User.UserLables.USERNAME +": \"" + user.getUsername() + "\" }) RETURN user";
+		
+		StatementResult result = communicator.readFromNeo(query);
+		if(result.hasNext()) {
+			
+			Record record = result.next();
+			String password = record.get("user").get(User.UserLables.PASSWORD.toString()).toString().replaceAll("\"", "");
+			String username = record.get("user").get(User.UserLables.USERNAME.toString()).toString().replaceAll("\"", "");
+			
+			int isAdmin = Integer.parseInt(record.get("user").get(User.UserLables.USERTAG.toString()).toString().replaceAll("\"", ""));
+			
+			User newUser = new User(username, password);
+			newUser.setAdmintag(1 == isAdmin);
+			
+			
+			if(user.CompareForLogin(newUser)) {
+				return newUser;
+			} else {
+				return null;
+			}
+			
+			
+		} else {
+			return null;
+		}
+		
+		
+	}
 
 	/**
-	 * Assumes an empty user object, should not be used unless result will be different then what is in session.
-	 * @param user
-	 * @return
+	 * 	Returns the courses related to a user based on the username
+	 * 
+	 * @param username
+	 * @return Course[] with the courses that the user can edit
 	 */
-	public Course[] getUserCourses(User user) {
-		String query = "MATCH (n:"+user.User+"{"+User.UserLables.USERNAME+"}),(m:"+Course.course+") WHERE (n)-[r:CAN_EDIT]->(m) return m";
+	public Course[] getUserCourses(String username) {
+		String query = "MATCH (user: " + User.UserLables.USER + " {" + User.UserLables.USERNAME + ": \"" + username + "\" }) ";
+		query += "MATCH (user)-[r: " + Relations.CAN_EDIT + "]->(course) RETURN course";
 		StatementResult db = communicator.readFromNeo(query);
+		
 		ArrayList<Course> courses = new ArrayList<Course>();
 		while(db.hasNext()){
-			Course c = createCourse(db.next(),"m");
-			courses.add(c);
-			user.addCourse(c);
+			Course c = createCourse(db.next(), "course");
+			courses.add(c);	
 		}
-		return (Course[]) courses.toArray();
+		return courses.toArray(new Course[courses.size()]);
 	}
 }

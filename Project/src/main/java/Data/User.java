@@ -18,7 +18,11 @@ public class User {
 
     public User(String username, String password) {
         this.username = username;
-        this.password =  Security.generateHash(password);;
+        //this.password =  Security.generateHash(password);;
+        this.password = password;
+    }
+    public void hashPassword() {
+    	this.password = Security.generateHash(this.password);
     }
 
     public void addCourse(Course course) {
@@ -52,7 +56,18 @@ public class User {
     public void setUsername(String username) {
         this.username = username;
     }
-
+    
+    /**
+     * 
+     *  Compares if username and password is equal
+     * @param withUser The user to compare with
+     * @return
+     */
+    public boolean CompareForLogin(User withUser) {
+  
+    	return (this.username.equals(withUser.username)) && (this.password.equals(withUser.password));
+    }
+    
     public static enum UserLables {
         USERNAME("Username"),  USERTAG("Usertag"), PASSWORD("Password"),USER("User");
         private String name;

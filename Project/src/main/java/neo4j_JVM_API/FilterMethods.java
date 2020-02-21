@@ -106,6 +106,25 @@ public class FilterMethods {
 		return result;
 	}
 	
+	/** 
+	 * Return all topics containing search term
+	 * @param searchTerm
+	 * @return
+	 */
+	public Topic[] filterTopicByName(String searchTerm) {
+		String query = "MATCH (topic: " + Topic.TopicLabels.TOPIC +") WHERE topic." + Topic.TopicLabels.TITLE.toString() + " CONTAINS \"" + searchTerm + "\" RETURN topic";
+		/* This gives us the full list of records returned from neo. */
+		List<Record> resultList = this.communicator.readFromNeo(query).list();
+		Topic[] result = new Topic[resultList.size()];
+		int i = 0;
+		for (Record row : resultList) {
+			Topic topic = new Topic(row.get("topic").get(Topic.TopicLabels.TITLE.toString()).toString());
+			result[i] = topic;
+		}
+		
+		return result;
+	}
+	
 	/**
 	 * Generalized search function for KCs. This should be the only search function for 
 	 * KCs we need.
