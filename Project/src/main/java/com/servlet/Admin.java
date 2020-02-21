@@ -410,7 +410,6 @@ public class Admin extends HttpServlet {
 			String specLP = request.getParameter("specLP");
 			String description = request.getParameter("description");
 			String credits = request.getParameter("credits");
-			String readingPeriods = request.getParameter("readingPeriods");
 
 			int programYear = Integer.parseInt(startProgramYear);
 			LP programStartPeriod = LP.getByString(startProgramLP);
