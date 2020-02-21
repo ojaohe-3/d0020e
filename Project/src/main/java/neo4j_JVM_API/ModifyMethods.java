@@ -21,11 +21,10 @@ public class ModifyMethods {
 
 	/**
 	 * Takes in the name of the KC and its taxonomylevel and changes it's description
-	 * @param kc takes in the kc object and change genereal description and taxonomy description to the desired values
+	 * @param kc takes in the kc object and change general description and taxonomy description to the desired values
 	 * @author Tommy A
 	 */
 	 public void editKCDescription(KC kc) {
-
 
 		String query = "MATCH(kc: KC {"+KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " +
 		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 
@@ -105,10 +104,10 @@ public class ModifyMethods {
 				Course.CourseLabels.YEAR +":"+period.getYear()+","+
 				Course.CourseLabels.LP +":\""+period.getPeriod().name()+"\"} SET n={";
 		query += Course.CourseLabels.CODE.toString() +":"+nCourse.getCourseCode();
-		query +=  Course.CourseLabels.CREDIT.toString() +":"+nCourse.getCredit();
+		query += Course.CourseLabels.CREDIT.toString() +":"+nCourse.getCredit();
 		query += Course.CourseLabels.DESCRIPTION.toString() +":"+nCourse.getDescription();
-		query +=Course.CourseLabels.LP.toString() +"="+nCourse.getStartPeriod().getPeriod().name();
-		query +=  Course.CourseLabels.YEAR.toString() +"="+nCourse.getStartPeriod().getYear();
+		query += Course.CourseLabels.LP.toString() +"="+nCourse.getStartPeriod().getPeriod().name();
+		query += Course.CourseLabels.YEAR.toString() +"="+nCourse.getStartPeriod().getYear();
 		query += Course.CourseLabels.EXAMINER.toString() +"="+nCourse.getExaminer();
 		query += Course.CourseLabels.NAME.toString() +"="+nCourse.getName();
 
