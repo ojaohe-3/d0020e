@@ -3,6 +3,7 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerSearchBar.js"></script>
 <link rel="stylesheet" href="filterContainer.css">
 
+<!-- Creates menu to choose to search for course, kc, program or topic by name, code or topic -->
 <div class="filterContainer">
 	<div class="container-fluid sidenav">
 	  <h2>Filter Container</h2>
