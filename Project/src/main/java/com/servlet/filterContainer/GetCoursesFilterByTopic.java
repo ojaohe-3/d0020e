@@ -42,6 +42,7 @@ public class GetCoursesFilterByTopic extends HttpServlet {
 			    obj.put(CourseLabels.LP.toString(), course.getStartPeriod().getPeriod());
 			    obj.put(CourseLabels.CREDIT.toString(), course.getCredit());
 			    obj.put(CourseLabels.EXAMINER.toString(), course.getExaminer().replaceAll("\"", ""));
+				obj.put(CourseLabels.DESCRIPTION.toString(), course.getDescription().replaceAll("\"", ""));
 			    array.put(obj);
 			}
 			response.setContentType("text/json");

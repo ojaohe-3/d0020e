@@ -58,7 +58,7 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 				jobj.put(CourseLabels.YEAR.toString(), ci.getStartPeriod().getYear());
 				jobj.put(CourseLabels.EXAMINER.toString(), ci.getExaminer().replaceAll("\"", ""));
 				jobj.put(CourseLabels.CREDIT.toString(), ci.getCredit());
-				
+				jobj.put(CourseLabels.DESCRIPTION.toString(), ci.getDescription().replaceAll("\"", ""));
 				jArray.put(jobj);
 			
 				
