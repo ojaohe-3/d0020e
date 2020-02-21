@@ -209,19 +209,21 @@ public class UserMethods {
 	}
 
 	/**
-	 * Assumes an empty user object, should not be used unless result will be different then what is in session.
-	 * @param user
-	 * @return
+	 * 	Returns the courses related to a user based on the username
+	 * 
+	 * @param username
+	 * @return Course[] with the courses that the user can edit
 	 */
-	public Course[] getUserCourses(User user) {
-		String query = "MATCH (n:"+user.User+"{"+User.UserLables.USERNAME+"}),(m:"+Course.course+") WHERE (n)-[r:CAN_EDIT]->(m) return m";
+	public Course[] getUserCourses(String username) {
+		String query = "MATCH (user: " + User.UserLables.USER + " {" + User.UserLables.USERNAME + ": \"" + username + "\" }) ";
+		query += "MATCH (user)-[r: " + Relations.CAN_EDIT + "]->(course) RETURN course";
 		StatementResult db = communicator.readFromNeo(query);
+		
 		ArrayList<Course> courses = new ArrayList<Course>();
 		while(db.hasNext()){
-			Course c = createCourse(db.next(),"m");
-			courses.add(c);
-			user.addCourse(c);
+			Course c = createCourse(db.next(), "course");
+			courses.add(c);	
 		}
-		return (Course[]) courses.toArray();
+		return courses.toArray(new Course[courses.size()]);
 	}
 }

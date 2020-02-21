@@ -12,7 +12,8 @@ public enum Relations {
 	IN_PROGRAM("IN_PROGRAM"),
 	SPECIALIZATION("SPECIALIZATION"),
 	YEAR("year"),
-	PERIOD("period");
+	PERIOD("period"),
+	CAN_EDIT("CAN_EDIT");
 	
 	private String relation;
 	private Relations(String relation) {

@@ -34,7 +34,7 @@
 				<input type="text" class="searchBar" id="searchCourse" placeholder="Search... ">
 			  </form>
 			  
-			 <div id="course_search_results" class="result">
+			 <div id="course_search_results" class="result pre-scrollable">
 
 			 </div>
 
@@ -58,7 +58,7 @@
 				<input type="text" class="searchBar" id="searchProgram" placeholder="Search... ">
 			  </form>
 
-		  <div id="program_search_results">
+		  <div id="program_search_results" class="result pre-scrollable">
 
 		  </div>
 
@@ -78,7 +78,7 @@
 				<input type="text" class="searchBar" id="searchKC" placeholder="Search... ">
 			  </form>
 
-		  <div id="kc_search_results">
+		  <div id="kc_search_results" class="result pre-scrollable">
 
 		  </div>
 
@@ -94,7 +94,7 @@
 				<input type="text" class="searchBar" id="searchTopic" placeholder="Search... ">
 			  </form>
 
-			<div id="topic_search_results">
+			<div id="topic_search_results" class="result pre-scrollable">
 			
 			</div>
 		</div>
