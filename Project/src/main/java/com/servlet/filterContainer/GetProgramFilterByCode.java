@@ -38,9 +38,9 @@ public class GetProgramFilterByCode extends HttpServlet {
 			JSONArray array = new JSONArray();
 			for (ProgramInformation program : programs) {
 			    JSONObject obj = new JSONObject();
-			    obj.put(ProgramLabels.NAME.toString(), program.getName().replaceAll("\"", ""));
-			    obj.put(ProgramLabels.CODE.toString(), program.getCode().replaceAll("\"", ""));
-			    obj.put(ProgramLabels.DESCRIPTION.toString(), program.getDescription().replaceAll("\"", ""));
+			    obj.put(ProgramLabels.NAME.toString(), program.getName());
+			    obj.put(ProgramLabels.CODE.toString(), program.getCode());
+			    obj.put(ProgramLabels.DESCRIPTION.toString(), program.getDescription());
 			    obj.put(ProgramLabels.YEAR.toString(), program.getStartDate().getYear());
 			    obj.put(ProgramLabels.LP.toString(), program.getStartDate().getPeriod());
 			    obj.put(ProgramLabels.CREDITS.toString(), program.getCredits());

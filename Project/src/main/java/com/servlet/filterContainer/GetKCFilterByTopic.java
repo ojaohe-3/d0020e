@@ -36,10 +36,10 @@ public class GetKCFilterByTopic extends HttpServlet {
 			JSONArray array = new JSONArray();
 			for (KC kc : kcs) {
 			    JSONObject obj = new JSONObject();
-			    obj.put(KCLabel.NAME.toString(), kc.getName().replaceAll("\"", ""));
+			    obj.put(KCLabel.NAME.toString(), kc.getName());
 			    obj.put(KCLabel.TAXONOMYLEVEL.toString(), kc.getTaxonomyLevel());
-			    obj.put(KCLabel.TAXONOMY_DESCRIPTION.toString(), kc.getTaxonomyDescription().replaceAll("\"", ""));
-			    obj.put(KCLabel.GENERAL_DESCRIPTION.toString(), kc.getGeneralDescription().replaceAll("\"", ""));
+			    obj.put(KCLabel.TAXONOMY_DESCRIPTION.toString(), kc.getTaxonomyDescription());
+			    obj.put(KCLabel.GENERAL_DESCRIPTION.toString(), kc.getGeneralDescription());
 			    array.put(obj);
 			}
 			response.setContentType("text/json");
