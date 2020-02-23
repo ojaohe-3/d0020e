@@ -36,12 +36,13 @@ public class GetCoursesFilterByCourseCode extends HttpServlet {
 			JSONArray array = new JSONArray();
 			for (CourseInformation course : courses) {
 			    JSONObject obj = new JSONObject();
-			    obj.put(CourseLabels.NAME.toString(), course.getName().replaceAll("\"", ""));
-			    obj.put(CourseLabels.CODE.toString(), course.getCourseCode().replaceAll("\"", ""));
+			    obj.put(CourseLabels.NAME.toString(), course.getName());
+			    obj.put(CourseLabels.CODE.toString(), course.getCourseCode());
 			    obj.put(CourseLabels.YEAR.toString(), course.getStartPeriod().getYear());
 			    obj.put(CourseLabels.LP.toString(), course.getStartPeriod().getPeriod());
 			    obj.put(CourseLabels.CREDIT.toString(), course.getCredit());
-			    obj.put(CourseLabels.EXAMINER.toString(), course.getExaminer().replaceAll("\"", ""));
+			    obj.put(CourseLabels.EXAMINER.toString(), course.getExaminer());
+				obj.put(CourseLabels.DESCRIPTION.toString(), course.getDescription());
 			    array.put(obj);
 			}
 			response.setContentType("text/json");
