@@ -15,8 +15,8 @@
   <body>
  
 <!-- Pop up to accept cookies and store accepted answer for 30 days -->
-<link rel="stylesheet" href="jquery.ihavecookies.css">
-<script type="text/javascript" src="jquery.ihavecookies.js"></script>
+<link rel="stylesheet" href="CssFolder/jquery.ihavecookies.css">
+<script type="text/javascript" src="JavascriptFolder/jquery.ihavecookies.js"></script>
 <script type="text/javascript">
     var options = {
         title: 'Accept Cookies? &#x1F36A;',
