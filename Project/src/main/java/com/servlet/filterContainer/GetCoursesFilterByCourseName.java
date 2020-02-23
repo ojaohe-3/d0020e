@@ -52,13 +52,13 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 			for(CourseInformation ci: courses) {
 				JSONObject jobj = new JSONObject();
 				
-				jobj.put(CourseLabels.NAME.toString(), ci.getName().replaceAll("\"", ""));
-				jobj.put(CourseLabels.CODE.toString(), ci.getCourseCode().replaceAll("\"", ""));
+				jobj.put(CourseLabels.NAME.toString(), ci.getName());
+				jobj.put(CourseLabels.CODE.toString(), ci.getCourseCode());
 				jobj.put(CourseLabels.LP.toString(), ci.getStartPeriod().getPeriod());
 				jobj.put(CourseLabels.YEAR.toString(), ci.getStartPeriod().getYear());
-				jobj.put(CourseLabels.EXAMINER.toString(), ci.getExaminer().replaceAll("\"", ""));
+				jobj.put(CourseLabels.EXAMINER.toString(), ci.getExaminer());
 				jobj.put(CourseLabels.CREDIT.toString(), ci.getCredit());
-				jobj.put(CourseLabels.DESCRIPTION.toString(), ci.getDescription().replaceAll("\"", ""));
+				jobj.put(CourseLabels.DESCRIPTION.toString(), ci.getDescription());
 				jArray.put(jobj);
 			
 				
