@@ -7,7 +7,7 @@ function user_create() {
 	
 	var data = input.split(";");
 	
-	if(data.lenght == 2) {
+	if(data.length == 2) {
 	
 		$.ajax({
 			url : 'admin',
