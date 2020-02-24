@@ -3,14 +3,6 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
-<<<<<<< HEAD
-    <servlet>
-        <servlet-name>indexServlet</servlet-name>
-        <servlet-class>com.servlet.IndexServlet</servlet-class>
-<<<<<<< HEAD
-    </servlet>  
-=======
->>>>>>> 85480d2ee14b73ce0718aa7c53504bebc6e99a06
     <servlet-mapping>
         <servlet-name>indexServlet</servlet-name>
 		<url-pattern>index.jsp</url-pattern>
@@ -79,13 +71,4 @@
         <url-pattern>project/GetCourse/byCodeYearLP</url-pattern>
     </servlet-mapping>
 
-=======
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>indexServlet</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
-
-    
->>>>>>> merge with admin admin page
 </web-app>

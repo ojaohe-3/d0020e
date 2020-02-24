@@ -12,6 +12,8 @@
 
 </style>
 
+
+
 <html>
 	<head>
 		<meta charset="UTF-8">
@@ -21,7 +23,7 @@
 	
 	<h1>Welcome to the admin page</h1>
 	<h3>Dont forget to use ';' as separator</h3>
-	
+
 	<div class="container-fluid">
 		<div class="col-md-4">
 			<ul>
@@ -41,6 +43,7 @@
 				<li><button onclick="course_create()">Create</button></li>
 				<li><button onclick="course_modify()">Modify</button></li>
 				<li><button onclick="course_delete()">Delete</button></li>
+
 			</ul>
 		</div>
 		<div class="col-md-4">
@@ -50,6 +53,7 @@
 				<li><button onclick="kc_modify_general()">Modify General description</button></li>
 				<li><button onclick="kc_modify_taxonomy()">Modify Taxonomy description</button></li>
 				<li><button onclick="kc_delete())">Delete</button></li>
+=
 			</ul>
 		</div>
 		<div class="col-md-4">
@@ -67,13 +71,12 @@
 	
 	</div>
 	
-	
+
 	<div class="row">
 		<div class="col-sm-4" id="log"> <h4>log</h4> </div>
 		<div class="col-sm-4" id="output"> <h4>Responses</h4> </div>
 	</div>
-	
-	
+
 	
 	</body>
 </html>

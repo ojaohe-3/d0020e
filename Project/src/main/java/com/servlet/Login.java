@@ -15,7 +15,6 @@ import neo4j_JVM_API.Neo4JAPI;
 import neoCommunicator.Neo4jConfigLoader;
 
 /**
- * 		Needs to fix the doPost
  * 
  * 	Responsible for the login page and handling login attempts.
  * 
@@ -70,8 +69,11 @@ public class Login extends HttpServlet {
 			request.getRequestDispatcher("/login.jsp").forward(request, response);
 		} else {
 			request.getSession().setAttribute("logged_in", true);
+			request.getSession().setAttribute("username", username);
+			
 			if(isLoggedIn.isAdmintag()) {
 				request.getSession().setAttribute("is_admin", true);
+				
 				request.getRequestDispatcher("/admin.jsp").forward(request, response);
 			} else {
 				request.getSession().setAttribute("is_admin", false);
