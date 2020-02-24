@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.Iterator;
 
 public class CourseProgram extends ProgramInformation{
+	public static String program = "";
 	private CourseOrder courseOrder;
 
 	public static enum ProgramType {
@@ -27,7 +28,7 @@ public class CourseProgram extends ProgramInformation{
 	
 	public CourseProgram(CourseOrder courseOrder) {
 		super( null, null,null,null,null,null);
-		
+		this.courseOrder = courseOrder;
 	}
 	
 	/**
@@ -69,7 +70,8 @@ public class CourseProgram extends ProgramInformation{
 		Course[][] data = courseOrder.getCourseArray();
 		for (int i = 0; i < data.length ; i++) {
 			for (int j = 0; j < data[i].length; j++) {
-				courses.put(data[i][j].getJsonObject());
+				if(data[i][j] != null)
+					courses.put(data[i][j].getJsonObject());
 			}
 		}
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),name);
