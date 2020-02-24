@@ -8,7 +8,6 @@
 
 	button {
 		min-width: 300px;
-		
 	}
 
 </style>
@@ -56,8 +55,8 @@
 		<div class="col-md-4">
 			<ul>
 				<h4>Program</h4>
-				<li><button onclick="program_create()">Create</button></li>
-				<li><button onclick="program_create_specialization()">Create</button></li>
+				<li><button onclick="program_create()">Create Program</button></li>
+				<li><button onclick="program_create_specialization()">Create Specialization</button></li>
 				<li><button onclick="program_modify())">Modify</button></li>
 				<li><button onclick="program_delete()">Delete</button></li>
 				<li><button onclick="program_copy_from_year()">Copy From Year</button></li>

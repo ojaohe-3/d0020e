@@ -1,8 +1,9 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerFunctions.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerSearchBar.js"></script>
-<link rel="stylesheet" href="filterContainer.css">
+<link rel="stylesheet" href="CssFolder/filterContainer.css">
 
+<!-- Creates menu to choose to search for course, kc, program or topic by name, code or topic -->
 <div class="filterContainer">
 	<div class="container-fluid sidenav">
 	  <h2>Filter Container</h2>
