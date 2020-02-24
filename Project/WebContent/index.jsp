@@ -7,13 +7,16 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@include file="_includes.jsp" %>
+
 <html>
   <head>
-    <title>$Title$</title>
+
+      <title>$Title$</title>
   </head>
   <body>
- 
+
+  <%@include file="_includes.jsp" %>
+
 <!-- Pop up to accept cookies and store accepted answer for 30 days -->
 <link rel="stylesheet" href="CssFolder/jquery.ihavecookies.css">
 <script type="text/javascript" src="JavascriptFolder/jquery.ihavecookies.js"></script>
