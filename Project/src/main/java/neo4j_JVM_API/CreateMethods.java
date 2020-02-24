@@ -378,14 +378,8 @@ private final Neo4jCommunicator communicator;
 		CourseOrder newCourseOrder = new CourseOrder(program.getCourseOrder().getReadingPeriods());
 		newCourseOrder.assignCourseOrder(newCourses);
 		this.createProgram(newProgram);
-<<<<<<< HEAD
-		this.createProgramCourseRelation(newProgram);
-
-=======
 		this.createProgramCourseRelations(newProgram);
-		
-		
->>>>>>> origin/CanvasJS
+
 	}
 
 
