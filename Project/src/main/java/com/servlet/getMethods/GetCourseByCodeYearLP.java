@@ -35,7 +35,7 @@ public class GetCourseByCodeYearLP extends HttpServlet {
 		
 		try {
 			response.setContentType("text/json");
-			response.getWriter().write(course.getAsJson());
+			response.getWriter().write(course.getAsJson().toString());
 			
 		} catch (JSONException e) { }
 		

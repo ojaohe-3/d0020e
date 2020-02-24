@@ -4,9 +4,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.Collection;
-import java.util.Iterator;
-
 public class CourseProgram extends ProgramInformation{
 	public static String program = "";
 	private CourseOrder courseOrder;
@@ -64,7 +61,8 @@ public class CourseProgram extends ProgramInformation{
 	public void setCourseOrder(CourseOrder courseOrder) {
 		this.courseOrder = courseOrder;
 	}
-	public String getAsJson() throws JSONException {
+
+	public JSONObject getAsJson() throws JSONException {
 		JSONObject obj = new JSONObject();
 		JSONArray courses = new JSONArray();
 		Course[][] data = courseOrder.getCourseArray();
@@ -74,14 +72,15 @@ public class CourseProgram extends ProgramInformation{
 					courses.put(data[i][j].getJsonObject());
 			}
 		}
-		obj.put(CourseProgram.ProgramLabels.NAME.toString(),name);
-		obj.put(CourseProgram.ProgramLabels.CODE.toString(),code);
-		obj.put(CourseProgram.ProgramLabels.DESCRIPTION.toString(),description);
-		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits.name());
-		obj.put(CourseProgram.ProgramLabels.LP.toString(),startDate.getPeriod().name());
+		obj.put(CourseProgram.ProgramLabels.NAME.toString(),name.replaceAll("\"",""));
+		obj.put(CourseProgram.ProgramLabels.CODE.toString(),code.replaceAll("\"",""));
+		obj.put(CourseProgram.ProgramLabels.DESCRIPTION.toString(),description.replaceAll("\"",""));
+		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits.name().replaceAll("\"",""));
+		obj.put(CourseProgram.ProgramLabels.LP.toString(),startDate.getPeriod().name().replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),startDate.getYear());
 		obj.put("Courses",courses);
-		return obj.toString();
+
+		return obj;
 	}
 	public static enum ProgramLabels {
 		NAME("name"), CODE("code"), DESCRIPTION("description"), YEAR("year"), LP("lp"), READING_PERIODS("readingPeriods"), CREDITS("credits");

@@ -78,12 +78,12 @@ public class Course extends CourseInformation {
 	 */
 	public JSONObject getJsonObject() throws JSONException {
 		JSONObject obj = new JSONObject();
-		obj.put(Course.CourseLabels.CODE.toString(),courseCode);
-		obj.put(Course.CourseLabels.NAME.toString(),name);
-		obj.put(Course.CourseLabels.DESCRIPTION.toString(),description);
-		obj.put(Course.CourseLabels.EXAMINER.toString(),examiner);
-		obj.put(Course.CourseLabels.CREDIT.toString(),credit);
-		obj.put(Course.CourseLabels.LP.toString(),startPeriod.getPeriod());
+		obj.put(Course.CourseLabels.CODE.toString(),courseCode.replaceAll("\"",""));
+		obj.put(Course.CourseLabels.NAME.toString(),name.replaceAll("\"",""));
+		obj.put(Course.CourseLabels.DESCRIPTION.toString(),description.replaceAll("\"",""));
+		obj.put(Course.CourseLabels.EXAMINER.toString(),examiner.replaceAll("\"",""));
+		obj.put(Course.CourseLabels.CREDIT.toString(),credit.name().replaceAll("\"",""));
+		obj.put(Course.CourseLabels.LP.toString(),startPeriod.getPeriod().name().replaceAll("\"",""));
 		obj.put(Course.CourseLabels.YEAR.toString(), startPeriod.getYear());
 		obj.put("Required",requiredKC);
 		obj.put("Developed",developedKC);
@@ -111,7 +111,7 @@ public class Course extends CourseInformation {
 		}
 	}
 	@Override
-	public String getAsJson() throws JSONException {
+	public JSONObject getAsJson() throws JSONException {
 		JSONObject obj = new JSONObject();
 		obj.put(Course.CourseLabels.CODE.toString(),courseCode);
 		obj.put(Course.CourseLabels.NAME.toString(),name);
@@ -123,7 +123,7 @@ public class Course extends CourseInformation {
 		obj.put("Required",requiredKC);
 		obj.put("Developed",developedKC);
 
-		return obj.toString();
+		return obj;
 
 	}
 }

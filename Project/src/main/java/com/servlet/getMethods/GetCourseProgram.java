@@ -23,7 +23,7 @@ public class GetCourseProgram extends HttpServlet {
         CourseProgram data = Neo4jConfigLoader.getApi().getMethods.getProgram(code,
                 new CourseDate(year, lp));
         try {
-            String json = data.getAsJson().replaceAll("\\\\","");
+            String json = data.getAsJson().toString();
             response.setContentType("text/json");
             response.getWriter().write(json);
 

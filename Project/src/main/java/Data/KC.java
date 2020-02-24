@@ -70,10 +70,10 @@ public class KC {
 	public String getAsJSON(){
 		JSONObject object = new JSONObject();
 		try {
-			object.put(KCLabel.NAME.toString(),name);
+			object.put(KCLabel.NAME.toString(),name.replaceAll("\"",""));
 			object.put(KCLabel.TAXONOMYLEVEL.toString(), taxonomyLevel);
-			object.put(KCLabel.GENERAL_DESCRIPTION.toString(), generalDescription);
-			object.put(KCLabel.TAXONOMY_DESCRIPTION.toString(), taxonomyDescription);
+			object.put(KCLabel.GENERAL_DESCRIPTION.toString(), generalDescription.replaceAll("\"",""));
+			object.put(KCLabel.TAXONOMY_DESCRIPTION.toString(), taxonomyDescription.replaceAll("\"",""));
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}

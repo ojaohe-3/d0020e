@@ -20,9 +20,7 @@ function courseClicked(code, year, lp) {
 	});
 }
 
-
-
-function programClicked() {
+function programClicked(code,year,lp) {
 	$.ajax({
 
 		url : 'GetProgram/getCourses',
@@ -35,7 +33,10 @@ function programClicked() {
 			// Should call a function in the canvas with the response
 			generateCanvas(data);
 			$('#debug').html("response : " + response);
+			$('#debug').html("response : " + response.name + ", courses: " +response.Courses.length);
 		}
+	}).fail(function (response) {
+		console.log(response);
 	});
 }
 
