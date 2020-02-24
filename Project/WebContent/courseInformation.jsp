@@ -1,4 +1,4 @@
-<link  rel="stylesheet" href="${pageContext.request.contextPath}/css/courseInformation.css" id = "courseInformationCSS_visible">
+<link  rel="stylesheet" href="${pageContext.request.contextPath}/CssFolder/courseInformation.css" id = "courseInformationCSS_visible">
 <script src="JavascriptFolder/courseInformation.js"></script>
 
 <div id="courseInformation">
