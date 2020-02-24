@@ -7,11 +7,11 @@ public enum Credits {
 	ERROR;
 	
 	public static Credits getByString(String str) {
-		if(str == "SEVEN") {
+		if(str.equals("SEVEN")) {
 			return Credits.SEVEN;
-		} else if(str == "FIFTHEEN") {
+		} else if(str.equals("FIFTHEEN")) {
 			return Credits.FIFTHEEN;
-		} else if(str == "THIRTY") {
+		} else if(str.equals("THIRTY")) {
 			return Credits.THIRTY;
 		} 
 		return Credits.ERROR;

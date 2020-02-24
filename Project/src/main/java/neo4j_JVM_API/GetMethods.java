@@ -117,7 +117,6 @@ public class GetMethods {
 	 */
 	public Course getCourse(String courseCode, CourseDate courseDate) {
 		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
-		
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
 		

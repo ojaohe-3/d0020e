@@ -7,6 +7,8 @@ function user_create() {
 	
 	var data = input.split(";");
 	
+	
+	
 	if(data.length == 2) {
 	
 		$.ajax({

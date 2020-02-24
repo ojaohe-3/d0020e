@@ -26,4 +26,17 @@ public enum LP {
 		return LP.ERROR;
 		
 	}
+	public static LP getByStringByText(String str) {
+		if(str.equals("ONE")) {
+			return LP.ONE;
+		} else if(str.equals("TWO")) {
+			return LP.TWO;
+		} else if(str.equals("THREE")) {
+			return LP.THREE;
+		} else if(str.equals("FOUR")) {
+			return LP.FOUR;
+		}
+		return LP.ERROR;
+		
+	}
 }

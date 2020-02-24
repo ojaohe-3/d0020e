@@ -80,11 +80,11 @@ public class UserMethods {
 		communicator.writeToNeo(query);
 	}
 	public void changeUserPassword(String username,String pwd) {
-		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.PASSWORD +"=" + Security.generateHash(pwd);
+		String query = "MATCH(n:User {"+ User.UserLables.USERNAME +": \""+username+"\"}) SET n."+ User.UserLables.PASSWORD +"= \"" + Security.generateHash(pwd) + "\"";
 		communicator.writeToNeo(query);
 	}
 	public void removeUser(String username) {
-		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+username+"}) DETACH DELETE n";
+		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +": \""+username+"\"}) DETACH DELETE n";
 		communicator.writeToNeo(query);
 	}
 
@@ -95,15 +95,15 @@ public class UserMethods {
 	 * @param data course to match with the user
 	 */
 	public void addCourseToUser(User user,Course data) {
-		user.addCourse(data);
-		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+user.getUsername()+
-				"}),(m:Course{"+
+		//user.addCourse(data);
+		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":\""+user.getUsername()+
+				"\"}),(m:Course{"+
 				Course.CourseLabels.CODE+":\""+ data.getCourseCode()+"\", "+
-				Course.CourseLabels.YEAR +":"+data.getStartPeriod().getYear()+"," +
+				Course.CourseLabels.YEAR +":\""+data.getStartPeriod().getYear()+"\"," +
 				Course.CourseLabels.LP +":\""+data.getStartPeriod().getPeriod().name()+"\"" +
 				"}) CREATE (n)-[r:CAN_EDIT]->(m)";
 		communicator.writeToNeo(query);
-		user.addCourse(data);
+		//user.addCourse(data);
 	}
 	
 	/**
@@ -119,6 +119,8 @@ public class UserMethods {
 		String query = "MATCH (user: User { " + User.UserLables.USERNAME + ": \"" + username + "\" }) ";
 		query += "MATCH (course: Course { " + Course.CourseLabels.CODE + ": \"" + courseCode + "\", " + Course.CourseLabels.LP + ": \"" + courseDate.getPeriod() + "\", " + Course.CourseLabels.YEAR + ": \"" + courseDate.getYear()+"\" })";
 		query += "MATCH (user)-[r]-(course) DELETE r";
+		
+		System.out.println(query);
 		
 		communicator.writeToNeo(query);
 		

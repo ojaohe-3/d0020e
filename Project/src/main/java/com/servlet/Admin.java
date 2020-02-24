@@ -52,72 +52,85 @@ public class Admin extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String head = request.getParameter("head");
 
+		String resp = "Error, Invalid Request";
+		System.out.println(head);
+		
 		if (head.equals("USER")) {
-			user(request);
+			resp = user(request);
 		}
 		if (head.equals("COURSE")) {
-			course(request);
+			resp = course(request);
 		}
 		if (head.equals("KC")) {
-			kc(request);
+			resp = kc(request);
 		}
 		if (head.equals("PROGRAM")) {
-			program(request);
+			resp = program(request);
 		}
+		response.setContentType("text/text");
+		response.getWriter().write(resp);
 	}
 
 	private String user(HttpServletRequest request) throws IOException {
 
-		if (request.equals("CREATE")) {
-			String userName = request.getParameter("userName");
+		String method = request.getParameter("method");
+		
+		if (method.equals("CREATE")) {
+			String username = request.getParameter("username");
 			String password = request.getParameter("password");
 
-			Neo4jConfigLoader.getApi().userMethods.addUser(new User(userName, password));
 
-			return "User " + userName + " created";
+			User u = new User(username, password);
+			u.hashPassword();
+			Neo4jConfigLoader.getApi().userMethods.addUser(u);
+
+			return "User " + username + " created";
 		}
 
-		if (request.equals("DELETE")) {
-			String userName = request.getParameter("userName");
+		if (method.equals("DELETE")) {
+			String username = request.getParameter("username");
 
-			Neo4jConfigLoader.getApi().userMethods.removeUser(userName);
+			Neo4jConfigLoader.getApi().userMethods.removeUser(username);
 
-			return "User " + userName + " removed";
-
-		}
-
-		if (request.equals("MODIFY")) {
-			String userName = request.getParameter("userName");
-			String  password = request.getParameter("password");
-
-			Neo4jConfigLoader.getApi().userMethods.changeUserPassword(userName, password);
-
-			return "User " + userName + "'s password has been changed";
+			return "User " + username + " removed";
 
 		}
 
-		if (request.equals("SET_RELATION_TO_COURSE")) {
-			String userName = request.getParameter("userName");
+		if (method.equals("MODIFY_PASSWORD")) {
+			String username = request.getParameter("username");
+			String  password = request.getParameter("newpassword");
+			
+			System.out.println(password);	
+			Neo4jConfigLoader.getApi().userMethods.changeUserPassword(username, password);
+
+			return "User " + username + "'s password has been changed";
+
+		}
+
+		if (method.equals("SET_RELATION_TO_COURSE")) {
+			String username = request.getParameter("username");
 			String courseCode = request.getParameter("courseCode");
 			String lp = request.getParameter("lp");
 			String year = request.getParameter("year");
 
-			User user = Neo4jConfigLoader.getApi().userMethods.getUser(userName);
+			//User user = Neo4jConfigLoader.getApi().userMethods.getUser(username);
 
+			
 			LP period = LP.getByString(lp);
 			int Year = Integer.parseInt(year);
 			CourseDate courseDate = new CourseDate(Year, period);
 
 			Course course = Neo4jConfigLoader.getApi().getMethods.getCourse(courseCode, courseDate);
 
+			User user = new User(username, null);
 			Neo4jConfigLoader.getApi().userMethods.addCourseToUser(user, course);
 
-			return "User " + userName + " can now make changes to " + courseCode;
+			return "User " + username + " can now make changes to " + courseCode;
 
 		}
 
-		if (request.equals("REMOVE_RELATION_TO_COURSE")) {
-			String userName = request.getParameter("userName");
+		if (method.equals("DELETE_RELATION_TO_COURSE")) {
+			String username = request.getParameter("username");
 			String courseCode = request.getParameter("courseCode");
 			String lp = request.getParameter("lp");
 			String year = request.getParameter("year");
@@ -127,17 +140,20 @@ public class Admin extends HttpServlet {
 
 			CourseDate courseDate = new CourseDate(Year, period);
 
-			Neo4jConfigLoader.getApi().userMethods.deleteRelationShipBetweenUserAndCourse(courseCode, userName, courseDate);
+			Neo4jConfigLoader.getApi().userMethods.deleteRelationShipBetweenUserAndCourse(username,courseCode, courseDate);
 
-			return "User " + userName + " can no longer make changes to " +courseCode;
+			return "User " + username + " can no longer make changes to " +courseCode;
 		} else {
 
-			return "The input must be either CREATE, DELETE, MODIFY, SET_RELATION_TO_COURSE or REMOVE_RELATION_TO_COURSE";
+			return "The input must be either CREATE, DELETE, MODIFY, SET_RELATION_TO_COURSE or DELETE_RELATION_TO_COURSE";
 		}
 	}
 
 	private String course(HttpServletRequest request) throws IOException {
-		if(request.equals("CREATE")) {
+		
+		String method = request.getParameter("method");
+		
+		if(method.equals("CREATE")) {
 			String courseName = request.getParameter("courseName");
 			String courseCode = request.getParameter("courseCode");
 			String lp = request.getParameter("lp");
@@ -160,7 +176,7 @@ public class Admin extends HttpServlet {
 			return "Course " + courseCode + " created";
 		}
 
-		if(request.equals("DELETE")) {
+		if(method.equals("DELETE")) {
 			String courseCode = request.getParameter("courseCode");
 			String lp = request.getParameter("lp");
 			String year = request.getParameter("year");
@@ -175,7 +191,7 @@ public class Admin extends HttpServlet {
 			return "Course " + courseCode + " has been deleted.";
 		}
 
-		if(request.equals("MODIFY")) {
+		if(method.equals("MODIFY")) {
 			String oldCourseCode = request.getParameter("oldCourseCode");
 			String oldLP = request.getParameter("oldLP");
 			String oldYear = request.getParameter("oldYear");
@@ -210,7 +226,9 @@ public class Admin extends HttpServlet {
 
 	private String kc(HttpServletRequest request) throws IOException {
 
-		if(request.equals("CREATE")) {
+		String method = request.getParameter("method");
+		
+		if(method.equals("CREATE")) {
 
 			String KCName = request.getParameter("name");
 			String generalDescription = request.getParameter("generalDescription");
@@ -236,7 +254,7 @@ public class Admin extends HttpServlet {
 			return "KC named " + KCName + " has been created";
 
 		}
-		if(request.equals("DELETE")) {
+		if(method.equals("DELETE")) {
 
 			String KCName = request.getParameter("name");
 			String taxonomyLevel = request.getParameter("taxonomyLevel");
@@ -248,7 +266,7 @@ public class Admin extends HttpServlet {
 			return "KC with TaxonomyLevel " + taxonomyLevel + " has been removed.";
 
 		}
-		if(request.equals("MODIFY_TAXONOMY_DESC")) {
+		if(method.equals("MODIFY_TAXONOMY_DESC")) {
 
 			String KCName = request.getParameter("name");
 			String taxonomyLevel = request.getParameter("taxonomyLevel");
@@ -265,7 +283,7 @@ public class Admin extends HttpServlet {
 			return "Taxonomy description of " + KCName + "with TaxonomyLevel " + taxonomyLevel + " has been updated.";
 
 		}
-		if(request.equals("MODIFY_GENERAL_DESC")) {
+		if(method.equals("MODIFY_GENERAL_DESC")) {
 
 			String KCName = request.getParameter("name");
 			String generalDesc = request.getParameter("generalDescription");
@@ -290,7 +308,9 @@ public class Admin extends HttpServlet {
 
 	private String program(HttpServletRequest request) throws IOException {
 
-		if(request.equals("CREATE")) {
+		String method = request.getParameter("method");
+		
+		if(method.equals("CREATE")) {
 			String programName = request.getParameter("name");
 			String programCode = request.getParameter("code");
 			String startYear = request.getParameter("startYear");
@@ -310,7 +330,7 @@ public class Admin extends HttpServlet {
 			return "The program named " + programName + " has been created";
 
 		}
-		if(request.equals("DELETE")) {
+		if(method.equals("DELETE")) {
 
 			String programCode = request.getParameter("code");
 			String year = request.getParameter("year");
@@ -326,7 +346,7 @@ public class Admin extends HttpServlet {
 			return "The program with program code " + programCode + " has been removed";
 		}
 
-		if(request.equals("COPY_FROM_YEAR")) {
+		if(method.equals("COPY_FROM_YEAR")) {
 			String programCode = request.getParameter("code");
 			String fromYear = request.getParameter("fromYear");
 			String fromLP = request.getParameter("fromLP");
@@ -346,7 +366,7 @@ public class Admin extends HttpServlet {
 
 		}
 
-		if(request.equals("MODIFY")) {
+		if(method.equals("MODIFY")) {
 			String oldProgramCode = request.getParameter("oldCode");
 			String programStartYearYear = request.getParameter("programStartYear");
 			String programStartLP = request.getParameter("programStartLP");
@@ -374,7 +394,7 @@ public class Admin extends HttpServlet {
 			return "The program known as " + oldProgramCode + " has been updated";
 
 		}
-		if(request.equals("ADD_COURSE")) {
+		if(method.equals("ADD_COURSE")) {
 			String programCode = request.getParameter("programCode");
 			String programStartYear = request.getParameter("programStartYear");
 			String programStartLP = request.getParameter("programStartLP");
@@ -401,7 +421,7 @@ public class Admin extends HttpServlet {
 			return "The relationship between " + programCode + " and " + courseCode + " has been modified";
 
 		}
-		if(request.equals("CREATE_SPECIAL")) {
+		if(method.equals("CREATE_SPECIAL")) {
 			String name = request.getParameter("name");
 			String programCode = request.getParameter("programCode");
 			String startProgramYear = request.getParameter("startProgramYear");

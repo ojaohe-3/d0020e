@@ -49,8 +49,10 @@ public class DeleteMethods {
 	 */
 	public void deleteCourse(String courseCode, CourseDate startDate) {
 		
-		String query = "MATCH (course: Course {code: \"" + courseCode + "\", " + CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" })<-[relations]-(nodes) DELETE course, relations";
+		//String query = "MATCH (course: Course {code: \"" + courseCode + "\", " + CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" })-[relations]-(nodes) DELETE course, relations";
+		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", " + CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) DETACH DELETE course";
 		
+		System.out.println(query);
 		communicator.writeToNeo(query);
 	
 	}
