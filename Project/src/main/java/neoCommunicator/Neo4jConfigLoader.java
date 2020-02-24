@@ -44,21 +44,21 @@ public class Neo4jConfigLoader {
         InputStream inputStream = null;
         try {
 
-            File f = new File(System.getProperty("user.dir"));
+            File f = new File("/");
             File[] matchingFiles = f.listFiles(new FilenameFilter() {
                 public boolean accept(File dir, String name) {
                     return name.startsWith("db") && name.endsWith("properties");
                 }
             });
-            Properties prop = new Properties();
-            inputStream = new FileInputStream(matchingFiles[0]);
-
-            if (inputStream != null) {
-                prop.load(inputStream);
-            } else {
+            if (matchingFiles.length < 1){
                 throw new FileNotFoundException("property file '" + CONF_PATH + "' not found in the classpath");
             }
+            Properties prop = new Properties();
 
+            inputStream = new FileInputStream(matchingFiles[0]);
+            prop.load(inputStream);
+
+            boolean b = matchingFiles[0].canRead();
             // get the property value and print it out
             uname  = prop.getProperty("username").replaceAll("\"","");
             pwd = prop.getProperty("psw").replaceAll("\"","");

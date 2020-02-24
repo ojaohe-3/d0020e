@@ -6,6 +6,7 @@
     <servlet>
         <servlet-name>indexServlet</servlet-name>
         <servlet-class>com.servlet.IndexServlet</servlet-class>
+<<<<<<< HEAD
     </servlet>  
     <servlet-mapping>
         <servlet-name>indexServlet</servlet-name>
@@ -76,4 +77,13 @@
     </servlet-mapping>
     
 
+=======
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>indexServlet</servlet-name>
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+
+    
+>>>>>>> merge with admin admin page
 </web-app>

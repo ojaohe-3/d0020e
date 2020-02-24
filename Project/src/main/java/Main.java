@@ -45,7 +45,7 @@ public class Main {
 		//createTopics();
 		//createKCs();
 		
-		//createRelationsBetweenCoursesAndKCs();
+
 		
 		//createCourseProgram("courseprgroma 1", "TIDAG");
 		
@@ -55,7 +55,7 @@ public class Main {
 
 		//readCourses();
 
-		//readKCs();
+
 		//readTopics();
 		
 		//filterTest();
@@ -253,8 +253,12 @@ public class Main {
 			courses = new Course[temp.length];
 		for (int i = 0; i < temp.length; i++) {
 			courses[i] = neoapi.getMethods.getCourse(temp[i].getCourseCode(),temp[i].getStartPeriod());
+			try {
+				System.out.println(courses[i].getAsJson());
+			} catch (JSONException e) {
+				e.printStackTrace();
+			}
 		}
-
 			/*printCourse(c);
 			print("Developed KCs");
 			printKCs(c.getDevelopedKC());
