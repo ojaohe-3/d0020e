@@ -115,7 +115,7 @@ public class Admin extends HttpServlet {
 			return "User " + userName + " can now make changes to " + courseCode;
 
 		}
-		//Inte färdig än
+
 		if (request.equals("REMOVE_RELATION_TO_COURSE")) {
 			String userName = request.getParameter("userName");
 			String courseCode = request.getParameter("courseCode");
