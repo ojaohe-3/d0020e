@@ -1,8 +1,10 @@
 /**
- * 
+ * Chosen course from search result should be send to canvas
+ * @param code
+ * @param year
+ * @param lp
+ * @returns
  */
-
-
 function courseClicked(code, year, lp) {
 	
 	$.ajax({

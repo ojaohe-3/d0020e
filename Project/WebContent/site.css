@@ -2,7 +2,7 @@
 
 
 body {
-	background-color : lightblue;
+	background-color : lightgray;
 }
 canvas{
 	display: flex;
@@ -11,18 +11,16 @@ canvas{
 	height: 100%;
 }
 .SearchResult {
-	
-	background-color : gray;
-	margin-bottom : 5px;
-	height: 20px;
+	background-color : #404040;
+	padding : 5px;
+	height: 30px;
 	display: block;
-	width: 50%;
 }
 
-.SearchResult:hover {
-	
-	background-color : lightgray;
-	height: 100px;
+.SearchResultContainer>.SearchResult:hover {
+	background-color : orange;
+	color: white;
+	height: auto;
 }
 
 .SearchResultExpander {
@@ -31,5 +29,11 @@ canvas{
 
 .SearchResult:hover .SearchResultExpander {
 	display : block;
-	padding: 5px;
+}
+
+.SearchResultContainer>div:nth-child(odd){
+ background-color: #404040;
+}
+.SearchResultContainer>div:nth-child(even){
+ background-color: #4b4b4b;
 }
