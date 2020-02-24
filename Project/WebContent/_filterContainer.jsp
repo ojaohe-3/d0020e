@@ -1,6 +1,7 @@
 
 <script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerFunctions.js"></script>
 <script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerSearchBar.js"></script>
+<link rel="stylesheet" href="CssFolder/filterContainer.css">
 
 <div class="wrapper">
 	<div class="container-fluid sidenav" style="background-color:orange;">
