@@ -40,9 +40,9 @@ class CourseObject{
     }
 
   draw(ctx){
-      saveMatrix();
+      //saveMatrix();
       ctx.save();
-      translate(0,0);
+      ctx.translate(0,0);
        this.button = new canvasButton({x: this.x + this.width*0.8,
         y : this.y+this.height*0.8,
         width : this.width*0.2,
@@ -63,7 +63,7 @@ class CourseObject{
       this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.35,this.data["courseCode"],ctx);
       this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
       this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.6,this.data["examiner"],ctx);
-      restoreMatrix();
+      //restoreMatrix();
       ctx.restore();
       this.button.draw(ctx);
     }
@@ -78,13 +78,13 @@ class CourseObject{
    * @param ctx canvas context
    */
     drawInRect(xstart,ystart,targetx,targety,rotation,ctx){
-      saveMatrix();
+      //saveMatrix();
       ctx.save();
-      translate(xstart,ystart);
+      ctx.translate(xstart,ystart);
       ctx.rotate(rotation);
       ctx.fillRect(0,0,this.width*0.05,this.width*0.05);
       ctx.rotate(0 - rotation);
-      restoreMatrix();
+      //restoreMatrix();
       ctx.restore();
     }
 
@@ -96,12 +96,12 @@ class CourseObject{
    * @param ctx canvas context
    */
     writeInRect(xstart,ystart,text,ctx){
-      saveMatrix();
+      //saveMatrix();
       ctx.save();
-      translate(xstart,ystart);
+      ctx.translate(xstart,ystart);
       ctx.font = 'italic '+(this.width)*2/ctx.measureText(text)+'pt Calibri';
       ctx.fillText(text,this.width*0.1,this.height*0.1-1);
-     restoreMatrix();
+     //restoreMatrix();
      ctx.restore();
     }
 

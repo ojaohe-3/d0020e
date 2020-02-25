@@ -92,7 +92,7 @@ function generateCanvas(data) {
 }
 
 function drawCanvas() {
-  saveMatrix();
+  //saveMatrix();
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.translate(viewportX,viewportY);
@@ -102,7 +102,7 @@ function drawCanvas() {
     //console.log('draw nr:'+index);
     value.draw(ctx);
   })
-  restoreMatrix();
+  //restoreMatrix();
   ctx.restore();
 }
 

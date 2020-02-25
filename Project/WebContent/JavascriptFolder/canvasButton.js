@@ -4,7 +4,7 @@ class canvasButton{
       let wx = this.x+this.width;
       let wy = this.y+this.height;
 
-        return pos.x > this.x/dpi && pos.x < (this.x+this.width)/dpi && pos.y < (this.y+this.height)/dpi && pos.y > this.y/dpi
+        return pos.x > this.x/dpi && pos.x < wx/dpi && pos.y < wy/dpi && pos.y > this.y/dpi
     }
   constructor(conf){
     this.x = conf.x;
@@ -15,7 +15,7 @@ class canvasButton{
   }
   draw(ctx){
       ctx.save();
-      saveMatrix();
+      //saveMatrix();
       ctx.fillStyle="gray";
     ctx.fillRect(this.x,this.y,this.width,this.height);
 
@@ -27,7 +27,7 @@ class canvasButton{
           );
     }
     ctx.restore();
-    restoreMatrix();
+    //restoreMatrix();
   }
 
 }
