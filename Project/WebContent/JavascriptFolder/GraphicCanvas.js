@@ -84,13 +84,16 @@ function generateCanvas(data) {
 }
 
 function drawCanvas() {
-  fix_dpi();
+  ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.translate(viewportX,-10);
+  ctx.translate(viewportX,viewportY);
+  ctx.scale(width/(window.innerWidth*0.2),height/(window.innerHeight*0.21));
+  console.log('width:'+window.innerWidth*0.2+", height: "+(window.innerHeight*0.21));
   courses.forEach(function (value,index,arr) {
     //console.log('draw nr:'+index);
     value.draw(ctx);
   })
+  ctx.restore();
 }
 
 function fix_dpi() {

@@ -40,13 +40,13 @@ class CourseObject{
     }
 
   draw(ctx){
+      ctx.save();
       ctx.translate(0,0);
        this.button = new canvasButton({x: this.x + this.width*0.8,
         y : this.y+this.height*0.8,
         width : this.width*0.2,
         height : this.height*0.2,
-        text:"▲"})
-      ctx.save();
+        text:"▲"});
       ctx.strokeRect(this.x,this.y,this.width,this.height);
       ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
       ctx.fillStyle = "white";
@@ -76,11 +76,12 @@ class CourseObject{
    * @param ctx canvas context
    */
     drawInRect(xstart,ystart,targetx,targety,rotation,ctx){
+      ctx.save();
       ctx.translate(xstart,ystart);
       ctx.rotate(rotation);
       ctx.fillRect(0,0,this.width*0.05,this.width*0.05);
       ctx.rotate(0 - rotation);
-      ctx.resetTransform();
+      ctx.restore();
     }
 
   /**
@@ -91,10 +92,11 @@ class CourseObject{
    * @param ctx canvas context
    */
     writeInRect(xstart,ystart,text,ctx){
+      ctx.save();
       ctx.translate(xstart,ystart);
       ctx.font = 'italic '+(this.width)*2/ctx.measureText(text)+'pt Calibri';
       ctx.fillText(text,this.width*0.1,this.height*0.1-1);
-      ctx.resetTransform();
+      ctx.restore();
     }
 
 
