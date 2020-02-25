@@ -78,7 +78,7 @@ public class Login extends HttpServlet {
 			} else {
 				request.getSession().setAttribute("is_admin", false);
 
-				response.sendRedirect("/project/teacher");
+				response.sendRedirect("/teacher");
 				//request.getRequestDispatcher("/teacher.jsp").forward(request, response);
 			}
 				
