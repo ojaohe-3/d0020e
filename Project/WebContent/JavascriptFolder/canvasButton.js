@@ -3,8 +3,7 @@ class canvasButton{
     isInside(pos, dpi){
       let wx = this.x+this.width;
       let wy = this.y+this.height;
-      console.log("x of button range:" +this.x/dpi+":"+wx/dpi+", y of button range"+this.y/dpi+":"+wy/dpi)
-      console.log("mouse x:" +pos.x+", mouse y:"+pos.y);
+
         return pos.x > this.x/dpi && pos.x < (this.x+this.width)/dpi && pos.y < (this.y+this.height)/dpi && pos.y > this.y/dpi
     }
   constructor(conf){
@@ -16,6 +15,7 @@ class canvasButton{
   }
   draw(ctx){
       ctx.save();
+      saveMatrix();
       ctx.fillStyle="gray";
     ctx.fillRect(this.x,this.y,this.width,this.height);
 
@@ -27,6 +27,7 @@ class canvasButton{
           );
     }
     ctx.restore();
+    restoreMatrix();
   }
 
 }

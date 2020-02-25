@@ -40,8 +40,9 @@ class CourseObject{
     }
 
   draw(ctx){
+      saveMatrix();
       ctx.save();
-      ctx.translate(0,0);
+      translate(0,0);
        this.button = new canvasButton({x: this.x + this.width*0.8,
         y : this.y+this.height*0.8,
         width : this.width*0.2,
@@ -62,6 +63,7 @@ class CourseObject{
       this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.35,this.data["courseCode"],ctx);
       this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
       this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.6,this.data["examiner"],ctx);
+      restoreMatrix();
       ctx.restore();
       this.button.draw(ctx);
     }
@@ -76,11 +78,13 @@ class CourseObject{
    * @param ctx canvas context
    */
     drawInRect(xstart,ystart,targetx,targety,rotation,ctx){
+      saveMatrix();
       ctx.save();
-      ctx.translate(xstart,ystart);
+      translate(xstart,ystart);
       ctx.rotate(rotation);
       ctx.fillRect(0,0,this.width*0.05,this.width*0.05);
       ctx.rotate(0 - rotation);
+      restoreMatrix();
       ctx.restore();
     }
 
@@ -92,19 +96,20 @@ class CourseObject{
    * @param ctx canvas context
    */
     writeInRect(xstart,ystart,text,ctx){
+      saveMatrix();
       ctx.save();
-      ctx.translate(xstart,ystart);
+      translate(xstart,ystart);
       ctx.font = 'italic '+(this.width)*2/ctx.measureText(text)+'pt Calibri';
       ctx.fillText(text,this.width*0.1,this.height*0.1-1);
-      ctx.restore();
+     restoreMatrix();
+     ctx.restore();
     }
 
 
     isInside(pos, dpi){
         let wx = this.x+this.width;
         let wy = this.y+this.height;
-        console.log("x of button range:" +this.x/dpi+":"+wx/dpi+", y of button range"+this.y/dpi+":"+wy/dpi)
-        console.log("mouse x:" +pos.x+", mouse y:"+pos.y);
+
         return pos.x > this.x/dpi && pos.x < (this.x+this.width)/dpi && pos.y < (this.y+this.height)/dpi && pos.y > this.y/dpi
     }
 }

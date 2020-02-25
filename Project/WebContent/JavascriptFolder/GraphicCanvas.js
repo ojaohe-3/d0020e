@@ -18,6 +18,9 @@ const period = new Map();
   period.set('THREE',[]);
   period.set('FOUR',[]);
 let courses =new Map();
+  //translations
+let matrix=[1,0,0,1,0,0];
+let oldMatrix = [];
 let viewportX = 0;
 let viewportY = 0;
 
@@ -53,7 +56,7 @@ function generateCanvas(data) {
     let y = 0;
       //check if we have collisions
       periodItem = period.get(item.lp);
-      console.log(periodItem);
+      //console.log(periodItem);
       if(periodItem.length > 0){
         periodItem.forEach(function () {
             console.log(item.courseCode + ": "+y);
@@ -89,6 +92,7 @@ function generateCanvas(data) {
 }
 
 function drawCanvas() {
+  saveMatrix();
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.translate(viewportX,viewportY);
@@ -98,6 +102,7 @@ function drawCanvas() {
     //console.log('draw nr:'+index);
     value.draw(ctx);
   })
+  restoreMatrix();
   ctx.restore();
 }
 
@@ -111,4 +116,51 @@ function fix_dpi() {
 //scale the canvas
   canvas.setAttribute('height', style_height * dpi);
   canvas.setAttribute('width', style_width * dpi);
+}
+
+
+//https://stackoverflow.com/questions/21717001/html5-canvas-get-coordinates-after-zoom-and-translate
+function translate(x,y){
+  console.log('x: '+x+', y: '+y);
+  matrix[4] += matrix[0] * x + matrix[2] * y;
+  matrix[5] += matrix[1] * x + matrix[3] * y;
+  ctx.translate(x,y);
+  console.log(matrix);
+}
+function scale(x,y){
+  matrix[0] *= x;
+  matrix[1] *= x;
+  matrix[2] *= y;
+  matrix[3] *= y;
+  ctx.scale(x,y);
+}
+function getXY(mouseX,mouseY){
+  newX = mouseX * matrix[0] + mouseY * matrix[2] + matrix[4];
+  newY = mouseX * matrix[1] + mouseY * matrix[3] + matrix[5];
+  return({x:newX,y:newY});
+}
+
+function rotate(radians){
+  var cos = Math.cos(radians);
+  var sin = Math.sin(radians);
+  var m11 = matrix[0] * cos + matrix[2] * sin;
+  var m12 = matrix[1] * cos + matrix[3] * sin;
+  var m21 = -matrix[0] * sin + matrix[2] * cos;
+  var m22 = -matrix[1] * sin + matrix[3] * cos;
+  matrix[0] = m11;
+  matrix[1] = m12;
+  matrix[2] = m21;
+  matrix[3] = m22;
+}
+
+function saveMatrix() {
+  oldMatrix.push(matrix);
+
+
+}
+function restoreMatrix() {
+  if(oldMatrix.length>0)
+    matrix = oldMatrix.pop();
+
+
 }
