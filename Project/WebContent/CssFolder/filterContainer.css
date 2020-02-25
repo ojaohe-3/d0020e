@@ -1,4 +1,5 @@
 .filterContainer {
+  float: left;
 background-color: #292929;
 width: 25%;
 height: auto;

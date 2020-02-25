@@ -6,8 +6,12 @@ const canvas = $('#graph').get(0);
 //get context
 const ctx = canvas.getContext('2d');
 fix_dpi();
-const width = canvas.width * 0.2;
-const height = canvas.height * 0.21;
+
+const screenHeight = window.screen.height * window.devicePixelRatio;
+const screenWidth = window.screen.width * window.devicePixelRatio;
+
+const width = 200;
+const height = 250;
 const period = new Map();
   period.set('ONE',[]);
   period.set('TWO',[]);
@@ -26,7 +30,8 @@ canvas.addEventListener('click', function(evt) {
     if (value.button.isInside(mousePos,dpi)){
       alert('Button Pressed!');
     }else if(value.isInside(mousePos,dpi)){
-      alert('Course Pressed!');
+      //alert('Course Pressed!');
+      showCourseInfo(value.data);
     } else
       console.log("mouse pressed on nothing!");
   });
@@ -87,8 +92,8 @@ function drawCanvas() {
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.translate(viewportX,viewportY);
-  ctx.scale(width/(window.innerWidth*0.2),height/(window.innerHeight*0.21));
-  console.log('width:'+window.innerWidth*0.2+", height: "+(window.innerHeight*0.21));
+  //ctx.scale(width/(window.innerWidth*0.2),height/(window.innerHeight*0.21));
+  //console.log('width:'+window.innerWidth*0.2+", height: "+(window.innerHeight*0.21));
   courses.forEach(function (value,index,arr) {
     //console.log('draw nr:'+index);
     value.draw(ctx);

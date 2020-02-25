@@ -1,10 +1,15 @@
 <!-- Konva drag and drop canvas objects-->
-<canvas id="graph">
+<div id="canvas_container">
+    <canvas id="graph">
 
 
-</canvas>
+    </canvas>
+    <%@include file="courseInformation.jsp"%>
+</div>
 
 
+
+<script> src="JavascriptFolder/courseInformation.js"</script>
 <script src="JavascriptFolder/canvasButton.js"></script>
 <script src="JavascriptFolder/CourseObject.js"></script>
 <script src="JavascriptFolder/GraphicCanvas.js"></script>
