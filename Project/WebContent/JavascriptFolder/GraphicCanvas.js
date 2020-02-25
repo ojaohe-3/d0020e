@@ -64,7 +64,7 @@ function generateCanvas(data) {
       if(periodItem.length > 0){
         periodItem.forEach(function () {
             console.log(item.courseCode + ": "+y);
-            y += height*1.4;
+            y += height*1.2;
         });
       }
 
@@ -73,12 +73,15 @@ function generateCanvas(data) {
       period.set(item.lp,periodItem);
 
     //set x axis
-    if(item.lp === "TWO"){
-      x += width *1.4*offsetYear;
+    if(item.lp === "ONE"){
+      x+= width*1.2*offsetYear*4;
+    }
+    else if(item.lp === "TWO"){
+      x += width *1.2*(1+offsetYear*4);
     }else if(item.lp === "THREE"){
-      x += width *1.4*2*offsetYear;
+      x += width *1.2*(2+offsetYear*4);
     }else if(item.lp === "FOUR"){
-      x += width *1.4*3*offsetYear;
+      x += width *1.2*(3+offsetYear*4);
     }
 
     courses.set(item["courseCode"]+item["year"]+item["lp"], new CourseObject(
