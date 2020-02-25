@@ -62,14 +62,16 @@ public class GetMethods {
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
 		
-		int readingPeriods = Integer.parseInt(row.get("courseProgram").get("readingPeriods").toString().replaceAll("\"",""));
-		CourseOrder courseOrder = new CourseOrder(readingPeriods);
+		//int readingPeriods = Integer.parseInt(row.get("courseProgram").get("readingPeriods").toString().replaceAll("\"",""));
+		//CourseOrder courseOrder = new CourseOrder(readingPeriods);//useless
 		
 		String inProgramQuery = "MATCH (courseProgram: CourseProgram {"+CourseProgram.ProgramLabels.CODE+": \"" + code + "\", "+ CourseProgram.ProgramLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseProgram.ProgramLabels.LP + " : \"" + startDate.getPeriod() + "\" })";
 		inProgramQuery += "-[relation:IN_PROGRAM]-(courseInProgram:Course) RETURN courseInProgram";
 		result = this.communicator.readFromNeo(inProgramQuery);
+
 		String tempCode;
 		CourseDate tempDate;
+		ArrayList<Course> courseOrder = new ArrayList<>();
 		while(result.hasNext()) {
 			Record currentRow = result.next();
 			tempCode = currentRow.get("courseInProgram").get(CourseLabels.CODE.toString()).toString().replaceAll("\"","");
@@ -77,7 +79,7 @@ public class GetMethods {
 					Integer.parseInt(currentRow.get("courseInProgram").get(CourseLabels.YEAR.toString()).toString().replaceAll("\"","")),
 					LP.valueOf(currentRow.get("courseInProgram").get(CourseLabels.LP.toString()).toString().replaceAll("\"","")));
 			Course course = getCourse(tempCode,tempDate);
-			courseOrder.setCourseAt(course);
+			courseOrder.add(course);
 		}
 		
 		CourseProgram courseProgram = createCourseProgram(courseOrder, row, "courseProgram");
@@ -92,7 +94,7 @@ public class GetMethods {
 	 * @param nodename
 	 * @return
 	 */
-	private CourseProgram createCourseProgram(CourseOrder courseOrder, Record row, String nodename) {
+	private CourseProgram createCourseProgram(ArrayList<Course> courseOrder, Record row, String nodename) {
 		
 		String name = row.get(nodename).get("name").toString().replaceAll("\"","");
 		String code = row.get(nodename).get("code").toString().replaceAll("\"","");
@@ -103,7 +105,7 @@ public class GetMethods {
 		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"",""));
 		CourseDate startDate = new CourseDate(year, lp);	
 		
-		CourseProgram courseProgram = new CourseProgram(courseOrder, name, code, description, startDate, credits);
+		CourseProgram courseProgram = new CourseProgram(courseOrder, name, code, description, startDate, credits, CourseProgram.ProgramType.PROGRAM);
 		
 		return courseProgram;
 	}
@@ -224,25 +226,25 @@ public class GetMethods {
 
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
-		
+
 		int readingPeriods = row.get("programSpecialization").get("readingPeriods").asInt();
-		CourseOrder courseOrder = new CourseOrder(readingPeriods);
+
+		ArrayList<Course> courseOrder = new ArrayList<>();
 
 		String inProgramQuery = "MATCH (programSpecialization: ProgramSpecialization {code: \"" + code + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\"}) ";
 		inProgramQuery += "MATCH(courseInProgram : Course)<-[relation: IN_PROGRAM]-(programSpecialization) RETURN courseInProgram, relation";
 		result = this.communicator.readFromNeo(inProgramQuery);
-		
 		while(result.hasNext()) {
 			Record currentRow = result.next();
 			Course course = createCourse(currentRow, "courseInProgram");
-			courseOrder.setCourseAt(course);
+			courseOrder.add(course);
 		}
 		
 		ProgramSpecialization courseProgramSpecialization = createProgramSpecialization(courseOrder, row, "programSpecialization");
 		return courseProgramSpecialization;
 	}
 	
-	private ProgramSpecialization createProgramSpecialization(CourseOrder courseOrder, Record row, String nodename) {
+	private ProgramSpecialization createProgramSpecialization(ArrayList<Course> courseOrder, Record row, String nodename) {
 		
 		String name = row.get(nodename).get("name").toString();
 		String code = row.get(nodename).get("code").toString();

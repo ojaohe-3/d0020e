@@ -1,5 +1,7 @@
 package com.servlet;
 
+import neoCommunicator.Neo4jConfigLoader;
+
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -13,5 +15,7 @@ public class IndexServlet extends HttpServlet {
     @Override
     public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         super.service(req, res);
+        //pre-load api
+        Neo4jConfigLoader.getApi();
     }
 }

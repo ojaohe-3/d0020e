@@ -40,16 +40,17 @@ class CourseObject{
     }
 
   draw(ctx){
+      ctx.translate(0,0);
        this.button = new canvasButton({x: this.x + this.width*0.8,
         y : this.y+this.height*0.8,
         width : this.width*0.2,
         height : this.height*0.2,
-        text:""})
+        text:"▲"})
       ctx.save();
       ctx.strokeRect(this.x,this.y,this.width,this.height);
       ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
       ctx.fillStyle = "white";
-      ctx.font = 'italic '+(this.width)*0.12+'pt Calibri';
+      ctx.font = 'italic '+(this.width)*4/ctx.measureText(this.data["name"]).width+'pt Calibri';
       ctx.fillText(this.data["name"],
         this.x+this.width/2 -  ctx.measureText(this.data["name"]).width/2,
         this.y + this.height*0.14
@@ -58,12 +59,10 @@ class CourseObject{
       ctx.strokeRect(this.x+this.width*0.05,this.y+this.height*.3,this.width-this.width*0.1,this.height-this.height*0.5);
 
       this.drawInRect(this.x+this.width*0.1 ,this.y+this.height*0.35 ,0,0,0.70717,ctx);
-      this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.35,this.data["code"],ctx);
+      this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.35,this.data["courseCode"],ctx);
       this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
       this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.6,this.data["examiner"],ctx);
       ctx.restore();
-
-      console.log("im here");
       this.button.draw(ctx);
     }
 
@@ -79,7 +78,7 @@ class CourseObject{
     drawInRect(xstart,ystart,targetx,targety,rotation,ctx){
       ctx.translate(xstart,ystart);
       ctx.rotate(rotation);
-      ctx.fillRect(0,0,this.width*0.05,this.height*0.05);
+      ctx.fillRect(0,0,this.width*0.05,this.width*0.05);
       ctx.rotate(0 - rotation);
       ctx.resetTransform();
     }
@@ -93,9 +92,18 @@ class CourseObject{
    */
     writeInRect(xstart,ystart,text,ctx){
       ctx.translate(xstart,ystart);
-      ctx.font = 'italic '+(this.width)*0.1+'pt Calibri';
+      ctx.font = 'italic '+(this.width)*2/ctx.measureText(text)+'pt Calibri';
       ctx.fillText(text,this.width*0.1,this.height*0.1-1);
       ctx.resetTransform();
+    }
+
+
+    isInside(pos, dpi){
+        let wx = this.x+this.width;
+        let wy = this.y+this.height;
+        console.log("x of button range:" +this.x/dpi+":"+wx/dpi+", y of button range"+this.y/dpi+":"+wy/dpi)
+        console.log("mouse x:" +pos.x+", mouse y:"+pos.y);
+        return pos.x > this.x/dpi && pos.x < (this.x+this.width)/dpi && pos.y < (this.y+this.height)/dpi && pos.y > this.y/dpi
     }
 }
 

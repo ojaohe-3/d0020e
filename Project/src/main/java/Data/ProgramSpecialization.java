@@ -1,5 +1,7 @@
 package Data;
 
+import java.util.ArrayList;
+
 /**
  * Representation of a program specialization. This can be used in the same way as a course,
  * since it inherits all the methods and stuff from it. The biggest difference, however,
@@ -9,7 +11,7 @@ package Data;
  */
 public class ProgramSpecialization extends CourseProgram {
 	
-	public ProgramSpecialization(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits) {
-		super(courseOrder, code, name, description, startDate, credits, CourseProgram.ProgramType.SPECIALIZATION);
+	public ProgramSpecialization(ArrayList<Course> courseOrder, String code, String name, String description, CourseDate startDate, Credits credits) {
+		super(courseOrder,code, name, description, startDate, credits, CourseProgram.ProgramType.SPECIALIZATION);
 	}
 }

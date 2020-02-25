@@ -1,6 +1,7 @@
 package neo4j_JVM_API;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import Data.*;
 import org.neo4j.driver.v1.Record;
@@ -159,7 +160,7 @@ private final Neo4jCommunicator communicator;
 				CourseProgram.ProgramLabels.CREDITS.toString() + ":\"" + program.getCredits() + "\", " +
 				CourseProgram.ProgramLabels.YEAR.toString() + ":\"" + program.getStartDate().getYear() + "\", " +
 				CourseProgram.ProgramLabels.LP.toString() + ":\"" + program.getStartDate().getPeriod().toString() + "\", " +		
-				CourseProgram.ProgramLabels.READING_PERIODS.toString() + ":\"" + program.getCourseOrder().getReadingPeriods() + "\"})";
+				CourseProgram.ProgramLabels.READING_PERIODS.toString() + ":\"" + 1 + "\"})";
 		System.out.println(query);
 		communicator.writeToNeo(query);
 	}
@@ -190,50 +191,23 @@ private final Neo4jCommunicator communicator;
 	 * @see Data.CourseProgram
 	 */
 	public void createProgramCourseRelations(CourseProgram program) {
-		CourseOrder courseOrder = program.getCourseOrder();
-		Course[][] courses = courseOrder.getCourseArray();
+
+		ArrayList<Course> courses = program.getCourseOrder();
 		
 		/* find the program */
 		String query = "MATCH(program: " + program.getProgramType() + "{" + CourseProgram.ProgramLabels.CODE.toString() + ": \"" + program.getCode() + "\", " + 
 				CourseProgram.ProgramLabels.YEAR.toString()+ ": \"" + program.getStartDate().getYear()+ "\", " + 
-				CourseProgram.ProgramLabels.LP.toString() + ": \"" + program.getStartDate().getPeriod().toString()+ "\"}) ";
+				CourseProgram.ProgramLabels.LP.toString() + ": \"" + program.getStartDate().getPeriod().toString()+ "\"})";
 		
 		/* Create a match for every course in the course order and add a relation for that course. */
-		Course c = null;	// temporary pointer.
-		boolean hasCourses = false;
-		for (int pos=0; pos < courses.length; pos++) {
-			for (int period = 0; period < courses[pos].length; period++) {
-				c = courses[pos][period];
-				if(c != null) {
-					hasCourses = true;
-					query += "MATCH (course" + pos + "" + period + ": " + Course.course +" {" +CourseLabels.CODE.toString() + ": \""+c.getCourseCode()+"\", "+
-					Course.CourseLabels.YEAR.toString() +": \"" + c.getStartPeriod().getYear()+"\","+
-					Course.CourseLabels.LP.toString() + ": \""+c.getStartPeriod().getPeriod().toString()+"\"}) ";
-					
-	
-			
-				}
-				
-			}
+		for(Course c: courses){
+			query += ",("+c.hashCode()+":"+Course.course+"{"+ CourseLabels.CODE+":\""+c.getName()+"\","
+					+CourseLabels.LP+":\""+c.getStartPeriod().getPeriod().name()+"\","
+					+CourseLabels.YEAR+":"+c.getStartPeriod().getYear()+"})";
 		}
-		if(!hasCourses) {
-			System.err.print("No courses : ");
-			return;
+		for(Course c: courses) {
+			query += "MERGE(program)<-[r:"+ Relations.IN_PROGRAM.toString() + "]-(" + c.hashCode() + ")\n";
 		}
-		for (int pos=0; pos < courses.length; pos++) {
-			for (int period = 0; period < courses[pos].length; period++) {
-				c = courses[pos][period];
-				if(c != null) {
-					
-
-					query += "CREATE (program)<-[r"+ pos + "" + period +": "+ Relations.IN_PROGRAM.toString() + " { "+Relations.YEAR+": \"" + pos + "\", "+Relations.PERIOD+" :\"" + period + "\"}]" + "-(course" + pos + "" + period +") ";
-			
-				}
-				
-			}
-		}
-		
-		
 		this.communicator.writeToNeo(query);
 		
 		
@@ -241,7 +215,7 @@ private final Neo4jCommunicator communicator;
 
 
 	public void createProgramCourseRelation(CourseProgram program,Course course) {
-		program.getCourseOrder().setCourseAt(course);
+		program.getCourseOrder().add(course);
 		String query = "MATCH(program:"+program.getProgramType()+"{"+ CourseProgram.ProgramLabels.CODE +":\""+program.getCode()+"\","+CourseProgram.ProgramLabels.LP+":\""+
 				program.getStartDate().getPeriod().toString()+"\","+ CourseProgram.ProgramLabels.YEAR+":\""+program.getStartDate().getYear()+"\"}),";
 
@@ -315,8 +289,7 @@ private final Neo4jCommunicator communicator;
 	 */
 	@Deprecated
 	public void createProgramSpecializatonCourseRelation(ProgramSpecialization specialization) {
-		CourseOrder courseOrder = specialization.getCourseOrder();
-		Course[][] courses = courseOrder.getCourseArray();
+		ArrayList<Course> courses = specialization.getCourseOrder();
 		
 		/* find the program specialization*/
 		String query = "MATCH(program: " + ProgramSpecialization.ProgramType.SPECIALIZATION + "{" + ProgramSpecialization.ProgramLabels.CODE.toString() + ":\"" + specialization.getCode() + "\", " + 
@@ -327,16 +300,14 @@ private final Neo4jCommunicator communicator;
 				ProgramSpecialization.ProgramLabels.NAME.toString() + "\"" + specialization.getName().toString() + "})";
 		
 		/* Create a match for every course in the course order and add a relation for that course. */
-		Course c = null;	// temporary pointer.
-		for (int pos=0; pos < courses.length; pos++) {
-			for (int period = 0; period < courses[pos].length; period++) {
-				c = courses[pos][period];
-				query += "MATCH (course" + pos + "" + period + ":" + Course.course +" {" +CourseLabels.CODE.toString() + ":\""+c.getCourseCode()+"\", "+
-				Course.CourseLabels.YEAR.toString() +":\"" + c.getStartPeriod().getYear()+"\","+
-				Course.CourseLabels.LP.toString() + ":\""+c.getStartPeriod().getPeriod().toString()+"\"})";
-				
-				query += "CREATE (programSpecialization) - [r"+pos+""+period+ ":"+ pos + ", " + period + "]" + "->(course" + pos + "" + period +")";
-			}
+
+		for (Course c :courses) {
+			query += "MATCH (" + c.hashCode() + ":" + Course.course +" {" +CourseLabels.CODE.toString() + ":\""+c.getCourseCode()+"\", "+
+			Course.CourseLabels.YEAR.toString() +":\"" + c.getStartPeriod().getYear()+"\","+
+			Course.CourseLabels.LP.toString() + ":\""+c.getStartPeriod().getPeriod().toString()+"\"})";
+
+			query += "CREATE (programSpecialization) - [r:"+Relations.IN_PROGRAM+"]->("+c.hashCode()+")";
+
 		}
 		this.communicator.writeToNeo(query);
 	}
@@ -349,34 +320,28 @@ private final Neo4jCommunicator communicator;
 	 */
 	public void createCopyOfProgrambyYear(CourseProgram program, int newYear) {
 		int yearDifference = newYear - program.getStartDate().getYear();
-		Course[][] courses = program.getCourseOrder().getCourseArray();
-		Course[][] newCourses = new Course[courses.length][program.getCourseOrder().getReadingPeriods()];
-		Course courseRef = null;
+		ArrayList<Course> courses = program.getCourseOrder();
+		ArrayList<Course> newCourses = new ArrayList<Course>();
 		CourseDate courseStartDateRef = null;
-		for (int x = 0; x < courses.length; x++) {
-			for (int y = 0; y < courses[x].length; x++) {
-				
-				courseRef = courses[x][y];
-				if (courseRef == null) {
-					continue;
-				}
+		for (Course courseRef: courses) {
 				courseStartDateRef = new CourseDate(courseRef.getStartPeriod().getYear() + yearDifference, courseRef.getStartPeriod().getPeriod());
-				newCourses[x][y] = new Course(courseRef.getName(), courseRef.getCourseCode(), courseRef.getCredit(),courseRef.getDescription(), courseRef.getExaminer(), courseStartDateRef);
-				this.createCourse(newCourses[x][y]);
+				newCourses.add(new Course(courseRef.getName(), courseRef.getCourseCode(), courseRef.getCredit(),courseRef.getDescription(), courseRef.getExaminer(), courseStartDateRef));
+				this.createCourse(courseRef);
 				for (KC kc : courseRef.getDevelopedKC()) {
-					newCourses[x][y].setDevelopedKC(kc);
+					courseRef.setDevelopedKC(kc);
 				}
 				for (KC kc : courseRef.getRequiredKC()) {
-					newCourses[x][y].setRequiredKC(kc);
+					courseRef.setRequiredKC(kc);
 				}
-				this.createCourseKCrelation(newCourses[x][y]);
-			}
+				this.createCourseKCrelation(courseRef);
+
 		}
 		
 		CourseDate newCourseDate = new CourseDate(newYear, program.getStartDate().getPeriod());
-		CourseProgram newProgram = new CourseProgram(null, program.getCode(), program.getName(), program.getDescription(),newCourseDate, program.getCredits());
-		CourseOrder newCourseOrder = new CourseOrder(program.getCourseOrder().getReadingPeriods());
-		newCourseOrder.assignCourseOrder(newCourses);
+		CourseProgram newProgram = new CourseProgram(newCourses,program.getCode(), program.getName(), program.getDescription(),newCourseDate, program.getCredits(),program.getProgramType());
+		//CourseOrder newCourseOrder = new CourseOrder(program.getCourseOrder().getReadingPeriods());
+		//newCourseOrder.assignCourseOrder(newCourses);
+		//update version using pointers.
 		this.createProgram(newProgram);
 		this.createProgramCourseRelations(newProgram);
 	}

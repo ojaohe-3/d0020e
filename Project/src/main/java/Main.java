@@ -52,7 +52,7 @@ public class Main {
         addTopicsToKCs();
         //createCourseProgram("courseprgroma 1", "TIDAG");
         filterTest();
-        courseOrder = new CourseProgram(new CourseOrder(12));
+        courseOrder = new CourseProgram();
         Course temp = new Course(new CourseInformation("test","xxxx",Credits.ERROR,"test","test",new CourseDate(1207,LP.ONE)));
 		KC t;
 		t = new KC("Test 1","test desc",1,"wow");
@@ -212,23 +212,12 @@ public class Main {
     }
 
     public static void createCourseProgram(String name, String code) {
-        CourseOrder co = new CourseOrder(12);
-
+        ArrayList<Course> co = new ArrayList<>();
         int x = 0;
         int y = 0;
         int count = 0;
         for (Course course : courses) {
-            if (count < 24) {
-                co.setCourseAt(course);
-                if (y == 2) {
-                    y = 0;
-                    x++;
-                } else {
-                    y++;
-                }
-
-                count++;
-            }
+            co.add(course);
         }
 
 

@@ -4,10 +4,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 public class CourseProgram extends ProgramInformation{
 	public static String program = "";
-	private CourseOrder courseOrder;
-
+	//private CourseOrder courseOrder;
+	private ArrayList<Course> courses;
 	public static enum ProgramType {
 		PROGRAM("CourseProgram"),
 		SPECIALIZATION("ProgramSpecialization");
@@ -23,62 +26,54 @@ public class CourseProgram extends ProgramInformation{
 		}
 	}
 	
-	public CourseProgram(CourseOrder courseOrder) {
+	public CourseProgram() {
 		super( null, null,null,null,null,null);
-		this.courseOrder = courseOrder;
+		this.courses = new ArrayList<>();
+	}
+	public CourseProgram(Collection<Course> courses) {
+		super( null, null,null,null,null,null);
+		this.courses = (ArrayList<Course>)courses;
 	}
 	
 	/**
-	 * 
-	 * @param courseOrder
+	 *
 	 * @param code
 	 * @param name
 	 * @param description
 	 * @param startDate
 	 * @param credits
 	 */
-	public CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits) {
+	public CourseProgram(String code, String name, String description, CourseDate startDate, Credits credits) {
 		super( code, name, description, startDate, credits, ProgramType.PROGRAM);
-		this.courseOrder = courseOrder;
+		this.courses = new ArrayList<>();
 		
 	}
+
 	
-	public CourseProgram( String code, String name, String description, CourseDate startDate, Credits credits) {
-		super( code, name, description, startDate, credits, ProgramType.PROGRAM);
-		
-	}
-	
-	protected CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits, ProgramType type) {
+	public CourseProgram(ArrayList<Course> courseOrder, String code, String name, String description, CourseDate startDate, Credits credits, ProgramType type) {
 		super( code, name, description, startDate, credits, type);
-		this.courseOrder = courseOrder;
+		this.courses = (ArrayList<Course>) courseOrder;
 	}
 	
-	public CourseOrder getCourseOrder() {
-		return courseOrder;
+	public ArrayList<Course> getCourseOrder() {
+		return courses;
 	}
 
 
-	public void setCourseOrder(CourseOrder courseOrder) {
-		this.courseOrder = courseOrder;
+	public void setCourseOrder(ArrayList<Course> courseOrder) {
+		this.courses = (ArrayList<Course>) courseOrder;
 	}
 
 	public JSONObject getAsJson() throws JSONException {
 		JSONObject obj = new JSONObject();
-		JSONArray courses = new JSONArray();
-		Course[][] data = courseOrder.getCourseArray();
-		for (int i = 0; i < data.length ; i++) {
-			for (int j = 0; j < data[i].length; j++) {
-				if(data[i][j] != null)
-					courses.put(data[i][j].getJsonObject());
-			}
-		}
+
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),name.replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.CODE.toString(),code.replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.DESCRIPTION.toString(),description.replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits.name().replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.LP.toString(),startDate.getPeriod().name().replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),startDate.getYear());
-		obj.put("Courses",courses);
+		obj.put("Courses",this.courses);
 
 		return obj;
 	}

@@ -16,7 +16,7 @@ class canvasButton{
   }
   draw(ctx){
       ctx.save();
-      ctx.fillStyle="red";
+      ctx.fillStyle="gray";
     ctx.fillRect(this.x,this.y,this.width,this.height);
 
     if(this.text.length > 1){

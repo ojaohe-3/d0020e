@@ -126,4 +126,14 @@ public class Course extends CourseInformation {
 		return obj;
 
 	}
+
+	@Override
+	public String toString() {
+		try {
+			return getAsJson().toString();
+		} catch (JSONException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

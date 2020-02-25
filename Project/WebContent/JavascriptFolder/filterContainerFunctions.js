@@ -33,7 +33,7 @@ function programClicked(code,year,lp) {
 		},
 		success : function(response) {
 			// Should call a function in the canvas with the response
-			console.log(JSON.stringify(response));
+			generateCanvas(response);
 			$('#debug').html("response : " + response.name + ", courses: " +response.Courses.length);
 		}
 	}).fail(function (response) {

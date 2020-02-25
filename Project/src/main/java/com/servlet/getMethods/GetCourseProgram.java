@@ -23,7 +23,8 @@ public class GetCourseProgram extends HttpServlet {
         CourseProgram data = Neo4jConfigLoader.getApi().getMethods.getProgram(code,
                 new CourseDate(year, lp));
         try {
-            String json = data.getAsJson().toString();
+            String json = data.getAsJson().toString().replaceAll("\\\\","").replaceAll("\"\\{",
+                    "{").replaceAll("}\"","}");//mucishi
             response.setContentType("text/json");
             response.getWriter().write(json);
 

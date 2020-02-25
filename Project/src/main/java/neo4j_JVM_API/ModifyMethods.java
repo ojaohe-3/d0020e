@@ -84,7 +84,7 @@ public class ModifyMethods {
 		query += CourseProgram.ProgramLabels.DESCRIPTION.toString() +":"+newProgram.getDescription();
 		query += CourseProgram.ProgramLabels.YEAR.toString() +":"+newProgram.getStartDate().getYear();
 		query += CourseProgram.ProgramLabels.LP.toString() +":"+newProgram.getStartDate().getPeriod();
-		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +":"+newProgram.getCourseOrder().getReadingPeriods();
+		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +":"+1;
 		query += CourseProgram.ProgramLabels.CREDITS.toString() +":"+newProgram.getCredits();
 
 		query +="}";
