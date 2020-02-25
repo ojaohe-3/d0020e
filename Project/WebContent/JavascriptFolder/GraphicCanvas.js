@@ -42,16 +42,20 @@ canvas.addEventListener('click', function(evt) {
 
 function getMousePos(canvas, event) {
   let rect = canvas.getBoundingClientRect();
+  let mousePos = getXY(event.clientX,event.clientY)
   return {
-      x: event.clientX - rect.left,
-      y: event.clientY - rect.top
+      x: mousePos.x - rect.left,
+      y: mousePos.y - rect.top
   };
 }
 
 function generateCanvas(data) {
   courses = new Map();
   let periodItem = [];
+  let year = data.year;
+  let offsetYear = 0;
   data['Courses'].forEach(function (item, index,arr){
+    offsetYear = item.year-year;
     let x = 0;
     let y = 0;
       //check if we have collisions
@@ -60,7 +64,7 @@ function generateCanvas(data) {
       if(periodItem.length > 0){
         periodItem.forEach(function () {
             console.log(item.courseCode + ": "+y);
-            y += height*1.2;
+            y += height*1.4;
         });
       }
 
@@ -70,11 +74,11 @@ function generateCanvas(data) {
 
     //set x axis
     if(item.lp === "TWO"){
-      x += width *1.2;
+      x += width *1.4*offsetYear;
     }else if(item.lp === "THREE"){
-      x += width *1.2*2;
+      x += width *1.4*2*offsetYear;
     }else if(item.lp === "FOUR"){
-      x += width *1.2*3;
+      x += width *1.4*3*offsetYear;
     }
 
     courses.set(item["courseCode"]+item["year"]+item["lp"], new CourseObject(
@@ -88,21 +92,22 @@ function generateCanvas(data) {
     ))
     //console.log("added: "+ JSON.stringify(item))
   });
+
   drawCanvas();
 }
 
 function drawCanvas() {
-  //saveMatrix();
+  saveMatrix();
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.translate(viewportX,viewportY);
+  translate(viewportX,viewportY);
   //ctx.scale(width/(window.innerWidth*0.2),height/(window.innerHeight*0.21));
   //console.log('width:'+window.innerWidth*0.2+", height: "+(window.innerHeight*0.21));
   courses.forEach(function (value,index,arr) {
     //console.log('draw nr:'+index);
     value.draw(ctx);
   })
-  //restoreMatrix();
+  restoreMatrix();
   ctx.restore();
 }
 
@@ -135,8 +140,8 @@ function scale(x,y){
   ctx.scale(x,y);
 }
 function getXY(mouseX,mouseY){
-  newX = mouseX * matrix[0] + mouseY * matrix[2] + matrix[4];
-  newY = mouseX * matrix[1] + mouseY * matrix[3] + matrix[5];
+  let newX = mouseX * matrix[0] + mouseY * matrix[2] + matrix[4];
+  let newY = mouseX * matrix[1] + mouseY * matrix[3] + matrix[5];
   return({x:newX,y:newY});
 }
 
@@ -164,3 +169,5 @@ function restoreMatrix() {
 
 
 }
+
+

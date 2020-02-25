@@ -29,67 +29,6 @@ public class Main {
         }
         neoapi = Neo4jConfigLoader.getApi();
 
-        // Setup database connection
-        //neoapi = new Neo4JAPI("");
-
-        //neoapi.createMethods.clear(); <-- I moved this to Deletemethods. Greetings from Robin the code cop.
-        //createCourses();
-        //createTopics();
-        //createKCs();
-
-        //createRelationsBetweenCoursesAndKCs();
-
-
-
-
-
-
-        readCourses();
-
-        readKCs();
-        readTopics();
-        addTopicsToCourses();
-        addTopicsToKCs();
-        //createCourseProgram("courseprgroma 1", "TIDAG");
-        filterTest();
-        courseOrder = new CourseProgram();
-        Course temp = new Course(new CourseInformation("test","xxxx",Credits.ERROR,"test","test",new CourseDate(1207,LP.ONE)));
-		KC t;
-		t = new KC("Test 1","test desc",1,"wow");
-        temp.setDevelopedKC(t);
-        neoapi.createMethods.createKC(t);
-        t = new KC("Test 2","test desc",1,"wow");
-        temp.setDevelopedKC(t);
-        neoapi.createMethods.createKC(t);
-
-        t = new KC("Test 3","test desc",1,"wow");
-        temp.setDevelopedKC(t);
-        neoapi.createMethods.createKC(t);
-
-        t = new KC("Test 4","test desc",1,"wow");
-        temp.setDevelopedKC(t);
-        neoapi.createMethods.createKC(t);
-
-        neoapi.createMethods.createCourse(temp);
-        neoapi.createMethods.createCourseKCrelation(temp);
-
-        courseOrder.setCode("xyxy");
-        courseOrder.setCredits(Credits.THIRTY);
-        courseOrder.setDescription("test");
-        courseOrder.setName("test");
-        courseOrder.setStartDate(new CourseDate(1111,LP.ONE));
-        courseOrder.setProgramType(CourseProgram.ProgramType.PROGRAM);
-        //neoapi.createMethods.createProgram(courseOrder);
-		neoapi.createMethods.createProgramCourseRelation(courseOrder, temp);
-		CourseProgram data = neoapi.getMethods.getProgram(courseOrder.getCode(),courseOrder.getStartDate());
-        try {
-            System.out.println(data.getAsJson());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        //System.in.read();
-
-
     }
 
     public static void print(String s) {

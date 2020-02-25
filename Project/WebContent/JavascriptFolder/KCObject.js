@@ -1,8 +1,21 @@
 class KCObject{
-    constructor(c1,c2,data) {
+    constructor(kcTarget,data) {
         this.data = data;
-        this.c1 = c1;
-        this.c2 = c2;
+        this.x1 = kcTarget.x1;
+        this.x2 = kcTarget.x2;
+        this.y1 = kcTarget.y1;
+        this.y2 = kcTarget.y2;
+        this.snapPoints = kcTarget.snapPoints;
+
+    }
+    draw(ctx){
+        ctx.beginPath();
+        ctx.moveTo(this.x1,this.y1);
+        this.snapPoints.forEach(function (point) {
+            ctx.lineTo(point.x, point.y);
+        });
+        ctx.lineTo(this.x2, this.y2);
+        ctx.stroke();
     }
 
 }
