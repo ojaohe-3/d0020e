@@ -270,12 +270,13 @@ public class Admin extends HttpServlet {
 
 			String KCName = request.getParameter("name");
 			String taxonomyLevel = request.getParameter("taxonomyLevel");
-			String newTaxonomyDescription = request.getParameter("newTaxonomyDescription");
-
+			String newTaxonomyDescription = request.getParameter("newtaxonomyDesc");
+			
 			int TaxonomyLevel = Integer.parseInt(taxonomyLevel);
 
+			
 			KC kc = Neo4jConfigLoader.getApi().getMethods.getKCwithTaxonomyLevel(KCName, TaxonomyLevel);
-
+				
 			kc.setTaxonomyDescription(newTaxonomyDescription);
 
 			Neo4jConfigLoader.getApi().modifyMethods.editKCTaxonomyDescription(kc);
@@ -317,6 +318,7 @@ public class Admin extends HttpServlet {
 			String startLP = request.getParameter("startLP");
 			String description = request.getParameter("description");
 			String credits = request.getParameter("credits");
+			int readingPeriods = Integer.parseInt(request.getParameter("readingPeriods"));
 
 			LP period = LP.getByString(startLP);
 			int Year = Integer.parseInt(startYear);
@@ -324,7 +326,9 @@ public class Admin extends HttpServlet {
 
 			CourseDate courseDate = new CourseDate(Year, period);
 			CourseProgram program = new CourseProgram(programCode, programName, description, courseDate, hp);
-
+			program.setCourseOrder(new CourseOrder(readingPeriods));
+				
+			
 			Neo4jConfigLoader.getApi().createMethods.createProgram(program);
 
 			return "The program named " + programName + " has been created";
@@ -376,6 +380,7 @@ public class Admin extends HttpServlet {
 			String newStartLP = request.getParameter("newStartLP");
 			String newDescription = request.getParameter("newDescription");
 			String newCredits = request.getParameter("newCredits");
+			int readingPeriods = Integer.parseInt(request.getParameter("readingPeriods"));
 
 			LP fromPeriod = LP.getByString(programStartLP);
 			int previousYear = Integer.parseInt(programStartYearYear);
@@ -384,10 +389,11 @@ public class Admin extends HttpServlet {
 
 			CourseDate earlierProgramDate = new CourseDate(previousYear, fromPeriod);
 			CourseDate newProgramDate = new CourseDate(nextYear, newStartPeriod);
-
+			CourseOrder courseOrder = new CourseOrder(readingPeriods);
+			
 			Credits newCreditPoints = Credits.getByString(newCredits);
 
-			CourseProgram updatedProgram = new CourseProgram(newCode, newName,newDescription, newProgramDate, newCreditPoints);
+			CourseProgram updatedProgram = new CourseProgram(courseOrder, newCode, newName,newDescription, newProgramDate, newCreditPoints);
 
 			Neo4jConfigLoader.getApi().modifyMethods.editProgram(oldProgramCode, earlierProgramDate, updatedProgram);
 
@@ -413,10 +419,12 @@ public class Admin extends HttpServlet {
 			CourseProgram courseProgram = Neo4jConfigLoader.getApi().getMethods.getProgram(programCode, programStartDate);
 			Course course = Neo4jConfigLoader.getApi().getMethods.getCourse(courseCode, courseDate);
 
-			CourseInformation courseInformation = new CourseInformation(course.getName(), course.getCourseCode(), course.getCredit(), course.getDescription(), course.getExaminer(), course.getStartPeriod());
-			ProgramInformation programInformation = new ProgramInformation(courseProgram.getCode(), courseProgram.getName(), courseProgram.getDescription(), courseProgram.getStartDate(), courseProgram.getCredits(), courseProgram.getProgramType());
+			//CourseInformation courseInformation = new CourseInformation(course.getName(), course.getCourseCode(), course.getCredit(), course.getDescription(), course.getExaminer(), course.getStartPeriod());
+			//ProgramInformation programInformation = new ProgramInformation(courseProgram.getCode(), courseProgram.getName(), courseProgram.getDescription(), courseProgram.getStartDate(), courseProgram.getCredits(), courseProgram.getProgramType());
 
-			Neo4jConfigLoader.getApi().modifyMethods.editInProgramCourseRelation(courseInformation, programInformation);
+			courseProgram.setCode(programCode);
+			//CourseProgram courseProgram = new CourseProgram(null, programCode, null, null, new CourseDate(programYear, programStartPeriod) ,null );
+			Neo4jConfigLoader.getApi().createMethods.createProgramCourseRelation(courseProgram, course);
 
 			return "The relationship between " + programCode + " and " + courseCode + " has been modified";
 
@@ -439,13 +447,15 @@ public class Admin extends HttpServlet {
 			CourseDate specDate = new CourseDate(specialYear, specialPeriod);
 			Credits currentCredits = Credits.getByString(credits);
 
-			CourseProgram programSpecialization = new CourseProgram(programCode, name, description, specDate, currentCredits);
-
+			int readingPeriods = Integer.parseInt(request.getParameter("readingPeriods"));
+			ProgramSpecialization programSpecialization = new ProgramSpecialization(null, programCode, name, description, specDate, currentCredits);
+			programSpecialization.setCourseOrder(new CourseOrder(readingPeriods));
+			
 			Neo4jConfigLoader.getApi().createMethods.createProgram(programSpecialization);
 
-			ProgramSpecialization programSpecialization1 = Neo4jConfigLoader.getApi().getMethods.getProgramSpecialization(name, specDate,programCode);
+			//ProgramSpecialization programSpecialization1 = Neo4jConfigLoader.getApi().getMethods.getProgramSpecialization(name, specDate,programCode);
 
-			Neo4jConfigLoader.getApi().createMethods.createProgramSpecializationRelation(programCode, programDate, programSpecialization1);
+			Neo4jConfigLoader.getApi().createMethods.createProgramSpecializationRelation(programCode, programDate, programSpecialization);
 
 			return "A relationship between the program " + programCode + " and the specialization " + name + " has been created";
 

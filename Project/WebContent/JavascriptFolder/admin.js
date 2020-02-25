@@ -479,11 +479,11 @@ function kc_delete() {
 // BEGIN PROGRAM 
 
 function program_create() {
-	var input = prompt("name;code;startYear;startLP;credits;description");
+	var input = prompt("name;code;startYear;startLP;credits;reading_periods;description");
 	
 	var data = input.split(";");
 	
-	if(data.length == 6){
+	if(data.length == 7){
 		
 		$.ajax({
 			url : 'admin',
@@ -496,7 +496,8 @@ function program_create() {
 				startYear : data[2],
 				startLP : data[3],
 				credits : data[4],
-				description : data[5]
+				readingPeriods : data[5],
+				description : data[6]
 				
 				
 			},
@@ -513,26 +514,27 @@ function program_create() {
 }
 
 function program_create_specialization() {
-	var input = prompt("name;programCode;startYear;specializationYear;startLP;credits;description;readingPeriods");
+	var input = prompt("name;programCode;programYear;programLP;specializationYear;specializationLP;description;credits;readingPeriods");
 	
 	var data = input.split(";");
 	
-	if(data.length == 7){
+	if(data.length == 9){
 		
 		$.ajax({
 			url : 'admin',
 			type : "POST",
 			data : {
 				head : "PROGRAM",
-				method : "CREATE",
+				method : "CREATE_SPECIAL",
 				name : data[0],
 				programCode : data[1],
-				startYear : data[2],
-				startLP : data[4],
-				credits : data[5],
+				startProgramYear : data[2],
+				startProgramLP : data[3],
+				specYear : data[4],
+				specLP : data[5],			
 				description : data[6],
-				specYear : data[3],
-				readingPeriods : data[7]
+				credits : data[7],
+				readingPeriods : data[8]
 				
 			},
 			success : function(response) {
@@ -624,7 +626,7 @@ function program_add_course() {
 				method : "ADD_COURSE",
 				programCode : data[0],
 				programStartYear : data[1],
-				programSartLP : data[2],
+				programStartLP : data[2],
 				courseCode : data[3],
 				courseYear : data[4],
 				courseLP : data[5]
@@ -647,7 +649,7 @@ function program_modify() {
 	
 	var data = input.split(";");
 	
-	if(data.length == 9){
+	if(data.length == 10){
 		
 		$.ajax({
 			url : 'admin',
@@ -656,14 +658,15 @@ function program_modify() {
 				head : "PROGRAM",
 				method : "MODIFY",
 				oldCode : data[0],
-				oldStartYear : data[1],
-				oldStartLP : data[2],
+				programStartYear : data[1],
+				programStartLP : data[2],
 				newName : data[3],
 				newCode : data[4],
 				newStartYear : data[5],
 				newStartLP : data[6],
 				newDescription : data[7],
-				newCredits : data[8]
+				newCredits : data[8],
+				readingPeriods : data[9]
 				
 			},
 			success : function(response) {

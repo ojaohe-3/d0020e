@@ -42,7 +42,7 @@ private final Neo4jCommunicator communicator;
 	 * Add a topic to the database.
 	 */
 	public void addTopic(String topic) {
-		String query = "CREATE (n: " + Topic.TopicLabels.TOPIC.toString() +" { " +Topic.TopicLabels.TITLE.toString()+ ":\""+ topic.toString() +"\"})";
+		String query = "MERGE (n: " + Topic.TopicLabels.TOPIC.toString() +" { " +Topic.TopicLabels.TITLE.toString()+ ":\""+ topic.toString() +"\"})";
 		this.communicator.writeToNeo(query);
 	}
 	
@@ -175,10 +175,11 @@ private final Neo4jCommunicator communicator;
 				CourseProgram.ProgramLabels.YEAR.toString()+ ": \"" + startDate.getYear() + "\", " + 
 				CourseProgram.ProgramLabels.LP.toString() + ": \"" + startDate.getPeriod().toString() + "\"}) ";
 		
-		query += "MATCH (specialization: " + CourseProgram.ProgramType.SPECIALIZATION.toString() +" {code: \"" + specialization.getCode() + "\", "+ 
+		query += "MATCH (specialization: " + CourseProgram.ProgramType.SPECIALIZATION.toString() +" {code: \"" + specialization.getCode().replaceAll("\"", "") + "\", "+ 
 		CourseLabels.YEAR + " : \"" + specialization.getStartDate().getYear() + "\" , " + 
 				CourseLabels.LP + " : \"" + specialization.getStartDate().getPeriod().toString() + "\" }) ";
 		query += "CREATE (program) <- [r: " + Relations.SPECIALIZATION.toString() + "]-(specialization)";
+		System.out.println(query);
 		this.communicator.writeToNeo(query);
 	}
 	
@@ -248,7 +249,7 @@ private final Neo4jCommunicator communicator;
 		query += "(course:"+Course.course+"{"+Course.CourseLabels.CODE+":\""+course.getCourseCode()+"\","+ CourseLabels.LP.toString()+":\""+course.getStartPeriod().getPeriod().toString()
 				+"\","+CourseLabels.YEAR+":\""+course.getStartPeriod().getYear()+"\"}) CREATE (program)<-[r:"+Relations.IN_PROGRAM+"]-(course)";
 
-
+		System.out.println(query);
 		this.communicator.writeToNeo(query);
 
 

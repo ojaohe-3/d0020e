@@ -59,6 +59,7 @@ public class GetMethods {
 		String query = "MATCH (courseProgram: CourseProgram {code: \"" + code + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
 		query += "RETURN courseProgram";
 		
+		
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
 		
@@ -77,6 +78,7 @@ public class GetMethods {
 					Integer.parseInt(currentRow.get("courseInProgram").get(CourseLabels.YEAR.toString()).toString().replaceAll("\"","")),
 					LP.valueOf(currentRow.get("courseInProgram").get(CourseLabels.LP.toString()).toString().replaceAll("\"","")));
 			Course course = getCourse(tempCode,tempDate);
+			
 			courseOrder.setCourseAt(course);
 		}
 		
@@ -116,8 +118,10 @@ public class GetMethods {
 	 * @return course
 	 */
 	public Course getCourse(String courseCode, CourseDate courseDate) {
-		String query = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
+		String query = "MATCH (course: Course {courseCode: \"" + courseCode.replaceAll("\"", "") + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
 		StatementResult result = this.communicator.readFromNeo(query);
+		System.out.println(query);
+		
 		Record row = result.next();
 		
 		Course course = createCourse(row, "course");
@@ -218,13 +222,13 @@ public class GetMethods {
 	 */
 	public ProgramSpecialization getProgramSpecialization(String specialization, CourseDate startDate, String code) {
 
-		String query = "MATCH (programSpecialization: ProgramSpecialization {specialization: \"" + specialization + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" , code : \"" + code + "\" }) ";
-		query += "RETURN courseProgramSpecialization";
+		String query = "MATCH (programSpecialization: ProgramSpecialization {"+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" , code : \"" + code + "\" }) ";
+		query += "RETURN programSpecialization";
 
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
 		
-		int readingPeriods = row.get("programSpecialization").get("readingPeriods").asInt();
+		int readingPeriods = Integer.parseInt(row.get("programSpecialization").get("readingPeriods").toString().replaceAll("\"", ""));
 		CourseOrder courseOrder = new CourseOrder(readingPeriods);
 
 		String inProgramQuery = "MATCH (programSpecialization: ProgramSpecialization {code: \"" + code + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\"}) ";
@@ -246,10 +250,10 @@ public class GetMethods {
 		String name = row.get(nodename).get("name").toString();
 		String code = row.get(nodename).get("code").toString();
 		String description = row.get(nodename).get("description").toString();
-		String creds = row.get(nodename).get("credit").toString();
+		String creds = row.get(nodename).get("credits").toString().replaceAll("\"", "");
 		Credits credits = Credits.valueOf(creds);
-		int year = Integer.parseInt(row.get(nodename).get("year").toString());
-		LP lp = LP.valueOf(row.get(nodename).get("lp").toString());
+		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"", ""));
+		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"", ""));
 		CourseDate startDate = new CourseDate(year, lp);	
 		
 		ProgramSpecialization courseProgramSpecialization = new ProgramSpecialization(courseOrder, name, code, description, startDate, credits);

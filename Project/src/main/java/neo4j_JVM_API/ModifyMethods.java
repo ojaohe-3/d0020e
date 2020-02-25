@@ -29,7 +29,7 @@ public class ModifyMethods {
 		String query = "MATCH(kc: KC {"+KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " +
 		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 
 		KC.KCLabel.GENERAL_DESCRIPTION.toString() + "= \"" + kc.getGeneralDescription() + "\", kc." +
-		KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + "= \"" + kc.getTaxonomyDescription() +"\"";
+		KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + "= \"" + kc.getTaxonomyDescription().replaceAll("\"", "") +"\"";
 	 
 		communicator.writeToNeo(query);
 	 }
@@ -61,6 +61,8 @@ public class ModifyMethods {
 		String query = "MATCH(kc: KC {"+KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " +
 		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." +
 		KC.KCLabel.TAXONOMY_DESCRIPTION + "= \"" + kc.getTaxonomyDescription() + "\"";
+		
+		communicator.writeToNeo(query);
 	 }
 
 
@@ -79,15 +81,16 @@ public class ModifyMethods {
 	*/
 	
 	public void editProgram(String programCode,CourseDate startyear, CourseProgram newProgram) {
-		String query = "MATCH (n:CourseProgram{ProgramCode:\""+  programCode+"\"}) SET n={";
-		query += CourseProgram.ProgramLabels.CODE.toString() +"="+newProgram.getCode();
-		query += CourseProgram.ProgramLabels.DESCRIPTION.toString() +":"+newProgram.getDescription();
-		query += CourseProgram.ProgramLabels.YEAR.toString() +":"+newProgram.getStartDate().getYear();
-		query += CourseProgram.ProgramLabels.LP.toString() +":"+newProgram.getStartDate().getPeriod();
-		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +":"+newProgram.getCourseOrder().getReadingPeriods();
-		query += CourseProgram.ProgramLabels.CREDITS.toString() +":"+newProgram.getCredits();
+		String query = "MATCH (n:CourseProgram{code:\""+  programCode+"\"}) SET n={";
+		query += CourseProgram.ProgramLabels.CODE.toString() +": \"" + newProgram.getCode() + "\", ";
+		query += CourseProgram.ProgramLabels.DESCRIPTION.toString() +": \""+newProgram.getDescription() + "\", ";
+		query += CourseProgram.ProgramLabels.YEAR.toString() +": \""+newProgram.getStartDate().getYear() + "\", ";
+		query += CourseProgram.ProgramLabels.LP.toString() +": \""+newProgram.getStartDate().getPeriod() + "\", ";
+		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +": \""+newProgram.getCourseOrder().getReadingPeriods() + "\", ";
+		query += CourseProgram.ProgramLabels.CREDITS.toString() +": \""+newProgram.getCredits() + "\"";
 
 		query +="}";
+		
 		communicator.writeToNeo(query);
 	}
 
