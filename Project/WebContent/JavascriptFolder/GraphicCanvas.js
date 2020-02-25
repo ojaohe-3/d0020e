@@ -33,19 +33,22 @@ canvas.addEventListener('click', function(evt) {
     if (value.button.isInside(mousePos,dpi)){
       alert('Button Pressed!');
     }else if(value.isInside(mousePos,dpi)){
-      //alert('Course Pressed!');
+      alert('Course Pressed!');
       showCourseInfo(value.data);
-    } else
+    } else{
       console.log("mouse pressed on nothing!");
+    }
+
   });
 },false);
 
 function getMousePos(canvas, event) {
   let rect = canvas.getBoundingClientRect();
-  let mousePos = getXY(event.clientX,event.clientY)
+  console.log(rect.left);
+  let mousePos = getXY(event.clientX,event.clientY) // This ain't working, pal. I get a bunch of whacky numbers.
   return {
-      x: mousePos.x - rect.left,
-      y: mousePos.y - rect.top
+      x: event.clientX - rect.left, // Changed to clientX and clientY.
+      y: event.clientY- rect.top
   };
 }
 
@@ -54,8 +57,20 @@ function generateCanvas(data) {
   let periodItem = [];
   let year = data.year;
   let offsetYear = 0;
+
+  let currentYear = year;
   data['Courses'].forEach(function (item, index,arr){
+
+    // All courses should, in theory, be sorted after year. We can therefore reset the study periods when
+    // The next course has a new year.
+    if (item.year != currentYear) {
+      for (let [key, value] of period.entries()) {
+        value.splice(0,value.length);
+      }
+      currentYear = item.year;
+    }
     offsetYear = item.year-year;
+    console.log(offsetYear);
     let x = 0;
     let y = 0;
       //check if we have collisions
@@ -63,7 +78,7 @@ function generateCanvas(data) {
       //console.log(periodItem);
       if(periodItem.length > 0){
         periodItem.forEach(function () {
-            console.log(item.courseCode + ": "+y);
+            //console.log(item.courseCode + ": "+y);
             y += height*1.2;
         });
       }
@@ -103,7 +118,7 @@ function drawCanvas() {
   saveMatrix();
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
-  translate(viewportX,viewportY);
+  //translate(viewportX,viewportY);
   //ctx.scale(width/(window.innerWidth*0.2),height/(window.innerHeight*0.21));
   //console.log('width:'+window.innerWidth*0.2+", height: "+(window.innerHeight*0.21));
   courses.forEach(function (value,index,arr) {
@@ -129,11 +144,11 @@ function fix_dpi() {
 
 //https://stackoverflow.com/questions/21717001/html5-canvas-get-coordinates-after-zoom-and-translate
 function translate(x,y){
-  console.log('x: '+x+', y: '+y);
+  //console.log('x: '+x+', y: '+y);
   matrix[4] += matrix[0] * x + matrix[2] * y;
   matrix[5] += matrix[1] * x + matrix[3] * y;
   ctx.translate(x,y);
-  console.log(matrix);
+  //console.log(matrix);
 }
 function scale(x,y){
   matrix[0] *= x;

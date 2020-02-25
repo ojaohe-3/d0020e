@@ -49,9 +49,9 @@ class CourseObject{
     }
 
   draw(ctx){
-      saveMatrix();
+      //saveMatrix();
       ctx.save();
-      translate(0,0);
+      //translate(0,0);
        this.button = new canvasButton({x: this.x + this.width*0.8,
         y : this.y+this.height*0.8,
         width : this.width*0.2,
@@ -72,7 +72,7 @@ class CourseObject{
       this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.36,this.data["courseCode"],ctx);
       this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
       this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.59,this.data["examiner"],ctx);
-      restoreMatrix();
+      //restoreMatrix();
       ctx.restore();
       this.button.draw(ctx);
     }

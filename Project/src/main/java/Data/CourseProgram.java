@@ -72,7 +72,7 @@ public class CourseProgram extends ProgramInformation{
 		obj.put(CourseProgram.ProgramLabels.DESCRIPTION.toString(),description.replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits.name().replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.LP.toString(),startDate.getPeriod().name().replaceAll("\"",""));
-		obj.put(CourseProgram.ProgramLabels.NAME.toString(),startDate.getYear());
+		obj.put(ProgramLabels.YEAR.toString(),startDate.getYear());
 		obj.put("Courses",this.courses);
 
 		return obj;

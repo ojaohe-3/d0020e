@@ -47,15 +47,27 @@ public class GetMethods {
         }
 		return resultArray.toArray(new String[resultArray.size()]);
 	}
+
+	/**
+	 * Get Program from database
+	 * @param code
+	 * @param startDate
+	 * @return
+	 */
+	public CourseProgram getProgram(String code, CourseDate startDate) {
+		return getProgram(code,startDate, CourseLabels.YEAR, false);
+	}
 	
 	/**
 	 * Get Program from database
 	 * 
 	 * @param code
 	 * @param startDate
+	 * @param orderCoursesBy - Order the course in the program by this parameter.
+	 * @param DESCENDING - Set this to true if you want the courses in descending order.
 	 * @return
 	 */
-	public CourseProgram getProgram(String code, CourseDate startDate) {
+	public CourseProgram getProgram(String code, CourseDate startDate, CourseLabels orderCoursesBy, boolean DESCENDING) {
 		String query = "MATCH (courseProgram: CourseProgram {code: \"" + code + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
 		query += "RETURN courseProgram";
 		
@@ -66,7 +78,10 @@ public class GetMethods {
 		//CourseOrder courseOrder = new CourseOrder(readingPeriods);//useless
 		
 		String inProgramQuery = "MATCH (courseProgram: CourseProgram {"+CourseProgram.ProgramLabels.CODE+": \"" + code + "\", "+ CourseProgram.ProgramLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseProgram.ProgramLabels.LP + " : \"" + startDate.getPeriod() + "\" })";
-		inProgramQuery += "-[relation:IN_PROGRAM]-(courseInProgram:Course) RETURN courseInProgram";
+		inProgramQuery += "-[relation:IN_PROGRAM]-(courseInProgram:Course) RETURN courseInProgram ORDER BY courseInProgram." + orderCoursesBy;
+		if (DESCENDING) {
+			inProgramQuery += " DESCENDING";
+		}
 		result = this.communicator.readFromNeo(inProgramQuery);
 
 		String tempCode;
@@ -105,7 +120,7 @@ public class GetMethods {
 		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"",""));
 		CourseDate startDate = new CourseDate(year, lp);	
 		
-		CourseProgram courseProgram = new CourseProgram(courseOrder, name, code, description, startDate, credits, CourseProgram.ProgramType.PROGRAM);
+		CourseProgram courseProgram = new CourseProgram(courseOrder, code, name, description, startDate, credits, CourseProgram.ProgramType.PROGRAM);
 		
 		return courseProgram;
 	}

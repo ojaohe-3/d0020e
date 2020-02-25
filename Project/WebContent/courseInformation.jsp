@@ -30,5 +30,3 @@
     
 </div>
 
-<button type="button" onclick="showCourseInfo()"> Show course</button>
-

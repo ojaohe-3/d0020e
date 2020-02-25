@@ -4,6 +4,7 @@ public enum Credits {
 	SEVEN,
 	FIFTHEEN,
 	THIRTY,
+	ONEHUNDREDEIGHTY,
 	ERROR;
 	
 	public static Credits getByString(String str) {

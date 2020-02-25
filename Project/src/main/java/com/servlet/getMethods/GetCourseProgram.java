@@ -1,5 +1,6 @@
 package com.servlet.getMethods;
 
+import Data.Course;
 import Data.CourseDate;
 import Data.CourseProgram;
 import Data.LP;
@@ -20,8 +21,11 @@ public class GetCourseProgram extends HttpServlet {
         String code = request.getParameter("code");
         int year = Integer.parseInt(request.getParameter("startyear"));
         LP lp = LP.valueOf(request.getParameter("startperiod"));
+
+        // This will return a course program with a list of all courses in ascending order by year.
+        // The nifty feature with this is that all courses within one year will be grouped together. <- used in the canvas.
         CourseProgram data = Neo4jConfigLoader.getApi().getMethods.getProgram(code,
-                new CourseDate(year, lp));
+                new CourseDate(year, lp), Course.CourseLabels.YEAR, false);
         try {
             String json = data.getAsJson().toString().replaceAll("\\\\","").replaceAll("\"\\{",
                     "{").replaceAll("}\"","}");//mucishi

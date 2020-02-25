@@ -15,7 +15,7 @@ class canvasButton{
   }
   draw(ctx){
       ctx.save();
-      saveMatrix();
+      //saveMatrix();
       ctx.fillStyle="gray";
     ctx.fillRect(this.x,this.y,this.width,this.height);
 
@@ -27,7 +27,7 @@ class canvasButton{
           );
     }
     ctx.restore();
-    restoreMatrix();
+    //restoreMatrix();
   }
 
 }
