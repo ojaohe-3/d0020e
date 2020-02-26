@@ -125,18 +125,16 @@ public class ModifyMethods {
 	 * @author Johan RH
 	 */
 	public void editCourse(String courseID, CourseDate period,Course nCourse) {
-		String query = "MATCH (n:"+Course.course+"{"+ Course.CourseLabels.CODE +"\""+ courseID+"\","+
-				Course.CourseLabels.YEAR +":"+period.getYear()+","+
-				Course.CourseLabels.LP +":\""+period.getPeriod().name()+"\"} SET n={";
-		query += Course.CourseLabels.CODE.toString() +":"+nCourse.getCourseCode();
-		query += Course.CourseLabels.CREDIT.toString() +":"+nCourse.getCredit();
-		query += Course.CourseLabels.DESCRIPTION.toString() +":"+nCourse.getDescription();
-		query += Course.CourseLabels.LP.toString() +"="+nCourse.getStartPeriod().getPeriod().name();
-		query += Course.CourseLabels.YEAR.toString() +"="+nCourse.getStartPeriod().getYear();
-		query += Course.CourseLabels.EXAMINER.toString() +"="+nCourse.getExaminer();
-		query += Course.CourseLabels.NAME.toString() +"="+nCourse.getName();
-
-		query +="}";
+		String query = "MATCH (n:"+Course.course+"{"+ Course.CourseLabels.CODE +": \""+ courseID+"\","+
+				Course.CourseLabels.YEAR +": \""+period.getYear()+"\","+
+				Course.CourseLabels.LP +":\""+period.getPeriod().name()+"\"}) SET n.";
+		query += Course.CourseLabels.CODE.toString() +"= \""+nCourse.getCourseCode() + "\", n.";
+		query += Course.CourseLabels.CREDIT.toString() +"= \""+nCourse.getCredit() + "\", n.";
+		query += Course.CourseLabels.DESCRIPTION.toString() +"= \""+nCourse.getDescription() + "\", n.";
+		query += Course.CourseLabels.LP.toString() +"= \""+nCourse.getStartPeriod().getPeriod().name()+ "\", n.";
+		query += Course.CourseLabels.YEAR.toString() +"= \""+nCourse.getStartPeriod().getYear()+ "\", n.";
+		query += Course.CourseLabels.EXAMINER.toString() +"=\""+nCourse.getExaminer() + "\", n.";
+		query += Course.CourseLabels.NAME.toString() +"= \""+nCourse.getName() + "\"";
 		communicator.writeToNeo(query);
 	}
 
