@@ -85,7 +85,7 @@ function saveCourseChanges(){
 	var year = document.getElementById("year").innerHTML;
 	var lp = document.getElementById("lp").innerHTML;
 	
-	var description = document.getElementById("description").innerHTML;
+	var description = document.getElementById("description").value;
 	
 	var developedKCs = document.getElementById("developedKCs");
 	var divs = developedKCs.getElementsByTagName("div");
