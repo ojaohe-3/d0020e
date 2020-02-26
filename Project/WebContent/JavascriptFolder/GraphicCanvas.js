@@ -32,6 +32,7 @@ canvas.addEventListener('click', function(evt) {
   courses.forEach(function (value, key, map) {
     if (value.button.isInside(mousePos,dpi)){
       alert('Button Pressed!');
+      value.drawExtended(ctx);
     }else if(value.isInside(mousePos,dpi)){
       alert('Course Pressed!');
       showCourseInfo(value.data);
@@ -44,8 +45,7 @@ canvas.addEventListener('click', function(evt) {
 
 function getMousePos(canvas, event) {
   let rect = canvas.getBoundingClientRect();
-  console.log(rect.left);
-  let mousePos = getXY(event.clientX,event.clientY) // This ain't working, pal. I get a bunch of whacky numbers.
+  //let mousePos = getXY(event.clientX,event.clientY) // This ain't working, pal. I get a bunch of whacky numbers.
   return {
       x: event.clientX - rect.left, // Changed to clientX and clientY.
       y: event.clientY- rect.top
@@ -94,10 +94,11 @@ function generateCanvas(data) {
           x: x,
           y: y,
           width: width,
-          height: height
+          height: height,
+          thickness: 24
         }
-    ))
-    //console.log("added: "+ JSON.stringify(item))
+    ));
+    console.log("added: "+ JSON.stringify(item))
   });
 
   drawCanvas();

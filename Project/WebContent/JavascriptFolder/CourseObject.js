@@ -1,3 +1,4 @@
+
 class CourseObject{
 
     constructor(data,conf) {
@@ -6,15 +7,16 @@ class CourseObject{
         this.y = conf.y;
         this.width = conf.width;
         this.height = conf.height;
+        this.thickness = conf.thickness;
         this.extended = false;
         this.dockPointsDev = [];
         this.dockPointsReq = [{x: this.x, y:this.height/2+this.y}];
 
         this.data.Required.forEach(function (k,i) {
-            this.dockPointsReq.push({x: this.x, y:this.y+this.height+24*i});
+            this.dockPointsReq.push({x: this.x, y:this.y+this.height+this.thickness*i});
         })
         this.data.Developed.forEach(function (k,i) {
-            this.dockPointsDev.push({x: this.x+this.width, y:this.y+this.height+24*i})
+            this.dockPointsDev.push({x: this.x+this.width, y:this.y+this.height+this.thickness*i})
         })
     }
 
@@ -22,57 +24,60 @@ class CourseObject{
         saveMatrix();
         ctx.save();
         translate(0,0);
-        this.height =
+        this.height += Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness;
+
         this.button = new canvasButton({x: this.x + this.width*0.8,
             y : this.y+this.height*0.8,
             width : this.width*0.2,
             height : this.height*0.2,
-            text:"▲"});
+            text:"▼"});
         ctx.strokeRect(this.x,this.y,this.width,this.height);
-        ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
-        ctx.fillStyle = "white";
-        ctx.font = 'italic '+(this.width)*4/ctx.measureText(this.data["name"]).width+'pt Calibri';
-        ctx.fillText(this.data["name"],
-            this.x+this.width/2 -  ctx.measureText(this.data["name"]).width/2,
-            this.y + this.height*0.14
-        );
-        ctx.fillStyle = "black";
-        ctx.strokeRect(this.x+this.width*0.05,this.y+this.height*.3,this.width-this.width*0.1,this.height-this.height*0.5);
+        //obsolete
+        //ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
+        //ctx.fillStyle = "white";
+        //ctx.font = 'italic '+(this.width)*4/ctx.measureText(this.data["name"]).width+'pt Calibri';
+        //ctx.fillText(this.data["name"],
+        //    this.x+this.width/2 -  ctx.measureText(this.data["name"]).width/2,
+        //    this.y + this.height*0.14
+        //);
+        //ctx.fillStyle = "black";
+        //ctx.strokeRect(this.x+this.width*0.05,this.y+this.height*.3,this.width-this.width*0.1,this.height-this.height*0.5);
 
-        this.drawInRect(this.x+this.width*0.1 ,this.y+this.height*0.35 ,0,0,0.70717,ctx);
-        this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.36,this.data["courseCode"],ctx);
-        this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
-        this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.59,this.data["examiner"],ctx);
+        //this.drawInRect(this.x+this.width*0.1 ,this.y+this.height*0.35 ,0,0,0.70717,ctx);
+        //this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.36,this.data["courseCode"],ctx);
+       // this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
+        //this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.59,this.data["examiner"],ctx);
         restoreMatrix();
         ctx.restore();
         this.button.draw(ctx);
     }
 
   draw(ctx){
-      //saveMatrix();
+      saveMatrix();
       ctx.save();
-      //translate(0,0);
+      translate(0,0);
        this.button = new canvasButton({x: this.x + this.width*0.8,
         y : this.y+this.height*0.8,
         width : this.width*0.2,
         height : this.height*0.2,
         text:"▲"});
       ctx.strokeRect(this.x,this.y,this.width,this.height);
-      ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
-      ctx.fillStyle = "white";
-      ctx.font = 'italic '+(this.width)*4/ctx.measureText(this.data["name"]).width+'pt Calibri';
-      ctx.fillText(this.data["name"],
-        this.x+this.width/2 -  ctx.measureText(this.data["name"]).width/2,
-        this.y + this.height*0.14
-        );
-      ctx.fillStyle = "black";
-      ctx.strokeRect(this.x+this.width*0.05,this.y+this.height*.3,this.width-this.width*0.1,this.height-this.height*0.5);
+      //obsolete
+      //ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
+      //ctx.fillStyle = "white";
+      //ctx.font = 'italic '+(this.width)*4/ctx.measureText(this.data["name"]).width+'pt Calibri';
+     // ctx.fillText(this.data["name"],
+       // this.x+this.width/2 -  ctx.measureText(this.data["name"]).width/2,
+        //this.y + this.height*0.14
+       // );
+     // ctx.fillStyle = "black";
+     // ctx.strokeRect(this.x+this.width*0.05,this.y+this.height*.3,this.width-this.width*0.1,this.height-this.height*0.5);
 
-      this.drawInRect(this.x+this.width*0.1 ,this.y+this.height*0.35 ,0,0,0.70717,ctx);
-      this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.36,this.data["courseCode"],ctx);
-      this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
-      this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.59,this.data["examiner"],ctx);
-      //restoreMatrix();
+     // this.drawInRect(this.x+this.width*0.1 ,this.y+this.height*0.35 ,0,0,0.70717,ctx);
+      //this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.36,this.data["courseCode"],ctx);
+     // this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
+      //this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.59,this.data["examiner"],ctx);
+      restoreMatrix();
       ctx.restore();
       this.button.draw(ctx);
     }
