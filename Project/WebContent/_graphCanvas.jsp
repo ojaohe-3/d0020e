@@ -7,9 +7,6 @@
         </div>
 
     </canvas>
-    <div id="canvas_course_container">
-
-    </div>
     <%@include file="courseInformation.jsp"%>
 
 </div>
