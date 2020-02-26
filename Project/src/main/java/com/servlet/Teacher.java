@@ -54,6 +54,23 @@ public class Teacher extends HttpServlet {
 	}
 
 	
+	private void print(String name, String code, Credits credits, String description,String examiner, int year, LP lp, String[] dev, String[] req) {
+		
+		System.out.println("name " + name);
+		System.out.println("code " + code);
+		System.out.println("credits " + credits);
+		System.out.println("desc " + description);
+		System.out.println("examiner " + examiner);
+		System.out.println("year " + year);
+		System.out.println("lp " + lp);
+		System.out.println("dev len " + dev.length);
+		System.out.println("req len " + req.length);
+		
+		
+		
+		
+	}
+	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		
 		try {
@@ -65,36 +82,38 @@ public class Teacher extends HttpServlet {
 				Credits credits = Credits.getByString(request.getParameter("credits"));
 				String description = request.getParameter("description");
 				String examiner = request.getParameter("examiner");
-				int year = Integer.parseInt(request.getParameter("year"));
-				LP lp = LP.getByString(request.getParameter("lp"));
+				int year = Integer.parseInt(request.getParameter("startyear"));
+				LP lp = LP.getByString(request.getParameter("startperiod"));
 				
 				Course updatedCourse = new Course(name, courseCode, credits, description, examiner, new CourseDate(year, lp));
 			
-				String[] dev = request.getParameterValues("developed");
-				String[] req = request.getParameterValues("required");
-				
-				KC[] developed = new KC[dev.length];
-				KC[] required = new KC[req.length];
+				String[] dev = request.getParameterValues("developedKCs");
+				String[] req = request.getParameterValues("requiredKCs");
 				
 				for(int i = 0; i < dev.length; i++) {
 					String[] s = dev[i].split(";;;");
-					developed[i] = new KC(s[0], null, Integer.parseInt(s[1]), null);
-				}
-				for(int i = 0; i < req.length; i++) {
-					String[] s = req[i].split(";;;");
-					required[i] = new KC(s[0], null, Integer.parseInt(s[1]), null);
+					updatedCourse.setDevelopedKC(new KC(s[0], null, Integer.parseInt(s[1]), null));				
 				}
 				
-				updatedCourse.setDevelopedKC(developed);
+				for(int i = 0; i < req.length; i++) {
+					String[] s = req[i].split(";;;");
+					updatedCourse.setRequiredKC(new KC(s[0], null, Integer.parseInt(s[1]), null));
+				}
+				
+			
+				print(name, courseCode, credits, description, examiner, year, lp, dev, req);
 				
 				
 				Neo4jConfigLoader.getApi().modifyMethods.deleteKCsFromCourseAndAddTheNewOnes(updatedCourse);
+				
+				response.setContentType("text/text");
 				response.getWriter().write("Success");
 				
 			}
 			
 		} catch(NullPointerException e) {}
 		
+		response.setContentType("text/text");
 		response.getWriter().write("Failed, not logged in");
 		request.getRequestDispatcher("/index.jsp").forward(request, response);
 		
