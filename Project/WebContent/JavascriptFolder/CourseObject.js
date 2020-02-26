@@ -11,10 +11,10 @@ class CourseObject{
         this.dockPointsReq = [{x: this.x, y:this.height/2+this.y}];
 
         this.data.Required.forEach(function (k,i) {
-            this.dockPointsReq.push({x: this.x, y:this.y+this.height+24*i});
+            //this.dockPointsReq.push({x: this.x, y:this.y+this.height+24*i});
         })
         this.data.Developed.forEach(function (k,i) {
-            this.dockPointsDev.push({x: this.x+this.width, y:this.y+this.height+24*i})
+            //this.dockPointsDev.push({x: this.x+this.width, y:this.y+this.height+24*i})
         })
     }
 
