@@ -22,8 +22,8 @@
   			<textarea id="description" name="description" rows="10" cols="30">Description here...</textarea>
   			<br><br>
 		</form>
-		<button type="button">Cancel</button>
-		<button type="button">Save</button>
+		<button type="button" onclick="">Cancel</button>
+		<button type="button" onclick="saveCourseChanges()">Save</button>
 	</div>
 	
 	<div class="developedKC">

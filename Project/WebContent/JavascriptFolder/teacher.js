@@ -27,8 +27,10 @@ function courseClickedEdit(code, year, lp) {
 			var code = response.courseCode;
 			var examiner = response.examiner;
 			var credits = response.credits;
+			var year = response.year;
+			var lp = response.lp;
 			
-			document.getElementById("title_content").innerHTML = name + " " + code + " " + examiner + " " + credits;
+			document.getElementById("title_content").innerHTML = "<div id=\"name\">" + name + "</div> <div id=\"code\">" + code + "</div> <div id=\"examiner\">" + examiner + "</div> <div id=\"credits\">" + credits + "</div><div id=\"year\">" + year + "</div><div id=\"lp\">" + lp + "</div>";
 
 			var description = response.description;
 			document.getElementById("description").value = description;
