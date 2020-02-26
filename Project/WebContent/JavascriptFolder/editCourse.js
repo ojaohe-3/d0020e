@@ -89,10 +89,10 @@ function saveCourseChanges(){
 	
 	var developedKCs = document.getElementById("developedKCs");
 	var divs = developedKCs.getElementsByTagName("div");
-	var developedKCsArray = [];
+	var developedKCsString = [];
 	for(var i = 0; i < divs.length; i++){
 		var kc = divs[i].innerHTML.replace(": ", ";;;");
-		developedKCsArray.push(kc);
+		developedKCsString += kc + ";;;;";
 	}
 	
 	var requiredKCs = document.getElementById("requiredKCs");
@@ -100,7 +100,7 @@ function saveCourseChanges(){
 	var requiredKCsString = "";
 	for(var i = 0; i < divs.length; i++){
 		var kc = divs[i].innerHTML.replace(": ", ";;;");
-		requiredKCsArray += kc + ";;;;";
+		requiredKCsString += kc + ";;;;";
 	}
 	
 	$.ajax({
@@ -115,8 +115,8 @@ function saveCourseChanges(){
 			startyear : year,
 			startperiod : lp,
 			description : description,
-			developedKCs : developedKCsArray,
-			requiredKCs : requiredKCsArray
+			developedKCs : developedKCsString,
+			requiredKCs : requiredKCsString
 		},
 		success : function(response) {
 
