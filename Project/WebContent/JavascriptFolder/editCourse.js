@@ -121,3 +121,7 @@ function saveCourseChanges(){
 		}
 	});
 }
+
+function cancel(){
+	document.getElementById("showEditCourse").style.display="none";
+}
