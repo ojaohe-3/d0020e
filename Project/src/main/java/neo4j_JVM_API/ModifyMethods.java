@@ -28,7 +28,7 @@ public class ModifyMethods {
 	 * @param course The course with all the KC that should be updated 
 	 */
 	public void deleteKCsFromCourseAndAddTheNewOnes(Course course) {
-		String query = "MATCH(course: Course {courseCode : \"" + course.getCourseCode() + "\", year\"" + course.getStartPeriod().getYear() + "\", lp : \"" + course.getStartPeriod().getPeriod() +"\" }) ";
+		String query = "MATCH(course: Course {courseCode : \"" + course.getCourseCode() + "\", year : \"" + course.getStartPeriod().getYear() + "\", lp : \"" + course.getStartPeriod().getPeriod() +"\" }) ";
 		query += "MATCH (course)-[r:" + Relations.REQUIRED + "]-() MATCH (course)-[p: "+ Relations.DEVELOPED+  "]-() DELETE r, p";
 		
 		this.communicator.writeToNeo(query);

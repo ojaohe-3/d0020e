@@ -8,6 +8,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import Data.Course;
 import Data.CourseDate;
 import Data.Credits;
@@ -63,8 +67,8 @@ public class Teacher extends HttpServlet {
 		System.out.println("examiner " + examiner);
 		System.out.println("year " + year);
 		System.out.println("lp " + lp);
-		//System.out.println("dev len " + dev.length);
-		//System.out.println("req len " + req.length);
+		System.out.println("dev len " + dev.length);
+		System.out.println("req len " + req.length);
 		
 		
 		
@@ -88,33 +92,35 @@ public class Teacher extends HttpServlet {
 				String examiner = request.getParameter("examiner");
 				int year = Integer.parseInt(request.getParameter("startyear"));
 				LP lp = LP.getByStringString(request.getParameter("startperiod"));
-				System.out.println("WHAT IS GOING ON1.5");
-				
-				print(name, courseCode, credits, description, examiner, year, lp, null, null);
 				
 				
 				Course updatedCourse = new Course(name, courseCode, credits, description, examiner, new CourseDate(year, lp));
 				
-				System.out.println("WHAT IS GOING ON1.5");
 				
-				String[] dev = request.getParameterValues("developedKCs");
-				String[] req = request.getParameterValues("requiredKCs");
+				String developed = request.getParameter("developedKCs");
+				String required = request.getParameter("requiredKCs");
 				
-				System.out.println("WHAT IS GOING ON1");
-				for(int i = 0; i < dev.length; i++) {
-					String[] s = dev[i].split(";;;");
-					updatedCourse.setDevelopedKC(new KC(s[0], null, Integer.parseInt(s[1]), null));				
+				
+				
+				if(developed != null) {
+					String[] dev = developed.split(";;;;");
+					for(int i = 0; i < dev.length - 1; i++) {
+						String[] s = dev[i].split(";;;");
+						System.out.println(s[0] + " : " + s[1]);
+						updatedCourse.setDevelopedKC(new KC(s[0], null, Integer.parseInt(s[1]), null));				
+					}
 				}
-				System.out.println("WHAT IS GOING ON2");
-				for(int i = 0; i < req.length; i++) {
-					String[] s = req[i].split(";;;");
-					updatedCourse.setRequiredKC(new KC(s[0], null, Integer.parseInt(s[1]), null));
+				
+				if(required != null) {
+					String[] req = required.split(";;;;");
+					for(int i = 0; i < req.length - 1; i++) {
+						String[] s = req[i].split(";;;");
+						updatedCourse.setRequiredKC(new KC(s[0], null, Integer.parseInt(s[1]), null));
+					}
 				}
 				
 			
-				print(name, courseCode, credits, description, examiner, year, lp, dev, req);
 				
-				System.out.println("WHAT IS GOING ON");
 				Neo4jConfigLoader.getApi().modifyMethods.deleteKCsFromCourseAndAddTheNewOnes(updatedCourse);
 				
 				response.setContentType("text/text");
@@ -127,12 +133,11 @@ public class Teacher extends HttpServlet {
 			}
 			
 		} catch(NullPointerException e) {
+			System.out.println("NUll execp");
 			response.setContentType("text/text");
 			response.getWriter().write("Failed, not logged in");
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
-		}
-		
-		
+		} 
 		
 		
 	}
