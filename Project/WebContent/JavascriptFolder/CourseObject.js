@@ -19,48 +19,27 @@ class CourseObject{
             this.dockPointsDev.push({x: this.x+this.width, y:this.y+this.height+this.thickness*i})
         })
     }
-
-    drawExtended(ctx){
-        saveMatrix();
-        ctx.save();
-        translate(0,0);
-        this.height += Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness;
-
-        this.button = new canvasButton({x: this.x + this.width*0.8,
-            y : this.y+this.height*0.8,
-            width : this.width*0.2,
-            height : this.height*0.2,
-            text:"▼"});
-        ctx.strokeRect(this.x,this.y,this.width,this.height);
-        //obsolete
-        //ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
-        //ctx.fillStyle = "white";
-        //ctx.font = 'italic '+(this.width)*4/ctx.measureText(this.data["name"]).width+'pt Calibri';
-        //ctx.fillText(this.data["name"],
-        //    this.x+this.width/2 -  ctx.measureText(this.data["name"]).width/2,
-        //    this.y + this.height*0.14
-        //);
-        //ctx.fillStyle = "black";
-        //ctx.strokeRect(this.x+this.width*0.05,this.y+this.height*.3,this.width-this.width*0.1,this.height-this.height*0.5);
-
-        //this.drawInRect(this.x+this.width*0.1 ,this.y+this.height*0.35 ,0,0,0.70717,ctx);
-        //this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.36,this.data["courseCode"],ctx);
-       // this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
-        //this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.59,this.data["examiner"],ctx);
-        restoreMatrix();
-        ctx.restore();
-        this.button.draw(ctx);
+    setExtended(){
+        this.extended = this.extended == true ? false : true;
+        if(this.extended)
+            this.height += Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness+150;
+        else
+            this.height -= Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness+150;
+        reFormatSection(this.data.lp,this.data.year);
     }
 
-  draw(ctx){
+
+    draw(ctx){
       saveMatrix();
       ctx.save();
       translate(0,0);
-       this.button = new canvasButton({x: this.x + this.width*0.8,
-        y : this.y+this.height*0.8,
-        width : this.width*0.2,
-        height : this.height*0.2,
-        text:"▲"});
+       // this.button = new canvasButton({x: this.x + this.width*0.8,
+       //  y : this.y+this.height*0.8,
+       //  width : this.width*0.2,
+       //  height : this.height*0.2,
+       //  text:"▲"});
+
+
       ctx.strokeRect(this.x,this.y,this.width,this.height);
       //obsolete
       //ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
@@ -79,7 +58,7 @@ class CourseObject{
       //this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.59,this.data["examiner"],ctx);
       restoreMatrix();
       ctx.restore();
-      this.button.draw(ctx);
+      // this.button.draw(ctx);
     }
 
   /**
@@ -129,6 +108,9 @@ class CourseObject{
 
     kcDockpoint(kc){
         if(this.extended){
+            this.dockPointsReq.forEach((v,i)=>{
+
+            });
            //extended points
         }else{
             return this.dockPointsReq[0];

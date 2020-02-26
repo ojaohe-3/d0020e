@@ -30,12 +30,10 @@ window.addEventListener("resize", drawCanvas);
 canvas.addEventListener('click', function(evt) {
   var mousePos = getMousePos(canvas, evt);
   courses.forEach(function (value, key, map) {
-    if (value.button.isInside(mousePos,dpi)){
-      alert('Button Pressed!');
-      value.drawExtended(ctx);
-    }else if(value.isInside(mousePos,dpi)){
-      alert('Course Pressed!');
-      showCourseInfo(value.data);
+    if(value.isInside(mousePos,dpi)){
+      //alert('Course Pressed!');
+      //showCourseInfo(value.data);
+      value.setExtended();
     } else{
       console.log("mouse pressed on nothing!");
     }
@@ -98,9 +96,35 @@ function generateCanvas(data) {
           thickness: 24
         }
     ));
-    console.log("added: "+ JSON.stringify(item))
+    //console.log("added: "+ JSON.stringify(item))
   });
 
+  drawCanvas();
+}
+
+function addCourse(data) {
+  try{
+    courses.set(data["courseCode"]+data["year"]+data["lp"]);
+    regenerateCanvas();
+  }catch (e) {
+    alert(e.message+' Value might already exist!');
+  }
+
+}
+
+function reFormatSection(lp,year){
+  let key = year+lp;//string
+  let oldkey ="";
+  let old = {};
+  courses.forEach((v,k)=> {
+    if(k.includes(key)){
+      if(courses.has(oldkey)){
+        old = courses.get(oldkey);
+        v.y = old.y + old.height*1.2;
+      }
+      oldkey = k;
+    }
+  });
   drawCanvas();
 }
 
