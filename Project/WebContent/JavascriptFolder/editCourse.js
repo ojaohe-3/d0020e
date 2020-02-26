@@ -97,10 +97,10 @@ function saveCourseChanges(){
 	
 	var requiredKCs = document.getElementById("requiredKCs");
 	var divs = requiredKCs.getElementsByTagName("div");
-	var requiredKCsArray = [];
+	var requiredKCsString = "";
 	for(var i = 0; i < divs.length; i++){
 		var kc = divs[i].innerHTML.replace(": ", ";;;");
-		requiredKCsArray.push(kc);
+		requiredKCsArray += kc + ";;;;";
 	}
 	
 	$.ajax({
