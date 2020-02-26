@@ -97,17 +97,49 @@ function generateCanvas(data) {
           width: width,
           height: height
         }
-    ))
-    document.getElementById("canvas_course_container").innerHTML +=
+    ));
+
+    /*
+    "<div class='button'  onclick=\"toggleCourseKC()\" style='width:10px;height:10px;background-color: black;'></div>" +
+        "<div class='course_dropdown"+courseDefinition+"_dropdown' style='width:100%; height:150px; background-color:white; display:none'>" +
+     */
+
+    /*
+        document.getElementById("canvas_course_container").innerHTML +=
         "<div id='"+courseDefinition+"' style='left:"+x+"px; top:"+y+"px;' class='canvas_course'>" +
+     */
+    let course = document.createElement("div");
+    course.innerHTML =
         "<h1>" +item["name"]+"</h1>" +
         "<p>" +item["courseCode"]+"</p>" +
         "<p>"+item["examiner"]+"</p>" +
-        "<div class='button'  onclick='toggleCourseKC()' style='width:10px;height:10px;background-color: black;'></div>" +
-        "<div class='course_dropdown' style='width:100%; height:150px; background-color:white; display:none'>" +
-        "</div>"+
         "</div>";
+    course.setAttribute("style","left:"+x+"px; top:"+y+"px;");
+    course.setAttribute("class","canvas_course");
 
+    let dropDown = document.createElement("div");
+    dropDown.setAttribute("style","width:100%; height:150px; background-color:red; display:none");
+    dropDown.setAttribute("class","canvas_course_dropdown");
+
+
+    let button = document.createElement("div");
+    button.setAttribute("style", "width:10px;height:10px;background-color: black;");
+    button.setAttribute("class","canvas_course_button");
+
+    button.addEventListener("click",function() {
+      if (dropDown.style.display === "none") {
+        dropDown.style.display= "flex";
+      } else {
+        dropDown.style.display= "none";
+      }
+
+    });
+
+    course.appendChild(button);
+    course.appendChild(dropDown);
+    document.getElementById("canvas_course_container").appendChild(course);
+
+    console.log(courseDefinition);
     //console.log("added: "+ JSON.stringify(item))
   });
 
