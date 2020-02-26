@@ -15,7 +15,7 @@ $('#searchRequiredKC').on('keyup', function() {
 
 						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
-							s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"addRequiredKC('"+ response[i].name +"', '"+ response[i].taxonomyLevel +"')\"> <b>" + response[i].name + "</b> - " + response[i].taxonomyLevel;
+							s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"addRequiredKC('"+ response[i].name +"', '"+ response[i].taxonomyLevel +"')\"> <b>" + response[i].name + "</b>: " + response[i].taxonomyLevel;
 							s += "<div class=\"SearchResultExpander\"> Description : " + response[i].generalDescription +"</div></div>";
 						}
 						s += "</div>";
@@ -41,7 +41,7 @@ $('#searchDevelopedKC').on('keyup', function() {
 
 					var s = "<div class=\"SearchResultContainer\">";
 					for(i in response) {
-						s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"addDevelopedKC('"+ response[i].name +"', '"+ response[i].taxonomyLevel +"')\"> <b>" + response[i].name + "</b> - " + response[i].taxonomyLevel;
+						s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"addDevelopedKC('"+ response[i].name +"', '"+ response[i].taxonomyLevel +"')\"> <b>" + response[i].name + "</b>: " + response[i].taxonomyLevel;
 						s += "<div class=\"SearchResultExpander\"> Description : " + response[i].generalDescription +"</div></div>";
 					}
 					s += "</div>";
@@ -58,11 +58,11 @@ $('#searchDevelopedKC').on('keyup', function() {
 });
 
 function addRequiredKC(name, taxonomyLevel) {
-	document.getElementById("requiredKCs").innerHTML += "<div id=\"" + name + "_" + taxonomyLevel + "\" onclick=\"dropKC('"+ name +"', '"+ taxonomyLevel +"')\"> " + name + " " + taxonomyLevel + "</div>";
+	document.getElementById("requiredKCs").innerHTML += "<div id=\"" + name + "_" + taxonomyLevel + "\" onclick=\"dropKC('"+ name +"', '"+ taxonomyLevel +"')\"> " + name + ": " + taxonomyLevel + "</div>";
 }
 
 function addDevelopedKC(name, taxonomyLevel) {
-	document.getElementById("developedKCs").innerHTML += "<divid=\"" + name + "_" + taxonomyLevel + "\" onclick=\"dropKC('"+ name +"', '"+ taxonomyLevel +"')\"> " + name + " " + taxonomyLevel + "</div>";
+	document.getElementById("developedKCs").innerHTML += "<div id=\"" + name + "_" + taxonomyLevel + "\" onclick=\"dropKC('"+ name +"', '"+ taxonomyLevel +"')\"> " + name + ": " + taxonomyLevel + "</div>";
 }
 /*
 function dropRequiredKC(name, taxonomyLevel) {
@@ -75,4 +75,49 @@ function dropDevelopedKC(name, taxonomyLevel) {
 
 function dropKC(name, taxonomyLevel) {
 	 document.getElementById(name+"_"+taxonomyLevel).remove();
+}
+
+function saveCourseChanges(){
+	var name = document.getElementById("name").innerHTML;
+	var code = document.getElementById("code").innerHTML;
+	var examiner = document.getElementById("examiner").innerHTML;
+	var credits = document.getElementById("credits").innerHTML;
+	var year = document.getElementById("year").innerHTML;
+	var lp = document.getElementById("lp").innerHTML;
+	
+	var developedKCs = document.getElementById("developedKCs");
+	var divs = developedKCs.getElementsByTagName("div");
+	var developedKCsArray = [];
+	for(var i = 0; i < divs.length; i++){
+		var kc = divs[i].innerHTML.replace(": ", ";;;");
+		developedKCsArray.push(kc);
+	}
+	
+	var requiredKCs = document.getElementById("requiredKCs");
+	var divs = requiredKCs.getElementsByTagName("div");
+	var requiredKCsArray = [];
+	for(var i = 0; i < divs.length; i++){
+		var kc = divs[i].innerHTML.replace(": ", ";;;");
+		requiredKCsArray.push(kc);
+	}
+	
+	$.ajax({
+		type : "POST",
+		url : '/teacher',
+		data : {
+			name : name,
+			code : code,
+			examiner : examiner,
+			credits : credits,
+			startyear : year,
+			startperiod : lp,
+			developedKCs : developedKCsArray,
+			requiredKCs : requiredKCsArray
+		},
+		success : function(response) {
+
+			console.log(JSON.stringify(response));
+			
+		}
+	});
 }
