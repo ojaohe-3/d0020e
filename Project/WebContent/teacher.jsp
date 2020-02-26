@@ -15,10 +15,10 @@
 
 <body>
 	<%@include file="_includes.jsp" %>
+
 	<%@include  file="_filterContainer.jsp" %>
 
-    <%@include file="_graphCanvas.jsp"%>
-    
+	<%@include file="_editCourse.jsp" %>
     
     <div class="container-fluid">
 	    <div class="row" id="my_courses" style="background-color: gray">
@@ -46,6 +46,10 @@
 	
 	    </div>
     </div>
+    
+   <%@include file="_graphCanvas.jsp"%>
+    
+	
     
 
 </body>
