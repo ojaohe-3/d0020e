@@ -568,7 +568,7 @@ function program_delete() {
 				
 			},
 			success : function(response) {
-				document.getElementById("log").innerHTML += "CREATE PROGRAM WITH CODE " + data[0]  +"</br>";
+				document.getElementById("log").innerHTML += "DELETE PROGRAM WITH CODE " + data[0]  +"</br>";
 				document.getElementById("output").innerHTML += response + "</br>";
 			}
 
@@ -671,6 +671,73 @@ function program_modify() {
 			},
 			success : function(response) {
 				document.getElementById("log").innerHTML += "MODIFY PROGRAM" + data[3] + "</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+function program_modify_special() {
+	var input = prompt("oldName;oldStartYear;oldStartLP;newName;newCode;newStartYear;newStartLP;newDescription;newCredits");
+	
+	var data = input.split(";");
+	
+	if(data.length == 10){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "MODIFY_SPECIAL",
+				oldName : data[0],
+				programStartYear : data[1],
+				programStartLP : data[2],
+				newName : data[3],
+				newCode : data[4],
+				newStartYear : data[5],
+				newStartLP : data[6],
+				newDescription : data[7],
+				newCredits : data[8],
+				readingPeriods : data[9]
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "MODIFY SPEICALIZATION" + data[3] + "</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
+function program_delete_special() {
+	var input = prompt("name;year;lp");
+	
+	var data = input.split(";");
+	
+	if(data.length == 3){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "DELETE_SPECIAL",
+				name : data[0],
+				year : data[1],
+				lp : data[2]
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "DELETE SPECIALIZATION WITH NAME " + data[0]  +"</br>";
 				document.getElementById("output").innerHTML += response + "</br>";
 			}
 
