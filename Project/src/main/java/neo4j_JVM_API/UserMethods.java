@@ -88,6 +88,12 @@ public class UserMethods {
 		communicator.writeToNeo(query);
 	}
 
+	public void changeUsername(String username, String newUsername) {
+		String query = "MATCH(n:User){"+ UserLables.USERNAME +":"+username+"}) SET n."+ UserLables.USERNAME +"= \"" + newUsername + "\"";
+		communicator.writeToNeo(query);
+
+	}
+
 	/**
 	 * Add a course to a user
 	 * @author Johan RH
