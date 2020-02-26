@@ -85,6 +85,8 @@ function saveCourseChanges(){
 	var year = document.getElementById("year").innerHTML;
 	var lp = document.getElementById("lp").innerHTML;
 	
+	var description = document.getElementById("description").innerHTML;
+	
 	var developedKCs = document.getElementById("developedKCs");
 	var divs = developedKCs.getElementsByTagName("div");
 	var developedKCsArray = [];
@@ -104,6 +106,7 @@ function saveCourseChanges(){
 	$.ajax({
 		type : "POST",
 		url : '/teacher',
+		dataType : "json",
 		data : {
 			name : name,
 			code : code,
@@ -111,6 +114,7 @@ function saveCourseChanges(){
 			credits : credits,
 			startyear : year,
 			startperiod : lp,
+			description : description,
 			developedKCs : developedKCsArray,
 			requiredKCs : requiredKCsArray
 		},
