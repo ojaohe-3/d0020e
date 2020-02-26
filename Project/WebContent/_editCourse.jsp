@@ -18,12 +18,13 @@
 	
 	<div class="description">
 		<h2>Description</h2>
-		<form>
+		<form action="POST">
   			<textarea id="description" name="description" rows="10" cols="30">Description here...</textarea>
   			<br><br>
+  			<button type="button" onclick="cancel()">Cancel</button>
+			<button type="button" onclick="saveCourseChanges()">Save</button>
 		</form>
-		<button type="button" onclick="cancel()">Cancel</button>
-		<button type="button" onclick="saveCourseChanges()">Save</button>
+		
 	</div>
 	
 	<div class="developedKC">
