@@ -94,9 +94,9 @@ function generateCanvas(data) {
     else if(item.lp === "TWO"){
       x += width *1.2*(1+offsetYear*4);
     }else if(item.lp === "THREE"){
-      x += width *1.2*(2+offsetYear*4);
+      x += width *1.2*(2+(offsetYear-1)*4);
     }else if(item.lp === "FOUR"){
-      x += width *1.2*(3+offsetYear*4);
+      x += width *1.2*(3+(offsetYear-1)*4);
     }
 
     courses.set(item["courseCode"]+item["year"]+item["lp"], new CourseObject(

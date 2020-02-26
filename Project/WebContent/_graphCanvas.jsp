@@ -2,10 +2,13 @@
 
 <!-- Konva drag and drop canvas objects-->
 <div id="canvas_container">
-    <canvas id="graph"></canvas>
-    <div id="canvas_course_container">
+    <canvas id="graph">
         <div class="canvas_course">
         </div>
+
+    </canvas>
+    <div id="canvas_course_container">
+
     </div>
     <%@include file="courseInformation.jsp"%>
 
