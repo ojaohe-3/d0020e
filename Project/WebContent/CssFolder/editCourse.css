@@ -1,5 +1,8 @@
 .container {
-
+	margin: auto;
+	width: 75%;
+	float: left;
+	display: block;
 }
 
 .description {
