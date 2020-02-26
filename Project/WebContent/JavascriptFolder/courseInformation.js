@@ -32,3 +32,7 @@ function hideCourseInfo() {
     document.getElementById("courseInformation").style.display = "none";
 }
 
+function toggleCourseKC(id) {
+    document.getElementById(id).style.display="block";
+}
+

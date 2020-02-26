@@ -10,8 +10,8 @@ fix_dpi();
 const screenHeight = window.screen.height * window.devicePixelRatio;
 const screenWidth = window.screen.width * window.devicePixelRatio;
 
-const width = 200;
-const height = 200;
+const width = 250;
+const height = 250;
 const period = new Map();
   period.set('ONE',0);
   period.set('TWO',0);
@@ -58,6 +58,7 @@ function generateCanvas(data) {
   let offsetYear = 0;
 
   let currentYear = year;
+  document.getElementById("canvas_course_container").innerHTML = "";
   data['Courses'].forEach(function (item, index,arr){
 
     // All courses should, in theory, be sorted after year. We can therefore reset the study periods when
@@ -87,8 +88,8 @@ function generateCanvas(data) {
     }else if(item.lp === "FOUR"){
       x += width *1.2*(3+(offsetYear-1)*4);
     }
-
-    courses.set(item["courseCode"]+item["year"]+item["lp"], new CourseObject(
+    let courseDefinition = item["courseCode"]+item["year"]+item["lp"];
+    courses.set(courseDefinition, new CourseObject(
         item,
         {
           x: x,
@@ -97,6 +98,16 @@ function generateCanvas(data) {
           height: height
         }
     ))
+    document.getElementById("canvas_course_container").innerHTML +=
+        "<div id='"+courseDefinition+"' style='left:"+x+"px; top:"+y+"px;' class='canvas_course'>" +
+        "<h1>" +item["name"]+"</h1>" +
+        "<p>" +item["courseCode"]+"</p>" +
+        "<p>"+item["examiner"]+"</p>" +
+        "<div class='button'  onclick='toggleCourseKC()' style='width:10px;height:10px;background-color: black;'></div>" +
+        "<div class='course_dropdown' style='width:100%; height:150px; background-color:white; display:none'>" +
+        "</div>"+
+        "</div>";
+
     //console.log("added: "+ JSON.stringify(item))
   });
 

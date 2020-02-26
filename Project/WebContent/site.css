@@ -6,6 +6,7 @@ body {
 }
 
 #canvas_container {
+	position: relative;
 	overflow: scroll;
 	width: 75%;
 	height: 500px;
