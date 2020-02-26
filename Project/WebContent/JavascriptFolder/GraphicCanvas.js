@@ -11,7 +11,7 @@ const screenHeight = window.screen.height * window.devicePixelRatio;
 const screenWidth = window.screen.width * window.devicePixelRatio;
 
 const width = 200;
-const height = 250;
+const height = 200;
 const period = new Map();
   period.set('ONE',[]);
   period.set('TWO',[]);
