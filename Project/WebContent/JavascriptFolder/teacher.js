@@ -22,7 +22,7 @@ function courseClickedEdit(code, year, lp) {
 		},
 		success : function(response) {
 			//DIVS requiredKCs description developedKCs title_content
-
+			document.getElementById("showEditCourse").style.display="block";
 			var name = response.name;
 			var code = response.courseCode;
 			var examiner = response.examiner;
