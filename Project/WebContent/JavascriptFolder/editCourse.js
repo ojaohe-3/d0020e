@@ -58,11 +58,11 @@ $('#searchDevelopedKC').on('keyup', function() {
 });
 
 function addRequiredKC(name, taxonomyLevel) {
-	document.getElementById("requiredKCs").innerHTML += "<div id=\"" + name + "_" + taxonomyLevel + "\" onclick=\"dropKC('"+ name +"', '"+ taxonomyLevel +"')\"> " + name + ": " + taxonomyLevel + "</div>";
+	document.getElementById("requiredKCs").innerHTML += "<div id=\"" + name + "_" + taxonomyLevel + "\" onclick=\"dropKC('"+ name +"', '"+ taxonomyLevel +"')\">" + name + ": " + taxonomyLevel + "</div>";
 }
 
 function addDevelopedKC(name, taxonomyLevel) {
-	document.getElementById("developedKCs").innerHTML += "<div id=\"" + name + "_" + taxonomyLevel + "\" onclick=\"dropKC('"+ name +"', '"+ taxonomyLevel +"')\"> " + name + ": " + taxonomyLevel + "</div>";
+	document.getElementById("developedKCs").innerHTML += "<div id=\"" + name + "_" + taxonomyLevel + "\" onclick=\"dropKC('"+ name +"', '"+ taxonomyLevel +"')\">" + name + ": " + taxonomyLevel + "</div>";
 }
 /*
 function dropRequiredKC(name, taxonomyLevel) {
