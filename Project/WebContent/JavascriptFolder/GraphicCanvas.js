@@ -13,10 +13,10 @@ const screenWidth = window.screen.width * window.devicePixelRatio;
 const width = 200;
 const height = 250;
 const period = new Map();
-  period.set('ONE',[]);
-  period.set('TWO',[]);
-  period.set('THREE',[]);
-  period.set('FOUR',[]);
+  period.set('ONE',0);
+  period.set('TWO',0);
+  period.set('THREE',0);
+  period.set('FOUR',0);
 let courses =new Map();
   //translations
 let matrix=[1,0,0,1,0,0];
@@ -54,7 +54,6 @@ function getMousePos(canvas, event) {
 
 function generateCanvas(data) {
   courses = new Map();
-  let periodItem = [];
   let year = data.year;
   let offsetYear = 0;
 
@@ -64,28 +63,18 @@ function generateCanvas(data) {
     // All courses should, in theory, be sorted after year. We can therefore reset the study periods when
     // The next course has a new year.
     if (item.year != currentYear) {
-      for (let [key, value] of period.entries()) {
-        value.splice(0,value.length);
+      offsetYear = item.year-year;
+      for (let [key,value] of period) {
+        period.set(key,0);
       }
       currentYear = item.year;
     }
-    offsetYear = item.year-year;
+
     console.log(offsetYear);
     let x = 0;
-    let y = 0;
-      //check if we have collisions
-      periodItem = period.get(item.lp);
-      //console.log(periodItem);
-      if(periodItem.length > 0){
-        periodItem.forEach(function () {
-            //console.log(item.courseCode + ": "+y);
-            y += height*1.2;
-        });
-      }
-
-       periodItem.push(item);
-      //might not be needed
-      period.set(item.lp,periodItem);
+    let hTemp = period.get(item.lp);
+    let y = hTemp*height*1.2;
+    period.set(item.lp, hTemp + 1);
 
     //set x axis
     if(item.lp === "ONE"){
