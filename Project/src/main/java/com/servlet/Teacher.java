@@ -63,8 +63,8 @@ public class Teacher extends HttpServlet {
 		System.out.println("examiner " + examiner);
 		System.out.println("year " + year);
 		System.out.println("lp " + lp);
-		System.out.println("dev len " + dev.length);
-		System.out.println("req len " + req.length);
+		//System.out.println("dev len " + dev.length);
+		//System.out.println("req len " + req.length);
 		
 		
 		
@@ -73,9 +73,13 @@ public class Teacher extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		
+		System.out.println("YEAH doPost");
+		
+		
 		try {
 			if((boolean)request.getSession().getAttribute("logged_in") == true) {
 				
+				System.out.println("logged in");
 				
 				String name = request.getParameter("name");
 				String courseCode = request.getParameter("code");
@@ -83,18 +87,25 @@ public class Teacher extends HttpServlet {
 				String description = request.getParameter("description");
 				String examiner = request.getParameter("examiner");
 				int year = Integer.parseInt(request.getParameter("startyear"));
-				LP lp = LP.getByString(request.getParameter("startperiod"));
+				LP lp = LP.getByStringString(request.getParameter("startperiod"));
+				System.out.println("WHAT IS GOING ON1.5");
+				
+				print(name, courseCode, credits, description, examiner, year, lp, null, null);
+				
 				
 				Course updatedCourse = new Course(name, courseCode, credits, description, examiner, new CourseDate(year, lp));
-			
+				
+				System.out.println("WHAT IS GOING ON1.5");
+				
 				String[] dev = request.getParameterValues("developedKCs");
 				String[] req = request.getParameterValues("requiredKCs");
 				
+				System.out.println("WHAT IS GOING ON1");
 				for(int i = 0; i < dev.length; i++) {
 					String[] s = dev[i].split(";;;");
 					updatedCourse.setDevelopedKC(new KC(s[0], null, Integer.parseInt(s[1]), null));				
 				}
-				
+				System.out.println("WHAT IS GOING ON2");
 				for(int i = 0; i < req.length; i++) {
 					String[] s = req[i].split(";;;");
 					updatedCourse.setRequiredKC(new KC(s[0], null, Integer.parseInt(s[1]), null));
@@ -103,19 +114,26 @@ public class Teacher extends HttpServlet {
 			
 				print(name, courseCode, credits, description, examiner, year, lp, dev, req);
 				
-				
+				System.out.println("WHAT IS GOING ON");
 				Neo4jConfigLoader.getApi().modifyMethods.deleteKCsFromCourseAndAddTheNewOnes(updatedCourse);
 				
 				response.setContentType("text/text");
 				response.getWriter().write("Success");
 				
+			} else {
+				response.setContentType("text/text");
+				response.getWriter().write("Failed, not logged in");
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			}
 			
-		} catch(NullPointerException e) {}
+		} catch(NullPointerException e) {
+			response.setContentType("text/text");
+			response.getWriter().write("Failed, not logged in");
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
+		}
 		
-		response.setContentType("text/text");
-		response.getWriter().write("Failed, not logged in");
-		request.getRequestDispatcher("/index.jsp").forward(request, response);
+		
+		
 		
 	}
 	
