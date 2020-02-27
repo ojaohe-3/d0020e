@@ -352,8 +352,10 @@ public class FilterMethods {
 	}
 	
 	public KC[] filterKCByTopic(String topic) {
-		String query = "MATCH(node: Topic {title : \""+ topic +"\"})<-[r]-(kc:"+KC.kc+") RETURN kc ";
+		//String query = "MATCH(node: Topic {title : \""+ topic +"\"})<-[r]-(kc:"+KC.kc+") RETURN kc ";
 
+		String query = "MATCH (node : Topic) WHERE LOWER(node.title) CONTAINS LOWER(\"" + topic + "\") MATCH (node)-[r]-(kc: KC) RETURN kc";
+		
 		StatementResult result = this.communicator.readFromNeo(query);
 		ArrayList<KC> KCs = new ArrayList<KC>();
 
