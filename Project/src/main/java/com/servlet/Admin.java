@@ -469,7 +469,30 @@ public class Admin extends HttpServlet {
 
 			return "A relationship between the program " + programCode + " and the specialization " + name + " has been created";
 
-		} else {
+		}
+		if (method.equals("MODIFY_SPECIAL")) {
+			String oldName = request.getParameter("olrdName");
+			int programStartYear = Integer.parseInt(request.getParameter("programStartYear"));
+			LP programStartLP = LP.getByString(request.getParameter("programStartByString"));
+			String newName = request.getParameter("newName");
+			String newCode = request.getParameter("newCode");
+			int newStartYear = Integer.parseInt(request.getParameter("newStartYear"));
+			LP newStartLP = LP.getByString(request.getParameter("newStartByString"));
+			String newDescription = request.getParameter("newDescription");
+			Credits newCredits = Credits.getByString(request.getParameter("newCredits"));
+			int readingPeriods = Integer.parseInt(request.getParameter("readingPeriods"));
+			CourseOrder courseOrder = new CourseOrder(readingPeriods);
+
+			CourseDate programDate = new CourseDate(programStartYear, programStartLP);
+			CourseDate specializationDate = new CourseDate(newStartYear, newStartLP);
+
+			ProgramSpecialization programSpecialization = new ProgramSpecialization(courseOrder, newCode, newName,newDescription, specializationDate, newCredits);
+
+			Neo4jConfigLoader.getApi().modifyMethods.editSpecialization(oldName, programDate, programSpecialization);
+
+			return "The progrmspecialization named " + oldName + " has been modified. New name is " + newName;
+
+		}else {
 			return "The input must be either CREATE, DELETE, COPY_FROM_YEAR, MODIFY, SET_RELATION_TO_COURSE, ADD_COURSE or CREATE_SPECIAL";
 
 		}

@@ -94,6 +94,20 @@ public class ModifyMethods {
 		communicator.writeToNeo(query);
 	}
 
+	public void editSpecialization(String programspecializationName,CourseDate startyear, ProgramSpecialization newProgramSpcialization) {
+		String query = "MATCH (n:ProgramSpecialization{name:\""+  programspecializationName+"\"}) SET n={";
+		query += ProgramSpecialization.ProgramLabels.CODE.toString() +": \"" + newProgramSpcialization.getCode() + "\", ";
+		query += ProgramSpecialization.ProgramLabels.DESCRIPTION.toString() +": \""+newProgramSpcialization.getDescription() + "\", ";
+		query += ProgramSpecialization.ProgramLabels.YEAR.toString() +": \""+newProgramSpcialization.getStartDate().getYear() + "\", ";
+		query += ProgramSpecialization.ProgramLabels.LP.toString() +": \""+newProgramSpcialization.getStartDate().getPeriod() + "\", ";
+		query += ProgramSpecialization.ProgramLabels.READING_PERIODS.toString() +": \""+newProgramSpcialization.getCourseOrder().getReadingPeriods() + "\", ";
+		query += ProgramSpecialization.ProgramLabels.CREDITS.toString() +": \""+newProgramSpcialization.getCredits() + "\"";
+
+		query +="}";
+
+		communicator.writeToNeo(query);
+	}
+
 	/**
 	 *  Edit a Course at Selector. todo KCs handling
 	 *  Make sure that the edges and internal object match.
