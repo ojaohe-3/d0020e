@@ -22,7 +22,7 @@
     
     <div class="container-fluid" id="courses">
 	    <div class="row" id="my_courses">
-	    <h3>My Courses</h3> <hr>
+	    <h3>My Courses</h3> 
 	    
 		    <div class="course_list">
 		    	

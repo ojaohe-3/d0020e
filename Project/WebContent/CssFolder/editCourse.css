@@ -21,6 +21,26 @@
 	width: 30%;
 }
 
+#requiredKCs > div:hover {
+	background: orange;
+	color: white;
+}
+
+#requiredKCs > div:hover:after {
+    content: '\2A2F';
+    padding-left: 5px;
+}
+
+#developedKCs > div:hover {
+	background: orange;
+	color: white;
+}
+
+#developedKCs > div:hover:after {
+    content: '\2A2F';
+    padding-left: 5px;
+}
+
 .developedKC {
 	float: left;
 	padding: 1%;
@@ -63,6 +83,10 @@ h3, .courseInfo {
   border-radius: 5px;
 }
 
+.SearchResult {
+	height: auto;
+}
+
 .description textarea {
 	background: #404040;
 	border: 1px solid #474747;
@@ -70,5 +94,13 @@ h3, .courseInfo {
 }
 
 button {
-	color: #404040;
+	background: #404040;
+	color: #bababa;
+	border: 1px solid #474747;
+	margin: 5px;
+}
+
+button:hover {
+	background: orange;
+	color: white;
 }

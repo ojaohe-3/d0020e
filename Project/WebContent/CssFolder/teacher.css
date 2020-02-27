@@ -12,12 +12,11 @@
 }
 
 #my_courses {
-	
 	width: 300px;
 }
 
 .course_list {
-
+	border-top: 1px solid gray;
 }
 
 #course_edit {
