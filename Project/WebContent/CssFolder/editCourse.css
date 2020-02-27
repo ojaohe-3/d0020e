@@ -28,7 +28,8 @@
 
 #requiredKCs > div:hover:after {
     content: '\2A2F';
-    padding-left: 5px;
+    float: right;
+    padding-right: 5px;
 }
 
 #developedKCs > div:hover {
@@ -38,7 +39,8 @@
 
 #developedKCs > div:hover:after {
     content: '\2A2F';
-    padding-left: 5px;
+    float: right;
+    padding-right: 5px;
 }
 
 .developedKC {
