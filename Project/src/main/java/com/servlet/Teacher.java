@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import Data.Course;
 import Data.CourseDate;
-import Data.Credits;
+//import Data.Credits;
 import Data.KC;
 import Data.LP;
 import neoCommunicator.Neo4jConfigLoader;
@@ -58,7 +58,7 @@ public class Teacher extends HttpServlet {
 	}
 
 	
-	private void print(String name, String code, Credits credits, String description,String examiner, int year, LP lp, String[] dev, String[] req) {
+	private void print(String name, String code, float credits, String description,String examiner, int year, LP lp, String[] dev, String[] req) {
 		
 		System.out.println("name " + name);
 		System.out.println("code " + code);
@@ -87,7 +87,7 @@ public class Teacher extends HttpServlet {
 				
 				String name = request.getParameter("name");
 				String courseCode = request.getParameter("code");
-				Credits credits = Credits.getByString(request.getParameter("credits"));
+				float credits = Float.parseFloat(request.getParameter("credits"));
 				String description = request.getParameter("description");
 				String examiner = request.getParameter("examiner");
 				int year = Integer.parseInt(request.getParameter("startyear"));

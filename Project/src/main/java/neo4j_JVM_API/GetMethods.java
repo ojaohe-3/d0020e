@@ -100,7 +100,7 @@ public class GetMethods {
 		String code = row.get(nodename).get("code").toString().replaceAll("\"","");
 		String description = row.get(nodename).get("description").toString().replaceAll("\"","");
 		String creds = row.get(nodename).get("credits").toString().replaceAll("\"","");
-		Credits credits = Credits.valueOf(creds);
+		float credits = Float.parseFloat(creds);
 		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"",""));
 		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"",""));
 		CourseDate startDate = new CourseDate(year, lp);	
@@ -177,7 +177,7 @@ public class GetMethods {
 		String creds = row.get(nodename).get("credit").toString();
 		
 		creds = creds.replaceAll("\"", "");
-		Credits credits = Credits.valueOf(creds);
+		float credits = Float.parseFloat(creds);
 		
 		String description = row.get(nodename).get("description").toString();
 		String examiner = row.get(nodename).get("examiner").toString();
@@ -251,7 +251,7 @@ public class GetMethods {
 		String code = row.get(nodename).get("code").toString();
 		String description = row.get(nodename).get("description").toString();
 		String creds = row.get(nodename).get("credits").toString().replaceAll("\"", "");
-		Credits credits = Credits.valueOf(creds);
+		float credits = Float.parseFloat(creds);
 		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"", ""));
 		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"", ""));
 		CourseDate startDate = new CourseDate(year, lp);	
@@ -284,7 +284,7 @@ public class GetMethods {
 		String creds = row.get(nodename).get("credit").toString();
 		
 		creds = creds.replaceAll("\"", "");
-		Credits credits = Credits.valueOf(creds);
+		float credits = Float.parseFloat(creds);
 		
 		String description = row.get(nodename).get("description").toString();
 		String examiner = row.get(nodename).get("examiner").toString();

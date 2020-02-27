@@ -219,7 +219,7 @@ function course_create() {
 				courseCode : data[1],
 				lp : data[2],
 				year : data[3],
-				credits : data[4],
+				credits : parseFloat(data[4]),
 				examiner : data[5],
 				description : data[6]
 			},
@@ -495,7 +495,7 @@ function program_create() {
 				code : data[1],
 				startYear : data[2],
 				startLP : data[3],
-				credits : data[4],
+				credits : parseFloat(data[4]),
 				readingPeriods : data[5],
 				description : data[6]
 				
@@ -533,7 +533,7 @@ function program_create_specialization() {
 				specYear : data[4],
 				specLP : data[5],			
 				description : data[6],
-				credits : data[7],
+				credits : parseFloat(data[7]),
 				readingPeriods : data[8]
 				
 			},
@@ -698,7 +698,7 @@ function program_modify() {
 				newStartYear : data[5],
 				newStartLP : data[6],
 				newDescription : data[7],
-				newCredits : data[8],
+				newCredits : parseFloat(data[8]),
 				readingPeriods : data[9]
 				
 			},
@@ -735,7 +735,7 @@ function program_modify_special() {
 				newStartYear : data[5],
 				newStartLP : data[6],
 				newDescription : data[7],
-				newCredits : data[8],
+				newCredits : parseFloat(data[8]),
 				readingPeriods : data[9]
 				
 			},

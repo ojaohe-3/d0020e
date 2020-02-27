@@ -62,7 +62,7 @@ public class UserMethods {
 		String creds = row.get(nodename).get("credit").toString();
 
 		creds = creds.replaceAll("\"", "");
-		Credits credits = Credits.valueOf(creds);
+		float credits = Float.parseFloat(creds);
 
 		String description = row.get(nodename).get("description").toString();
 		String examiner = row.get(nodename).get("examiner").toString();

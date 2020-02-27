@@ -9,7 +9,7 @@ package Data;
  */
 public class ProgramSpecialization extends CourseProgram {
 	
-	public ProgramSpecialization(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits) {
+	public ProgramSpecialization(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, float credits) {
 		super(courseOrder, code, name, description, startDate, credits, CourseProgram.ProgramType.SPECIALIZATION);
 	}
 }
