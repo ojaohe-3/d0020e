@@ -12,8 +12,8 @@
 <body>
 
 
-<div class="container" >
-	<form class="form-signin form-horizontal" action="" method="POST" stype="margin:auto; margin-top:6em">
+<div class="container" style="width: 30%">
+	<form class="form-signin form-horizontal" action="" method="POST" stype="margin:auto; margin-top:6em;">
 		
 		<% if(request.getAttribute("error") != null) { %>
 			<div class="alert alert-danger">${error.err}</div>
@@ -26,7 +26,7 @@
 		<label for="password">Password</label>
 		<input type="password" name="password" id="password" class="form-control" placeholder="password">
 		
-		<button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+		<button class="btn btn-lg btn-primary btn-block" type="submit" style="background-color: orange; border: none; margin-top: 10px;">Login</button>
 		
 	</form>
 

@@ -56,6 +56,8 @@
 	</div>
 </nav>
 
+<!-- 
 <footer style:"position: fixed;margin-bottom: 0px;bottom: 0px;">
 	<p>All rights belongs to Tommy and Wilma</p>
 </footer>
+ -->

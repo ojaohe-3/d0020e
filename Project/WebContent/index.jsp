@@ -11,7 +11,7 @@
 <html>
   <head>
 
-      <title>Study MOTHER F***ING PLANNER</title>
+      <title>Study Planner</title>
       
   </head>
   <body>

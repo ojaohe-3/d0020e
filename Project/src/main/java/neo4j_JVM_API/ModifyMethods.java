@@ -33,12 +33,15 @@ public class ModifyMethods {
 		
 		this.communicator.writeToNeo(query);
 		
-		
 		try {
 			
+		
 			Neo4jConfigLoader.getApi().createMethods.createCourseKCrelation(course);
 			
 		} catch (IOException e) { System.out.println("Something wrong with config loader"); }
+		catch(NullPointerException e) {
+			e.printStackTrace();
+		}
 	
 	
 	}

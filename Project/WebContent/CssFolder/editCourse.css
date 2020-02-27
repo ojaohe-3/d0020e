@@ -1,21 +1,74 @@
 .container {
 	margin: auto;
-	width: 75%;
+	width: 70%;
 	float: left;
 	display: block;
+	background-color: #292929;
+	color: #bababa;
+	border-radius: 25px;
 }
 
 .description {
 	float: left;
 	padding: 1%;
+	width: 40%;
+	text-align: center;
 }
 
 .requiredKC {
-	float: left;
+	float:left;
 	padding: 1%;
+	width: 30%;
 }
 
 .developedKC {
 	float: left;
 	padding: 1%;
+	width: 30%;
+}
+
+
+h3, .courseInfo {
+	text-align: center;
+	color: #bababa;
+}
+
+.courseInfo {
+	color: #bababa;
+}
+
+#title_content > div {
+	float: left;
+	padding-right: 10px;
+}
+
+.editCourse {
+	width: 100%;
+	float:left;
+}
+
+.search {
+	margin-top: 10px;
+}
+
+.search input {
+  width: 100%;
+  height: 35px;
+  margin-top: 10px;
+  background: #404040;
+  border: 1px solid #474747;
+  font-size: 12pt;
+  color: #bababa;;
+  padding-left: 10px;
+  border-radius: 5px;
+}
+
+.description textarea {
+	background: #404040;
+	border: 1px solid #474747;
+    color: #bababa;;
+}
+
+button {
+	color: #404040;
 }
