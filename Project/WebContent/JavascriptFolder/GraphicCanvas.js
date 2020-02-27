@@ -18,6 +18,8 @@ const period = new Map();
   period.set('THREE',0);
   period.set('FOUR',0);
 let courses =new Map();
+let DEV = new Map();
+let REQ = new Map();
   //translations
 let matrix=[1,0,0,1,0,0];
 let oldMatrix = [];
@@ -57,9 +59,9 @@ function generateCanvas(data) {
   let year = data.year;
   let offsetYear = 0;
   let currentYear = year;
-  //KC mapping
-  let DEV = new Map();
-  let REQ = new Map();
+  //KC mapping reset
+  DEV = new Map();
+  REQ = new Map();
   let intersection = [];
   data['Courses'].forEach(function (item, index,arr){
 
@@ -124,24 +126,19 @@ function generateCanvas(data) {
 
     courses.set(item["courseCode"]+item["year"]+item["lp"], obj);
   });
-  let kcReq = [];
-  let kvDev= [];
-  courses.forEach((v)=>{
-    kcReq.push(REQ.get(v.data.courseCode));
-    kcDev.push(DEV.get(v.data.courseCode));
-    kcReq.filter(v1 => kcDev.some(v2=> kcEquals(v1,v2)));
 
-  });
+
 
   drawCanvas();
 }
 function findCourseByCode(code) {
+  let obj = {};
   courses.forEach((v,k)=>{
-    if(k.contains(code)){
-      return v;
+    if(k.includes(code)){
+      obj = v;//cant break for loops apparently
     }
   });
-  return null;
+  return obj;
 }
 function addCourse(data) {
   try{
@@ -170,6 +167,18 @@ function reFormatSection(lp,year){
 }
 
 function drawCanvas() {
+  //==== KC MAPPING ====
+  courses.forEach((v)=>{
+    REQ.forEach((e,k)=>{
+      let obj = findCourseByCode(k);
+      if(obj !== null){
+        e.filter(value =>v.data.Developed.some(value1 => kcEquals(value1,value))).forEach((x)=>{
+          v.setSnapPoints(obj,x);
+        });
+      }
+    });
+  });
+  //==== DRAWING ====
   saveMatrix();
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);

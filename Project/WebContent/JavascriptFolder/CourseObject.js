@@ -1,6 +1,6 @@
 function getCourseAt(date,c1) {
     courses.forEach((v,k)=>{
-       if(k.contains(date.year+date.lp)){
+       if(k.includes(date.year+date.lp)){
            if(v.y < c1.y*1.5 && v.y>c1.y*0.5){
                return v;
            }
@@ -76,16 +76,16 @@ class CourseObject{
             //this.KCs.REQ.push(new KCObject(conf.thickness, k));//if a dev exist a reqirement version will simply point on exact same points
         });
         data.Developed.forEach((k,i)=>{
-            this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i,KC:k});
+            this.dockPointsDev.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i,KC:k});
             this.KCs.DEV.push(new KCObject(conf.thickness, k));
         })
 
     }
 
     setSnapPoints(courseTarget,kc){
-        if(this.extended){
+        if(this.extended && this.dockPointsDev.length>0){
             let endPos = courseTarget.getEndSnapPoint(kc);
-            let startPos = this.dockPointsDev.find(value => kcEquals(value,kc));
+            let startPos = this.dockPointsDev.find(value => kcEquals(value.KC,kc));
             let snapPoints = [startPos];
             snapPoints.push({x:this.x+this.width+this.width*0.1,y:startPos.y});
             snapPoints.push(goToPeriod(this, courseTarget));
