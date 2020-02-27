@@ -423,12 +423,13 @@ public class Admin extends HttpServlet {
 
 		}
 
-		if(method.equals("COPY_SPECIAL_FROM_YEAR")) {
+		if(method.equals("COPY_FROM_YEAR_SPECIAL")) {
 			String name = request.getParameter("name");
+			String code = request.getParameter("code");
 			int fromYear = Integer.parseInt(request.getParameter("fromYear"));
 			LP fromLP = LP.getByString(request.getParameter("fromLP"));
 			int toYear = Integer.parseInt(request.getParameter("toYear"));
-			String code = request.getParameter("code");
+
 
 			CourseDate courseDate = new CourseDate(fromYear, fromLP);
 			CourseDate dateForRelations = new CourseDate(toYear, fromLP);
