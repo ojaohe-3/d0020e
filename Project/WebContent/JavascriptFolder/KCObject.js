@@ -6,13 +6,14 @@ class KCObject{
         this.thickness = thickness;
         this.snapPoints = [];
         this.data = data;
-
-
     }
-    generateSnappoints(snaps){
+    setSnapPoint(snaps){
         this.snapPoints = snaps;//temporary
     }
     draw(ctx){
+        ctx.save();
+        saveMatrix();
+        translate(0,0);
         ctx.beginPath();
         ctx.moveTo(this.x1,this.y1);
         this.snapPoints.forEach(function (point) {
@@ -20,6 +21,8 @@ class KCObject{
         });
         ctx.lineTo(this.x2, this.y2);
         ctx.stroke();
+        ctx.restore();
+        restoreMatrix();
     }
 
 }

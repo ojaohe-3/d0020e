@@ -1,17 +1,34 @@
+/**
+ * Get a course At a specific date, and is on equal heigh as the caller
+ * @param date {year:*,lp:*}
+ * @param c1 referense caller, CourseObject
+ * @return {null|*} resulting CourseObject
+ */
 function getCourseAt(date,c1) {
+    let obj = null;
     courses.forEach((v,k)=>{
        if(k.includes(date.year+date.lp)){
            if(v.y < c1.y*1.5 && v.y>c1.y*0.5){
-               return v;
+               obj = v;// again stupid js cannot break foreach loops.
            }
        }
     });
 
-    // empty space found
-    let temp = c1;
-    temp.x += width;
-    temp.y = 0;
-    return temp;
+    if(obj === null){
+        // empty space found
+        let temp = new CourseObject(c1.data,
+            {
+                x:c1.x,y:c1.y,
+                width: c1.width,
+                height: c1.height,
+                thickness: c1.thickness
+            });
+        temp.x += width;
+        temp.y = 0;
+        return temp;
+    }else{
+        return obj;
+    }
 }
 
 /**
@@ -32,23 +49,24 @@ function goToPeriod(c1, c2) {
         case "FOUR":step=3;break
     }
     while (current.year !== c2.data.year && current.lp !== c2.data.lp){
-        switch (step) {
-            case 0:current.lp="ONE";break;
-            case 1:current.lp="TWO";break;
-            case 2:current.lp="THREE";break;
-            case 3:current.lp="FOUR";break;
-        }
+
         if(cCourse === c1){
-            res.push(cCourse.getEndIntermittenPoint());
+            res.push(...cCourse.getEndIntermittenPoint());
         }else{
-            res.push(cCourse.getFirstIntermittenPoint());
+            res.push(...cCourse.getFirstIntermittenPoint());
             res.push(cCourse.getMiddleSnap());
-            res.push(cCourse.getEndIntermittenPoint());
+            res.push(...cCourse.getEndIntermittenPoint());
         }
         step = (step+1);
         if(step>3){
             current.year += 1;
             step %= 4;
+        }
+        switch (step) {
+            case 0:current.lp="ONE";break;
+            case 1:current.lp="TWO";break;
+            case 2:current.lp="THREE";break;
+            case 3:current.lp="FOUR";break;
         }
 
         cCourse = getCourseAt(current,cCourse);
@@ -58,8 +76,15 @@ function goToPeriod(c1, c2) {
     return res;
 }
 
+/**
+ * Object For each graphical and logical position of Courses
+ */
 class CourseObject{
-
+    /**
+     * Generate Object
+     * @param data JSON fetched from database
+     * @param conf {x,y,width,heigh,thickness}
+     */
     constructor(data,conf) {
         this.data = data;
         this.x = conf.x;
@@ -72,43 +97,71 @@ class CourseObject{
         this.dockPointsDev =[];
         this.KCs = {REQ:[],DEV:[]};
         data.Required.forEach((k,i) => {
-            this.dockPointsReq.push({x: conf.x+conf.width, y:conf.y+conf.height+conf.thickness*i,KC:k});
+            this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i,KC:k});
             //this.KCs.REQ.push(new KCObject(conf.thickness, k));//if a dev exist a reqirement version will simply point on exact same points
         });
         data.Developed.forEach((k,i)=>{
-            this.dockPointsDev.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i,KC:k});
+            this.dockPointsDev.push({x: conf.x+ conf.width, y:conf.y+conf.height+conf.thickness*i,KC:k});
             this.KCs.DEV.push(new KCObject(conf.thickness, k));
         })
 
     }
 
+    /**
+     * Generate Snap points going to course object
+     * @param courseTarget CourseObject
+     * @param kc KC JSON
+     */
     setSnapPoints(courseTarget,kc){
         if(this.extended && this.dockPointsDev.length>0){
             let endPos = courseTarget.getEndSnapPoint(kc);
             let startPos = this.dockPointsDev.find(value => kcEquals(value.KC,kc));
-            let snapPoints = [startPos];
+            let snapPoints = [{x:startPos.x,y:startPos.y}];
             snapPoints.push({x:this.x+this.width+this.width*0.1,y:startPos.y});
-            snapPoints.push(goToPeriod(this, courseTarget));
-            snapPoints.push({x:courseTarget.x+courseTarget.width-courseTarget.width*0.1,y:endPos.y});
+            snapPoints.push(...goToPeriod(this, courseTarget));
+            snapPoints.push({x:courseTarget.x-courseTarget.width*0.1,y:endPos.y});
             snapPoints.push(endPos);
 
-            this.KCs.DEV[this.dockPointsDev.findIndex(value => kcEquals(value,kc))].snapPoints = snapPoints;
+            this.KCs.DEV[this.dockPointsDev.findIndex(value => kcEquals(value.KC,kc))].setSnapPoint(snapPoints);
         }
     }
+
+    /**
+     * Get the first point before meeting the object, to the left of the object going towards right
+     * if extended return 2 points, one incoming from middle and one outgoing
+     * @return [{x: number, y: number}|{x: number, y: number}]
+*/
     getFirstIntermittenPoint(){
         if(this.extended)
-            return [{x: this.x - this.width*0.1, y: this.y + height + height*0.1},{x: this.x - this.width*0.1, y: this.y + this.height + this.height*0.1}]
-        return {x: this.x - this.width*0.1, y: this.y + this.height + this.height*0.1}
+            return [{x: this.x - this.width*0.1, y: this.y + height + height*0.1},{x: this.x -  this.width*0.1, y: this.y + this.height + this.height*0.1}]
+        return [{x:  this.x - this.width*0.1, y: this.y + this.height + this.height*0.1}]
     }
+
+    /**
+     * Get points after leaving the middle part, if extended return 2, one outgoing and one going back to middle
+     * @return [{x: number, y: number}|{x: number, y: number}]
+     */
     getEndIntermittenPoint(){
         if(this.extended)
-            return [{x: this.x +this.width+ this.width*0.1, y: this.y + height + height*0.1},{x: this.x +this.width + this.width*0.1, y: this.y + this.height + this.height*0.1}]
-        return {x: this.x +this.width + this.width*0.1, y: this.y + this.height + this.height*0.1}
+            return [{x: this.x + this.width + this.width*0.1, y: this.y + height + height*0.1},{x: this.x + this.width + this.width*0.1, y: this.y + this.height + this.height*0.1}]
+        return [{x: this.x + this.width +this.width*0.1, y: this.y + this.height + this.height*0.1}]
 
     }
+
+    /**
+     * get lower middle
+     * @return {{x: *, y: *}}
+     */
     getMiddleSnap(){
         return {x: this.x + this.width/2, y: this.y + this.height+this.height*0.1};
     }
+
+    /**
+     * Find kc and map point to its required slot.
+     * if it is not extended snap all to default position
+     * @param kc JSON fetched from database
+     * @return {{x: *, y: *}}
+     */
     getEndSnapPoint(kc){
         if(this.extended){
             let finder = this.dockPointsReq.find(value => kcEquals(value,kc));
@@ -118,6 +171,10 @@ class CourseObject{
             return {x:this.dockPointsReq[0].x,y:this.dockPointsReq[0].y};
         }
     }
+
+    /**
+     * Extend to show KCs, will toggle when called again.
+     */
     setExtended(){
         this.extended = this.extended == true ? false : true;
         if(this.extended)
@@ -127,7 +184,11 @@ class CourseObject{
         reFormatSection(this.data.lp,this.data.year);
     }
 
-
+    /**
+     * Draw Course Object, Is required
+     * Draws KCs objects
+     * @param ctx draw context
+     */
     draw(ctx){
       saveMatrix();
       ctx.save();
@@ -197,7 +258,12 @@ class CourseObject{
      ctx.restore();
     }
 
-
+    /**
+     * Check if collides with pos
+     * @param pos {x:number,y:number}
+     * @param dpi dpi from canvas, if unsure just set to 1.5
+     * @return {boolean|boolean}
+     */
     isInside(pos, dpi){
         let wx = this.x+this.width;
         let wy = this.y+this.height;
