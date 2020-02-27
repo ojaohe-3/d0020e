@@ -121,7 +121,9 @@ function generateCanvas(data) {
         }
     );
 
+
     createCourseOverlay();  // TODO fix this, it ain't done.
+
     courses.set(item["courseCode"]+item["year"]+item["lp"], obj);
   });
   let kcReq = [];
@@ -130,7 +132,7 @@ function generateCanvas(data) {
     kcReq.push(REQ.get(v.data.courseCode));
     kcDev.push(DEV.get(v.data.courseCode));
     kcReq.filter(v1 => kcDev.some(v2=> kcEquals(v1,v2)));
-
+    
   });
 
   drawCanvas();
@@ -175,6 +177,7 @@ function createCourseOverlay() {
       dropDown.style.display= "none";
     }
 
+
   });
 
   course.appendChild(button);
@@ -184,6 +187,39 @@ function createCourseOverlay() {
   console.log(courseDefinition);
 }
 
+function findCourseByCode(code) {
+  courses.forEach((v,k)=>{
+    if(k.contains(code)){
+      return v;
+    }
+  });
+  return null;
+}
+function addCourse(data) {
+  try{
+    courses.set(data["courseCode"]+data["year"]+data["lp"]);
+    regenerateCanvas();
+  }catch (e) {
+    alert(e.message+' Value might already exist!');
+  }
+
+}
+
+function reFormatSection(lp,year){
+  let key = year+lp;//string
+  let oldkey ="";
+  let old = {};
+  courses.forEach((v,k)=> {
+    if(k.includes(key)){
+      if(courses.has(oldkey)){
+        old = courses.get(oldkey);
+        v.y = old.y + old.height*1.2;
+      }
+      oldkey = k;
+    }
+  });
+  drawCanvas();
+}
 function findCourseByCode(code) {
   courses.forEach((v,k)=>{
     if(k.contains(code)){

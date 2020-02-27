@@ -1,3 +1,63 @@
+function getCourseAt(date,c1) {
+    courses.forEach((v,k)=>{
+       if(k.contains(date.year+date.lp)){
+           if(v.y < c1.y*1.5 && v.y>c1.y*0.5){
+               return v;
+           }
+       }
+    });
+
+    // empty space found
+    let temp = c1;
+    temp.x += width;
+    temp.y = 0;
+    return temp;
+}
+
+/**
+ * wander points by the middle from one point to another
+ * @param c1 CourseObject 1
+ * @param c2 CourseObject 2
+ * @return array of snapPoints ending at intermittent
+ */
+function goToPeriod(c1, c2) {
+    let current = {year:c1.data.year, lp:c1.data.lp};
+    let res = [];
+    let cCourse = c1;
+    let step = 0;
+    switch (current.lp) {
+        case "ONE":step =0;break;
+        case "TWO":step=1;break;
+        case "THREE":step=2;break;
+        case "FOUR":step=3;break
+    }
+    while (current.year !== c2.data.year && current.lp !== c2.data.lp){
+        switch (step) {
+            case 0:current.lp="ONE";break;
+            case 1:current.lp="TWO";break;
+            case 2:current.lp="THREE";break;
+            case 3:current.lp="FOUR";break;
+        }
+        if(cCourse === c1){
+            res.push(cCourse.getEndIntermittenPoint());
+        }else{
+            res.push(cCourse.getFirstIntermittenPoint());
+            res.push(cCourse.getMiddleSnap());
+            res.push(cCourse.getEndIntermittenPoint());
+        }
+        step = (step+1);
+        if(step>3){
+            current.year += 1;
+            step %= 4;
+        }
+
+        cCourse = getCourseAt(current,cCourse);
+        if(cCourse === null)
+            return res;
+    }
+    return res;
+}
+
 class CourseObject{
 
     constructor(data,conf) {
@@ -6,75 +66,99 @@ class CourseObject{
         this.y = conf.y;
         this.width = conf.width;
         this.height = conf.height;
+        this.thickness = conf.thickness;
         this.extended = false;
-        this.dockPointsDev = [];
-        this.dockPointsReq = [{x: this.x, y:this.height/2+this.y}];
+        this.dockPointsReq = [{x: this.x, y:this.height/2+this.y, KC: null}]; //default point
+        this.dockPointsDev =[];
+        this.KCs = {REQ:[],DEV:[]};
+        data.Required.forEach((k,i) => {
+            this.dockPointsReq.push({x: conf.x+conf.width, y:conf.y+conf.height+conf.thickness*i,KC:k});
+            //this.KCs.REQ.push(new KCObject(conf.thickness, k));//if a dev exist a reqirement version will simply point on exact same points
+        });
+        data.Developed.forEach((k,i)=>{
+            this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i,KC:k});
+            this.KCs.DEV.push(new KCObject(conf.thickness, k));
 
-        this.data.Required.forEach(function (k,i) {
-            //this.dockPointsReq.push({x: this.x, y:this.y+this.height+24*i});
         })
-        this.data.Developed.forEach(function (k,i) {
-            //this.dockPointsDev.push({x: this.x+this.width, y:this.y+this.height+24*i})
-        })
+
     }
 
-    drawExtended(ctx){
-        saveMatrix();
-        ctx.save();
-        translate(0,0);
-        this.height =
-        this.button = new canvasButton({x: this.x + this.width*0.8,
-            y : this.y+this.height*0.8,
-            width : this.width*0.2,
-            height : this.height*0.2,
-            text:"▲"});
-        ctx.strokeRect(this.x,this.y,this.width,this.height);
-        ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
-        ctx.fillStyle = "white";
-        ctx.font = 'italic '+(this.width)*4/ctx.measureText(this.data["name"]).width+'pt Calibri';
-        ctx.fillText(this.data["name"],
-            this.x+this.width/2 -  ctx.measureText(this.data["name"]).width/2,
-            this.y + this.height*0.14
-        );
-        ctx.fillStyle = "black";
-        ctx.strokeRect(this.x+this.width*0.05,this.y+this.height*.3,this.width-this.width*0.1,this.height-this.height*0.5);
+    setSnapPoints(courseTarget,kc){
+        if(this.extended){
+            let endPos = courseTarget.getEndSnapPoint(kc);
+            let startPos = this.dockPointsDev.find(value => kcEquals(value,kc));
+            let snapPoints = [startPos];
+            snapPoints.push({x:this.x+this.width+this.width*0.1,y:startPos.y});
+            snapPoints.push(goToPeriod(this, courseTarget));
+            snapPoints.push({x:courseTarget.x+courseTarget.width-courseTarget.width*0.1,y:endPos.y});
+            snapPoints.push(endPos);
 
-        this.drawInRect(this.x+this.width*0.1 ,this.y+this.height*0.35 ,0,0,0.70717,ctx);
-        this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.36,this.data["courseCode"],ctx);
-        this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
-        this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.59,this.data["examiner"],ctx);
-        restoreMatrix();
-        ctx.restore();
-        this.button.draw(ctx);
+            this.KCs.DEV[this.dockPointsDev.findIndex(value => kcEquals(value,kc))].snapPoints = snapPoints;
+        }
+    }
+    getFirstIntermittenPoint(){
+        if(this.extended)
+            return [{x: this.x - this.width*0.1, y: this.y + height + height*0.1},{x: this.x - this.width*0.1, y: this.y + this.height + this.height*0.1}]
+        return {x: this.x - this.width*0.1, y: this.y + this.height + this.height*0.1}
+    }
+    getEndIntermittenPoint(){
+        if(this.extended)
+            return [{x: this.x +this.width+ this.width*0.1, y: this.y + height + height*0.1},{x: this.x +this.width + this.width*0.1, y: this.y + this.height + this.height*0.1}]
+        return {x: this.x +this.width + this.width*0.1, y: this.y + this.height + this.height*0.1}
+
+    }
+    getMiddleSnap(){
+        return {x: this.x + this.width/2, y: this.y + this.height+this.height*0.1};
+    }
+    getEndSnapPoint(kc){
+        if(this.extended){
+            let finder = this.dockPointsReq.find(value => kcEquals(value,kc));
+            return {x:finder.x,y:finder.y};
+        }else
+        {
+            return {x:this.dockPointsReq[0].x,y:this.dockPointsReq[0].y};
+        }
+    }
+    setExtended(){
+        this.extended = this.extended == true ? false : true;
+        if(this.extended)
+            this.height += Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness;
+        else
+            this.height -= Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness;
+        reFormatSection(this.data.lp,this.data.year);
     }
 
-  draw(ctx){
-      //saveMatrix();
+
+    draw(ctx){
+      saveMatrix();
       ctx.save();
-      //translate(0,0);
-       this.button = new canvasButton({x: this.x + this.width*0.8,
-        y : this.y+this.height*0.8,
-        width : this.width*0.2,
-        height : this.height*0.2,
-        text:"▲"});
-      ctx.strokeRect(this.x,this.y,this.width,this.height);
-      ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
-      ctx.fillStyle = "white";
-      ctx.font = 'italic '+(this.width)*4/ctx.measureText(this.data["name"]).width+'pt Calibri';
-      ctx.fillText(this.data["name"],
-        this.x+this.width/2 -  ctx.measureText(this.data["name"]).width/2,
-        this.y + this.height*0.14
-        );
-      ctx.fillStyle = "black";
-      ctx.strokeRect(this.x+this.width*0.05,this.y+this.height*.3,this.width-this.width*0.1,this.height-this.height*0.5);
+      translate(0,0);
+       // this.button = new canvasButton({x: this.x + this.width*0.8,
+       //  y : this.y+this.height*0.8,
+       //  width : this.width*0.2,
+       //  height : this.height*0.2,
+       //  text:"▲"});
+        this.KCs.DEV.forEach((v)=>{v.draw(ctx);});
 
-      this.drawInRect(this.x+this.width*0.1 ,this.y+this.height*0.35 ,0,0,0.70717,ctx);
-      this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.36,this.data["courseCode"],ctx);
-      this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
-      this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.59,this.data["examiner"],ctx);
-      //restoreMatrix();
+      ctx.strokeRect(this.x,this.y,this.width,this.height);
+      //obsolete
+      //ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
+      //ctx.fillStyle = "white";
+      //ctx.font = 'italic '+(this.width)*4/ctx.measureText(this.data["name"]).width+'pt Calibri';
+     // ctx.fillText(this.data["name"],
+       // this.x+this.width/2 -  ctx.measureText(this.data["name"]).width/2,
+        //this.y + this.height*0.14
+       // );
+     // ctx.fillStyle = "black";
+     // ctx.strokeRect(this.x+this.width*0.05,this.y+this.height*.3,this.width-this.width*0.1,this.height-this.height*0.5);
+
+     // this.drawInRect(this.x+this.width*0.1 ,this.y+this.height*0.35 ,0,0,0.70717,ctx);
+      //this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.36,this.data["courseCode"],ctx);
+     // this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
+      //this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.59,this.data["examiner"],ctx);
+      restoreMatrix();
       ctx.restore();
-      this.button.draw(ctx);
+      // this.button.draw(ctx);
     }
 
   /**
@@ -121,15 +205,6 @@ class CourseObject{
 
         return pos.x > this.x/dpi && pos.x < wx/dpi && pos.y < wy/dpi && pos.y > this.y/dpi
     }
-
-    kcDockpoint(kc){
-        if(this.extended){
-           //extended points
-        }else{
-            return this.dockPointsReq[0];
-        }
-    }
-
 }
 
 
