@@ -1,12 +1,16 @@
+/**
+ * KC renderer object
+ */
 class KCObject{
-    constructor(kcTarget,data) {
+    constructor(thickness,data) {
+        this.thickness = thickness;
+        this.snapPoints = [];
         this.data = data;
-        this.x1 = kcTarget.x1;
-        this.x2 = kcTarget.x2;
-        this.y1 = kcTarget.y1;
-        this.y2 = kcTarget.y2;
-        this.snapPoints = kcTarget.snapPoints;
 
+
+    }
+    generateSnappoints(snaps){
+        this.snapPoints = snaps;//temporary
     }
     draw(ctx){
         ctx.beginPath();

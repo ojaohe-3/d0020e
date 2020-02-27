@@ -13,3 +13,4 @@
 <script src="JavascriptFolder/canvasButton.js"></script>
 <script src="JavascriptFolder/CourseObject.js"></script>
 <script src="JavascriptFolder/GraphicCanvas.js"></script>
+<script src ="JavascriptFolder/KCObject.js"></script>

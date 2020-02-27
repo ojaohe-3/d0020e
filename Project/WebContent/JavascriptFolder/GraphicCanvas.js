@@ -21,10 +21,6 @@ let courses =new Map();
   //translations
 let matrix=[1,0,0,1,0,0];
 let oldMatrix = [];
-let viewportX = 0;
-let viewportY = 0;
-
-
 window.addEventListener("resize", drawCanvas);
 
 canvas.addEventListener('click', function(evt) {
@@ -50,17 +46,30 @@ function getMousePos(canvas, event) {
   };
 }
 
+
+
 function generateCanvas(data) {
+  // clear local data
+  kcMap = new Map();
   courses = new Map();
+  KCs = [];
+  // read from course
   let year = data.year;
   let offsetYear = 0;
-
   let currentYear = year;
+  //KC mapping
+  let DEV = new Map();
+  let REQ = new Map();
+  let intersection = [];
   data['Courses'].forEach(function (item, index,arr){
 
+
+
+
+    //======================== YEAR PARTITIONING========================
     // All courses should, in theory, be sorted after year. We can therefore reset the study periods when
     // The next course has a new year.
-    if (item.year != currentYear) {
+    if (item.year !== currentYear) {
       offsetYear = item.year-year;
       for (let [key,value] of period) {
         period.set(key,0);
@@ -68,12 +77,13 @@ function generateCanvas(data) {
       currentYear = item.year;
     }
 
-    console.log(offsetYear);
+    //console.log(offsetYear);
     let x = 0;
     let hTemp = period.get(item.lp);
     let y = hTemp*height*1.2;
     period.set(item.lp, hTemp + 1);
 
+    //======================== LP PARTITIONING ========================
     //set x axis
     if(item.lp === "ONE"){
       x+= width*1.2*offsetYear*4;
@@ -86,7 +96,21 @@ function generateCanvas(data) {
       x += width *1.2*(3+(offsetYear-1)*4);
     }
 
-    courses.set(item["courseCode"]+item["year"]+item["lp"], new CourseObject(
+
+
+    //========================  KC MAPPING ========================
+    //push to our available kcs to map
+    if(item.Developed.length > 0){
+      DEV.set(item.courseCode,item.Developed);
+    }
+    //map intersecting kcs
+    if(item.Required.length > 0){
+      REQ.set(item.courseCode, item.Required);
+    }
+
+    //======================== GENERATE GRAPHICS OBJECT ========================
+
+    let obj = new CourseObject(
         item,
         {
           x: x,
@@ -95,13 +119,30 @@ function generateCanvas(data) {
           height: height,
           thickness: 24
         }
-    ));
-    //console.log("added: "+ JSON.stringify(item))
+    );
+
+
+    courses.set(item["courseCode"]+item["year"]+item["lp"], obj);
+  });
+  let kcReq = [];
+  let kvDev= [];
+  courses.forEach((v)=>{
+    kcReq.push(REQ.get(v.data.courseCode));
+    kcDev.push(DEV.get(v.data.courseCode));
+    kcReq.filter(v1 => kcDev.some(v2=> kcEquals(v1,v2)));
+
   });
 
   drawCanvas();
 }
-
+function findCourseByCode(code) {
+  courses.forEach((v,k)=>{
+    if(k.contains(code)){
+      return v;
+    }
+  });
+  return null;
+}
 function addCourse(data) {
   try{
     courses.set(data["courseCode"]+data["year"]+data["lp"]);
@@ -155,7 +196,9 @@ function fix_dpi() {
   canvas.setAttribute('width', style_width * dpi);
 }
 
-
+function kcEquals(kc1,kc2) {
+  return kc1.name === kc2.name && kc1.taxonomyLevel === kc2.taxonomyLevel;
+}
 //https://stackoverflow.com/questions/21717001/html5-canvas-get-coordinates-after-zoom-and-translate
 function translate(x,y){
   //console.log('x: '+x+', y: '+y);

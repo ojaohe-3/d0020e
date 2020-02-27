@@ -2,6 +2,7 @@ package Data;
 
 public enum Credits {
 	SEVEN,
+	SEVENHALF,
 	FIFTHEEN,
 	THIRTY,
 	ONEHUNDREDEIGHTY,
