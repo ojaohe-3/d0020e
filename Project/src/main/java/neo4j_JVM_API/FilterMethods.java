@@ -63,7 +63,7 @@ public class FilterMethods {
 			Value course = row.get("course");
 			CourseInformation information = new CourseInformation(course.get(Course.CourseLabels.NAME.toString()).toString().replaceAll("\"",""),
 					course.get(Course.CourseLabels.CODE.toString()).toString().replaceAll("\"",""),
-					Float.parseFloat(course.get(Course.CourseLabels.CREDIT.toString()).toString().replaceAll("\"", "") ),
+					course.get(Course.CourseLabels.CREDIT.toString()).asFloat(),
 					course.get(Course.CourseLabels.DESCRIPTION.toString()).toString().replaceAll("\"",""),
 					course.get(Course.CourseLabels.EXAMINER.toString()).toString().replaceAll("\"",""),
 					new CourseDate(Integer.parseInt(course.get(Course.CourseLabels.YEAR.toString()).toString().replaceAll("\"", "")   ), LP.valueOf(course.get(Course.CourseLabels.LP.toString()).toString().replaceAll("\"", ""))));
@@ -111,7 +111,7 @@ public class FilterMethods {
 							Integer.parseInt(prog.get(CourseProgram.ProgramLabels.YEAR.toString()).toString().replaceAll("\"", "")),
 							LP.valueOf(prog.get(CourseProgram.ProgramLabels.LP.toString()).toString().replaceAll("\"", ""))
 					),
-					Float.parseFloat(prog.get(CourseProgram.ProgramLabels.CREDITS.toString()).toString().replaceAll("\"", "")),
+					prog.get(CourseProgram.ProgramLabels.CREDITS.toString()).asFloat(),
 					CourseProgram.ProgramType.PROGRAM);
 			result[i] = information;
 		}
