@@ -25,7 +25,7 @@ public class GetAllUsers extends HttpServlet {
     	    	
     	    	String s = "";
     	    	for(String name: usernames) {
-    	    		s += name+";;";
+    	    		s += name+"\n";
     	    	}
     	        response.setContentType("text/text");
     	        response.getWriter().write(s);
