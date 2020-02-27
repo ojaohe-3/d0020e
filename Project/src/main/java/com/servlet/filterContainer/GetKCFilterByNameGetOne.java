@@ -18,8 +18,18 @@ import Data.KC;
 import Data.KC.KCLabel;
 import Data.Course.CourseLabels;
 import neo4j_JVM_API.Neo4JAPI;
-@WebServlet("/GetKCs/FilterByName")
-public class GetKCFilterByName extends HttpServlet {
+
+
+
+/**
+ * 
+ * 	Will not return for each Taxonomy level
+ * 
+ * @author JSPr
+ *
+ */
+@WebServlet("/GetKCs/FilterByNameGetOne")
+public class GetKCFilterByNameGetOne extends HttpServlet {
 
 	/**
 	 *  No idea what this is.. 
@@ -33,18 +43,21 @@ public class GetKCFilterByName extends HttpServlet {
 
 		KC[] kcs = Neo4jConfigLoader.getApi().filterMethods.filterKCByTag(KC.KCLabel.NAME, request.getParameter("filter"));
 		
+		ArrayList<String> namesToSend = new ArrayList<String>();
 		try {
 			JSONArray array = new JSONArray();
 			for (KC kc : kcs) {
-				
+				if(!namesToSend.contains(kc.getName())) {
+					namesToSend.add(kc.getName());
 					JSONObject obj = new JSONObject();
 				    obj.put(KCLabel.NAME.toString(), kc.getName());
 				    obj.put(KCLabel.TAXONOMYLEVEL.toString(), kc.getTaxonomyLevel());
 				    obj.put(KCLabel.TAXONOMY_DESCRIPTION.toString(), kc.getTaxonomyDescription());
 				    obj.put(KCLabel.GENERAL_DESCRIPTION.toString(), kc.getGeneralDescription());
 				    array.put(obj);
-			}
+				}
 			    
+			}
 			response.setContentType("text/json");
 			response.getWriter().write(array.toString());
 		} catch (JSONException exception) {}

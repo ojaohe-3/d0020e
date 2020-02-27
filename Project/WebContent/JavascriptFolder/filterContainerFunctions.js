@@ -42,7 +42,40 @@ function programClicked(code,year,lp) {
 	
 }
 
-function kcClicked() {
+function kcClicked(name) {
 	
+	$.ajax({
 
+		url : 'GetKC/byName',
+		data : {
+			name : name
+		},
+		success : function(response) {
+			
+			response = JSON.parse(JSON.stringify(response));
+			
+			//$('#displayKC').style.display = "block";
+			
+			console.log(response);
+			console.log(response.ONE);
+			
+			var one = JSON.parse(response.ONE);
+			var two = JSON.parse(response.TWO);
+			var three = JSON.parse(response.THREE);
+			
+			
+			console.log(one.name);
+			
+			$('#kc_name').html("<h1>" + one.name + "</h1>");
+			$('#kc_general_desc').html("<h3>" + one.generalDescription + "</h3>");
+			
+			$('#kc_tax_desc_1').html("<p> Level 1 <br> " + one.taxonomyDescription + "</p>");
+			$('#kc_tax_desc_2').html("<p> Level 2 <br> " + two.taxonomyDescription + "</p>");
+			$('#kc_tax_desc_3').html("<p> Level 3 <br> " + three.taxonomyDescription + "</p>");
+		}
+	});
+}
+
+function hideKCdiv() {
+	$('#displayKC').style.display = "none";
 }
