@@ -104,6 +104,14 @@ public class ModifyMethods {
 		communicator.writeToNeo(query);
 	}
 	*/
+
+	/**
+	 *Edit an already existing program
+	 *@param programCode The current code the program have
+	 *@param startyear When the program started
+	 *@param newProgram Takes in a new CourseProgram with updated values
+	 *@author Robin, Tommy
+	 */
 	
 	public void editProgram(String programCode,CourseDate startyear, CourseProgram newProgram) {
 		String query = "MATCH (n:CourseProgram{code:\""+  programCode+"\"}) SET n={";
@@ -118,6 +126,14 @@ public class ModifyMethods {
 		
 		communicator.writeToNeo(query);
 	}
+
+	/**
+	 *Edit an already existing specialization
+	 *@param programspecializationName The current name the specialization have
+	 *@param startyear When the specialization started
+	 *@param newProgramSpcialization Takes in a new ProgramSpecialization with updated values
+	 *@author Robin, Tommy
+	 */
 
 	public void editSpecialization(String programspecializationName,CourseDate startyear, ProgramSpecialization newProgramSpcialization) {
 		String query = "MATCH (n:ProgramSpecialization{name:\""+  programspecializationName+"\"}) SET n={";

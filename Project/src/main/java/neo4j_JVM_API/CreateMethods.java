@@ -382,6 +382,46 @@ private final Neo4jCommunicator communicator;
 		this.createProgramCourseRelations(newProgram);
 	}
 
+	/**
+	 * Create a complete copy of a program (or specialization) for another starting year. Every course and
+	 * KC will be replicated and moved relative to the new starting year.
+	 * @param program - The program you want to copy.
+	 * @param newYear - The year of the first study period. This is not relative to the old year.
+	 */
+	public void createCopyOfSpecializationbyYear(ProgramSpecialization program, int newYear, String code, CourseDate newRelationDate) {
+		int yearDifference = newYear - program.getStartDate().getYear();
+		Course[][] courses = program.getCourseOrder().getCourseArray();
+		Course[][] newCourses = new Course[courses.length][program.getCourseOrder().getReadingPeriods()];
+		Course courseRef = null;
+		CourseDate courseStartDateRef = null;
+		for (int x = 0; x < courses.length; x++) {
+			for (int y = 0; y < courses[x].length; x++) {
+
+				courseRef = courses[x][y];
+				if (courseRef == null) {
+					continue;
+				}
+				courseStartDateRef = new CourseDate(courseRef.getStartPeriod().getYear() + yearDifference, courseRef.getStartPeriod().getPeriod());
+				newCourses[x][y] = new Course(courseRef.getName(), courseRef.getCourseCode(), courseRef.getCredit(),courseRef.getDescription(), courseRef.getExaminer(), courseStartDateRef);
+				this.createCourse(newCourses[x][y]);
+				for (KC kc : courseRef.getDevelopedKC()) {
+					newCourses[x][y].setDevelopedKC(kc);
+				}
+				for (KC kc : courseRef.getRequiredKC()) {
+					newCourses[x][y].setRequiredKC(kc);
+				}
+				this.createCourseKCrelation(newCourses[x][y]);
+			}
+		}
+
+		CourseDate newCourseDate = new CourseDate(newYear, program.getStartDate().getPeriod());
+		ProgramSpecialization newProgram = new ProgramSpecialization(null, program.getCode(), program.getName(), program.getDescription(),newCourseDate, program.getCredits());
+		CourseOrder newCourseOrder = new CourseOrder(program.getCourseOrder().getReadingPeriods());
+		newCourseOrder.assignCourseOrder(newCourses);
+		this.createProgram(newProgram);
+		this.createProgramCourseRelations(newProgram);
+		this.createProgramSpecializationRelation(code, newRelationDate, newProgram);
+	}
 
 }
 

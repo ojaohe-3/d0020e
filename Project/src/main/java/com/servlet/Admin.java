@@ -51,7 +51,14 @@ public class Admin extends HttpServlet {
 		
 		
 	}
-	
+
+	/**
+	 * Depending on the request input different methods are used.
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 * @throws ServletException
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String head = request.getParameter("head");
 
@@ -74,6 +81,12 @@ public class Admin extends HttpServlet {
 		response.getWriter().write(resp);
 	}
 
+	/**
+	 * Takes in inputs from admin.js and handle all User methods
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 */
 	private String user(HttpServletRequest request) throws IOException {
 
 		String method = request.getParameter("method");
@@ -125,9 +138,6 @@ public class Admin extends HttpServlet {
 			String courseCode = request.getParameter("courseCode");
 			String lp = request.getParameter("lp");
 			String year = request.getParameter("year");
-
-			//User user = Neo4jConfigLoader.getApi().userMethods.getUser(username);
-
 			
 			LP period = LP.getByString(lp);
 			int Year = Integer.parseInt(year);
@@ -162,6 +172,12 @@ public class Admin extends HttpServlet {
 		}
 	}
 
+	/**
+	 * Takes in inputs from admin.js and handle all methods related to courses
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 */
 	private String course(HttpServletRequest request) throws IOException {
 		
 		String method = request.getParameter("method");
@@ -237,6 +253,12 @@ public class Admin extends HttpServlet {
 
 	}
 
+	/**
+	 * Takes in inputs from admin.js and handle all methods that have something with KC
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 */
 	private String kc(HttpServletRequest request) throws IOException {
 
 		String method = request.getParameter("method");
@@ -320,6 +342,12 @@ public class Admin extends HttpServlet {
 		return "The input must be either CREATE, DELETE, MODIFY, MODIFY_TAXONOMY_DESC or MODIFY_GENERAL_DESC";
 	}
 
+	/**
+	 * Takes in inputs from admin.js and handle all the program methods
+	 * @param request
+	 * @return
+	 * @throws IOException
+	 */
 	private String program(HttpServletRequest request) throws IOException {
 
 		String method = request.getParameter("method");
@@ -363,6 +391,18 @@ public class Admin extends HttpServlet {
 			return "The program with program code " + programCode + " has been removed";
 		}
 
+		if(method.equals("DELETE_SPECIAL")) {
+			String name = request.getParameter("name");
+			int year = Integer.parseInt(request.getParameter("year"));
+			LP period = LP.getByString(request.getParameter("lp"));
+
+			CourseDate courseDate = new CourseDate(year, period);
+
+			Neo4jConfigLoader.getApi().deleteMethods.deleteProgramSpecialization(name, courseDate);
+
+			return "The specialization " + name + " has been deleted";
+		}
+
 		if(method.equals("COPY_FROM_YEAR")) {
 			String programCode = request.getParameter("code");
 			String fromYear = request.getParameter("fromYear");
@@ -381,6 +421,23 @@ public class Admin extends HttpServlet {
 
 			return "A new program with program code " + programCode + " has been created for year "+ toYear;
 
+		}
+
+		if(method.equals("COPY_SPECIAL_FROM_YEAR")) {
+			String name = request.getParameter("name");
+			int fromYear = Integer.parseInt(request.getParameter("fromYear"));
+			LP fromLP = LP.getByString(request.getParameter("fromLP"));
+			int toYear = Integer.parseInt(request.getParameter("toYear"));
+			String code = request.getParameter("code");
+
+			CourseDate courseDate = new CourseDate(fromYear, fromLP);
+			CourseDate dateForRelations = new CourseDate(toYear, fromLP);
+
+			ProgramSpecialization oldSpecialization = Neo4jConfigLoader.getApi().getMethods.getProgramSpecialization(name, courseDate, code);
+
+			Neo4jConfigLoader.getApi().createMethods.createCopyOfSpecializationbyYear(oldSpecialization, toYear, code, dateForRelations);
+
+			return "The specialization named " + name + " has been copied from " + fromYear + " to " + toYear;
 		}
 
 		if(method.equals("MODIFY")) {
@@ -445,14 +502,13 @@ public class Admin extends HttpServlet {
 		if(method.equals("CREATE_SPECIAL")) {
 			String name = request.getParameter("name");
 			String programCode = request.getParameter("programCode");
-			String startProgramYear = request.getParameter("startProgramYear");
+			int programYear = Integer.parseInt(request.getParameter("startProgramYear"));
 			String startProgramLP = request.getParameter("startProgramLP");
 			String specYear = request.getParameter("specYear");
 			String specLP = request.getParameter("specLP");
 			String description = request.getParameter("description");
 			String credits = request.getParameter("credits");
 
-			int programYear = Integer.parseInt(startProgramYear);
 			LP programStartPeriod = LP.getByString(startProgramLP);
 			int specialYear = Integer.parseInt(specYear);
 			LP specialPeriod = LP.getByString(specLP);
@@ -474,7 +530,7 @@ public class Admin extends HttpServlet {
 
 		}
 		if (method.equals("MODIFY_SPECIAL")) {
-			String oldName = request.getParameter("olrdName");
+			String oldName = request.getParameter("oldName");
 			int programStartYear = Integer.parseInt(request.getParameter("programStartYear"));
 			LP programStartLP = LP.getByString(request.getParameter("programStartByString"));
 			String newName = request.getParameter("newName");
@@ -496,7 +552,7 @@ public class Admin extends HttpServlet {
 			return "The progrmspecialization named " + oldName + " has been modified. New name is " + newName;
 
 		}else {
-			return "The input must be either CREATE, DELETE, COPY_FROM_YEAR, MODIFY, SET_RELATION_TO_COURSE, ADD_COURSE or CREATE_SPECIAL";
+			return "The input must be either CREATE, DELETE, DELETE_SPECIAL, COPY_FROM_YEAR, MODIFY, MODIFY_SPECIAL, SET_RELATION_TO_COURSE, ADD_COURSE or CREATE_SPECIAL";
 
 		}
 	}
