@@ -19,14 +19,14 @@ public class FilterMethods {
 	public FilterMethods(Neo4jCommunicator communicator){
 		this.communicator = communicator;
 	}
-	
+
 	/**
 	 * 			CREDITS NOT WORKING ..
-	 * 
- * 			aND COurseDate. .
-	 * 
-	 * 
-	 * Generalized search function for courses. This should be the only search function for 
+	 *
+	 * 			aND COurseDate. .
+	 *
+	 *
+	 * Generalized search function for courses. This should be the only search function for
 	 * courses we need.
 	 * @param filter - This can be any value of the type {@link Course.CourseLabels}.
 	 * @param searchTerm - This is the actual search term for the filter. All search results will contain this string.
@@ -34,12 +34,28 @@ public class FilterMethods {
 	 * @author Robin
 	 */
 	public CourseInformation[] filterCourseByTag(Course.CourseLabels filter, String searchTerm) {
+		return filterCourseByTag(filter,searchTerm, CourseLabels.YEAR, true);
+	}
 
-		String query = "MATCH (course: " + Course.course +") WHERE course." + filter + " CONTAINS \"" + searchTerm + "\" RETURN course";
-		
+	/**
+	 * Generalized search function for courses. This should be the only search function for
+	 * courses we need.
+	 * @param filter - This can be any value of the type {@link Course.CourseLabels}.
+	 * @param searchTerm - This is the actual search term for the filter. All search results will contain this string.
+	 * @param orderBy - Order by this item.
+	 * @param DESCENDING - If you want the items in descending order.
+	 * @return An array containing the search results.
+	 * @author Robin
+	 */
+	public CourseInformation[] filterCourseByTag(Course.CourseLabels filter, String searchTerm, Course.CourseLabels orderBy, boolean DESCENDING) {
+
+		String query = "MATCH (course: " + Course.course +") WHERE course." + filter + " CONTAINS \"" + searchTerm + "\" RETURN course ORDER BY course." + orderBy;
+		if (DESCENDING) {
+			query += " DESC";
+		}
 		/* This gives us the full list of records returned from neo. */
 		List<Record> resultList = this.communicator.readFromNeo(query).list();
-		
+
 		/* Iterate through the entire result list and create all the courses. */
 		CourseInformation[] result = new CourseInformation[resultList.size()];
 		int i = 0;
@@ -53,10 +69,9 @@ public class FilterMethods {
 					new CourseDate(Integer.parseInt(course.get(Course.CourseLabels.YEAR.toString()).toString().replaceAll("\"", "")   ), LP.valueOf(course.get(Course.CourseLabels.LP.toString()).toString().replaceAll("\"", ""))));
 			result[i++] = information;
 		}
-		
+
 		return result;
 	}
-	
 	/**
 	 * Generalized search function for programs (not specializations, yet). This should be the only search function for
 	 * programs we need.
@@ -65,7 +80,23 @@ public class FilterMethods {
 	 * @return An array containing all the search results.
 	 */
 	public ProgramInformation[] filterProgramByTag(CourseProgram.ProgramLabels filter, String searchTerm) {
-		String query = "MATCH (program: " + CourseProgram.ProgramType.PROGRAM +") WHERE program." + filter + " CONTAINS \"" + searchTerm + "\" RETURN program";
+		return filterProgramByTag(filter, searchTerm, ProgramLabels.YEAR, true);
+	}
+
+	/**
+	 * Generalized search function for programs (not specializations, yet). This should be the only search function for
+	 * programs we need.
+	 * @param filter - This can be any value of the type {@link CourseProgram.ProgramLabels}
+	 * @param searchTerm - This is the actual search term for the filter. All search results will contain this string.
+	 * @param orderBy - Order by this item.
+	 * @param DESCENDING - If you want the items in descending order.
+	 * @return An array containing all the search results.
+	 */
+	public ProgramInformation[] filterProgramByTag(CourseProgram.ProgramLabels filter, String searchTerm, CourseProgram.ProgramLabels orderBy, boolean DESCENDING) {
+		String query = "MATCH (program: " + CourseProgram.ProgramType.PROGRAM +") WHERE program." + filter + " CONTAINS \"" + searchTerm + "\" RETURN program ORDER BY program." + orderBy;
+		if (DESCENDING) {
+			query += " DESC";
+		}
 		
 		/* This gives us the full list of records returned from neo. */
 		List<Record> resultList = this.communicator.readFromNeo(query).list();
