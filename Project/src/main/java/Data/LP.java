@@ -13,6 +13,7 @@ public enum LP {
 	FOUR,
 	ERROR;
 	
+	
 	public static LP getByString(String str) {
 		if(str.equals("1")) {
 			return LP.ONE;
@@ -26,6 +27,7 @@ public enum LP {
 		return LP.ERROR;
 		
 	}
+
 	public static LP getByStringByText(String str) {
 		if(str.equals("ONE")) {
 			return LP.ONE;

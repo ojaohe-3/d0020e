@@ -1,8 +1,11 @@
 package neo4j_JVM_API;
 
+import java.io.IOException;
+
 import Data.*;
 import Data.Course.CourseLabels;
 import neoCommunicator.Neo4jCommunicator;
+import neoCommunicator.Neo4jConfigLoader;
 
 
 public class ModifyMethods {
@@ -18,7 +21,29 @@ public class ModifyMethods {
 		this.communicator = communicator;
 	}
 	
-
+	
+	/**
+	 * 	This method removes all required and developed relationships between the course and all its KCs and then adds the new ones
+	 * 
+	 * @param course The course with all the KC that should be updated 
+	 */
+	public void deleteKCsFromCourseAndAddTheNewOnes(Course course) {
+		String query = "MATCH(course: Course {courseCode : \"" + course.getCourseCode() + "\", year : \"" + course.getStartPeriod().getYear() + "\", lp : \"" + course.getStartPeriod().getPeriod() +"\" }) ";
+		query += "MATCH (course)-[r:" + Relations.REQUIRED + "]-() MATCH (course)-[p: "+ Relations.DEVELOPED+  "]-() DELETE r, p";
+		
+		this.communicator.writeToNeo(query);
+		
+		
+		try {
+			
+			Neo4jConfigLoader.getApi().createMethods.createCourseKCrelation(course);
+			
+		} catch (IOException e) { System.out.println("Something wrong with config loader"); }
+	
+	
+	}
+	
+	
 	/**
 	 * Takes in the name of the KC and its taxonomylevel and changes it's description
 	 * @param kc takes in the kc object and change general description and taxonomy description to the desired values
@@ -113,7 +138,6 @@ public class ModifyMethods {
 		query += Course.CourseLabels.YEAR.toString() +"=\""+nCourse.getStartPeriod().getYear()+"\", n.";
 		query += Course.CourseLabels.EXAMINER.toString() +"=\""+nCourse.getExaminer()+"\", n.";
 		query += Course.CourseLabels.NAME.toString() +"=\""+nCourse.getName()+"\"";
-
 		communicator.writeToNeo(query);
 	}
 

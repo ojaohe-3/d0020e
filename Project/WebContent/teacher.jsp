@@ -15,13 +15,9 @@
 
 <body>
 	<%@include file="_includes.jsp" %>
-	<%@include  file="_filterContainer.jsp" %>
-
-    <%@include file="_graphCanvas.jsp"%>
     
-    
-    <div class="container-fluid">
-	    <div class="row" id="my_courses" style="background-color: gray">
+    <div class="container-fluid" style="width: 300px; float: left;">
+	    <div class="row" id="my_courses" style="background-color: gray; width: 300px;">
 	    <h3>My Courses</h3> <hr>
 	    
 		    <div class="course_list">
@@ -43,10 +39,11 @@
 		    	%>
 		    
 		    </div>
-	
+
 	    </div>
     </div>
-    
-
+    <div id="showEditCourse" style="display: none;">
+    	<%@include file="_editCourse.jsp" %>
+    </div>
 </body>
 </html>

@@ -1,0 +1,21 @@
+.container {
+	margin: auto;
+	width: 75%;
+	float: left;
+	display: block;
+}
+
+.description {
+	float: left;
+	padding: 1%;
+}
+
+.requiredKC {
+	float: left;
+	padding: 1%;
+}
+
+.developedKC {
+	float: left;
+	padding: 1%;
+}
