@@ -38,17 +38,12 @@ canvas{
  background-color: #4b4b4b;
 }
 
-.navbar-brand a {
-	color: orange;
-	
-}
-
 .navbar.navbar-inverse {
 	border-radius: 0;
 	background-color: #292929;
 }
 
-.navbar.navbar-brand a {
+.navbar-brand a {
 	color: orange; 
-	text-decoration: none
+	text-decoration: none;
 }
