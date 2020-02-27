@@ -234,4 +234,22 @@ public class UserMethods {
 		}
 		return courses.toArray(new Course[courses.size()]);
 	}
+	
+	
+	/**
+	 * For admin to get all avaliable users
+	 * @return
+	 */
+	public String[] getAvaliableUsers() {
+		String query = "MATCH (n: User) RETURN n.Username";
+		
+		StatementResult db = communicator.readFromNeo(query);
+		
+		ArrayList<String> users = new ArrayList<String>();
+		while(db.hasNext()){
+			users.add(db.next().get("n").get("Username").toString());
+		}
+		return users.toArray(new String[users.size()]);
+		
+	}
 }

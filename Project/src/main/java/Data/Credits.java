@@ -17,7 +17,7 @@ public enum Credits {
 			return Credits.FIFTHEEN;
 		} else if(str.equals("THIRTY")) {
 			return Credits.THIRTY;
-		} else if(str.equals("ONEHUNDREDEAIGHTY")) {
+		} else if(str.equals("ONEHUNDREDEIGHTY")) {
 			return Credits.ONEHUNDREDEIGHTY;
 		} else if(str.contentEquals("TWOHUNDREDTEN")) {
 			return Credits.TWOHUNDREDTEN;

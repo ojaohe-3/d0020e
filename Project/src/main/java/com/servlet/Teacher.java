@@ -91,7 +91,7 @@ public class Teacher extends HttpServlet {
 				String description = request.getParameter("description");
 				String examiner = request.getParameter("examiner");
 				int year = Integer.parseInt(request.getParameter("startyear"));
-				LP lp = LP.getByStringString(request.getParameter("startperiod"));
+				LP lp = LP.getByStringByText(request.getParameter("startperiod"));
 				
 				
 				Course updatedCourse = new Course(name, courseCode, credits, description, examiner, new CourseDate(year, lp));

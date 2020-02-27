@@ -611,6 +611,39 @@ function program_copy_from_year() {
 	}
 }
 
+function program_copy_from_year_special() {
+	var input = prompt("name;code;fromYear;fromLP;toYear;toLP");
+	
+	var data = input.split(";");
+	
+	if(data.length == 6){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "COPY_FROM_YEAR_SPECIAL",
+				name : data[0],
+				code : data[1],
+				fromYear : data[2],
+				fromLP : data[3],
+				toYear : data[4],
+				toLP : data[5]
+				
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "CREATE COPY OF SPECIALIZATION " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
 function program_add_course() {
 	var input = prompt("programCode;programStartYear;programStartLP;courseCode;courseYear;courseLP");
 	
