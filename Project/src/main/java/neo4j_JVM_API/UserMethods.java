@@ -241,13 +241,13 @@ public class UserMethods {
 	 * @return
 	 */
 	public String[] getAvaliableUsers() {
-		String query = "MATCH (n: User) RETURN n.Username";
+		String query = "MATCH (n: User) RETURN n";
 		
 		StatementResult db = communicator.readFromNeo(query);
 		
 		ArrayList<String> users = new ArrayList<String>();
 		while(db.hasNext()){
-			users.add(db.next().get("n").get("Username").toString());
+			users.add(db.next().get("n").get("Username").toString().replaceAll("\"", ""));
 		}
 		return users.toArray(new String[users.size()]);
 		

@@ -59,7 +59,7 @@
 					<li><button onclick="user_delete()">Delete</button></li>
 					<li><button onclick="user_set_course_relation()">Set Relation To Course</button></li>
 					<li><button onclick="user_delete_course_relation()">Remove Relation To Course</button></li>
-					<li><button onclick="get_users()">Get all avaliable users</button></li>
+					<li><button onclick="get_users()">Get all available users</button></li>
 					
 				</ul>
 			</div>
@@ -94,6 +94,7 @@
 					<li><button onclick="program_copy_from_year()">Copy From Year</button></li>
 					<li><button onclick="program_copy_from_year_special()">Copy Specialization From Year</button></li>
 					<li><button onclick="program_add_course()">Add Course to program</button></li>
+					<li><button onclick="get_courses_in_program()">Get Courses in Program</button></li>
 				</ul>
 			</div>
 		

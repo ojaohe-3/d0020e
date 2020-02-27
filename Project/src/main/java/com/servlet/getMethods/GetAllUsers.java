@@ -19,6 +19,7 @@ public class GetAllUsers extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+    
     	try {
     		if((boolean)request.getSession().getAttribute("is_admin") == true) {
     	    	String[] usernames = Neo4jConfigLoader.getApi().userMethods.getAvaliableUsers();

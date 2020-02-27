@@ -14,7 +14,7 @@ public class CourseOrder {
 	private int readingPeriods;
 	
 	// How many courses can run in parallel?
-	private final int COURSES_PER_PERIOD = 12;
+	public final int COURSES_PER_PERIOD = 12;
 	
 	/**
 	 *
