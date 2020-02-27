@@ -49,7 +49,7 @@ public class FilterMethods {
 	 */
 	public CourseInformation[] filterCourseByTag(Course.CourseLabels filter, String searchTerm, Course.CourseLabels orderBy, boolean DESCENDING) {
 
-		String query = "MATCH (course: " + Course.course +") WHERE course." + filter + " CONTAINS \"" + searchTerm + "\" RETURN course ORDER BY course." + orderBy;
+		String query = "MATCH (course: " + Course.course +") WHERE LOWER(course." + filter + ") CONTAINS LOWER(\"" + searchTerm + "\") RETURN course ORDER BY course." + orderBy;
 		if (DESCENDING) {
 			query += " DESC";
 		}
@@ -93,7 +93,7 @@ public class FilterMethods {
 	 * @return An array containing all the search results.
 	 */
 	public ProgramInformation[] filterProgramByTag(CourseProgram.ProgramLabels filter, String searchTerm, CourseProgram.ProgramLabels orderBy, boolean DESCENDING) {
-		String query = "MATCH (program: " + CourseProgram.ProgramType.PROGRAM +") WHERE program." + filter + " CONTAINS \"" + searchTerm + "\" RETURN program ORDER BY program." + orderBy;
+		String query = "MATCH (program: " + CourseProgram.ProgramType.PROGRAM +") WHERE LOWER(program." + filter + ") CONTAINS LOWER(\"" + searchTerm + "\") RETURN program ORDER BY program." + orderBy;
 		if (DESCENDING) {
 			query += " DESC";
 		}
@@ -126,7 +126,7 @@ public class FilterMethods {
 	 * @return - An array containing the title of all search results.
 	 */
 	public String[] filterTopicByTitle(String searchTerm) {
-		String query = "MATCH (topic: " + Topic.TopicLabels.TOPIC +") WHERE topic." + Topic.TopicLabels.TITLE.toString() + " CONTAINS \"" + searchTerm + "\" RETURN topic";
+		String query = "MATCH (topic: " + Topic.TopicLabels.TOPIC +") WHERE LOWER(topic." + Topic.TopicLabels.TITLE.toString() + ") CONTAINS LOWER(\"" + searchTerm + "\") RETURN topic";
 		
 		/* This gives us the full list of records returned from neo. */
 		List<Record> resultList = this.communicator.readFromNeo(query).list();
@@ -146,7 +146,7 @@ public class FilterMethods {
 	 * @return
 	 */
 	public Topic[] filterTopicByName(String searchTerm) {
-		String query = "MATCH (topic: " + Topic.TopicLabels.TOPIC +") WHERE topic." + Topic.TopicLabels.TITLE.toString() + " CONTAINS \"" + searchTerm + "\" RETURN topic";
+		String query = "MATCH (topic: " + Topic.TopicLabels.TOPIC +") WHERE LOWER(topic." + Topic.TopicLabels.TITLE.toString() + ") CONTAINS LOWER(\"" + searchTerm + "\") RETURN topic";
 		/* This gives us the full list of records returned from neo. */
 		List<Record> resultList = this.communicator.readFromNeo(query).list();
 		Topic[] result = new Topic[resultList.size()];
@@ -168,7 +168,7 @@ public class FilterMethods {
 	 * @return - An array containing the title of all search results.
 	 */
 	public KC[] filterKCByTag(KC.KCLabel filter, String searchTerm) {
-		String query = "MATCH (kc: " + KC.kc +") WHERE kc." + filter + " CONTAINS \"" + searchTerm + "\" RETURN kc";
+		String query = "MATCH (kc: " + KC.kc +") WHERE LOWER(kc." + filter + ") CONTAINS LOWER(\"" + searchTerm + "\") RETURN kc";
 		
 		/* This gives us the full list of records returned from neo. */
 		List<Record> resultList = this.communicator.readFromNeo(query).list();
