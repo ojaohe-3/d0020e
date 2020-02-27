@@ -1,5 +1,4 @@
 <link rel="stylesheet" href="CssFolder/canvas_course.css">
-<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <!-- Konva drag and drop canvas objects-->
 <div id="canvas_container">
     <canvas id="graph">

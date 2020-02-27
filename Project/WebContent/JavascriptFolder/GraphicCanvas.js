@@ -78,15 +78,20 @@ function generateCanvas(data) {
     period.set(item.lp, hTemp + 1);
 
     //set x axis
+    let xTemp = 0;
     if(item.lp === "ONE"){
       x+= width*1.2*offsetYear*4;
+      xTemp = offsetYear*4;
     }
     else if(item.lp === "TWO"){
       x += width *1.2*(1+offsetYear*4);
+      xTemp = (1+offsetYear*4);
     }else if(item.lp === "THREE"){
       x += width *1.2*(2+(offsetYear-1)*4);
+      xTemp = (2+(offsetYear-1)*4);
     }else if(item.lp === "FOUR"){
       x += width *1.2*(3+(offsetYear-1)*4);
+      xTemp = (3+(offsetYear-1)*4);
     }
     let courseDefinition = item["courseCode"]+item["year"]+item["lp"];
     courses.set(courseDefinition, new CourseObject(
@@ -110,25 +115,27 @@ function generateCanvas(data) {
      */
     let course = document.createElement("div");
     course.innerHTML =
-        "<h1>" +item["name"]+"</h1>" +
+        "<div style='height: "+height+"px; width:100%; display:inline-block'><h1>" +item["name"]+"</h1>" +
         "<p>" +item["courseCode"]+"</p>" +
         "<p>"+item["examiner"]+"</p>" +
         "</div>";
-    course.setAttribute("style","left:"+x+"px; top:"+y+"px;");
+    //course.setAttribute("style","left:"+x+"px; top:"+y+"px;");
+    course.setAttribute("style","grid-column-start:"+xTemp+"; grid-column-end:"+(xTemp+1)+";grid-row-start:"+(hTemp)+";grid-row-end:"+(hTemp+1)+";");
     course.setAttribute("class","canvas_course");
 
+    // ---------------- dropdown -------------
     let dropDown = document.createElement("div");
     dropDown.setAttribute("style","width:100%; height:150px; background-color:red; display:none");
     dropDown.setAttribute("class","canvas_course_dropdown");
 
-
+    // ---------------- button ----------------
     let button = document.createElement("div");
-    button.setAttribute("style", "width:10px;height:10px;background-color: black;");
+    button.setAttribute("style", "float: right");
     button.setAttribute("class","canvas_course_button");
 
     button.addEventListener("click",function() {
       if (dropDown.style.display === "none") {
-        dropDown.style.display= "flex";
+        dropDown.style.display= "block";
       } else {
         dropDown.style.display= "none";
       }

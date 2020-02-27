@@ -16,7 +16,7 @@ body {
 canvas{
 	display: flex;
 	justify-content: center;
-	width: 3000px;
+	width: 5000px;
 	height: 3000px;
 }
 .SearchResult {
