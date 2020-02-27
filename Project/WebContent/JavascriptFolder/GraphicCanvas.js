@@ -10,7 +10,7 @@ fix_dpi();
 const screenHeight = window.screen.height * window.devicePixelRatio;
 const screenWidth = window.screen.width * window.devicePixelRatio;
 
-const width = 250;
+const width = 200;
 const height = 250;
 const period = new Map();
   period.set('ONE',0);
@@ -21,20 +21,15 @@ let courses =new Map();
   //translations
 let matrix=[1,0,0,1,0,0];
 let oldMatrix = [];
-let viewportX = 0;
-let viewportY = 0;
-
-
 window.addEventListener("resize", drawCanvas);
 
 canvas.addEventListener('click', function(evt) {
   var mousePos = getMousePos(canvas, evt);
   courses.forEach(function (value, key, map) {
-    if (value.button.isInside(mousePos,dpi)){
-      alert('Button Pressed!');
-    }else if(value.isInside(mousePos,dpi)){
-      alert('Course Pressed!');
-      showCourseInfo(value.data);
+    if(value.isInside(mousePos,dpi)){
+      //alert('Course Pressed!');
+      //showCourseInfo(value.data);
+      value.setExtended();
     } else{
       console.log("mouse pressed on nothing!");
     }
@@ -44,26 +39,37 @@ canvas.addEventListener('click', function(evt) {
 
 function getMousePos(canvas, event) {
   let rect = canvas.getBoundingClientRect();
-  console.log(rect.left);
-  let mousePos = getXY(event.clientX,event.clientY) // This ain't working, pal. I get a bunch of whacky numbers.
+  //let mousePos = getXY(event.clientX,event.clientY) // This ain't working, pal. I get a bunch of whacky numbers.
   return {
       x: event.clientX - rect.left, // Changed to clientX and clientY.
       y: event.clientY- rect.top
   };
 }
 
+
+
 function generateCanvas(data) {
+  // clear local data
+  kcMap = new Map();
   courses = new Map();
+  KCs = [];
+  // read from course
   let year = data.year;
   let offsetYear = 0;
-
   let currentYear = year;
-  document.getElementById("canvas_course_container").innerHTML = "";
+  //KC mapping
+  let DEV = new Map();
+  let REQ = new Map();
+  let intersection = [];
   data['Courses'].forEach(function (item, index,arr){
 
+
+
+
+    //======================== YEAR PARTITIONING========================
     // All courses should, in theory, be sorted after year. We can therefore reset the study periods when
     // The next course has a new year.
-    if (item.year != currentYear) {
+    if (item.year !== currentYear) {
       offsetYear = item.year-year;
       for (let [key,value] of period) {
         period.set(key,0);
@@ -71,85 +77,144 @@ function generateCanvas(data) {
       currentYear = item.year;
     }
 
-    console.log(offsetYear);
+    //console.log(offsetYear);
     let x = 0;
     let hTemp = period.get(item.lp);
     let y = hTemp*height*1.2;
     period.set(item.lp, hTemp + 1);
 
+    //======================== LP PARTITIONING ========================
     //set x axis
-    let xTemp = 0;
     if(item.lp === "ONE"){
       x+= width*1.2*offsetYear*4;
-      xTemp = offsetYear*4;
     }
     else if(item.lp === "TWO"){
       x += width *1.2*(1+offsetYear*4);
-      xTemp = (1+offsetYear*4);
     }else if(item.lp === "THREE"){
       x += width *1.2*(2+(offsetYear-1)*4);
-      xTemp = (2+(offsetYear-1)*4);
     }else if(item.lp === "FOUR"){
       x += width *1.2*(3+(offsetYear-1)*4);
-      xTemp = (3+(offsetYear-1)*4);
     }
-    let courseDefinition = item["courseCode"]+item["year"]+item["lp"];
-    courses.set(courseDefinition, new CourseObject(
+
+
+
+    //========================  KC MAPPING ========================
+    //push to our available kcs to map
+    if(item.Developed.length > 0){
+      DEV.set(item.courseCode,item.Developed);
+    }
+    //map intersecting kcs
+    if(item.Required.length > 0){
+      REQ.set(item.courseCode, item.Required);
+    }
+
+    //======================== GENERATE GRAPHICS OBJECT ========================
+
+    let obj = new CourseObject(
         item,
         {
           x: x,
           y: y,
           width: width,
-          height: height
+          height: height,
+          thickness: 24
         }
-    ));
+    );
 
-    /*
-    "<div class='button'  onclick=\"toggleCourseKC()\" style='width:10px;height:10px;background-color: black;'></div>" +
-        "<div class='course_dropdown"+courseDefinition+"_dropdown' style='width:100%; height:150px; background-color:white; display:none'>" +
-     */
+    createCourseOverlay();  // TODO fix this, it ain't done.
+    courses.set(item["courseCode"]+item["year"]+item["lp"], obj);
+  });
+  let kcReq = [];
+  let kvDev= [];
+  courses.forEach((v)=>{
+    kcReq.push(REQ.get(v.data.courseCode));
+    kcDev.push(DEV.get(v.data.courseCode));
+    kcReq.filter(v1 => kcDev.some(v2=> kcEquals(v1,v2)));
 
-    /*
-        document.getElementById("canvas_course_container").innerHTML +=
-        "<div id='"+courseDefinition+"' style='left:"+x+"px; top:"+y+"px;' class='canvas_course'>" +
-     */
-    let course = document.createElement("div");
-    course.innerHTML =
-        "<div style='height: "+height+"px; width:100%; display:inline-block'><h1>" +item["name"]+"</h1>" +
-        "<p>" +item["courseCode"]+"</p>" +
-        "<p>"+item["examiner"]+"</p>" +
-        "</div>";
-    //course.setAttribute("style","left:"+x+"px; top:"+y+"px;");
-    course.setAttribute("style","grid-column-start:"+xTemp+"; grid-column-end:"+(xTemp+1)+";grid-row-start:"+(hTemp)+";grid-row-end:"+(hTemp+1)+";");
-    course.setAttribute("class","canvas_course");
-
-    // ---------------- dropdown -------------
-    let dropDown = document.createElement("div");
-    dropDown.setAttribute("style","width:100%; height:150px; background-color:red; display:none");
-    dropDown.setAttribute("class","canvas_course_dropdown");
-
-    // ---------------- button ----------------
-    let button = document.createElement("div");
-    button.setAttribute("style", "float: right");
-    button.setAttribute("class","canvas_course_button");
-
-    button.addEventListener("click",function() {
-      if (dropDown.style.display === "none") {
-        dropDown.style.display= "block";
-      } else {
-        dropDown.style.display= "none";
-      }
-
-    });
-
-    course.appendChild(button);
-    course.appendChild(dropDown);
-    document.getElementById("canvas_course_container").appendChild(course);
-
-    console.log(courseDefinition);
-    //console.log("added: "+ JSON.stringify(item))
   });
 
+  drawCanvas();
+}
+
+function createCourseOverlay() {
+  let courseDefinition = item["courseCode"]+item["year"]+item["lp"];
+
+  /*
+  "<div class='button'  onclick=\"toggleCourseKC()\" style='width:10px;height:10px;background-color: black;'></div>" +
+      "<div class='course_dropdown"+courseDefinition+"_dropdown' style='width:100%; height:150px; background-color:white; display:none'>" +
+   */
+
+  /*
+      document.getElementById("canvas_course_container").innerHTML +=
+      "<div id='"+courseDefinition+"' style='left:"+x+"px; top:"+y+"px;' class='canvas_course'>" +
+   */
+  let course = document.createElement("div");
+  course.innerHTML =
+      "<div style='height: "+height+"px; width:100%; display:inline-block'><h1>" +item["name"]+"</h1>" +
+      "<p>" +item["courseCode"]+"</p>" +
+      "<p>"+item["examiner"]+"</p>" +
+      "</div>";
+  //course.setAttribute("style","left:"+x+"px; top:"+y+"px;");
+  course.setAttribute("style","grid-column-start:"+xTemp+"; grid-column-end:"+(xTemp+1)+";grid-row-start:"+(hTemp)+";grid-row-end:"+(hTemp+1)+";");
+  course.setAttribute("class","canvas_course");
+
+  // ---------------- dropdown -------------
+  let dropDown = document.createElement("div");
+  dropDown.setAttribute("style","width:100%; height:150px; background-color:red; display:none");
+  dropDown.setAttribute("class","canvas_course_dropdown");
+
+  // ---------------- button ----------------
+  let button = document.createElement("div");
+  button.setAttribute("style", "float: right");
+  button.setAttribute("class","canvas_course_button");
+
+  button.addEventListener("click",function() {
+    if (dropDown.style.display === "none") {
+      dropDown.style.display= "block";
+    } else {
+      dropDown.style.display= "none";
+    }
+
+  });
+
+  course.appendChild(button);
+  course.appendChild(dropDown);
+  document.getElementById("canvas_course_container").appendChild(course);
+
+  console.log(courseDefinition);
+}
+
+function findCourseByCode(code) {
+  courses.forEach((v,k)=>{
+    if(k.contains(code)){
+      return v;
+    }
+  });
+  return null;
+}
+function addCourse(data) {
+  try{
+    courses.set(data["courseCode"]+data["year"]+data["lp"]);
+    regenerateCanvas();
+  }catch (e) {
+    alert(e.message+' Value might already exist!');
+  }
+
+}
+
+function reFormatSection(lp,year){
+  let key = year+lp;//string
+  let oldkey ="";
+  let old = {};
+  courses.forEach((v,k)=> {
+    if(k.includes(key)){
+      if(courses.has(oldkey)){
+        old = courses.get(oldkey);
+        v.y = old.y + old.height*1.2;
+      }
+      oldkey = k;
+    }
+  });
   drawCanvas();
 }
 
@@ -180,7 +245,9 @@ function fix_dpi() {
   canvas.setAttribute('width', style_width * dpi);
 }
 
-
+function kcEquals(kc1,kc2) {
+  return kc1.name === kc2.name && kc1.taxonomyLevel === kc2.taxonomyLevel;
+}
 //https://stackoverflow.com/questions/21717001/html5-canvas-get-coordinates-after-zoom-and-translate
 function translate(x,y){
   //console.log('x: '+x+', y: '+y);
