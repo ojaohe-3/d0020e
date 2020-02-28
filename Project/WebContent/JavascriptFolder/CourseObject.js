@@ -95,11 +95,11 @@ class CourseObject{
         this.dockPointsDev =[];
         this.KCs = [];
         data.Required.forEach((k,i) => {
-            this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i,KC:k});
+            this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i+this.thickness,KC:k});
             //this.KCs.REQ.push(new KCObject(conf.thickness, k));//if a dev exist a reqirement version will simply point on exact same points
         });
         data.Developed.forEach((k,i)=>{
-            this.dockPointsDev.push({x: conf.x+ conf.width, y:conf.y+conf.height+conf.thickness*i,KC:k});
+            this.dockPointsDev.push({x: conf.x+ conf.width, y:conf.y+conf.height+conf.thickness*i+this.thickness,KC:k});
             this.KCs.push(new KCObject(conf.thickness, k));
         })
 

@@ -202,6 +202,9 @@ function fix_dpi() {
 }
 
 function kcEquals(kc1,kc2) {
+  if(kc1 === null || kc2 === null){
+    return false;
+  }
   return kc1.name === kc2.name && kc1.taxonomyLevel === kc2.taxonomyLevel;
 }
 //https://stackoverflow.com/questions/21717001/html5-canvas-get-coordinates-after-zoom-and-translate
