@@ -123,7 +123,7 @@ public class ModifyMethods {
 		query += CourseProgram.ProgramLabels.YEAR.toString() +": \""+newProgram.getStartDate().getYear() + "\", ";
 		query += CourseProgram.ProgramLabels.LP.toString() +": \""+newProgram.getStartDate().getPeriod() + "\", ";
 		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +": \""+newProgram.getCourseOrder().getReadingPeriods() + "\", ";
-		query += CourseProgram.ProgramLabels.CREDITS.toString() +": \""+newProgram.getCredits() + "\"";
+		query += CourseProgram.ProgramLabels.CREDITS.toString() +": "+newProgram.getCredits() + "";
 
 		query +="}";
 		
@@ -145,7 +145,7 @@ public class ModifyMethods {
 		query += ProgramSpecialization.ProgramLabels.YEAR.toString() +": \""+newProgramSpcialization.getStartDate().getYear() + "\", ";
 		query += ProgramSpecialization.ProgramLabels.LP.toString() +": \""+newProgramSpcialization.getStartDate().getPeriod() + "\", ";
 		query += ProgramSpecialization.ProgramLabels.READING_PERIODS.toString() +": \""+newProgramSpcialization.getCourseOrder().getReadingPeriods() + "\", ";
-		query += ProgramSpecialization.ProgramLabels.CREDITS.toString() +": \""+newProgramSpcialization.getCredits() + "\"";
+		query += ProgramSpecialization.ProgramLabels.CREDITS.toString() +": "+newProgramSpcialization.getCredits() + "";
 
 		query +="}";
 
@@ -165,7 +165,7 @@ public class ModifyMethods {
 				Course.CourseLabels.YEAR +":\""+period.getYear()+"\","+
 				Course.CourseLabels.LP +":\""+period.getPeriod().name()+"\"}) SET n.";
 		query += Course.CourseLabels.CODE.toString() +"=\""+nCourse.getCourseCode()+"\", n.";
-		query += Course.CourseLabels.CREDIT.toString() +"=\""+nCourse.getCredit()+"\", n.";
+		query += Course.CourseLabels.CREDIT.toString() +"="+nCourse.getCredit()+", n.";
 		query += Course.CourseLabels.DESCRIPTION.toString() +"=\""+nCourse.getDescription()+"\", n.";
 		query += Course.CourseLabels.LP.toString() +"=\""+nCourse.getStartPeriod().getPeriod().name()+"\", n.";
 		query += Course.CourseLabels.YEAR.toString() +"=\""+nCourse.getStartPeriod().getYear()+"\", n.";
