@@ -51,8 +51,6 @@ function goToPeriod(c1, c2) {
     while (current.year !== c2.data.year && current.lp !== c2.data.lp){
 
         if(cCourse !== c1){
-            // res.push(...cCourse.getEndIntermittenPoint());
-        // }else{
             res.push(...cCourse.getFirstIntermittenPoint());
             res.push(cCourse.getMiddleSnap());
             res.push(...cCourse.getEndIntermittenPoint());
