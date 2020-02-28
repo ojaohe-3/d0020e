@@ -141,7 +141,7 @@ class CourseObject{
      */
     getEndIntermittenPoint(){
         if(this.extended)
-            return [{x: this.x + this.width + this.width*0.1, y: this.y + this.height + this.height*0.1},{x: this.x + this.width + this.width*0.1, y: this.y + height + height*0.1}]
+            return [{x: this.x + this.width + this.width*0.1, y: this.y + this.height + this.height*0.1},{x: this.x + this.width + this.width*0.1, y: this.y + height + height*0.1}§]
         return [{x: this.x + this.width +this.width*0.1, y: this.y + this.height + this.height*0.1}]
 
     }
