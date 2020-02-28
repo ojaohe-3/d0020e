@@ -47,8 +47,18 @@
 
    <%@include  file="_filterContainer.jsp" %>
 
+
+	<style>
+	#close_btn {
+		display: none;
+	}
+	#displayKC {
+		display: none;
+	}
+	</style>
 	<div class="container-fluid">
-		<div class="container" id="displayKC" onclick="hideKCdiv()">
+		<div class="container" id="displayKC" style="display: none;">
+			<button id="close_btn" class="btn btn-danger" onclick="hideKCdiv()" style="display: none;">X</button>
 			<div class="row">
 				<div id="kc_name"></div>
 			</div>

@@ -66,6 +66,10 @@ function kcClicked(name) {
 			
 			console.log(one.name);
 			
+			$('#close_btn').css('display','block');
+			$('#displayKC').css('display','block');
+			
+			
 			$('#kc_name').html("<h1>" + one.name + "</h1>");
 			$('#kc_general_desc').html("<h3>" + one.generalDescription + "</h3>");
 			
@@ -77,5 +81,6 @@ function kcClicked(name) {
 }
 
 function hideKCdiv() {
-	$('#displayKC').style.display = "none";
+	$('#displayKC').css('display','none');
+	$('#close_btn').css('display','none');
 }
