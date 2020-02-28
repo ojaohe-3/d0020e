@@ -343,7 +343,7 @@ function course_delete() {
 
 // KC FUNCTIONS
 /*
- * Create a new course
+ * Create a new kc
  */
 function kc_create() {
 	var input = prompt("name;generalDescription;Topic;taxonomyDescription1;taxonomyDescription2;taxonomyDescription3");

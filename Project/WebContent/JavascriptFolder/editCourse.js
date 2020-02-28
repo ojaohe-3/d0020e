@@ -16,7 +16,7 @@ $('#searchRequiredKC').on('keyup', function() {
 						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"addRequiredKC('"+ response[i].name +"', '"+ response[i].taxonomyLevel +"')\"> <b>" + response[i].name + "</b>: " + response[i].taxonomyLevel;
-							s += "<div class=\"SearchResultExpander\"> Description : " + response[i].generalDescription +"</div></div>";
+							s += "<div class=\"SearchResultExpander\"> Description : " + response[i].taxonomyDescription +"</div></div>";
 						}
 						s += "</div>";
 						$('#kcRequired_search_results').html('');
@@ -42,7 +42,7 @@ $('#searchDevelopedKC').on('keyup', function() {
 					var s = "<div class=\"SearchResultContainer\">";
 					for(i in response) {
 						s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"addDevelopedKC('"+ response[i].name +"', '"+ response[i].taxonomyLevel +"')\"> <b>" + response[i].name + "</b>: " + response[i].taxonomyLevel;
-						s += "<div class=\"SearchResultExpander\"> Description : " + response[i].generalDescription +"</div></div>";
+						s += "<div class=\"SearchResultExpander\"> Description : " + response[i].taxonomyDescription +"</div></div>";
 					}
 					s += "</div>";
 					$('#kcDeveloped_search_results').html('');
