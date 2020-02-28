@@ -1,9 +1,5 @@
 .canvas_course {
-    background-color: white;
-    width: 250px;
-    height: 250px;
-    margin:0 50px 50px 0;
-    //position: absolute;
+    position: absolute;
     //float: left;
 }
 

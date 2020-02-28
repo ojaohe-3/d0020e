@@ -122,23 +122,23 @@ function generateCanvas(data) {
     );
 
 
-    createCourseOverlay();  // TODO fix this, it ain't done.
+    createCourseOverlay(x,y,item);  // TODO fix this, it ain't done.
 
     courses.set(item["courseCode"]+item["year"]+item["lp"], obj);
   });
   let kcReq = [];
   let kvDev= [];
-  courses.forEach((v)=>{
+  /*courses.forEach((v)=>{
     kcReq.push(REQ.get(v.data.courseCode));
     kcDev.push(DEV.get(v.data.courseCode));
     kcReq.filter(v1 => kcDev.some(v2=> kcEquals(v1,v2)));
-    
-  });
+
+  });*/
 
   drawCanvas();
 }
 
-function createCourseOverlay() {
+function createCourseOverlay(x,y, item) {
   let courseDefinition = item["courseCode"]+item["year"]+item["lp"];
 
   /*
@@ -151,14 +151,27 @@ function createCourseOverlay() {
       "<div id='"+courseDefinition+"' style='left:"+x+"px; top:"+y+"px;' class='canvas_course'>" +
    */
   let course = document.createElement("div");
-  course.innerHTML =
-      "<div style='height: "+height+"px; width:100%; display:inline-block'><h1>" +item["name"]+"</h1>" +
+  /*course.innerHTML =
+      "<div style='height: "+height+"px; width:100%; position:relative; background-color: white; display:inline-block;'><h1>" +item["name"]+"</h1>" +
       "<p>" +item["courseCode"]+"</p>" +
       "<p>"+item["examiner"]+"</p>" +
       "</div>";
+*/
+  //--------------- course ----------------
+  course.setAttribute("style","left:"+x+"px; top:"+y+"px; width:"+width+"px;"+"px;");
   //course.setAttribute("style","left:"+x+"px; top:"+y+"px;");
-  course.setAttribute("style","grid-column-start:"+xTemp+"; grid-column-end:"+(xTemp+1)+";grid-row-start:"+(hTemp)+";grid-row-end:"+(hTemp+1)+";");
   course.setAttribute("class","canvas_course");
+  course.setAttribute("id", "" + x +";" + y);
+
+  //--------------- info ------------------
+  let info = document.createElement("div");
+  info.setAttribute("style","height: "+height+"px; width:100%; position:relative; background-color: white; display:inline-block;");
+  info.innerHTML =
+      "<h1>" +item["name"]+"</h1>" +
+      "<p>" +item["courseCode"]+"</p>" +
+      "<p>"+item["examiner"]+"</p>";
+  course.appendChild(info);
+
 
   // ---------------- dropdown -------------
   let dropDown = document.createElement("div");
@@ -167,20 +180,34 @@ function createCourseOverlay() {
 
   // ---------------- button ----------------
   let button = document.createElement("div");
-  button.setAttribute("style", "float: right");
+  course.firstChild.appendChild(button);
+  //button.setAttribute("style", "position: absolute");
   button.setAttribute("class","canvas_course_button");
 
   button.addEventListener("click",function() {
+    let LPs = 1; // TODO give every course a width i.e. how many periods the should be.
+    //let c = document.getElementById(x +";" + y);
+
+    let margin = 150;
     if (dropDown.style.display === "none") {
       dropDown.style.display= "block";
     } else {
       dropDown.style.display= "none";
+      margin = 0;
     }
 
+    for (let i = x; i < x+LPs*(width*1.2); i += width*1.2) {
+      let victimHeight = y+height*1.2;
+      let victim = document.getElementById(i + ";" + victimHeight);
+      if (victim !== null) {
+        //victim.style.top = (victimHeight+40) + "px";
+        victim.firstChild.style.marginTop = margin + "px";
+      }
+    }
 
   });
 
-  course.appendChild(button);
+
   course.appendChild(dropDown);
   document.getElementById("canvas_course_container").appendChild(course);
 
