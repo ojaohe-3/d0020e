@@ -26,7 +26,7 @@ function courseClickedEdit(code, year, lp) {
 			var name = response.name;
 			var code = response.courseCode;
 			var examiner = response.examiner;
-			var credits = response.credits;
+			var credits = response.credit;
 			var year = response.year;
 			var lp = response.lp;
 			
