@@ -172,18 +172,39 @@ function createCourseOverlay(x,y, item, obj) {
 
 
   // ---------------- dropdown -------------
+
   let dropDown = document.createElement("div");
-  dropDown.setAttribute("style","height:"+obj.heightExtension+"px;");
+  dropDown.setAttribute("style","height:100px;");
   dropDown.setAttribute("class","canvas_course_dropdown");
 
   let dropdown_table = document.createElement("table");
   let KCin = document.createElement("th");
   let KCout = document.createElement("th");
+  dropdown_table.appendChild(KCin);
+  dropdown_table.appendChild(KCout);
+  dropDown.appendChild(dropdown_table);
+
+  obj.dockPointsDev.forEach((value) => {
+    let p = document.createElement("p");
+    p.innerText = value.KC.name;
+    KCout.appendChild(p);
+  });
+
+  obj.dockPointsReq.forEach((value) => {
+    let p = document.createElement("p");
+    p.innerText = value.KC.name;
+    KCin.appendChild(p);
+  });
 
 /*
+  let dropdown_table = document.createElement("table");
+  let KCin = document.createElement("th");
+  let KCout = document.createElement("th");
+
+
   for (let i=0; i < obj.KCs.REQ.length; i++) {
-      let KC = document.createElement("p");
-      //p.innerText = obj.KCs.REQ[i].data.
+    let KC = document.createElement("p");
+    //p.innerText = obj.KCs.REQ[i].data.
   }
 
   for (let i = 0;  i < obj.KCs.DEV.length; i++) {
@@ -202,7 +223,7 @@ function createCourseOverlay(x,y, item, obj) {
     //let c = document.getElementById(x +";" + y);
 
     let margin = 150;
-    if (dropDown.style.display === "none") {
+    if (dropDown.style.display !== "block") {
       dropDown.style.display= "block";
     } else {
       dropDown.style.display= "none";
