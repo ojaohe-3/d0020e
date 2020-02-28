@@ -2,8 +2,9 @@
 
 
 body {
-	background-color : lightgray;
+	background-color : #404040;
 	height: 100%;
+	color: #bababa;
 }
 canvas{
 	display: flex;
@@ -42,6 +43,18 @@ canvas{
 .navbar.navbar-inverse {
 	border-radius: 0;
 	background-color: #292929;
+}
+
+.navbar-inverse {
+	border-bottom: none;
+}
+
+input {
+  background: #404040;
+  border: 1px solid #474747;
+  color: #bababa;;
+  padding-left: 10px;
+  border-radius: 5px;
 }
 
 .navbar-brand a {
