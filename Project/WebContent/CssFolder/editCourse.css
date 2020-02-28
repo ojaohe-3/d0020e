@@ -21,6 +21,13 @@
 	width: 30%;
 }
 
+#requiredKCs>div:nth-child(odd), #developedKCs>div:nth-child(odd){
+ background-color: #404040;
+}
+#requiredKCs>div:nth-child(even), #developedKCs>div:nth-child(even){
+ background-color: #4b4b4b;
+}
+
 #requiredKCs > div:hover {
 	background: orange;
 	color: white;
