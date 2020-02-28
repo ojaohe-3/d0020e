@@ -93,7 +93,7 @@ class CourseObject{
         this.extended = false;
         this.dockPointsReq = [{x: this.x, y:this.height/2+this.y, KC: null}]; //default point
         this.dockPointsDev =[];
-        this.KCs = [{}];
+        this.KCs = [];
         data.Required.forEach((k,i) => {
             this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i,KC:k});
             //this.KCs.REQ.push(new KCObject(conf.thickness, k));//if a dev exist a reqirement version will simply point on exact same points
@@ -162,7 +162,7 @@ class CourseObject{
      */
     getEndSnapPoint(kc){
         if(this.extended){
-            let finder = this.dockPointsReq.find(value => kcEquals(value,kc));
+            let finder = this.dockPointsReq.find(value => kcEquals(value.KC,kc));
             return {x:finder.x,y:finder.y};
         }else
         {
@@ -197,7 +197,7 @@ class CourseObject{
        //  height : this.height*0.2,
        //  text:"▲"});
         if (this.extended) {
-            this.KCs.DEV.forEach((v)=>{v.draw(ctx);});
+            this.KCs.forEach((v)=>{v.draw(ctx);});
         }
 
 
