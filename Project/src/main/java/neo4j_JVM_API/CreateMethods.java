@@ -97,7 +97,7 @@ private final Neo4jCommunicator communicator;
 
 		query = StartStatment+"(n:" + Course.course+"{"+
 		Course.CourseLabels.NAME.toString() + ":\"" + course.getName().toString() + "\", " +
-		Course.CourseLabels.CREDIT.toString() + ":\"" + course.getCredit() + "\", " +
+		Course.CourseLabels.CREDIT.toString() + ":" + course.getCredit() + ", " +
 		Course.CourseLabels.DESCRIPTION.toString() + ":\"" + course.getDescription().toString() + "\", " +
 		Course.CourseLabels.EXAMINER.toString() + ":\"" + course.getExaminer().toString() + "\", " +
 		Course.CourseLabels.YEAR.toString() + ":\"" + Integer.toString(course.getStartPeriod().getYear()) + "\", " +
@@ -156,7 +156,7 @@ private final Neo4jCommunicator communicator;
 				CourseProgram.ProgramLabels.NAME.toString() + ":\"" + program.getName() + "\", " +
 				CourseProgram.ProgramLabels.DESCRIPTION.toString() + ":\"" + program.getDescription() + "\", " +
 				CourseProgram.ProgramLabels.CODE.toString() + ":\"" + program.getCode() + "\", " +
-				CourseProgram.ProgramLabels.CREDITS.toString() + ":\"" + program.getCredits() + "\", " +
+				CourseProgram.ProgramLabels.CREDITS.toString() + ":" + program.getCredits() + ", " +
 				CourseProgram.ProgramLabels.YEAR.toString() + ":\"" + program.getStartDate().getYear() + "\", " +
 				CourseProgram.ProgramLabels.LP.toString() + ":\"" + program.getStartDate().getPeriod().toString() + "\", " +		
 				CourseProgram.ProgramLabels.READING_PERIODS.toString() + ":\"" + program.getCourseOrder().getReadingPeriods() + "\"})";
@@ -300,7 +300,7 @@ private final Neo4jCommunicator communicator;
 				ProgramSpecialization.ProgramLabels.CODE.toString() + ":\"" + specialization.getCode() + "\", " +
 				ProgramSpecialization.ProgramLabels.YEAR.toString() + ":\"" + specialization.getStartDate().getYear() + "\", " +
 				ProgramSpecialization.ProgramLabels.LP.toString() + ":\"" + specialization.getStartDate().getPeriod().toString() + "\", " +
-				ProgramSpecialization.ProgramLabels.CREDITS.toString() + ":\"" + specialization.getCredits() + "\", " +
+				ProgramSpecialization.ProgramLabels.CREDITS.toString() + ":" + specialization.getCredits() + ", " +
 				ProgramSpecialization.ProgramLabels.YEAR.toString() + ":\"" + specialization.getStartDate().getYear() + "\", " +
 				ProgramSpecialization.ProgramLabels.LP.toString() + ":\"" + specialization.getStartDate().getPeriod().toString() + "\"})";
 		System.out.println(query);

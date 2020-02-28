@@ -187,7 +187,7 @@ public class Admin extends HttpServlet {
 			String courseCode = request.getParameter("courseCode");
 			String lp = request.getParameter("lp");
 			String year = request.getParameter("year");
-			String credits = request.getParameter("credits");
+			float credits = Float.parseFloat(request.getParameter("credits"));
 			String examiner = request.getParameter("examiner");
 			String description = request.getParameter("description");
 
@@ -196,9 +196,7 @@ public class Admin extends HttpServlet {
 
 			CourseDate courseDate = new CourseDate(Year, period);
 
-			float Credits = Float.parseFloat(credits);
-
-			Course course = new Course(courseName, courseCode, Credits, description, examiner, courseDate);
+			Course course = new Course(courseName, courseCode, credits, description, examiner, courseDate);
 
 			Neo4jConfigLoader.getApi().createMethods.createCourse(course);
 
