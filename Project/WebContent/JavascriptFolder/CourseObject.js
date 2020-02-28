@@ -141,7 +141,7 @@ class CourseObject{
      */
     getEndIntermittenPoint(){
         if(this.extended)
-            return [{x: this.x + this.width + this.width*0.1, y: this.y + height + height*0.1},{x: this.x + this.width + this.width*0.1, y: this.y + this.height + this.height*0.1}]
+            return [{x: this.x + this.width + this.width*0.1, y: this.y + this.height + this.height*0.1},{x: this.x + this.width + this.width*0.1, y: this.y + height + height*0.1}]
         return [{x: this.x + this.width +this.width*0.1, y: this.y + this.height + this.height*0.1}]
 
     }
@@ -176,9 +176,9 @@ class CourseObject{
     setExtended(){
         this.extended = this.extended == true ? false : true;
         if(this.extended)
-            this.height += Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness;
+            this.height += Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness+this.thickness;
         else
-            this.height -= Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness;
+            this.height -= (Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness+this.thickness);
         reFormatSection(this.data.lp,this.data.year);
     }
 
