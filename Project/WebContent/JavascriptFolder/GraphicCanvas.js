@@ -180,7 +180,7 @@ function createCourseOverlay(x,y, item, obj) {
   let KCin = document.createElement("th");
   let KCout = document.createElement("th");
 
-
+/*
   for (let i=0; i < obj.KCs.REQ.length; i++) {
       let KC = document.createElement("p");
       //p.innerText = obj.KCs.REQ[i].data.
@@ -189,7 +189,7 @@ function createCourseOverlay(x,y, item, obj) {
   for (let i = 0;  i < obj.KCs.DEV.length; i++) {
 
   }
-
+*/
   // ---------------- button ----------------
   let button = document.createElement("div");
   course.firstChild.appendChild(button);

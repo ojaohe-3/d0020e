@@ -94,7 +94,7 @@ class CourseObject{
         this.dockPointsReq = [{x: this.x, y:this.height/2+this.y, KC: null}]; //default point
         this.dockPointsDev =[];
         this.KCs = [];
-        
+
         data.Required.forEach((k,i) => {
             this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i,KC:k});
             //this.KCs.REQ.push(new KCObject(conf.thickness, k));//if a dev exist a reqirement version will simply point on exact same points

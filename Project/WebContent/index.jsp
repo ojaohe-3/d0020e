@@ -46,7 +46,7 @@
 </script>
 
    <%@include  file="_filterContainer.jsp" %>
-
+  <%@include file="_graphCanvas.jsp"%>
 
 
 	<style>
@@ -57,6 +57,7 @@
 		display: none;
 	}
 	</style>
+
 	<div class="container-fluid">
 		<div class="container" id="displayKC" style="display: none;">
 			<button id="close_btn" class="btn btn-danger" onclick="hideKCdiv()" style="display: none;">X</button>
@@ -71,10 +72,10 @@
 				<div id="kc_tax_desc_2"></div>
 				<div id="kc_tax_desc_3"></div>
 			</div>
-			
+
 		</div>
-	
-	   <%@include file="_graphCanvas.jsp"%>
+
+
    </div>
    
    <div class="container" style="background-color:yellow;" id="debug"></div>
