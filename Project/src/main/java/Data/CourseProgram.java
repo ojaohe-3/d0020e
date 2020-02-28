@@ -10,7 +10,7 @@ import java.util.Collection;
 public class CourseProgram extends ProgramInformation{
 	public static String program = "";
 	//private CourseOrder courseOrder;
-	private ArrayList<Course> courses;
+	private ArrayList<Course> courseOrder;
 	public static enum ProgramType {
 		PROGRAM("CourseProgram"),
 		SPECIALIZATION("ProgramSpecialization");
@@ -25,16 +25,16 @@ public class CourseProgram extends ProgramInformation{
 			return this.programType;
 		}
 	}
-	
+
 	public CourseProgram() {
-		super( null, null,null,null,null,null);
-		this.courses = new ArrayList<>();
+		super( null, null,null,null,0,null);
+		this.courseOrder = new ArrayList<>();
 	}
 	public CourseProgram(Collection<Course> courses) {
-		super( null, null,null,null,null,null);
-		this.courses = (ArrayList<Course>)courses;
+		super(null, null, null, null, 0, null);
+		this.courseOrder = (ArrayList<Course>) courses;
+
 	}
-	
 	/**
 	 *
 	 * @param code
@@ -43,25 +43,35 @@ public class CourseProgram extends ProgramInformation{
 	 * @param startDate
 	 * @param credits
 	 */
-	public CourseProgram(String code, String name, String description, CourseDate startDate, Credits credits) {
+
+	public CourseProgram(ArrayList<Course> courseOrder, String code, String name, String description, CourseDate startDate, float credits) {
 		super( code, name, description, startDate, credits, ProgramType.PROGRAM);
-		this.courses = new ArrayList<>();
+		this.courseOrder = courseOrder;
+		
+	}
+	
+	public CourseProgram( String code, String name, String description, CourseDate startDate, float credits) {
+
+		super( code, name, description, startDate, credits, ProgramType.PROGRAM);
+		this.courseOrder = new ArrayList<>();
 		
 	}
 
 	
-	public CourseProgram(ArrayList<Course> courseOrder, String code, String name, String description, CourseDate startDate, Credits credits, ProgramType type) {
+
+	protected CourseProgram(ArrayList<Course> courseOrder, String code, String name, String description, CourseDate startDate, float credits, ProgramType type) {
+
 		super( code, name, description, startDate, credits, type);
-		this.courses = (ArrayList<Course>) courseOrder;
+		this.courseOrder = (ArrayList<Course>) courseOrder;
 	}
 	
 	public ArrayList<Course> getCourseOrder() {
-		return courses;
+		return courseOrder;
 	}
 
 
 	public void setCourseOrder(ArrayList<Course> courseOrder) {
-		this.courses = (ArrayList<Course>) courseOrder;
+		this.courseOrder =  courseOrder;
 	}
 
 	public JSONObject getAsJson() throws JSONException {
@@ -70,10 +80,10 @@ public class CourseProgram extends ProgramInformation{
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),name.replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.CODE.toString(),code.replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.DESCRIPTION.toString(),description.replaceAll("\"",""));
-		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits.name().replaceAll("\"",""));
+		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits);
 		obj.put(CourseProgram.ProgramLabels.LP.toString(),startDate.getPeriod().name().replaceAll("\"",""));
 		obj.put(ProgramLabels.YEAR.toString(),startDate.getYear());
-		obj.put("Courses",this.courses);
+		obj.put("Courses",this.courseOrder);
 
 		return obj;
 	}

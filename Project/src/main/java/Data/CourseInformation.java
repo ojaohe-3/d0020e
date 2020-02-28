@@ -17,7 +17,7 @@ public class CourseInformation {
 	protected String description;
 	protected String examiner;
 	protected CourseDate startPeriod;
-	protected Credits credit;
+	protected float credit;
 
 
 	/**
@@ -29,7 +29,7 @@ public class CourseInformation {
 	 * @param examiner - The examiner
 	 * @param startPeriod - The staring period in the form of {@link CourseDate}
 	 */
-public CourseInformation(String name, String courseCode, Credits credit, String description, String examiner, CourseDate startPeriod) {
+public CourseInformation(String name, String courseCode, float credit, String description, String examiner, CourseDate startPeriod) {
 		this.name = name.replaceAll("\"","");
 		this.courseCode = courseCode.replaceAll("\"","");
 		this.credit = credit;
@@ -78,11 +78,11 @@ public CourseInformation(String name, String courseCode, Credits credit, String 
 		this.startPeriod = startPeriod;
 	}
 
-	public Credits getCredit() {
+	public float getCredit() {
 		return credit;
 	}
 
-	public void setCredit(Credits credit) {
+	public void setCredit(float credit) {
 		this.credit = credit;
 	}
 

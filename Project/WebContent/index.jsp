@@ -11,7 +11,8 @@
 <html>
   <head>
 
-      <title>$Title$</title>
+      <title>Study Planner</title>
+      
   </head>
   <body>
 
@@ -46,6 +47,38 @@
 
    <%@include  file="_filterContainer.jsp" %>
 
-   <%@include file="_graphCanvas.jsp"%>
+
+<<<<<<< HEAD
+=======
+	<style>
+	#close_btn {
+		display: none;
+	}
+	#displayKC {
+		display: none;
+	}
+	</style>
+>>>>>>> f33edcf73b4c32a9e0af9bdf26b48ef7bedd6400
+	<div class="container-fluid">
+		<div class="container" id="displayKC" style="display: none;">
+			<button id="close_btn" class="btn btn-danger" onclick="hideKCdiv()" style="display: none;">X</button>
+			<div class="row">
+				<div id="kc_name"></div>
+			</div>
+			<div class="row">
+				<div id="kc_general_desc"></div>
+			</div>
+			<div class="row">
+				<div id="kc_tax_desc_1"></div>
+				<div id="kc_tax_desc_2"></div>
+				<div id="kc_tax_desc_3"></div>
+			</div>
+			
+		</div>
+	
+	   <%@include file="_graphCanvas.jsp"%>
+   </div>
+   
+   <div class="container" style="background-color:yellow;" id="debug"></div>
   </body>
 </html>

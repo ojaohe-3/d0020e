@@ -11,7 +11,8 @@ import java.util.ArrayList;
  */
 public class ProgramSpecialization extends CourseProgram {
 	
-	public ProgramSpecialization(ArrayList<Course> courseOrder, String code, String name, String description, CourseDate startDate, Credits credits) {
-		super(courseOrder,code, name, description, startDate, credits, CourseProgram.ProgramType.SPECIALIZATION);
+
+	public ProgramSpecialization(ArrayList<Course> courseOrder, String code, String name, String description, CourseDate startDate, float credits) {
+		super(courseOrder, code, name, description, startDate, credits, CourseProgram.ProgramType.SPECIALIZATION);
 	}
 }

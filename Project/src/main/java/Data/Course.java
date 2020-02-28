@@ -34,7 +34,7 @@ public class Course extends CourseInformation {
 	 * @param examiner
 	 * @param startPeriod an object of type {@link CourseOrder}
 	 */
-	public Course(String name, String courseCode, Credits credit, String description, String examiner, CourseDate startPeriod) {
+	public Course(String name, String courseCode, float credit, String description, String examiner, CourseDate startPeriod) {
 		super(name,courseCode,credit,description,examiner,startPeriod);
 	}
 	
@@ -82,7 +82,7 @@ public class Course extends CourseInformation {
 		obj.put(Course.CourseLabels.NAME.toString(),name.replaceAll("\"",""));
 		obj.put(Course.CourseLabels.DESCRIPTION.toString(),description.replaceAll("\"",""));
 		obj.put(Course.CourseLabels.EXAMINER.toString(),examiner.replaceAll("\"",""));
-		obj.put(Course.CourseLabels.CREDIT.toString(),credit.name().replaceAll("\"",""));
+		obj.put(Course.CourseLabels.CREDIT.toString(),credit);
 		obj.put(Course.CourseLabels.LP.toString(),startPeriod.getPeriod().name().replaceAll("\"",""));
 		obj.put(Course.CourseLabels.YEAR.toString(), startPeriod.getYear());
 		obj.put("Required",requiredKC);

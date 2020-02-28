@@ -49,7 +49,9 @@ public class FilterMethods {
 	 */
 	public CourseInformation[] filterCourseByTag(Course.CourseLabels filter, String searchTerm, Course.CourseLabels orderBy, boolean DESCENDING) {
 
-		String query = "MATCH (course: " + Course.course +") WHERE course." + filter + " CONTAINS \"" + searchTerm + "\" RETURN course ORDER BY course." + orderBy;
+
+		String query = "MATCH (course: " + Course.course +") WHERE LOWER(course." + filter + ") CONTAINS LOWER(\"" + searchTerm + "\") RETURN course ORDER BY course." + orderBy;
+
 		if (DESCENDING) {
 			query += " DESC";
 		}
@@ -63,7 +65,7 @@ public class FilterMethods {
 			Value course = row.get("course");
 			CourseInformation information = new CourseInformation(course.get(Course.CourseLabels.NAME.toString()).toString().replaceAll("\"",""),
 					course.get(Course.CourseLabels.CODE.toString()).toString().replaceAll("\"",""),
-					Credits.valueOf(course.get(Course.CourseLabels.CREDIT.toString()).toString().replaceAll("\"", "") ),
+					course.get(Course.CourseLabels.CREDIT.toString()).asFloat(),
 					course.get(Course.CourseLabels.DESCRIPTION.toString()).toString().replaceAll("\"",""),
 					course.get(Course.CourseLabels.EXAMINER.toString()).toString().replaceAll("\"",""),
 					new CourseDate(Integer.parseInt(course.get(Course.CourseLabels.YEAR.toString()).toString().replaceAll("\"", "")   ), LP.valueOf(course.get(Course.CourseLabels.LP.toString()).toString().replaceAll("\"", ""))));
@@ -93,7 +95,9 @@ public class FilterMethods {
 	 * @return An array containing all the search results.
 	 */
 	public ProgramInformation[] filterProgramByTag(CourseProgram.ProgramLabels filter, String searchTerm, CourseProgram.ProgramLabels orderBy, boolean DESCENDING) {
-		String query = "MATCH (program: " + CourseProgram.ProgramType.PROGRAM +") WHERE program." + filter + " CONTAINS \"" + searchTerm + "\" RETURN program ORDER BY program." + orderBy;
+
+		String query = "MATCH (program: " + CourseProgram.ProgramType.PROGRAM +") WHERE LOWER(program." + filter + ") CONTAINS LOWER(\"" + searchTerm + "\") RETURN program ORDER BY program." + orderBy;
+
 		if (DESCENDING) {
 			query += " DESC";
 		}
@@ -111,7 +115,7 @@ public class FilterMethods {
 							Integer.parseInt(prog.get(CourseProgram.ProgramLabels.YEAR.toString()).toString().replaceAll("\"", "")),
 							LP.valueOf(prog.get(CourseProgram.ProgramLabels.LP.toString()).toString().replaceAll("\"", ""))
 					),
-					Credits.valueOf(prog.get(CourseProgram.ProgramLabels.CREDITS.toString()).toString().replaceAll("\"", "")), 
+					prog.get(CourseProgram.ProgramLabels.CREDITS.toString()).asFloat(),
 					CourseProgram.ProgramType.PROGRAM);
 			result[i] = information;
 		}
@@ -126,7 +130,7 @@ public class FilterMethods {
 	 * @return - An array containing the title of all search results.
 	 */
 	public String[] filterTopicByTitle(String searchTerm) {
-		String query = "MATCH (topic: " + Topic.TopicLabels.TOPIC +") WHERE topic." + Topic.TopicLabels.TITLE.toString() + " CONTAINS \"" + searchTerm + "\" RETURN topic";
+		String query = "MATCH (topic: " + Topic.TopicLabels.TOPIC +") WHERE LOWER(topic." + Topic.TopicLabels.TITLE.toString() + ") CONTAINS LOWER(\"" + searchTerm + "\") RETURN topic";
 		
 		/* This gives us the full list of records returned from neo. */
 		List<Record> resultList = this.communicator.readFromNeo(query).list();
@@ -146,7 +150,7 @@ public class FilterMethods {
 	 * @return
 	 */
 	public Topic[] filterTopicByName(String searchTerm) {
-		String query = "MATCH (topic: " + Topic.TopicLabels.TOPIC +") WHERE topic." + Topic.TopicLabels.TITLE.toString() + " CONTAINS \"" + searchTerm + "\" RETURN topic";
+		String query = "MATCH (topic: " + Topic.TopicLabels.TOPIC +") WHERE LOWER(topic." + Topic.TopicLabels.TITLE.toString() + ") CONTAINS LOWER(\"" + searchTerm + "\") RETURN topic";
 		/* This gives us the full list of records returned from neo. */
 		List<Record> resultList = this.communicator.readFromNeo(query).list();
 		Topic[] result = new Topic[resultList.size()];
@@ -168,7 +172,7 @@ public class FilterMethods {
 	 * @return - An array containing the title of all search results.
 	 */
 	public KC[] filterKCByTag(KC.KCLabel filter, String searchTerm) {
-		String query = "MATCH (kc: " + KC.kc +") WHERE kc." + filter + " CONTAINS \"" + searchTerm + "\" RETURN kc";
+		String query = "MATCH (kc: " + KC.kc +") WHERE LOWER(kc." + filter + ") CONTAINS LOWER(\"" + searchTerm + "\") RETURN kc";
 		
 		/* This gives us the full list of records returned from neo. */
 		List<Record> resultList = this.communicator.readFromNeo(query).list();
@@ -309,7 +313,7 @@ public class FilterMethods {
 			courseNames.add(new CourseInformation(
 					row.get("course").get(CourseLabels.NAME.toString()).toString(),
 					row.get("course").get(CourseLabels.CODE.toString()).toString(),
-					Credits.valueOf(row.get("course").get(CourseLabels.CREDIT.toString()).toString().replaceAll("\"", "")),
+					Float.parseFloat(row.get("course").get(CourseLabels.CREDIT.toString()).toString().replaceAll("\"", "")),
 					row.get("course").get(CourseLabels.DESCRIPTION.toString()).toString(),
 					row.get("course").get(CourseLabels.EXAMINER.toString()).toString(),
 					new CourseDate(
@@ -343,7 +347,7 @@ public class FilterMethods {
 					new CourseDate(
 							Integer.parseInt(row.get("courseProgram").get(ProgramLabels.YEAR.toString()).toString().replaceAll("\"", "")),
 							LP.valueOf(row.get("courseProgram").get(ProgramLabels.LP.toString()).toString().replaceAll("\"", ""))),
-					Credits.valueOf(row.get("courseProgram").get(ProgramLabels.CREDITS.toString()).toString().replaceAll("\"", "")),
+					Float.parseFloat(row.get("courseProgram").get(ProgramLabels.CREDITS.toString()).toString().replaceAll("\"", "")),
 					ProgramType.PROGRAM
 			));
 		}
@@ -352,8 +356,10 @@ public class FilterMethods {
 	}
 	
 	public KC[] filterKCByTopic(String topic) {
-		String query = "MATCH(node: Topic {title : \""+ topic +"\"})<-[r]-(kc:"+KC.kc+") RETURN kc ";
+		//String query = "MATCH(node: Topic {title : \""+ topic +"\"})<-[r]-(kc:"+KC.kc+") RETURN kc ";
 
+		String query = "MATCH (node : Topic) WHERE LOWER(node.title) CONTAINS LOWER(\"" + topic + "\") MATCH (node)-[r]-(kc: KC) RETURN kc";
+		
 		StatementResult result = this.communicator.readFromNeo(query);
 		ArrayList<KC> KCs = new ArrayList<KC>();
 

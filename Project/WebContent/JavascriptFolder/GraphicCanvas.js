@@ -18,7 +18,6 @@ const period = new Map();
   period.set('THREE',0);
   period.set('FOUR',0);
 let courses =new Map();
-let DEV = new Map();
 let REQ = new Map();
   //translations
 let matrix=[1,0,0,1,0,0];
@@ -60,7 +59,6 @@ function generateCanvas(data) {
   let offsetYear = 0;
   let currentYear = year;
   //KC mapping reset
-  DEV = new Map();
   REQ = new Map();
   let intersection = [];
   data['Courses'].forEach(function (item, index,arr){
@@ -101,11 +99,8 @@ function generateCanvas(data) {
 
 
     //========================  KC MAPPING ========================
-    //push to our available kcs to map
-    if(item.Developed.length > 0){
-      DEV.set(item.courseCode,item.Developed);
-    }
-    //map intersecting kcs
+
+    //map required kcs
     if(item.Required.length > 0){
       REQ.set(item.courseCode, item.Required);
     }

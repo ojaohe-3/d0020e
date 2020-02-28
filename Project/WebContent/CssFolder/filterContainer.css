@@ -1,11 +1,21 @@
 .filterContainer {
+<<<<<<< HEAD
   float: left;
 background-color: #292929;
 width: 25%;
 height: auto;
 display: block;
 color: #bababa;
+=======
+	background-color: #292929;
+	width: 25%;
+	height: auto;
+	display: block;
+	color: #bababa;
+	border-radius: 0 25px 25px 0;
+>>>>>>> f33edcf73b4c32a9e0af9bdf26b48ef7bedd6400
 }
+
 
 .radio input {
   position: absolute;
@@ -82,6 +92,8 @@ color: #bababa;
 	display: block;
 	margin-bottom: 30px;
 }
+
+
 
 a {
 	color: #bababa;

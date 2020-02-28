@@ -14,6 +14,7 @@ class KCObject{
         ctx.save();
         saveMatrix();
         translate(0,0);
+        ctx.lineWidth = this.thickness;
         ctx.beginPath();
         ctx.moveTo(this.x1,this.y1);
         this.snapPoints.forEach(function (point) {

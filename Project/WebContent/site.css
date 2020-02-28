@@ -2,7 +2,9 @@
 
 
 body {
-	background-color : lightgray;
+	background-color : #404040;
+	height: 100%;
+	color: #bababa;
 }
 
 #canvas_container {
@@ -22,7 +24,7 @@ canvas{
 .SearchResult {
 	background-color : #404040;
 	padding : 5px;
-	height: 30px;
+	height: auto;
 	display: block;
 }
 
@@ -45,4 +47,26 @@ canvas{
 }
 .SearchResultContainer>div:nth-child(even){
  background-color: #4b4b4b;
+}
+
+.navbar.navbar-inverse {
+	border-radius: 0;
+	background-color: #292929;
+}
+
+.navbar-inverse {
+	border-bottom: none;
+}
+
+input {
+  background: #404040;
+  border: 1px solid #474747;
+  color: #bababa;;
+  padding-left: 10px;
+  border-radius: 5px;
+}
+
+.navbar-brand a {
+	color: orange; 
+	text-decoration: none;
 }
