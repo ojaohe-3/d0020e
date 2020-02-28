@@ -24,7 +24,7 @@ public class CourseProgram extends ProgramInformation{
 	}
 	
 	public CourseProgram(CourseOrder courseOrder) {
-		super( null, null,null,null,null,null);
+		super( null, null,null,null,0,null);
 		this.courseOrder = courseOrder;
 	}
 	
@@ -37,18 +37,18 @@ public class CourseProgram extends ProgramInformation{
 	 * @param startDate
 	 * @param credits
 	 */
-	public CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits) {
+	public CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, float credits) {
 		super( code, name, description, startDate, credits, ProgramType.PROGRAM);
 		this.courseOrder = courseOrder;
 		
 	}
 	
-	public CourseProgram( String code, String name, String description, CourseDate startDate, Credits credits) {
+	public CourseProgram( String code, String name, String description, CourseDate startDate, float credits) {
 		super( code, name, description, startDate, credits, ProgramType.PROGRAM);
 		
 	}
 	
-	protected CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, Credits credits, ProgramType type) {
+	protected CourseProgram(CourseOrder courseOrder, String code, String name, String description, CourseDate startDate, float credits, ProgramType type) {
 		super( code, name, description, startDate, credits, type);
 		this.courseOrder = courseOrder;
 	}
@@ -75,7 +75,7 @@ public class CourseProgram extends ProgramInformation{
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),name.replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.CODE.toString(),code.replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.DESCRIPTION.toString(),description.replaceAll("\"",""));
-		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits.name().replaceAll("\"",""));
+		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits);
 		obj.put(CourseProgram.ProgramLabels.LP.toString(),startDate.getPeriod().name().replaceAll("\"",""));
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),startDate.getYear());
 		obj.put("Courses",courses);

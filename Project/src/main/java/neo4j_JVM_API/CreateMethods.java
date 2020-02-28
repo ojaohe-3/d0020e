@@ -9,7 +9,7 @@ import Data.Course;
 import Data.CourseDate;
 import Data.CourseOrder;
 import Data.CourseProgram;
-import Data.Credits;
+//import Data.Credits;
 import Data.KC;
 import Data.LP;
 import Data.Relations;
@@ -97,7 +97,7 @@ private final Neo4jCommunicator communicator;
 
 		query = StartStatment+"(n:" + Course.course+"{"+
 		Course.CourseLabels.NAME.toString() + ":\"" + course.getName().toString() + "\", " +
-		Course.CourseLabels.CREDIT.toString() + ":\"" + course.getCredit().toString() + "\", " +
+		Course.CourseLabels.CREDIT.toString() + ":\"" + course.getCredit() + "\", " +
 		Course.CourseLabels.DESCRIPTION.toString() + ":\"" + course.getDescription().toString() + "\", " +
 		Course.CourseLabels.EXAMINER.toString() + ":\"" + course.getExaminer().toString() + "\", " +
 		Course.CourseLabels.YEAR.toString() + ":\"" + Integer.toString(course.getStartPeriod().getYear()) + "\", " +
