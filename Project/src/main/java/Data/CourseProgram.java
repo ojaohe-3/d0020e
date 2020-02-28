@@ -59,7 +59,7 @@ public class CourseProgram extends ProgramInformation{
 
 	
 
-	protected CourseProgram(ArrayList<Course> courseOrder, String code, String name, String description, CourseDate startDate, float credits, ProgramType type) {
+	public CourseProgram(ArrayList<Course> courseOrder, String code, String name, String description, CourseDate startDate, float credits, ProgramType type) {
 
 		super( code, name, description, startDate, credits, type);
 		this.courseOrder = (ArrayList<Course>) courseOrder;
