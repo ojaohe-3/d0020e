@@ -11,7 +11,7 @@
 <html>
   <head>
 
-      <title>Study MOTHER F***ING PLANNER</title>
+      <title>Study Planner</title>
       
   </head>
   <body>
@@ -48,8 +48,20 @@
    <%@include  file="_filterContainer.jsp" %>
 
 
+<<<<<<< HEAD
+=======
+	<style>
+	#close_btn {
+		display: none;
+	}
+	#displayKC {
+		display: none;
+	}
+	</style>
+>>>>>>> f33edcf73b4c32a9e0af9bdf26b48ef7bedd6400
 	<div class="container-fluid">
-		<div class="container" id="displayKC" onclick="hideKCdiv()">
+		<div class="container" id="displayKC" style="display: none;">
+			<button id="close_btn" class="btn btn-danger" onclick="hideKCdiv()" style="display: none;">X</button>
 			<div class="row">
 				<div id="kc_name"></div>
 			</div>

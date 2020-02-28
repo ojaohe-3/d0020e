@@ -2,7 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@include file="_includes.jsp" %>
 
-<%@ page import="Data.Credits" %>
+<%-- <%@ page import="Data.Credits" %> --%>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.Arrays" %>
 
@@ -37,11 +37,11 @@
 			<div class="col-sm-3">
 				<p> When assigning credits use one of these: <br> <p>
 				<ul>
-					<% List<Credits> list = Arrays.asList(Credits.values());
+					<%--<% List<Credits> list = Arrays.asList(Credits.values());
 						for(Credits cred: list) {
 							out.print("<li> " + cred.toString() + " </li>");
 						}
-					%>
+					%> --%>
 				</ul>
 			</div>
 			<div class="col-sm-3">

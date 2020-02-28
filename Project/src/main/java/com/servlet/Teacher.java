@@ -14,7 +14,7 @@ import org.json.JSONObject;
 
 import Data.Course;
 import Data.CourseDate;
-import Data.Credits;
+//import Data.Credits;
 import Data.KC;
 import Data.LP;
 import neoCommunicator.Neo4jConfigLoader;
@@ -58,7 +58,7 @@ public class Teacher extends HttpServlet {
 	}
 
 	
-	private void print(String name, String code, Credits credits, String description,String examiner, int year, LP lp, String[] dev, String[] req) {
+	private void print(String name, String code, float credits, String description,String examiner, int year, LP lp, String[] dev, String[] req) {
 		
 		System.out.println("name " + name);
 		System.out.println("code " + code);
@@ -87,7 +87,7 @@ public class Teacher extends HttpServlet {
 				
 				String name = request.getParameter("name");
 				String courseCode = request.getParameter("code");
-				Credits credits = Credits.getByString(request.getParameter("credits"));
+				float credits = Float.parseFloat(request.getParameter("credits"));
 				String description = request.getParameter("description");
 				String examiner = request.getParameter("examiner");
 				int year = Integer.parseInt(request.getParameter("startyear"));
@@ -105,8 +105,7 @@ public class Teacher extends HttpServlet {
 				
 				if(developed != null) {
 					String[] dev = developed.split(";;;;");
-					
-					for(int i = 0; i < dev.length - 1; i++) {
+					for(int i = 0; i < dev.length; i++) {
 						String[] s = dev[i].split(";;;");
 						updatedCourse.setDevelopedKC(new KC(s[0], null, Integer.parseInt(s[1]), null));				
 					}
@@ -114,17 +113,17 @@ public class Teacher extends HttpServlet {
 				
 				if(required != null) {
 					String[] req = required.split(";;;;");
-					for(int i = 0; i < req.length - 1; i++) {
+					for(int i = 0; i < req.length; i++) {
 						String[] s = req[i].split(";;;");
 						updatedCourse.setRequiredKC(new KC(s[0], null, Integer.parseInt(s[1]), null));
 					}
 				}
 				
-			
-				print(name, courseCode, credits, description, examiner, year, lp, null, null);
-				
+
+				//print(name, courseCode, credits, description, examiner, year, lp, null, null);
 				Neo4jConfigLoader.getApi().modifyMethods.deleteKCsFromCourseAndAddTheNewOnes(updatedCourse);
 				Neo4jConfigLoader.getApi().modifyMethods.editCourse(courseCode, new CourseDate(year,lp), updatedCourse);
+				
 				response.setContentType("text/text");
 				response.getWriter().write("Success");
 				

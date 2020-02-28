@@ -189,7 +189,7 @@ public class Admin extends HttpServlet {
 			String courseCode = request.getParameter("courseCode");
 			String lp = request.getParameter("lp");
 			String year = request.getParameter("year");
-			String credits = request.getParameter("credits");
+			float credits = Float.parseFloat(request.getParameter("credits"));
 			String examiner = request.getParameter("examiner");
 			String description = request.getParameter("description");
 
@@ -198,9 +198,7 @@ public class Admin extends HttpServlet {
 
 			CourseDate courseDate = new CourseDate(Year, period);
 
-			Credits Credits = Data.Credits.getByString(credits);
-
-			Course course = new Course(courseName, courseCode, Credits, description, examiner, courseDate);
+			Course course = new Course(courseName, courseCode, credits, description, examiner, courseDate);
 
 			Neo4jConfigLoader.getApi().createMethods.createCourse(course);
 
@@ -240,7 +238,7 @@ public class Admin extends HttpServlet {
 			CourseDate newCourseDate = new CourseDate(newCourseYear, newPeriod);
 
 			Course oldCourse = Neo4jConfigLoader.getApi().getMethods.getCourse(oldCourseCode, oldCourseDate);
-			Credits copyOfOldCredits = oldCourse.getCredit();
+			float copyOfOldCredits = oldCourse.getCredit();
 			String copyOfDescription = oldCourse.getDescription();
 
 			Course newCourse = new Course(newCourseName, newCourseCode, copyOfOldCredits, copyOfDescription, newExaminer, newCourseDate);
@@ -365,7 +363,7 @@ public class Admin extends HttpServlet {
 
 			LP period = LP.getByString(startLP);
 			int Year = Integer.parseInt(startYear);
-			Credits hp = Credits.getByString(credits);
+			float hp = Float.parseFloat(credits);
 
 			CourseDate courseDate = new CourseDate(Year, period);
 			CourseProgram program = new CourseProgram(programCode, programName, description, courseDate, hp);
@@ -464,7 +462,7 @@ public class Admin extends HttpServlet {
 			CourseDate newProgramDate = new CourseDate(nextYear, newStartPeriod);
 			ArrayList<Course> courseOrder = new ArrayList<>();
 			
-			Credits newCreditPoints = Credits.getByString(newCredits);
+			float newCreditPoints = Float.parseFloat(newCredits);
 
 			CourseProgram updatedProgram = new CourseProgram(courseOrder, newCode, newName,newDescription, newProgramDate, newCreditPoints, CourseProgram.ProgramType.PROGRAM);
 
@@ -517,7 +515,7 @@ public class Admin extends HttpServlet {
 			LP specialPeriod = LP.getByString(specLP);
 			CourseDate programDate = new CourseDate(programYear, programStartPeriod);
 			CourseDate specDate = new CourseDate(specialYear, specialPeriod);
-			Credits currentCredits = Credits.getByString(credits);
+			float currentCredits = Float.parseFloat(credits);
 
 			int readingPeriods = Integer.parseInt(request.getParameter("readingPeriods"));
 			ProgramSpecialization programSpecialization = new ProgramSpecialization(null, programCode, name, description, specDate, currentCredits);
@@ -541,7 +539,7 @@ public class Admin extends HttpServlet {
 			int newStartYear = Integer.parseInt(request.getParameter("newStartYear"));
 			LP newStartLP = LP.getByString(request.getParameter("newStartByString"));
 			String newDescription = request.getParameter("newDescription");
-			Credits newCredits = Credits.getByString(request.getParameter("newCredits"));
+			float newCredits = Float.parseFloat(request.getParameter("newCredits"));
 			int readingPeriods = Integer.parseInt(request.getParameter("readingPeriods"));
 			ArrayList<Course> courseOrder= new ArrayList<Course>();
 

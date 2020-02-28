@@ -117,8 +117,7 @@ public class GetMethods {
 		String name = row.get(nodename).get("name").toString().replaceAll("\"","");
 		String code = row.get(nodename).get("code").toString().replaceAll("\"","");
 		String description = row.get(nodename).get("description").toString().replaceAll("\"","");
-		String creds = row.get(nodename).get("credits").toString().replaceAll("\"","");
-		Credits credits = Credits.valueOf(creds);
+		float credits = row.get(nodename).get("credits").asFloat();
 		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"",""));
 		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"",""));
 		CourseDate startDate = new CourseDate(year, lp);	
@@ -192,10 +191,7 @@ public class GetMethods {
 		
 		String name = row.get(nodename).get("name").toString();
 		String courseCode = row.get(nodename).get("courseCode").toString();
-		String creds = row.get(nodename).get("credit").toString();
-		
-		creds = creds.replaceAll("\"", "");
-		Credits credits = Credits.valueOf(creds);
+		float credits = row.get(nodename).get("credit").asFloat();
 		
 		String description = row.get(nodename).get("description").toString();
 		String examiner = row.get(nodename).get("examiner").toString();
@@ -266,8 +262,7 @@ public class GetMethods {
 		String name = row.get(nodename).get("name").toString();
 		String code = row.get(nodename).get("code").toString();
 		String description = row.get(nodename).get("description").toString();
-		String creds = row.get(nodename).get("credits").toString().replaceAll("\"", "");
-		Credits credits = Credits.valueOf(creds);
+		float credits = row.get(nodename).get("credits").asFloat();
 		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"", ""));
 		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"", ""));
 		CourseDate startDate = new CourseDate(year, lp);	
@@ -297,11 +292,8 @@ public class GetMethods {
 		
 		String name = row.get(nodename).get("name").toString();
 		String courseCode = row.get(nodename).get("courseCode").toString();
-		String creds = row.get(nodename).get("credit").toString();
-		
-		creds = creds.replaceAll("\"", "");
-		Credits credits = Credits.valueOf(creds);
-		
+		float credits = row.get(nodename).get("credit").asFloat();
+
 		String description = row.get(nodename).get("description").toString();
 		String examiner = row.get(nodename).get("examiner").toString();
 		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"", ""));

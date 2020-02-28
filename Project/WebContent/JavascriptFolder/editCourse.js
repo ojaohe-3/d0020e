@@ -124,6 +124,7 @@ function saveCourseChanges(){
 			
 		}
 	});
+	document.getElementById("showEditCourse").style.display="none";
 }
 
 function cancel(){

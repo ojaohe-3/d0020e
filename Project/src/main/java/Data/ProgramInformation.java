@@ -16,7 +16,7 @@ public class ProgramInformation {
 	protected String name;
 	protected String description;
 	protected CourseDate startDate;
-	protected Credits credits;
+	protected float credits;
 	protected ProgramType programType;
 	
 	/**
@@ -28,7 +28,7 @@ public class ProgramInformation {
 	 * @param credits
 	 * @param type
 	 */
-	public ProgramInformation( String code, String name, String description, CourseDate startDate, Credits credits, ProgramType type) {
+	public ProgramInformation( String code, String name, String description, CourseDate startDate, float credits, ProgramType type) {
 		this.code = code;
 		this.name = name;
 		this.description = description;
@@ -67,12 +67,12 @@ public class ProgramInformation {
 	}
 
 
-	public Credits getCredits() {
+	public float getCredits() {
 		return credits;
 	}
 
 
-	public void setCredits(Credits credits) {
+	public void setCredits(float credits) {
 		this.credits = credits;
 	}
 
@@ -97,7 +97,7 @@ public class ProgramInformation {
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),name);
 		obj.put(CourseProgram.ProgramLabels.CODE.toString(),code);
 		obj.put(CourseProgram.ProgramLabels.DESCRIPTION.toString(),description);
-		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits.name());
+		obj.put(CourseProgram.ProgramLabels.CREDITS.toString(),credits);
 		obj.put(CourseProgram.ProgramLabels.LP.toString(),startDate.getPeriod().name());
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),startDate.getYear());
 		return obj;

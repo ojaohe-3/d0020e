@@ -17,7 +17,7 @@ public class Main {
     static Neo4JAPI neoapi;
 
     public static void main(String[] args) throws IOException {
-        Course test = new Course("hello", "ddddd", Credits.SEVEN, "hello there cowboy", "man", new CourseDate(102, LP.ONE));
+        Course test = new Course("hello", "ddddd", 7.5f, "hello there cowboy", "man", new CourseDate(102, LP.ONE));
         test.setRequiredKC(new KC("wow", "wowowo", 2, "no"));
         test.setRequiredKC(new KC("2323", "wowo33wo", 25, "n2o"));
         test.setDevelopedKC(new KC("wow", "wowowo", 3, "yes"));
@@ -28,6 +28,68 @@ public class Main {
             e.printStackTrace();
         }
         neoapi = Neo4jConfigLoader.getApi();
+
+
+        // Setup database connection
+        //neoapi = new Neo4JAPI("");
+
+        //neoapi.createMethods.clear(); <-- I moved this to Deletemethods. Greetings from Robin the code cop.
+        //createCourses();
+        //createTopics();
+        //createKCs();
+
+        //createRelationsBetweenCoursesAndKCs();
+
+
+
+
+
+
+        readCourses();
+
+        readKCs();
+        readTopics();
+        addTopicsToCourses();
+        addTopicsToKCs();
+        //createCourseProgram("courseprgroma 1", "TIDAG");
+        filterTest();
+        courseOrder = new CourseProgram(new ArrayList<Course>());
+        Course temp = new Course(new CourseInformation("test","xxxx",-1,"test","test",new CourseDate(1207,LP.ONE)));
+		KC t;
+		t = new KC("Test 1","test desc",1,"wow");
+        temp.setDevelopedKC(t);
+        neoapi.createMethods.createKC(t);
+        t = new KC("Test 2","test desc",1,"wow");
+        temp.setDevelopedKC(t);
+        neoapi.createMethods.createKC(t);
+
+        t = new KC("Test 3","test desc",1,"wow");
+        temp.setDevelopedKC(t);
+        neoapi.createMethods.createKC(t);
+
+        t = new KC("Test 4","test desc",1,"wow");
+        temp.setDevelopedKC(t);
+        neoapi.createMethods.createKC(t);
+
+        neoapi.createMethods.createCourse(temp);
+        neoapi.createMethods.createCourseKCrelation(temp);
+
+        courseOrder.setCode("xyxy");
+        courseOrder.setCredits(30);
+        courseOrder.setDescription("test");
+        courseOrder.setName("test");
+        courseOrder.setStartDate(new CourseDate(1111,LP.ONE));
+        courseOrder.setProgramType(CourseProgram.ProgramType.PROGRAM);
+        //neoapi.createMethods.createProgram(courseOrder);
+		neoapi.createMethods.createProgramCourseRelation(courseOrder, temp);
+		CourseProgram data = neoapi.getMethods.getProgram(courseOrder.getCode(),courseOrder.getStartDate());
+        try {
+            System.out.println(data.getAsJson());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        //System.in.read();
+
 
     }
 
@@ -48,7 +110,7 @@ public class Main {
                 year++;
             }
             CourseDate cd = new CourseDate(year, lp);
-            courses[i] = new Course("CourseNameNum " + i, "D000" + i + "E", Credits.SEVEN, "DESCRIPTION FOR COURSE" + i, "HÅKAN J", cd);
+            courses[i] = new Course("CourseNameNum " + i, "D000" + i + "E", 7.5f, "DESCRIPTION FOR COURSE" + i, "HÅKAN J", cd);
 
             lpcounter++;
             if (lpcounter % 2 == 0) {
@@ -167,7 +229,7 @@ public class Main {
         courseProgram.setCode(code);
         courseProgram.setName(name);
         courseProgram.setDescription("descrtiption for course" + name);
-        courseProgram.setCredits(Credits.ERROR);
+        courseProgram.setCredits(-1);
 
         neoapi.createMethods.createProgram(courseProgram);
         neoapi.createMethods.createProgramCourseRelations(courseProgram);
