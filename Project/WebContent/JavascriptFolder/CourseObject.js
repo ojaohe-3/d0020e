@@ -198,7 +198,10 @@ class CourseObject{
        //  width : this.width*0.2,
        //  height : this.height*0.2,
        //  text:"▲"});
-        this.KCs.DEV.forEach((v)=>{v.draw(ctx);});
+        if (this.extended) {
+            this.KCs.DEV.forEach((v)=>{v.draw(ctx);});
+        }
+
 
       ctx.strokeRect(this.x,this.y,this.width,this.height);
       //obsolete

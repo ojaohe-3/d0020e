@@ -162,6 +162,7 @@ function reFormatSection(lp,year){
 }
 
 function drawCanvas() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
   //==== KC MAPPING ====
   courses.forEach((v)=>{
     REQ.forEach((e,k)=>{
