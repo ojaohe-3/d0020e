@@ -31,7 +31,7 @@ canvas.addEventListener('click', function(evt) {
     if(value.isInside(mousePos,dpi)){
       //alert('Course Pressed!');
       //showCourseInfo(value.data);
-      value.setExtended();
+      //value.setExtended();
     } else{
       console.log("mouse pressed on nothing!");
     }
@@ -124,7 +124,7 @@ function generateCanvas(data) {
     );
 
 
-    createCourseOverlay(x,y,item);  // TODO fix this, it ain't done.
+    createCourseOverlay(x,y,item, obj);  // TODO fix this, it ain't done.
 
     courses.set(item["courseCode"]+item["year"]+item["lp"], obj);
   });
@@ -141,7 +141,7 @@ function generateCanvas(data) {
   drawCanvas();
 }
 
-function createCourseOverlay(x,y, item) {
+function createCourseOverlay(x,y, item, obj) {
   let courseDefinition = item["courseCode"]+item["year"]+item["lp"];
 
   /*
@@ -178,8 +178,22 @@ function createCourseOverlay(x,y, item) {
 
   // ---------------- dropdown -------------
   let dropDown = document.createElement("div");
-  dropDown.setAttribute("style","width:100%; height:150px; background-color:red; display:none");
+  dropDown.setAttribute("style","height:"+obj.heightExtension+"px;");
   dropDown.setAttribute("class","canvas_course_dropdown");
+
+  let dropdown_table = document.createElement("table");
+  let KCin = document.createElement("th");
+  let KCout = document.createElement("th");
+
+
+  for (let i=0; i < obj.KCs.REQ.length; i++) {
+      let KC = document.createElement("p");
+      //p.innerText = obj.KCs.REQ[i].data.
+  }
+
+  for (let i = 0;  i < obj.KCs.DEV.length; i++) {
+
+  }
 
   // ---------------- button ----------------
   let button = document.createElement("div");
@@ -188,6 +202,7 @@ function createCourseOverlay(x,y, item) {
   button.setAttribute("class","canvas_course_button");
 
   button.addEventListener("click",function() {
+    let courseObject = obj;
     let LPs = 1; // TODO give every course a width i.e. how many periods the should be.
     //let c = document.getElementById(x +";" + y);
 
@@ -207,6 +222,7 @@ function createCourseOverlay(x,y, item) {
         victim.firstChild.style.marginTop = margin + "px";
       }
     }
+    courseObject.setExtended();
 
   });
 

@@ -96,6 +96,7 @@ class CourseObject{
         this.dockPointsReq = [{x: this.x, y:this.height/2+this.y, KC: null}]; //default point
         this.dockPointsDev =[];
         this.KCs = {REQ:[],DEV:[]};
+
         data.Required.forEach((k,i) => {
             this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i,KC:k});
             //this.KCs.REQ.push(new KCObject(conf.thickness, k));//if a dev exist a reqirement version will simply point on exact same points
@@ -103,9 +104,8 @@ class CourseObject{
         data.Developed.forEach((k,i)=>{
             this.dockPointsDev.push({x: conf.x+ conf.width, y:conf.y+conf.height+conf.thickness*i,KC:k});
             this.KCs.DEV.push(new KCObject(conf.thickness, k));
-
-        })
-
+        });
+        this.heightExtension = Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness;
     }
 
     /**
@@ -179,9 +179,9 @@ class CourseObject{
     setExtended(){
         this.extended = this.extended == true ? false : true;
         if(this.extended)
-            this.height += Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness;
+            this.height += this.heightExtension;
         else
-            this.height -= Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness;
+            this.height -= this.heightExtension;
         reFormatSection(this.data.lp,this.data.year);
     }
 

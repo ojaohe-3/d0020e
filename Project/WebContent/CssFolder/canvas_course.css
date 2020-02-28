@@ -7,6 +7,16 @@
     font-size: 15pt;
 }
 
+.canvas_course_dropdown {
+    display:none;
+    width: 100%;
+    background-color: white;
+}
+
+.canvas_course_KC {
+
+}
+
 #canvas_course_container {
     position: absolute;
     top: 0;
