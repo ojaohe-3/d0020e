@@ -1,8 +1,11 @@
 package neo4j_JVM_API;
 
+import java.io.IOException;
+
 import Data.*;
 import Data.Course.CourseLabels;
 import neoCommunicator.Neo4jCommunicator;
+import neoCommunicator.Neo4jConfigLoader;
 
 
 public class ModifyMethods {
@@ -18,7 +21,29 @@ public class ModifyMethods {
 		this.communicator = communicator;
 	}
 	
-
+	
+	/**
+	 * 	This method removes all required and developed relationships between the course and all its KCs and then adds the new ones
+	 * 
+	 * @param course The course with all the KC that should be updated 
+	 */
+	public void deleteKCsFromCourseAndAddTheNewOnes(Course course) {
+		String query = "MATCH(course: Course {courseCode : \"" + course.getCourseCode() + "\", year : \"" + course.getStartPeriod().getYear() + "\", lp : \"" + course.getStartPeriod().getPeriod() +"\" }) ";
+		query += "MATCH (course)-[r:" + Relations.REQUIRED + "]-() MATCH (course)-[p: "+ Relations.DEVELOPED+  "]-() DELETE r, p";
+		
+		this.communicator.writeToNeo(query);
+		
+		
+		try {
+			
+			Neo4jConfigLoader.getApi().createMethods.createCourseKCrelation(course);
+			
+		} catch (IOException e) { System.out.println("Something wrong with config loader"); }
+	
+	
+	}
+	
+	
 	/**
 	 * Takes in the name of the KC and its taxonomylevel and changes it's description
 	 * @param kc takes in the kc object and change general description and taxonomy description to the desired values
@@ -29,7 +54,7 @@ public class ModifyMethods {
 		String query = "MATCH(kc: KC {"+KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " +
 		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." + 
 		KC.KCLabel.GENERAL_DESCRIPTION.toString() + "= \"" + kc.getGeneralDescription() + "\", kc." +
-		KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + "= \"" + kc.getTaxonomyDescription() +"\"";
+		KC.KCLabel.TAXONOMY_DESCRIPTION.toString() + "= \"" + kc.getTaxonomyDescription().replaceAll("\"", "") +"\"";
 	 
 		communicator.writeToNeo(query);
 	 }
@@ -61,6 +86,8 @@ public class ModifyMethods {
 		String query = "MATCH(kc: KC {"+KC.KCLabel.NAME.toString() + ": \"" + kc.getName() + "\", " +
 		KC.KCLabel.TAXONOMYLEVEL.toString() + ": \"" + kc.getTaxonomyLevel() + "\"}) SET kc." +
 		KC.KCLabel.TAXONOMY_DESCRIPTION + "= \"" + kc.getTaxonomyDescription() + "\"";
+		
+		communicator.writeToNeo(query);
 	 }
 
 
@@ -77,6 +104,14 @@ public class ModifyMethods {
 		communicator.writeToNeo(query);
 	}
 	*/
+
+	/**
+	 *Edit an already existing program
+	 *@param programCode The current code the program have
+	 *@param startyear When the program started
+	 *@param newProgram Takes in a new CourseProgram with updated values
+	 *@author Robin, Tommy
+	 */
 	
 	public void editProgram(String programCode,CourseDate startyear, CourseProgram newProgram) {
 		String query = "MATCH (n:CourseProgram{ProgramCode:\""+  programCode+"\"}) SET n={";
@@ -87,7 +122,28 @@ public class ModifyMethods {
 		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +":"+1;
 		query += CourseProgram.ProgramLabels.CREDITS.toString() +":"+newProgram.getCredits();
 
+		communicator.writeToNeo(query);
+	}
+
+	/**
+	 *Edit an already existing specialization
+	 *@param programspecializationName The current name the specialization have
+	 *@param startyear When the specialization started
+	 *@param newProgramSpcialization Takes in a new ProgramSpecialization with updated values
+	 *@author Robin, Tommy
+	 */
+
+	public void editSpecialization(String programspecializationName,CourseDate startyear, ProgramSpecialization newProgramSpcialization) {
+		String query = "MATCH (n:ProgramSpecialization{name:\""+  programspecializationName+"\"}) SET n={";
+		query += ProgramSpecialization.ProgramLabels.CODE.toString() +": \"" + newProgramSpcialization.getCode() + "\", ";
+		query += ProgramSpecialization.ProgramLabels.DESCRIPTION.toString() +": \""+newProgramSpcialization.getDescription() + "\", ";
+		query += ProgramSpecialization.ProgramLabels.YEAR.toString() +": \""+newProgramSpcialization.getStartDate().getYear() + "\", ";
+		query += ProgramSpecialization.ProgramLabels.LP.toString() +": \""+newProgramSpcialization.getStartDate().getPeriod() + "\", ";
+		query += ProgramSpecialization.ProgramLabels.READING_PERIODS.toString() +": \""+1 + "\", ";
+		query += ProgramSpecialization.ProgramLabels.CREDITS.toString() +": \""+newProgramSpcialization.getCredits() + "\"";
+
 		query +="}";
+
 		communicator.writeToNeo(query);
 	}
 
@@ -100,18 +156,16 @@ public class ModifyMethods {
 	 * @author Johan RH
 	 */
 	public void editCourse(String courseID, CourseDate period,Course nCourse) {
-		String query = "MATCH (n:"+Course.course+"{"+ Course.CourseLabels.CODE +"\""+ courseID+"\","+
-				Course.CourseLabels.YEAR +":"+period.getYear()+","+
-				Course.CourseLabels.LP +":\""+period.getPeriod().name()+"\"} SET n={";
-		query += Course.CourseLabels.CODE.toString() +":"+nCourse.getCourseCode();
-		query += Course.CourseLabels.CREDIT.toString() +":"+nCourse.getCredit();
-		query += Course.CourseLabels.DESCRIPTION.toString() +":"+nCourse.getDescription();
-		query += Course.CourseLabels.LP.toString() +"="+nCourse.getStartPeriod().getPeriod().name();
-		query += Course.CourseLabels.YEAR.toString() +"="+nCourse.getStartPeriod().getYear();
-		query += Course.CourseLabels.EXAMINER.toString() +"="+nCourse.getExaminer();
-		query += Course.CourseLabels.NAME.toString() +"="+nCourse.getName();
-
-		query +="}";
+		String query = "MATCH (n:"+Course.course+"{"+ Course.CourseLabels.CODE +":\""+ courseID+"\","+
+				Course.CourseLabels.YEAR +":\""+period.getYear()+"\","+
+				Course.CourseLabels.LP +":\""+period.getPeriod().name()+"\"}) SET n.";
+		query += Course.CourseLabels.CODE.toString() +"=\""+nCourse.getCourseCode()+"\", n.";
+		query += Course.CourseLabels.CREDIT.toString() +"=\""+nCourse.getCredit()+"\", n.";
+		query += Course.CourseLabels.DESCRIPTION.toString() +"=\""+nCourse.getDescription()+"\", n.";
+		query += Course.CourseLabels.LP.toString() +"=\""+nCourse.getStartPeriod().getPeriod().name()+"\", n.";
+		query += Course.CourseLabels.YEAR.toString() +"=\""+nCourse.getStartPeriod().getYear()+"\", n.";
+		query += Course.CourseLabels.EXAMINER.toString() +"=\""+nCourse.getExaminer()+"\", n.";
+		query += Course.CourseLabels.NAME.toString() +"=\""+nCourse.getName()+"\"";
 		communicator.writeToNeo(query);
 	}
 

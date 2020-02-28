@@ -11,7 +11,8 @@
 <html>
   <head>
 
-      <title>$Title$</title>
+      <title>Study MOTHER F***ING PLANNER</title>
+      
   </head>
   <body>
 
@@ -46,6 +47,26 @@
 
    <%@include  file="_filterContainer.jsp" %>
 
-   <%@include file="_graphCanvas.jsp"%>
+
+	<div class="container-fluid">
+		<div class="container" id="displayKC" onclick="hideKCdiv()">
+			<div class="row">
+				<div id="kc_name"></div>
+			</div>
+			<div class="row">
+				<div id="kc_general_desc"></div>
+			</div>
+			<div class="row">
+				<div id="kc_tax_desc_1"></div>
+				<div id="kc_tax_desc_2"></div>
+				<div id="kc_tax_desc_3"></div>
+			</div>
+			
+		</div>
+	
+	   <%@include file="_graphCanvas.jsp"%>
+   </div>
+   
+   <div class="container" style="background-color:yellow;" id="debug"></div>
   </body>
 </html>

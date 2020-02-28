@@ -158,7 +158,7 @@ $(document).ready(function() {
 			if($("#kcFilterByName").is(':checked')) {
 				$.ajax({
 
-					url : 'GetKCs/FilterByName',
+					url : 'GetKCs/FilterByNameGetOne',
 					data : {
 						filter : $("#searchKC").val()
 					},
@@ -166,7 +166,7 @@ $(document).ready(function() {
 						//$('#kc_search_results').text(response);
 						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
-							s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"kcClicked()\"> <b>" + response[i].name + "</b>";
+							s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"kcClicked('"+response[i].name+ "')\"> <b>" + response[i].name + "</b>";
 							s += "<div class=\"SearchResultExpander\"> Description : " + response[i].generalDescription +"</div></div>";
 						}
 						s += "</div>";
@@ -186,7 +186,7 @@ $(document).ready(function() {
 						//$('#kc_search_results').text(response);
 						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
-							s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"kcClicked()\"> <b>" + response[i].name + "</b>";
+							s += "<div class=\"SearchResult\" id=\"kc\" onclick=\"kcClicked('"+response[i].name+ "')\"> <b>" + response[i].name + "</b>";
 							s += "<div class=\"SearchResultExpander\"> Description : " + response[i].generalDescription +"</div></div>";
 						}
 						s += "</div>";

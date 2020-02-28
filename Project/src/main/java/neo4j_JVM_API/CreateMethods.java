@@ -43,7 +43,7 @@ private final Neo4jCommunicator communicator;
 	 * Add a topic to the database.
 	 */
 	public void addTopic(String topic) {
-		String query = "CREATE (n: " + Topic.TopicLabels.TOPIC.toString() +" { " +Topic.TopicLabels.TITLE.toString()+ ":\""+ topic.toString() +"\"})";
+		String query = "MERGE (n: " + Topic.TopicLabels.TOPIC.toString() +" { " +Topic.TopicLabels.TITLE.toString()+ ":\""+ topic.toString() +"\"})";
 		this.communicator.writeToNeo(query);
 	}
 	
@@ -57,7 +57,7 @@ private final Neo4jCommunicator communicator;
 	public void createTopicToKCRelation(KC kc, String topic) {
 		String query = "MATCH(kc : KC { "+ KC.KCLabel.NAME + ": \"" + kc.getName()  + "\"})" ;
 		query += "MATCH (topic: Topic {title : \"" + topic + "\"}) ";
-		query += "CREATE (kc)-[r:" + Relations.BELONGS_TO + "]->(topic)";
+		query += "MERGE (kc)-[r:" + Relations.BELONGS_TO + "]->(topic)";
 		
 		this.communicator.writeToNeo(query);
 	}
@@ -72,7 +72,7 @@ private final Neo4jCommunicator communicator;
 		
 		String query = "MATCH (course: Course {" + Course.CourseLabels.CODE +" : \"" + course.getCourseCode() + "\", "+ Course.CourseLabels.LP + ": \"" + course.getStartPeriod().getPeriod() + "\", " + Course.CourseLabels.YEAR + ": \"" + course.getStartPeriod().getYear() + "\"  }) ";
 		query += "MATCH (topic: Topic {title : \"" + topic + "\"}) ";
-		query += "CREATE (course)-[r:"+ Relations.BELONGS_TO +"]->(topic)";
+		query += "MERGE (course)-[r:"+ Relations.BELONGS_TO +"]->(topic)";
 		
 		this.communicator.writeToNeo(query);
 
@@ -117,7 +117,7 @@ private final Neo4jCommunicator communicator;
 	 */
 	public void createKC (KC kc) {
 		
-		String query = "CREATE(n:" +KC.kc + "{" +
+		String query = "MERGE(n:" +KC.kc + "{" +
 			KC.KCLabel.NAME.toString() + ":\"" + kc.getName()+"\", " + 
 			KC.KCLabel.GENERAL_DESCRIPTION.toString()+ ":\"" + kc.getGeneralDescription() + "\", " + 
 			KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + kc.getTaxonomyLevel() + "\", " + 
@@ -136,7 +136,7 @@ private final Neo4jCommunicator communicator;
 	public void createKCgroup(KC kc, int... taxonomyLevels) {
 		String query = "";
 		for (int lv : taxonomyLevels) {
-			query += "CREATE(n:" +KC.kc + "{" +
+			query += "MERGE (n:" +KC.kc + "{" +
 					KC.KCLabel.NAME.toString() + ":\"" + kc.getName()+"\", " + 
 					KC.KCLabel.GENERAL_DESCRIPTION.toString()+ ":\"" + kc.getGeneralDescription() + "\", " + 
 					KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + lv + "\", " + 
@@ -153,7 +153,7 @@ private final Neo4jCommunicator communicator;
 	 * @see #createProgramSpecializationRelation(String, CourseDate, ProgramSpecialization)
 	 */
 	public void createProgram(CourseProgram program) {
-		String query = "CREATE(n:" + program.getProgramType() + " {" +
+		String query = "MERGE (n:" + program.getProgramType() + " {" +
 				CourseProgram.ProgramLabels.NAME.toString() + ":\"" + program.getName() + "\", " +
 				CourseProgram.ProgramLabels.DESCRIPTION.toString() + ":\"" + program.getDescription() + "\", " +
 				CourseProgram.ProgramLabels.CODE.toString() + ":\"" + program.getCode() + "\", " +
@@ -176,10 +176,11 @@ private final Neo4jCommunicator communicator;
 				CourseProgram.ProgramLabels.YEAR.toString()+ ": \"" + startDate.getYear() + "\", " + 
 				CourseProgram.ProgramLabels.LP.toString() + ": \"" + startDate.getPeriod().toString() + "\"}) ";
 		
-		query += "MATCH (specialization: " + CourseProgram.ProgramType.SPECIALIZATION.toString() +" {code: \"" + specialization.getCode() + "\", "+ 
+		query += "MATCH (specialization: " + CourseProgram.ProgramType.SPECIALIZATION.toString() +" {code: \"" + specialization.getCode().replaceAll("\"", "") + "\", "+ 
 		CourseLabels.YEAR + " : \"" + specialization.getStartDate().getYear() + "\" , " + 
 				CourseLabels.LP + " : \"" + specialization.getStartDate().getPeriod().toString() + "\" }) ";
-		query += "CREATE (program) <- [r: " + Relations.SPECIALIZATION.toString() + "]-(specialization)";
+		query += "MERGE (program) <- [r: " + Relations.SPECIALIZATION.toString() + "]-(specialization)";
+		System.out.println(query);
 		this.communicator.writeToNeo(query);
 	}
 	
@@ -220,9 +221,9 @@ private final Neo4jCommunicator communicator;
 				program.getStartDate().getPeriod().toString()+"\","+ CourseProgram.ProgramLabels.YEAR+":\""+program.getStartDate().getYear()+"\"}),";
 
 		query += "(course:"+Course.course+"{"+Course.CourseLabels.CODE+":\""+course.getCourseCode()+"\","+ CourseLabels.LP.toString()+":\""+course.getStartPeriod().getPeriod().toString()
-				+"\","+CourseLabels.YEAR+":\""+course.getStartPeriod().getYear()+"\"}) CREATE (program)<-[r:"+Relations.IN_PROGRAM+"]-(course)";
+				+"\","+CourseLabels.YEAR+":\""+course.getStartPeriod().getYear()+"\"}) MERGE (program)<-[r:"+Relations.IN_PROGRAM+"]-(course)";
 
-
+		System.out.println(query);
 		this.communicator.writeToNeo(query);
 
 
@@ -252,10 +253,10 @@ private final Neo4jCommunicator communicator;
 		
 		/* these loops create a relation between the matched KCs and the course. */
 		for (int i = 0; i < required.size(); i++) {
-			query += "CREATE (course)-[r" + i + ":" + Relations.REQUIRED.toString() + "]->(kc" + i + ")";
+			query += "MERGE (course)-[r" + i + ":" + Relations.REQUIRED.toString() + "]->(kc" + i + ")";
 		}
 		for (int i = 0; i < developed.size(); i++) {
-			query += "CREATE (course)-[r" + (required.size()+i) + ":" + Relations.DEVELOPED.toString() + "]->(kc" + (required.size()+i) + ")";
+			query += "MERGE (course)-[r" + (required.size()+i) + ":" + Relations.DEVELOPED.toString() + "]->(kc" + (required.size()+i) + ")";
 		}
 		communicator.writeToNeo(query);
 	}	
@@ -267,7 +268,7 @@ private final Neo4jCommunicator communicator;
 	 */
 	@Deprecated
 	public void createProgramSpecialization(ProgramSpecialization specialization) {
-		String query = "CREATE(programSpecialization:" + ProgramSpecialization.ProgramType.SPECIALIZATION + " {" +
+		String query = "MERGE (programSpecialization:" + ProgramSpecialization.ProgramType.SPECIALIZATION + " {" +
 				ProgramSpecialization.ProgramLabels.NAME.toString() + ":\"" + specialization.getName() + "\", " +
 				ProgramSpecialization.ProgramLabels.DESCRIPTION.toString() + ":\"" + specialization.getDescription() + "\", " +
 				ProgramSpecialization.ProgramLabels.CODE.toString() + ":\"" + specialization.getCode() + "\", " +
@@ -301,12 +302,14 @@ private final Neo4jCommunicator communicator;
 		
 		/* Create a match for every course in the course order and add a relation for that course. */
 
+
 		for (Course c :courses) {
 			query += "MATCH (" + c.hashCode() + ":" + Course.course +" {" +CourseLabels.CODE.toString() + ":\""+c.getCourseCode()+"\", "+
 			Course.CourseLabels.YEAR.toString() +":\"" + c.getStartPeriod().getYear()+"\","+
 			Course.CourseLabels.LP.toString() + ":\""+c.getStartPeriod().getPeriod().toString()+"\"})";
 
-			query += "CREATE (programSpecialization) - [r:"+Relations.IN_PROGRAM+"]->("+c.hashCode()+")";
+			query += "MERGE (programSpecialization) - [r:"+Relations.IN_PROGRAM+"]->("+c.hashCode()+")";
+
 
 		}
 		this.communicator.writeToNeo(query);
@@ -346,6 +349,39 @@ private final Neo4jCommunicator communicator;
 		this.createProgramCourseRelations(newProgram);
 	}
 
+	/**
+	 * Create a complete copy of a program (or specialization) for another starting year. Every course and
+	 * KC will be replicated and moved relative to the new starting year.
+	 * @param program - The program you want to copy.
+	 * @param newYear - The year of the first study period. This is not relative to the old year.
+	 */
+	public void createCopyOfSpecializationbyYear(ProgramSpecialization program, int newYear, String code, CourseDate newRelationDate) {
+		int yearDifference = newYear - program.getStartDate().getYear();
+		ArrayList<Course> courses = program.getCourseOrder();
+		ArrayList<Course> newCourses = new ArrayList<Course>();
+		CourseDate courseStartDateRef = null;
+		for (Course courseRef: courses) {
+			courseStartDateRef = new CourseDate(courseRef.getStartPeriod().getYear() + yearDifference, courseRef.getStartPeriod().getPeriod());
+			newCourses.add(new Course(courseRef.getName(), courseRef.getCourseCode(), courseRef.getCredit(),courseRef.getDescription(), courseRef.getExaminer(), courseStartDateRef));
+			this.createCourse(courseRef);
+			for (KC kc : courseRef.getDevelopedKC()) {
+				courseRef.setDevelopedKC(kc);
+			}
+			for (KC kc : courseRef.getRequiredKC()) {
+				courseRef.setRequiredKC(kc);
+			}
+			this.createCourseKCrelation(courseRef);
+
+		}
+
+		CourseDate newCourseDate = new CourseDate(newYear, program.getStartDate().getPeriod());
+		ProgramSpecialization newProgram = new ProgramSpecialization(newCourses,program.getCode(), program.getName(), program.getDescription(),newCourseDate, program.getCredits());
+		//CourseOrder newCourseOrder = new CourseOrder(program.getCourseOrder().getReadingPeriods());
+		//newCourseOrder.assignCourseOrder(newCourses);
+		//update version using pointers.
+		this.createProgramSpecialization(newProgram);
+		this.createProgramCourseRelations(newProgram);
+	}
 
 }
 
