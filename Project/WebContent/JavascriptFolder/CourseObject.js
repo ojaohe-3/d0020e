@@ -50,9 +50,9 @@ function goToPeriod(c1, c2) {
     }
     while (current.year !== c2.data.year && current.lp !== c2.data.lp){
 
-        if(cCourse === c1){
-            res.push(...cCourse.getEndIntermittenPoint());
-        }else{
+        if(cCourse !== c1){
+            // res.push(...cCourse.getEndIntermittenPoint());
+        // }else{
             res.push(...cCourse.getFirstIntermittenPoint());
             res.push(cCourse.getMiddleSnap());
             res.push(...cCourse.getEndIntermittenPoint());
@@ -95,14 +95,14 @@ class CourseObject{
         this.extended = false;
         this.dockPointsReq = [{x: this.x, y:this.height/2+this.y, KC: null}]; //default point
         this.dockPointsDev =[];
-        this.KCs = {REQ:[],DEV:[]};
+        this.KCs = [{}];
         data.Required.forEach((k,i) => {
             this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i,KC:k});
             //this.KCs.REQ.push(new KCObject(conf.thickness, k));//if a dev exist a reqirement version will simply point on exact same points
         });
         data.Developed.forEach((k,i)=>{
             this.dockPointsDev.push({x: conf.x+ conf.width, y:conf.y+conf.height+conf.thickness*i,KC:k});
-            this.KCs.DEV.push(new KCObject(conf.thickness, k));
+            this.KCs.push(new KCObject(conf.thickness, k));
         })
 
     }
@@ -122,7 +122,7 @@ class CourseObject{
             snapPoints.push({x:courseTarget.x-courseTarget.width*0.1,y:endPos.y});
             snapPoints.push(endPos);
 
-            this.KCs.DEV[this.dockPointsDev.findIndex(value => kcEquals(value.KC,kc))].setSnapPoint(snapPoints);
+            this.KCs[this.dockPointsDev.findIndex(value => kcEquals(value.KC,kc))].setSnapPoint(snapPoints);
         }
     }
 
