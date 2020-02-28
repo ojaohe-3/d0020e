@@ -160,6 +160,8 @@ function createCourseOverlay(x,y, item, obj) {
   //course.setAttribute("style","left:"+x+"px; top:"+y+"px;");
   course.setAttribute("class","canvas_course");
   course.setAttribute("id", "" + x +";" + y);
+  //course.setAttribute("onclick", "showCourseInfo()");
+
 
   //--------------- info ------------------
   let info = document.createElement("div");
@@ -168,13 +170,19 @@ function createCourseOverlay(x,y, item, obj) {
       "<h1>" +item["name"]+"</h1>" +
       "<p>" +item["courseCode"]+"</p>" +
       "<p>"+item["examiner"]+"</p>";
+  let infoButton = document.createElement("button");
+  infoButton.setAttribute("style","width:60px;height:60px");
+  info.appendChild(infoButton);
+  infoButton.addEventListener("click", function () {
+    showCourseInfo(obj.data);
+  })
   course.appendChild(info);
 
 
   // ---------------- dropdown -------------
 
   let dropDown = document.createElement("div");
-  dropDown.setAttribute("style","height:100px;");
+  dropDown.setAttribute("style","height:"+obj.heightExtension+"px;");
   dropDown.setAttribute("class","canvas_course_dropdown");
 
   let dropdown_table = document.createElement("table");
@@ -191,9 +199,12 @@ function createCourseOverlay(x,y, item, obj) {
   });
 
   obj.dockPointsReq.forEach((value) => {
-    let p = document.createElement("p");
-    p.innerText = value.KC.name;
-    KCin.appendChild(p);
+    if (value.KC !== null) {
+      let p = document.createElement("p");
+      p.innerText = value.KC.name;
+      KCin.appendChild(p);
+    }
+
   });
 
 /*
@@ -222,7 +233,7 @@ function createCourseOverlay(x,y, item, obj) {
     let LPs = 1; // TODO give every course a width i.e. how many periods the should be.
     //let c = document.getElementById(x +";" + y);
 
-    let margin = 150;
+    let margin = obj.heightExtension;
     if (dropDown.style.display !== "block") {
       dropDown.style.display= "block";
     } else {
@@ -358,6 +369,9 @@ function fix_dpi() {
 }
 
 function kcEquals(kc1,kc2) {
+  if(kc1 === null || kc2 === null){
+    return false;
+  }
   return kc1.name === kc2.name && kc1.taxonomyLevel === kc2.taxonomyLevel;
 }
 //https://stackoverflow.com/questions/21717001/html5-canvas-get-coordinates-after-zoom-and-translate

@@ -21,6 +21,7 @@
 <!-- Pop up to accept cookies and store accepted answer for 30 days -->
 <link rel="stylesheet" href="CssFolder/jquery.ihavecookies.css">
 <script type="text/javascript" src="JavascriptFolder/jquery.ihavecookies.js"></script>
+  <script type="text/javascript" src="JavascriptFolder/courseInformation.js"></script>
 <script type="text/javascript">
     var options = {
         title: 'Accept Cookies? &#x1F36A;',
@@ -79,5 +80,6 @@
    </div>
    
    <div class="container" style="background-color:yellow;" id="debug"></div>
+  <%@include file="courseInformation.jsp"%>
   </body>
 </html>
