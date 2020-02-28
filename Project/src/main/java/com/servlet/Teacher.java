@@ -105,8 +105,7 @@ public class Teacher extends HttpServlet {
 				
 				if(developed != null) {
 					String[] dev = developed.split(";;;;");
-					
-					for(int i = 0; i < dev.length - 1; i++) {
+					for(int i = 0; i < dev.length; i++) {
 						String[] s = dev[i].split(";;;");
 						updatedCourse.setDevelopedKC(new KC(s[0], null, Integer.parseInt(s[1]), null));				
 					}
@@ -114,17 +113,17 @@ public class Teacher extends HttpServlet {
 				
 				if(required != null) {
 					String[] req = required.split(";;;;");
-					for(int i = 0; i < req.length - 1; i++) {
+					for(int i = 0; i < req.length; i++) {
 						String[] s = req[i].split(";;;");
 						updatedCourse.setRequiredKC(new KC(s[0], null, Integer.parseInt(s[1]), null));
 					}
 				}
 				
-			
-				print(name, courseCode, credits, description, examiner, year, lp, null, null);
-				
+
+				//print(name, courseCode, credits, description, examiner, year, lp, null, null);
 				Neo4jConfigLoader.getApi().modifyMethods.deleteKCsFromCourseAndAddTheNewOnes(updatedCourse);
 				Neo4jConfigLoader.getApi().modifyMethods.editCourse(courseCode, new CourseDate(year,lp), updatedCourse);
+				
 				response.setContentType("text/text");
 				response.getWriter().write("Success");
 				
