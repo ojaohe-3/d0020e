@@ -1,5 +1,6 @@
 package neo4j_JVM_API;
 
+import java.lang.reflect.Array;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Map;
@@ -12,6 +13,7 @@ import Data.Course.CourseLabels;
 import Data.Course;
 
 import neoCommunicator.Neo4jCommunicator;
+import org.neo4j.driver.v1.Value;
 
 /**
  * Get kc, course, topic, program and users
@@ -57,6 +59,51 @@ public class GetMethods {
 	public CourseProgram getProgram(String code, CourseDate startDate) {
 		return getProgram(code,startDate, CourseLabels.YEAR, false);
 	}
+
+
+	/**
+	 * Internal method for creating a course order. this is used by {@link #getProgram(String, CourseDate)} and
+	 * {@link #getProgramSpecialization(String, CourseDate, String)}.
+	 * @param code
+	 * @param startDate
+	 * @param orderCoursesBy
+	 * @param DESCENDING
+	 * @return
+	 */
+	private ArrayList<Course> getCourseOrder(String code, CourseDate startDate, CourseLabels orderCoursesBy, boolean DESCENDING) {
+		String inProgramQuery = "MATCH (courseProgram: CourseProgram {"+CourseProgram.ProgramLabels.CODE+": \"" + code + "\", "+ CourseProgram.ProgramLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseProgram.ProgramLabels.LP + " : \"" + startDate.getPeriod() + "\" })"+
+				"-[relation:IN_PROGRAM]-(courseInProgram:Course)"+
+				"OPTIONAL MATCH (kc : KC)-[r]-(courseInProgram) RETURN courseInProgram,kc,type(r) ORDER BY courseInProgram." + orderCoursesBy;
+		System.out.println(inProgramQuery);
+		StatementResult courseQuery = this.communicator.readFromNeo(inProgramQuery);
+
+		String tempCode;
+		CourseDate tempDate;
+		ArrayList<Course> courseOrder = new ArrayList<>();
+		Record currentRow = null;
+		Course lastCourse = null;
+		while(courseQuery.hasNext()) {
+			currentRow = courseQuery.next();
+			Value currentCourse = currentRow.get(0);
+
+			// Every row will only carry a course entry and max two KCs. We have to merge all the KCs and courses
+			// That are equal.
+			if (lastCourse != null)  {
+				if (lastCourse.getCourseCode().equals(currentCourse.get(CourseLabels.CODE.toString()).toString().replaceAll("\"", ""))) {
+					this.getProgramKCHelper(lastCourse, currentRow);
+				} else {
+					lastCourse = createCourse(currentCourse);
+					this.getProgramKCHelper(lastCourse,currentRow);
+					courseOrder.add(lastCourse);
+				}
+			} else {
+				lastCourse = createCourse(currentCourse);
+				this.getProgramKCHelper(lastCourse,currentRow);
+				courseOrder.add(lastCourse);
+			}
+		}
+		return courseOrder;
+	}
 	
 	/**
 	 * Get Program from database
@@ -68,40 +115,33 @@ public class GetMethods {
 	 * @return
 	 */
 	public CourseProgram getProgram(String code, CourseDate startDate, CourseLabels orderCoursesBy, boolean DESCENDING) {
+
 		String query = "MATCH (courseProgram: CourseProgram {code: \"" + code + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
 		query += "RETURN courseProgram";
-		
-		
+
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
-		
-		//int readingPeriods = Integer.parseInt(row.get("courseProgram").get("readingPeriods").toString().replaceAll("\"",""));
-		//CourseOrder courseOrder = new CourseOrder(readingPeriods);//useless
-		
-		String inProgramQuery = "MATCH (courseProgram: CourseProgram {"+CourseProgram.ProgramLabels.CODE+": \"" + code + "\", "+ CourseProgram.ProgramLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseProgram.ProgramLabels.LP + " : \"" + startDate.getPeriod() + "\" })";
-		inProgramQuery += "-[relation:IN_PROGRAM]-(courseInProgram:Course) RETURN courseInProgram ORDER BY courseInProgram." + orderCoursesBy;
-		if (DESCENDING) {
-			inProgramQuery += " DESCENDING";
-		}
-		result = this.communicator.readFromNeo(inProgramQuery);
 
-		String tempCode;
-		CourseDate tempDate;
-		ArrayList<Course> courseOrder = new ArrayList<>();
-		while(result.hasNext()) {
-			Record currentRow = result.next();
-			tempCode = currentRow.get("courseInProgram").get(CourseLabels.CODE.toString()).toString().replaceAll("\"","");
-			tempDate = new CourseDate(
-					Integer.parseInt(currentRow.get("courseInProgram").get(CourseLabels.YEAR.toString()).toString().replaceAll("\"","")),
-					LP.valueOf(currentRow.get("courseInProgram").get(CourseLabels.LP.toString()).toString().replaceAll("\"","")));
-			Course course = getCourse(tempCode,tempDate);
-
-			courseOrder.add(course);
-
-		}
-		
-		CourseProgram courseProgram = createCourseProgram(courseOrder, row, "courseProgram");
+		CourseProgram courseProgram = createCourseProgram(this.getCourseOrder(code,startDate,orderCoursesBy,DESCENDING), row, "courseProgram");
 		return courseProgram;
+	}
+
+	/**
+	 * I made a helper function for retrieving a KC. This is used by {@link #getProgram(String, CourseDate)}.
+	 * @param course
+	 * @param currentRow
+	 */
+	private void getProgramKCHelper(Course course, Record currentRow) {
+		Value kc = currentRow.get(1);
+
+		if (!kc.isNull()) {
+			String type = currentRow.get(2).toString().replaceAll("\"","");
+			if (type.equals(Relations.DEVELOPED.toString())) {
+				course.setDevelopedKC(createKC(kc));
+			} else {
+				course.setRequiredKC(createKC(kc));
+			}
+		}
 	}
 	
 	/**
@@ -137,30 +177,29 @@ public class GetMethods {
 	public Course getCourse(String courseCode, CourseDate courseDate) {
 		String query = "MATCH (course: Course {courseCode: \"" + courseCode.replaceAll("\"", "") + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
 		StatementResult result = this.communicator.readFromNeo(query);
-		
+		// TODO Merge this query with the second one.
 		Record row = result.next();
-		
-		Course course = createCourse(row, "course");
-		
-		String developedQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
-		developedQuery += "MATCH(developedKC : KC)<-[r:" + Relations.DEVELOPED.toString() +"]-(course) RETURN developedKC";
-		System.out.println(developedQuery);
-		//System.out.println(developedQuery);
-		result = this.communicator.readFromNeo(developedQuery);
-		
+		Course course = createCourse(row.get(0));
+
+		// This query fetches ALL KCs
+		query = "MATCH (course: Course {courseCode: \"" + courseCode.replaceAll("\"", "") + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" })"+
+				"-[r]-(kc : KC) RETURN kc,type(r)";
+		result = this.communicator.readFromNeo(query);
+
+		// This iterates over all required and developed KCs.
 		while(result.hasNext()) {
-			course.setDevelopedKC(createKC(result.next(), "developedKC"));
+			Record KCs = result.next();
+			Value kc = KCs.get(0);
+			if (!kc.isNull()) {
+				String type = KCs.get(1).toString().replaceAll("\"","");
+				if (type.equals(Relations.DEVELOPED.toString())) {
+					course.setDevelopedKC(createKC(kc));
+				} else {
+					course.setRequiredKC(createKC(kc));
+				}
+			}
+
 		}
-		
-		String requiredQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
-		requiredQuery += "MATCH(requiredKC : KC)<-[r: "+ Relations.REQUIRED.toString() +"]-(course) RETURN requiredKC";
-		//System.out.println(requiredQuery);
-		result = this.communicator.readFromNeo(requiredQuery);
-		
-		while(result.hasNext()) {
-			course.setRequiredKC(createKC(result.next(), "requiredKC"));
-		}
-		
 		return course;
 	}
 	
@@ -168,15 +207,14 @@ public class GetMethods {
 	 * Help function for creating a KC
 	 * 
 	 * @param row
-	 * @param nodename
 	 * @return
 	 */
-	private KC createKC(Record row, String nodename) {
+	private KC createKC(Value row) {
 		
-		String generalDescription = row.get(nodename).get("generalDescription").toString();
-		String taxonomyDescription = row.get(nodename).get("taxonomyDescription").toString();
-		int taxonomyLevel = Integer.parseInt(row.get(nodename).get("taxonomyLevel").toString().replaceAll("\"", ""));
-		String name = row.get(nodename).get("name").asString();		
+		String generalDescription = row.get("generalDescription").toString().replaceAll("\"","");
+		String taxonomyDescription = row.get("taxonomyDescription").toString().replaceAll("\"","");
+		int taxonomyLevel = Integer.parseInt(row.get("taxonomyLevel").toString().replaceAll("\"", ""));
+		String name = row.get("name").asString();
 		
 		KC kc = new KC(name, generalDescription, taxonomyLevel, taxonomyDescription);
 		return kc;
@@ -184,25 +222,23 @@ public class GetMethods {
 	/**
 	 * Help function to createCourse
 	 * 
-	 * @param row
+	 * @param courseData
 	 * @return
 	 */
-	private Course createCourse(Record row, String nodename) {
+	private Course createCourse(Value courseData) {
 		
-		String name = row.get(nodename).get("name").toString();
-		String courseCode = row.get(nodename).get("courseCode").toString();
-		float credits = row.get(nodename).get("credit").asFloat();
+		String name = courseData.get("name").toString();
+		String courseCode = courseData.get("courseCode").toString();
+		float credits = courseData.get("credit").asFloat();
 		
-		String description = row.get(nodename).get("description").toString();
-		String examiner = row.get(nodename).get("examiner").toString();
-		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"", ""));
-		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"", ""));
+		String description = courseData.get("description").toString();
+		String examiner = courseData.get("examiner").toString();
+		int year = Integer.parseInt(courseData.get("year").toString().replaceAll("\"", ""));
+		LP lp = LP.valueOf(courseData.get("lp").toString().replaceAll("\"", ""));
 		CourseDate startDate = new CourseDate(year, lp);
 		
 		Course course = new Course(name, courseCode, credits, description, examiner, startDate);
-		
 		return course;
-	
 	}
 	
 	/**
@@ -221,21 +257,23 @@ public class GetMethods {
 		Record row = result.next();
 
 		
-		KC kc = createKC(row, "node");
+		KC kc = createKC(row.get(0));
 		return kc;
 	}
 
 	
 	/**
 	 * Get programSpecialization from database
-	 * 
-	 * 
-	 * @param specialization
-	 * @param code
 	 *
+	 * @param specialization
+	 * @param startDate
+	 * @param code
+	 * @param orderCoursesBy
+	 * @param DESCENDING
+	 * @return
 	 */
-	public ProgramSpecialization getProgramSpecialization(String specialization, CourseDate startDate, String code) {
-
+	public ProgramSpecialization getProgramSpecialization(String specialization, CourseDate startDate, String code,CourseLabels orderCoursesBy, boolean DESCENDING) {
+/*
 		String query = "MATCH (programSpecialization: ProgramSpecialization {"+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" , code : \"" + code + "\" }) ";
 		query += "RETURN programSpecialization";
 
@@ -249,26 +287,49 @@ public class GetMethods {
 		result = this.communicator.readFromNeo(inProgramQuery);
 		while(result.hasNext()) {
 			Record currentRow = result.next();
-			Course course = createCourse(currentRow, "courseInProgram");
+			Course course = createCourse(currentRow.get(0));
 			courseOrder.add(course);
 		}
-		
-		ProgramSpecialization courseProgramSpecialization = createProgramSpecialization(courseOrder, row, "programSpecialization");
+
+
+		//return courseProgramSpecialization;
+
+ */
+
+		String query = "MATCH (programSpecialization: ProgramSpecialization {"+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" , code : \"" + code + "\" }) ";
+		query += "RETURN courseProgram";
+
+		StatementResult result = this.communicator.readFromNeo(query);
+		Record row = result.next();
+
+		ProgramSpecialization courseProgramSpecialization = createProgramSpecialization(this.getCourseOrder(code,startDate,orderCoursesBy,DESCENDING), row, "programSpecialization");
 		return courseProgramSpecialization;
 	}
-	
+
+	/**
+	 * Get programSpecialization from database
+	 *
+	 * @param specialization
+	 * @param startDate
+	 * @param code
+	 * @return
+	 */
+	public ProgramSpecialization getProgramSpecialization(String specialization, CourseDate startDate, String code) {
+		return this.getProgramSpecialization(specialization,startDate,code,CourseLabels.YEAR, false);
+	}
+
 	private ProgramSpecialization createProgramSpecialization(ArrayList<Course> courseOrder, Record row, String nodename) {
-		
-		String name = row.get(nodename).get("name").toString();
-		String code = row.get(nodename).get("code").toString();
-		String description = row.get(nodename).get("description").toString();
+
+		String name = row.get(nodename).get("name").toString().replaceAll("\"", "");
+		String code = row.get(nodename).get("code").toString().replaceAll("\"", "");
+		String description = row.get(nodename).get("description").toString().replaceAll("\"", "");
 		float credits = row.get(nodename).get("credits").asFloat();
 		int year = Integer.parseInt(row.get(nodename).get("year").toString().replaceAll("\"", ""));
 		LP lp = LP.valueOf(row.get(nodename).get("lp").toString().replaceAll("\"", ""));
-		CourseDate startDate = new CourseDate(year, lp);	
-		
+		CourseDate startDate = new CourseDate(year, lp);
+
 		ProgramSpecialization courseProgramSpecialization = new ProgramSpecialization(courseOrder, name, code, description, startDate, credits);
-		
+
 		return courseProgramSpecialization;
 	}
 
