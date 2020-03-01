@@ -61,6 +61,15 @@ function generateCanvas(data) {
   //KC mapping reset
   REQ = new Map();
   let intersection = [];
+
+  let courseContainer = document.getElementById("canvas_course_container");
+
+  while(courseContainer.childElementCount > 0) {
+    courseContainer.removeChild(courseContainer.firstElementChild);
+  }
+
+
+
   data['Courses'].forEach(function (item, index,arr){
 
 
@@ -186,14 +195,19 @@ function createCourseOverlay(x,y, item, obj) {
   dropDown.setAttribute("class","canvas_course_dropdown");
 
   let dropdown_table = document.createElement("table");
+  dropdown_table.setAttribute("style", "margin-top:" + obj.thickness/2 + "px;");
   let KCin = document.createElement("th");
+  KCin.setAttribute("valign", "middle");
   let KCout = document.createElement("th");
+  KCout.setAttribute("style","height: " + obj.thickness + "px;");
+  KCout.setAttribute("valign", "middle");
   dropdown_table.appendChild(KCin);
   dropdown_table.appendChild(KCout);
   dropDown.appendChild(dropdown_table);
 
   obj.dockPointsDev.forEach((value) => {
     let p = document.createElement("p");
+    p.setAttribute("style","height: " + obj.thickness + "px;");
     p.innerText = value.KC.name;
     KCout.appendChild(p);
   });
@@ -201,6 +215,7 @@ function createCourseOverlay(x,y, item, obj) {
   obj.dockPointsReq.forEach((value) => {
     if (value.KC !== null) {
       let p = document.createElement("p");
+      p.setAttribute("style","height: " + obj.thickness + "px;");
       p.innerText = value.KC.name;
       KCin.appendChild(p);
     }
@@ -234,8 +249,8 @@ function createCourseOverlay(x,y, item, obj) {
     //let c = document.getElementById(x +";" + y);
 
     let margin = obj.heightExtension;
-    if (dropDown.style.display !== "block") {
-      dropDown.style.display= "block";
+    if (dropDown.style.display !== "inline-block") {
+      dropDown.style.display= "inline-block";
     } else {
       dropDown.style.display= "none";
       margin = 0;
@@ -320,7 +335,11 @@ function reFormatSection(lp,year){
     if(k.includes(key)){
       if(courses.has(oldkey)){
         old = courses.get(oldkey);
-        v.y = old.y + old.height*1.2;
+        // this sets the height of all courses below the chosen one.
+        // The height extension is a FIXED value, while the y value is height*1.2 times the
+        // number of courses above. We therefore need to add the height extension as a fixed value AFTER
+        // we multiply the height by 1.2.
+        v.y = old.y+1.2*height + old.heightExtension*old.extended;
       }
       oldkey = k;
     }

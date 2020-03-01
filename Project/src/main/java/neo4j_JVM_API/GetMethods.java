@@ -137,7 +137,6 @@ public class GetMethods {
 	public Course getCourse(String courseCode, CourseDate courseDate) {
 		String query = "MATCH (course: Course {courseCode: \"" + courseCode.replaceAll("\"", "") + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) RETURN course";
 		StatementResult result = this.communicator.readFromNeo(query);
-		System.out.println(query);
 		
 		Record row = result.next();
 		
@@ -145,6 +144,7 @@ public class GetMethods {
 		
 		String developedQuery = "MATCH (course: Course {courseCode: \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + courseDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + courseDate.getPeriod() + "\" }) ";
 		developedQuery += "MATCH(developedKC : KC)<-[r:" + Relations.DEVELOPED.toString() +"]-(course) RETURN developedKC";
+		System.out.println(developedQuery);
 		//System.out.println(developedQuery);
 		result = this.communicator.readFromNeo(developedQuery);
 		

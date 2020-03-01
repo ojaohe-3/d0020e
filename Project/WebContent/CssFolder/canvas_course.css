@@ -17,6 +17,22 @@
     color: black;
 }
 
+.canvas_course table {
+    width: 100%;
+}
+
+.canvas_course th {
+    width: 50%;
+    height: 100%;
+}
+
+.canvas_course table th p{
+    font-size: 7pt;
+    margin: 0;
+    vertical-align: middle;
+    display:inline;
+}
+
 .canvas_course h1 {
     color: black;
 }
