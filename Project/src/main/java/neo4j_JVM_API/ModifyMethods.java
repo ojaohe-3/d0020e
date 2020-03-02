@@ -29,7 +29,7 @@ public class ModifyMethods {
 	 */
 	public void deleteKCsFromCourseAndAddTheNewOnes(Course course) {
 		String query = "MATCH(course: Course {courseCode : \"" + course.getCourseCode() + "\", year : \"" + course.getStartPeriod().getYear() + "\", lp : \"" + course.getStartPeriod().getPeriod() +"\" }) ";
-		query += "MATCH (course)-[r:" + Relations.REQUIRED + "]-() MATCH (course)-[p: "+ Relations.DEVELOPED+  "]-() DELETE r, p";
+		query += "MATCH (course)-[r]-(kc: KC) DELETE r";
 		
 		this.communicator.writeToNeo(query);
 		
@@ -117,13 +117,15 @@ public class ModifyMethods {
 	 */
 	
 	public void editProgram(String programCode,CourseDate startyear, CourseProgram newProgram) {
-		String query = "MATCH (n:CourseProgram{ProgramCode:\""+  programCode+"\"}) SET n={";
-		query += CourseProgram.ProgramLabels.CODE.toString() +"="+newProgram.getCode();
-		query += CourseProgram.ProgramLabels.DESCRIPTION.toString() +":"+newProgram.getDescription();
-		query += CourseProgram.ProgramLabels.YEAR.toString() +":"+newProgram.getStartDate().getYear();
-		query += CourseProgram.ProgramLabels.LP.toString() +":"+newProgram.getStartDate().getPeriod();
-		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +":"+1;
-		query += CourseProgram.ProgramLabels.CREDITS.toString() +":"+newProgram.getCredits();
+
+		String query = "MATCH (n:CourseProgram{code:\""+  programCode+"\"}) SET n={";
+		query += CourseProgram.ProgramLabels.CODE.toString() +": \"" + newProgram.getCode() + "\", ";
+		query += CourseProgram.ProgramLabels.DESCRIPTION.toString() +": \""+newProgram.getDescription() + "\", ";
+		query += CourseProgram.ProgramLabels.YEAR.toString() +": \""+newProgram.getStartDate().getYear() + "\", ";
+		query += CourseProgram.ProgramLabels.LP.toString() +": \""+newProgram.getStartDate().getPeriod() + "\", ";
+		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +": \""+1 + "\", ";
+		query += CourseProgram.ProgramLabels.CREDITS.toString() +": "+newProgram.getCredits() + "";
+
 
 		communicator.writeToNeo(query);
 	}
@@ -163,7 +165,7 @@ public class ModifyMethods {
 				Course.CourseLabels.YEAR +":\""+period.getYear()+"\","+
 				Course.CourseLabels.LP +":\""+period.getPeriod().name()+"\"}) SET n.";
 		query += Course.CourseLabels.CODE.toString() +"=\""+nCourse.getCourseCode()+"\", n.";
-		query += Course.CourseLabels.CREDIT.toString() +"=\""+nCourse.getCredit()+"\", n.";
+		query += Course.CourseLabels.CREDIT.toString() +"="+nCourse.getCredit()+", n.";
 		query += Course.CourseLabels.DESCRIPTION.toString() +"=\""+nCourse.getDescription()+"\", n.";
 		query += Course.CourseLabels.LP.toString() +"=\""+nCourse.getStartPeriod().getPeriod().name()+"\", n.";
 		query += Course.CourseLabels.YEAR.toString() +"=\""+nCourse.getStartPeriod().getYear()+"\", n.";

@@ -9,7 +9,7 @@
 $(document).ready(function() {
 	// ---- Search Course ----
 	$('#searchCourse').on('keyup', function() {
-		if($("#searchCourse").val().length > 3) {
+		if($("#searchCourse").val().length > 2) {
 			if($("#courseFilterByName").is(':checked')) {
 				$.ajax({
 
@@ -84,7 +84,7 @@ $(document).ready(function() {
 	
 	// --- Search Program -----
 	$('#searchProgram').on('keyup', function() {
-		if($("#searchProgram").val().length > 3) {
+		if($("#searchProgram").val().length > 2) {
 			if($("#programFilterByName").is(':checked')) {
 				$.ajax({
 
@@ -154,7 +154,7 @@ $(document).ready(function() {
 	// -- Search KC ---
 	
 	$('#searchKC').on('keyup', function() {
-		if($("#searchKC").val().length > 3) {
+		if($("#searchKC").val().length > 2) {
 			if($("#kcFilterByName").is(':checked')) {
 				$.ajax({
 
@@ -205,7 +205,7 @@ $(document).ready(function() {
 	// -- Search Topic ---
 
 	$('#searchTopic').on('keyup', function() {
-		if($("#searchTopic").val().length > 3) {
+		if($("#searchTopic").val().length > 2) {
 			if($("#topicFilterByName").is(':checked')) {
 				$.ajax({
 

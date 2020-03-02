@@ -107,7 +107,9 @@ public class Teacher extends HttpServlet {
 					String[] dev = developed.split(";;;;");
 					for(int i = 0; i < dev.length; i++) {
 						String[] s = dev[i].split(";;;");
-						updatedCourse.setDevelopedKC(new KC(s[0], null, Integer.parseInt(s[1]), null));				
+						if(s.length > 1) {
+							updatedCourse.setDevelopedKC(new KC(s[0], null, Integer.parseInt(s[1]), null));				
+						}
 					}
 				}
 				
@@ -115,7 +117,9 @@ public class Teacher extends HttpServlet {
 					String[] req = required.split(";;;;");
 					for(int i = 0; i < req.length; i++) {
 						String[] s = req[i].split(";;;");
-						updatedCourse.setRequiredKC(new KC(s[0], null, Integer.parseInt(s[1]), null));
+						if(s.length > 1) {
+							updatedCourse.setRequiredKC(new KC(s[0], null, Integer.parseInt(s[1]), null));
+						}
 					}
 				}
 				
