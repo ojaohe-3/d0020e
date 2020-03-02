@@ -74,6 +74,8 @@
 					<li><button onclick="course_create()">Create</button></li>
 					<li><button onclick="course_modify()">Modify</button></li>
 					<li><button onclick="course_delete()">Delete</button></li>
+					<li><button onclick="course_add_topic()">Add Topic to Course</button></li>
+					<li><button onclick="course_delete_topic()">Delete Topic from Course</button></li>
 	
 				</ul>
 			</div>
