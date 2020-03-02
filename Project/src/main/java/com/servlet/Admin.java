@@ -34,9 +34,8 @@ public class Admin extends HttpServlet {
     
 	
 	/**
-	 * 
-	 * Needs to check that admin is valid
-	 * 
+	 * checks that the admin is logged in.
+	 * If logged in return the Admin page, else return the index.jsp
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		
@@ -57,6 +56,7 @@ public class Admin extends HttpServlet {
 	}
 
 	/**
+	 * 	First it checks that the Admin is logged in, then
 	 * Depending on the request input different methods are used.
 	 * @param request
 	 * @param response
@@ -64,25 +64,30 @@ public class Admin extends HttpServlet {
 	 * @throws ServletException
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		String head = request.getParameter("head");
-
-		String resp = "Error, Invalid Request";
-		System.out.println(head);
 		
-		if (head.equals("USER")) {
-			resp = user(request);
-		}
-		if (head.equals("COURSE")) {
-			resp = course(request);
-		}
-		if (head.equals("KC")) {
-			resp = kc(request);
-		}
-		if (head.equals("PROGRAM")) {
-			resp = program(request);
-		}
-		response.setContentType("text/text");
-		response.getWriter().write(resp);
+		try { 
+			if((boolean)request.getSession().getAttribute("is_admin") == true) {
+				String head = request.getParameter("head");
+		
+				String resp = "Error, Invalid Request";
+				System.out.println(head);
+				
+				if (head.equals("USER")) {
+					resp = user(request);
+				}
+				if (head.equals("COURSE")) {
+					resp = course(request);
+				}
+				if (head.equals("KC")) {
+					resp = kc(request);
+				}
+				if (head.equals("PROGRAM")) {
+					resp = program(request);
+				}
+				response.setContentType("text/text");
+				response.getWriter().write(resp);
+			}
+		} catch(NullPointerException e) {}
 	}
 
 	/**

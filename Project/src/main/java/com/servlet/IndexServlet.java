@@ -15,7 +15,7 @@ public class IndexServlet extends HttpServlet {
     @Override
     public void service(HttpServletRequest req, HttpServletResponse res) throws ServletException, IOException {
         super.service(req, res);
-        //pre-load api
+        //pre-load api // WHAT THE FUCK? Jesper :)
         Neo4jConfigLoader.getApi();
     }
 }

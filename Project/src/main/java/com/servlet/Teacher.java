@@ -25,7 +25,6 @@ import java.io.IOException;
 /**
  * 	Servlet for handling the teacher page
  * 
- * 
  * @author jesper
  */
 
@@ -37,7 +36,7 @@ public class Teacher extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 	Renders out the .jsp file
+	 * 	Renders out the .jsp file if the Teacher is logged in and is not an admin.
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		
@@ -59,26 +58,10 @@ public class Teacher extends HttpServlet {
 	}
 
 	
-	private void print(String name, String code, float credits, String description,String examiner, int year, LP lp, String[] dev, String[] req) {
-		
-		System.out.println("name " + name);
-		System.out.println("code " + code);
-		System.out.println("credits " + credits);
-		System.out.println("desc " + description);
-		System.out.println("examiner " + examiner);
-		System.out.println("year " + year);
-		System.out.println("lp " + lp);
-		//System.out.println("dev len " + dev.length);
-		//System.out.println("req len " + req.length);
-		
-		
-		
-		
-	}
-	
+	/**
+	 * 	This method is called when a teacher is making changes to a course. 
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-		
-		System.out.println("YEAH doPost");
 		
 		
 		try {
@@ -101,9 +84,10 @@ public class Teacher extends HttpServlet {
 				String developed = request.getParameter("developedKCs");
 				String required = request.getParameter("requiredKCs");
 				
-				System.out.println(developed);
-				System.out.println(required);
-				
+				/*
+				 * To solve the problem with convering a Javascript array to a java array we decided to use ;;;; to separate each tuple in the array
+				 *  and use ;;; the separate each element in the tuple
+				 */
 				if(developed != null) {
 					String[] dev = developed.split(";;;;");
 					for(int i = 0; i < dev.length; i++) {
@@ -125,7 +109,6 @@ public class Teacher extends HttpServlet {
 				}
 				
 
-				//print(name, courseCode, credits, description, examiner, year, lp, null, null);
 				Neo4jConfigLoader.getApi().modifyMethods.deleteKCsFromCourseAndAddTheNewOnes(updatedCourse);
 				Neo4jConfigLoader.getApi().modifyMethods.editCourse(courseCode, new CourseDate(year,lp), updatedCourse);
 				
@@ -139,7 +122,6 @@ public class Teacher extends HttpServlet {
 			}
 			
 		} catch(NullPointerException e) {
-			System.out.println("NUll execp");
 			response.setContentType("text/text");
 			response.getWriter().write("Failed, not logged in");
 			request.getRequestDispatcher("/index.jsp").forward(request, response);

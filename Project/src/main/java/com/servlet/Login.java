@@ -33,6 +33,9 @@ public class Login extends HttpServlet {
 	
 	/**
 	 * 	Renders out the .jsp file
+	 * 	This method is also used for logging out, if the user is logged in the session will be clear and the user
+	 * 	will be able to log in again. 
+	 *  @author JSPr
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		
@@ -45,11 +48,9 @@ public class Login extends HttpServlet {
 	}
 	
 	/**
-	 * 	Handles the login and sets session cookie for logged_in and is_admin
-	 * 	
-	 * 	When Teacher.jsp is finished, change the commented code below
-	 * 
-	 * 	@author Jesper
+	 * 	Handles the login attempt and sets session cookie for logged_in and is_admin if successful
+	 *
+	 * 	@author JSPr
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String username = request.getParameter("username");
