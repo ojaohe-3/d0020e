@@ -17,16 +17,16 @@ import Data.Course.CourseLabels;
 import Data.CourseInformation;
 import neo4j_JVM_API.Neo4JAPI;
 
+/**
+ * Get matching courses from database when filtering by course code from frontend
+ */
 @WebServlet("/GetCourses/FilterByCourseCode")
 public class GetCoursesFilterByCourseCode extends HttpServlet {
 
-	/**
-	 *  No idea what this is.. 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Send JSON array with all matching courses when searching for course by code
+	 * Send JSON array as string with all matching courses when searching for course by code
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
@@ -48,8 +48,6 @@ public class GetCoursesFilterByCourseCode extends HttpServlet {
 			response.setContentType("text/json");
 			response.getWriter().write(array.toString());
 		} catch (JSONException exception) {}
-		
-		
 		
 	}
 	

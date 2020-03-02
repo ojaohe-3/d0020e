@@ -15,12 +15,12 @@ import Data.CourseInformation;
 import Data.Course.CourseLabels;
 import neo4j_JVM_API.Neo4JAPI;
 
+/**
+ * Get matching courses from database when filtering by topic
+ */
 @WebServlet("/GetCourses/FilterByTopic")
 public class GetCoursesFilterByTopic extends HttpServlet {
 
-	/**
-	 *  No idea what this is.. 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**

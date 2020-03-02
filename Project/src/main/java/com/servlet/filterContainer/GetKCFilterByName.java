@@ -1,6 +1,7 @@
 package com.servlet.filterContainer;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 
 import javax.servlet.annotation.WebServlet;
@@ -18,16 +19,17 @@ import Data.KC;
 import Data.KC.KCLabel;
 import Data.Course.CourseLabels;
 import neo4j_JVM_API.Neo4JAPI;
+
+/**
+ * Find all kc's by name from request
+ */
 @WebServlet("/GetKCs/FilterByName")
 public class GetKCFilterByName extends HttpServlet {
 
-	/**
-	 *  No idea what this is.. 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Send JSON array with all matching kc when searching for kc by name
+	 * Send JSON array as string with all matching kc when searching for kc by name
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 

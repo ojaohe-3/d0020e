@@ -15,16 +15,17 @@ import org.json.JSONObject;
 import Data.ProgramInformation;
 import Data.CourseProgram.ProgramLabels;
 import neo4j_JVM_API.Neo4JAPI;
+
+/**
+ * Get programs when searching by name
+ */
 @WebServlet("/GetPrograms/FilterByName")
 public class GetProgramFilterByName extends HttpServlet {
 
-	/**
-	 *  No idea what this is.. 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * Send JSON array with all matching programs when searching for programs by name
+	 * Send JSON array as string with all matching programs when searching for programs by name
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
