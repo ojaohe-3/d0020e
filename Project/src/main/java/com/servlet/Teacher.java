@@ -49,6 +49,7 @@ public class Teacher extends HttpServlet {
 				request.getRequestDispatcher("/teacher.jsp").forward(request, response);
 			} else {
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			}
 		} catch(NullPointerException e) {
 			request.getRequestDispatcher("/index.jsp").forward(request, response);

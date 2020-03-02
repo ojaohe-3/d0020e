@@ -44,6 +44,8 @@ public class Admin extends HttpServlet {
 			if((boolean)request.getSession().getAttribute("is_admin") == true) {
 				request.getRequestDispatcher("/admin.jsp").forward(request, response);
 			} else {
+
+				response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 				request.getRequestDispatcher("/index.jsp").forward(request, response);
 			}
 			
