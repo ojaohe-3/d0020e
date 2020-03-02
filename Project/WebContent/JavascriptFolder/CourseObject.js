@@ -94,6 +94,7 @@ class CourseObject{
         this.dockPointsReq = [{x: this.x, y:this.height/2+this.y, KC: null}]; //default point
         this.dockPointsDev =[];
         this.KCs = [];
+        this.margin_top = 0;
 
         data.Required.forEach((k,i) => {
             this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i+this.thickness,KC:k});
@@ -203,7 +204,7 @@ class CourseObject{
         }
 
 
-      ctx.strokeRect(this.x,this.y,this.width,this.height);
+      ctx.strokeRect(this.x,this.y+this.margin_top,this.width,this.height);
       //obsolete
       //ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
       //ctx.fillStyle = "white";

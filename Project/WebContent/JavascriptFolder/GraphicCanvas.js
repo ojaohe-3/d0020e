@@ -17,12 +17,14 @@ const period = new Map();
   period.set('TWO',0);
   period.set('THREE',0);
   period.set('FOUR',0);
-let courses =new Map();
+//let courses =new Map(); // string as key and an array with all courses in one LP.
 let REQ = new Map();
   //translations
 let matrix=[1,0,0,1,0,0];
 let oldMatrix = [];
 window.addEventListener("resize", drawCanvas);
+
+let LPHashmap = new Map();
 
 canvas.addEventListener('click', function(evt) {
   var mousePos = getMousePos(canvas, evt);
@@ -49,10 +51,10 @@ function getMousePos(canvas, event) {
 
 
 
-function generateCanvas(data) {
+/*function generateCanvasdfdfgf(data) {
   // clear local data
   kcMap = new Map();
-  courses = new Map();
+  //courses = new Map();
   KCs = [];
   // read from course
   let year = data.year;
@@ -130,18 +132,85 @@ function generateCanvas(data) {
 
     createCourseOverlay(x,y,item, obj);  // TODO fix this, it ain't done.
 
-    courses.set(item["courseCode"]+item["year"]+item["lp"], obj);
+    if (!courses.has(item["year"]+item["lp"])) {
+      courses.set(item["year"]+item["lp"], [obj]);  // this is very abstract, but it wörks.
+    } else {
+      courses.get(item["year"]+item["lp"]).push(obj);
+    }
+
   });
 
   let kcReq = [];
   let kvDev= [];
-  /*courses.forEach((v)=>{
+  /!*courses.forEach((v)=>{
     kcReq.push(REQ.get(v.data.courseCode));
     kcDev.push(DEV.get(v.data.courseCode));
     kcReq.filter(v1 => kcDev.some(v2=> kcEquals(v1,v2)));
 
-  });*/
+  });*!/
 
+  drawCanvas();
+}*/
+
+function generateCanvas(data) {
+  LPHashmap = new Map();
+  let year = data.year;
+  let offsetYear = 0;
+  let currentYear = 0;
+  let previousTimestamp = null;
+  let currentLPString = "";
+  data['Courses'].forEach(function (item, index,arr){
+
+
+    // This creates a new year with LP and timestamps.
+    // We have to create the timestamps in order since every timestamp
+    // depend on the previous timestamp.
+    if (item.year != currentYear) {
+      offsetYear = item.year-year;
+      currentYear = item.year;
+      let newLP = null;
+      for (let i = 0; i < 4; i++) {
+        currentLPString = item.year + ";" + i;
+        newLP = new CanvasLP(previousTimestamp);
+        LPHashmap.set(currentLPString,newLP);
+        previousTimestamp = newLP.timestamp;
+      }
+    }
+    // all courses are sorted after year. I.e. no more courses from previous year will pop up.
+
+
+    // This is where the course is created.
+    let lpString = 0;
+    let x = width*1.2*offsetYear*4;
+    if (item.lp === "TWO") {
+      lpString = 1;
+      x = width *1.2*(1+offsetYear*4);
+    } else if (item.lp === "THREE") {
+      lpString = 2;
+      x = width *1.2*(2+(offsetYear-1)*4);
+    } else if (item.lp === "FOUR") {
+      lpString = 3;
+      x = width *1.2*(3+(offsetYear-1)*4);
+    }
+    // TODO Set the LPs to numbers instead of ONE, TWO, THREE, FOUR.
+
+    currentLPString = item.year + ";" + lpString;
+    let courseLP = LPHashmap.get(currentLPString);
+    let y = courseLP.courses.length*height*1.2;
+    let courseObject = new CourseObject(
+        item,
+        {
+          x: x,
+          y: y,
+          width: width,
+          height: height,
+          thickness: 24
+        }
+    );
+    courseObject.data.lp = lpString;
+    createCourseOverlay(x,y,item, courseObject);
+    courseLP.addCourse(courseObject);
+  });
   drawCanvas();
 }
 
@@ -276,12 +345,15 @@ function createCourseOverlay(x,y, item, obj) {
 }
 
 function findCourseByCode(code) {
+  let courseObject = null;
   courses.forEach((v,k)=>{
-    if(k.contains(code)){
-      return v;
+    for (let i = 0; k.length; i++) {
+      if(v[i].data.courseCode.contains(code)){
+        courseObject =  v[i];
+      }
     }
   });
-  return null;
+  return courseObject;
 }
 function addCourse(data) {
   try{
@@ -294,18 +366,17 @@ function addCourse(data) {
 }
 
 function reFormatSection(lp,year){
-  let key = year+lp;//string
+  let key = year+";"+lp;//string
   let oldkey ="";
   let old = {};
-  courses.forEach((v,k)=> {
-    if(k.includes(key)){
-      if(courses.has(oldkey)){
-        old = courses.get(oldkey);
-        v.y = old.y + old.height*1.2;
-      }
-      oldkey = k;
+  let heightAddition = 0;
+  LPHashmap.get(key).courses.forEach((value => {
+    value.margin_top = heightAddition;
+    if (value.extended) {
+      heightAddition += value.heightExtension;
     }
-  });
+  }));
+
   drawCanvas();
 }
 function findCourseByCode(code) {
@@ -318,6 +389,7 @@ function findCourseByCode(code) {
   return obj;
 }
 function addCourse(data) {
+  // TODO this does not wörk.
   try{
     courses.set(data["courseCode"]+data["year"]+data["lp"]);
     regenerateCanvas();
@@ -327,30 +399,11 @@ function addCourse(data) {
 
 }
 
-function reFormatSection(lp,year){
-  let key = year+lp;//string
-  let oldkey ="";
-  let old = {};
-  courses.forEach((v,k)=> {
-    if(k.includes(key)){
-      if(courses.has(oldkey)){
-        old = courses.get(oldkey);
-        // this sets the height of all courses below the chosen one.
-        // The height extension is a FIXED value, while the y value is height*1.2 times the
-        // number of courses above. We therefore need to add the height extension as a fixed value AFTER
-        // we multiply the height by 1.2.
-        v.y = old.y+1.2*height + old.heightExtension*old.extended;
-      }
-      oldkey = k;
-    }
-  });
-  drawCanvas();
-}
 
 function drawCanvas() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
   //==== KC MAPPING ====
-  courses.forEach((v)=>{
+  /*courses.forEach((v)=>{
     REQ.forEach((e,k)=>{
       let obj = findCourseByCode(k);
       if(obj !== null){
@@ -359,7 +412,7 @@ function drawCanvas() {
         });
       }
     });
-  });
+  });*/
   //==== DRAWING ====
   saveMatrix();
   ctx.save();
@@ -367,10 +420,10 @@ function drawCanvas() {
   //translate(viewportX,viewportY);
   //ctx.scale(width/(window.innerWidth*0.2),height/(window.innerHeight*0.21));
   //console.log('width:'+window.innerWidth*0.2+", height: "+(window.innerHeight*0.21));
-  courses.forEach(function (value,index,arr) {
-    //console.log('draw nr:'+index);
-    value.draw(ctx);
-  })
+
+  LPHashmap.forEach((lp)=>{
+    lp.draw(ctx);
+  });
   restoreMatrix();
   ctx.restore();
 }
