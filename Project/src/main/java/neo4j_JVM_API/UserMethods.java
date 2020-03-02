@@ -5,9 +5,13 @@ import Data.User.UserLables;
 import neoCommunicator.Neo4jCommunicator;
 import org.neo4j.driver.v1.Record;
 import org.neo4j.driver.v1.StatementResult;
-
 import java.util.ArrayList;
 
+
+/**
+ * 	All methods related to users
+ * 
+ */
 public class UserMethods {
 
 	private Neo4jCommunicator communicator;
@@ -16,6 +20,10 @@ public class UserMethods {
 		this.communicator = communicator;
 	}
 
+	/**
+	 * Stores a new user in the database. Make sure that the password is hashed and the usertag is set correctly
+	 * @param userObj Should contain an hashed password and the correct usertag
+	 */
 	public void addUser(User userObj) {
 		String query = "CREATE (n:"+ User.UserLables.USER +"{";
 		query +=    User.UserLables.USERNAME +": \""+userObj.getUsername() + "\", ";
@@ -75,19 +83,41 @@ public class UserMethods {
 		return course;
 
 	}
+	/**
+	 * Changes the admin tag
+	 * @param username
+	 * @param admin
+	 */
 	public void changeUserPrivileges(String username,boolean admin) {
 		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +":"+username+"}) SET n."+ User.UserLables.USERTAG +"="+(admin?1:0);
 		communicator.writeToNeo(query);
 	}
+	
+	/**
+	 *  Changes the password for the user. The parameter pwd should NOT be hashed. 
+	 * @param username
+	 * @param pwd NOT hashed
+	 */
 	public void changeUserPassword(String username,String pwd) {
 		String query = "MATCH(n:User {"+ User.UserLables.USERNAME +": \""+username+"\"}) SET n."+ User.UserLables.PASSWORD +"= \"" + Security.generateHash(pwd) + "\"";
 		communicator.writeToNeo(query);
 	}
+	
+	/**
+	 * Deletes a user from the database
+	 * @param username
+	 */
 	public void removeUser(String username) {
 		String query = "MATCH(n:User{"+ User.UserLables.USERNAME +": \""+username+"\"}) DETACH DELETE n";
 		communicator.writeToNeo(query);
 	}
 
+	
+	/**
+	 * Change the username 
+	 * @param username
+	 * @param newUsername
+	 */
 	public void changeUsername(String username, String newUsername) {
 		String query = "MATCH(n:User){"+ UserLables.USERNAME +":"+username+"}) SET n."+ UserLables.USERNAME +"= \"" + newUsername + "\"";
 		communicator.writeToNeo(query);
@@ -163,6 +193,7 @@ public class UserMethods {
 	 * @return true if successful
 	 * @author Johan RH
 	 */
+	@Deprecated
 	public User login(String username, String password)  {
 		String query = "MATCH(n:"+User.User+"{"+ User.UserLables.USERNAME +":\""+username+"\"} return n";
 		StatementResult result = communicator.readFromNeo(query);

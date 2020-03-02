@@ -14,12 +14,8 @@
 
 	button {
 		min-width: 300px;
-		color: black;
 	}
-	
-	ul {
-	 list-style-type: none;}
-	
+
 </style>
 
 
@@ -30,7 +26,8 @@
 		<title>Admin page</title>
 	</head>
 	<body>
-	
+	<% try {
+	if ((boolean)request.getSession().getAttribute("logged_in") == true)  { %>
 	
 	<div class="container" style="background-color: light-gray">
 		<h1>Welcome to the admin page</h1>
@@ -38,16 +35,6 @@
 		
 		
 		<div class="container-fluid" style="background-color: gray">
-			<div class="col-sm-3">
-				<p> When assigning credits use one of these: <br> <p>
-				<ul>
-					<%--<% List<Credits> list = Arrays.asList(Credits.values());
-						for(Credits cred: list) {
-							out.print("<li> " + cred.toString() + " </li>");
-						}
-					%> --%>
-				</ul>
-			</div>
 			<div class="col-sm-3">
 				<p> To assign the reading period use a number between 1 and 4 </p>
 			</div>
@@ -79,7 +66,7 @@
 			</div>
 			<div class="col-md-4">
 				<ul>
-					<h4>Knowledge Component</h4>
+					<h4>KC</h4>
 					<li><button onclick="kc_create()()">Create</button></li>
 					<li><button onclick="kc_modify_general()">Modify General description</button></li>
 					<li><button onclick="kc_modify_taxonomy()">Modify Taxonomy description</button></li>
@@ -112,7 +99,10 @@
 	</div>
 
 	</div>
+<% } else { out.write(" <h1>Stop Hacking! The code is avaliable at github if you want to find bugs :) </h1>"); }
 	
+
+} catch(NullPointerException e) { out.write(" <h1>Stop Hacking! The code is avaliable at github if you want to find bugs :) </h1>");} %>
 	</body>
 </html>
 

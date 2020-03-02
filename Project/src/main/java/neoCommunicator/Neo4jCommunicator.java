@@ -3,6 +3,14 @@ import org.neo4j.driver.v1.TransactionWork;
 import org.neo4j.driver.v1.*;
 
 
+/**
+ * 
+ * 	This class is responsible for the communication link between the server and the database. 
+ * 	Do not use anything else for the communication. 
+ * 
+ * @author JSPr
+ */
+
 public class Neo4jCommunicator implements AutoCloseable {
 
     private final Driver driver;
@@ -13,6 +21,9 @@ public class Neo4jCommunicator implements AutoCloseable {
     	
     }
 
+    /**
+     *  Close the driver
+     */
     public void close() throws Exception
     {
         driver.close();
@@ -21,7 +32,7 @@ public class Neo4jCommunicator implements AutoCloseable {
     
     /**
      *  Method used for writing to the DB
-     * @param query
+     * @param query The Cipher query to execute
      */
     
     public synchronized void writeToNeo(final String query) {

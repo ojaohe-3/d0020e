@@ -28,18 +28,6 @@ public class DeleteMethods {
 		this.communicator = communicator;
 	} 
 	
-	/**
-	 * Clear the entire database. Only used for testing purposes.
-	 * @author Jesper.
-	 */
-	public void clear() {
-		
-		String query = "MATCH (n)-[r]-(m) DELETE n,r,m";
-		this.communicator.writeToNeo(query);
-		query = "MATCH (n) DELETE n";
-		this.communicator.writeToNeo(query);
-		
-	}
 	
 	/**
 	 * Delete course from neo with courseCode and startDate

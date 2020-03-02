@@ -21,11 +21,6 @@ public class FilterMethods {
 	}
 
 	/**
-	 * 			CREDITS NOT WORKING ..
-	 *
-	 * 			aND COurseDate. .
-	 *
-	 *
 	 * Generalized search function for courses. This should be the only search function for
 	 * courses we need.
 	 * @param filter - This can be any value of the type {@link Course.CourseLabels}.
@@ -355,6 +350,11 @@ public class FilterMethods {
 		
 	}
 	
+	/**
+	 *  Returns all KC that are related to a topic that matches the search string 'topic' 
+	 * @param topic The query is using CONTAINS and is not case sensitive.
+	 * @return Array containing the matched knowledge components
+	 */
 	public KC[] filterKCByTopic(String topic) {
 		//String query = "MATCH(node: Topic {title : \""+ topic +"\"})<-[r]-(kc:"+KC.kc+") RETURN kc ";
 

@@ -215,6 +215,12 @@ private final Neo4jCommunicator communicator;
 	}
 
 
+	/**
+	 * 	Matches A program and a course and creates a IN_PROGRAM relation
+	 * 
+	 * @param program 
+	 * @param course
+	 */
 	public void createProgramCourseRelation(CourseProgram program,Course course) {
 		program.getCourseOrder().add(course);
 		String query = "MATCH(program:"+program.getProgramType()+"{"+ CourseProgram.ProgramLabels.CODE +":\""+program.getCode()+"\","+CourseProgram.ProgramLabels.LP+":\""+

@@ -349,6 +349,12 @@ public class GetMethods {
 		
 	}
 
+	/**
+	 * Help method to create a CourseInformation object from a Record
+	 * @param row
+	 * @param nodename
+	 * @return
+	 */
 	private CourseInformation createCourseNoKc(Record row, String nodename) {
 		
 		String name = row.get(nodename).get("name").toString();
