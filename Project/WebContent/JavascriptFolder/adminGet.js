@@ -1,7 +1,6 @@
 /**
- * 
+ * Get username for all avaliable users
  */
-
 function get_users() {
 	$.ajax({
 		url : 'getAllUsers'
@@ -15,6 +14,9 @@ function get_users() {
 	});
 }
 
+/*
+ * Get course information for all courses that are in the selected program. 
+ */
 function get_courses_in_program() {
 	var input = prompt("programCode;year;lp");
 	
