@@ -83,7 +83,7 @@ class CourseObject{
      * @param data JSON fetched from database
      * @param conf {x,y,width,heigh,thickness}
      */
-    constructor(data,conf) {
+    constructor(data,conf,lp) {
         this.data = data;
         this.x = conf.x;
         this.y = conf.y;
@@ -94,7 +94,11 @@ class CourseObject{
         this.dockPointsReq = [{x: this.x, y:this.height/2+this.y, KC: null}]; //default point
         this.dockPointsDev =[];
         this.KCs = [];
+
+        // Start of the new solution.
         this.margin_top = 0;
+        this.lp = lp;
+        this.position = {x:conf.x,y:conf.y};
 
         data.Required.forEach((k,i) => {
             this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i+this.thickness,KC:k});
@@ -106,6 +110,110 @@ class CourseObject{
         })
         this.heightExtension = Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness+this.thickness;
 
+
+        // These are outgoing and ingoing KC links.
+        // Contains a list of docking points. These points can have several
+        // KC links connected to them, in theory. I haven't tested it yet.
+        this.inputDockingPoints = [];
+        this.outputDockingPoints = [];
+        this.pointHeight = 24; // docking point height.
+
+    }
+
+    /**
+     * Get the total height of this course object.
+     * @returns {*}
+     */
+    getHeight() {
+        return this.height + (this.extended ? 0 : this.heightExtension);
+    }
+
+    /**
+     * DEPRECATED!!!
+     * Connect this course to a KC link via a new docking point for this course.
+     * Remember that the KC link will have the docking point as INPUT.
+     * @param kcLink - The KC link you wanna connect to.
+     * @author Robin
+     */
+    addOutgoingKCLink(kcLink) {
+        let dockingPoint = this.addOutGoingDockingPoint();
+        kcLink.setIngoingDockingPoint(dockingPoint);
+    }
+
+    /**
+     * DEPRECATED!!!
+     * Connect this course to a KC link via a new docking point for this course.
+     * Remember that the KC link will have the docking point as OUTPUT.
+     * @param kcLink
+     * @author Robin
+     */
+    addIngoingKCLink(kcLink) {
+        let dockingPoint = this.addIngoingDockingPoint();
+        kcLink.setOutgoingDockingPoint(dockingPoint);
+    }
+
+    /**
+     * This creates links for all required KCs in this course.
+     * Remember to call this only AFTER all courses have been created, since the KC must have been
+     * created by a course before a course can add it are required.
+     */
+    generateAllIngoingKCs() {
+        this.data.Required.forEach((value)=>{
+            let requiredDockinpoint = this.addIngoingDockingPoint(value);// Create a docking point even if no KC exists.
+            let developedDockingpoint = this.lp.findKCSource(value);     // find starting dock point.
+            if (developedDockingpoint != null) {
+                let link = new KCLink();
+                // Link both docking points to the newly created link.
+                developedDockingpoint.addKCLinkConnection(link);
+                requiredDockinpoint.addKCLinkConnection(link);
+            }
+        });
+    }
+
+    /**
+     * Returns a default ingoing KC dock point for when the course is collapsed.
+     * @returns {{x: number, y: number}}
+     * @author Robin
+     */
+    getDefaultIngoingDockingPoint() {
+        return {x:0,y:this.height/2};
+    }
+
+    /**
+     * Returns a default outgoing KC dock point for then the course is collapsed.
+     * @returns {{x: *, y: number}}
+     * @author Robin
+     */
+    getDefaultOutGoingDockingPoint() {
+        return {x:this.width, y: this.height/2};
+    }
+
+
+    /**
+     * Add an ingoing docking (required) point to this course. Docking points are used to connect
+     * KC links and courses.
+     * @returns DockingPoint - This is the newly created docking point.
+     */
+    addIngoingDockingPoint(kcData) {
+        let point = new DockingPoint(this, this.getDefaultIngoingDockingPoint,
+            {x:0,y:this.height + this.dockPointsReq.length*this.pointHeight},kcData);
+        this.dockPointsReq.push(point);
+        return point;
+    }
+
+    /**
+     * Add an outgoing (developed) docking point to this course. Docking points are used to connect
+     * KC links and courses.
+     *
+     * This method is called by the CanvasLP when a course is added to the LP.
+     *
+     * @returns {DockingPoint}
+     */
+    addOutGoingDockingPoint(kcData) {
+        let point = new DockingPoint(this, this.getDefaultOutGoingDockingPoint,
+            {x:this.width,y:this.height + this.dockPointsDev.length*this.pointHeight},kcData);
+        this.dockPointsDev.push(point);
+        return point;
     }
 
     /**
@@ -273,6 +381,68 @@ class CourseObject{
         let wy = this.y+this.height;
 
         return pos.x > this.x/dpi && pos.x < wx/dpi && pos.y < wy/dpi && pos.y > this.y/dpi
+    }
+
+}
+
+/**
+ * This is just a docking point for the KC link. Nothing fancy going on here (it's actually very fancy :) ).
+ *
+ * The docking point is for example used by the timestamp when a course requires a KC.
+ * The timestamp looks up a KC key and finds the corresponding dock point for that KC. A
+ * course can then connect a KC link to that dock point and doesn't have to care about where it
+ * came from, because the course will have it's own docking point in the other end that references the
+ * same KC link. Fancy, huh?
+ * @author Robin
+ */
+class DockingPoint {
+    /**
+     *
+     * @param courseObject
+     * @param defaultPointFunction - This is a function. Ether the default in or out of the course object.
+     * @param expandedPoint - A struct with the content {x:some_x,y:some_y};
+     */
+    constructor(courseObject, defaultPointFunction, expandedPoint, kcData) {
+        this.courseObject = courseObject;
+        //this.collapsedPoint = {x:courseObject.position.x,y:courseObject.getHeight()/2};
+        this.getPosition = defaultPointFunction;
+        this.expandedPoint = expandedPoint;
+        this.kcLinks = [];
+        this.kcData = kcData; // Not used right now but we could need it later on.
+    }
+
+    /**
+     * Add a kc link to this docking point.
+     * Many KC links can be created if one course
+     * creates a KC that is needed by several other courses. I.e.
+     * we need to draw multiple lines that has the same beginning.
+     * @param kcLink
+     */
+    addKCLinkConnection(kcLink) {
+        this.kcLinks.push(kcLink)
+    }
+
+    /**
+     * Draw every KC link that is connected to this docking point.
+     * @param ctx
+     */
+    draw(ctx) {
+        this.kcLinks.forEach((value) => {
+            value.draw(ctx);
+        });
+    }
+
+    /**
+     * This returns a point in space where every KC link should connect to.
+     * @param expanded
+     * @returns {{x: number, y: number}}
+     */
+    getPoint() {
+        if (this.courseObject.extended) {
+            return this.expandedPoint;
+        } else {
+            return this.getPosition();   // TODO Check if this actually works, or if the course object is lost.
+        }
     }
 }
 

@@ -1,8 +1,8 @@
 class CanvasLP {
 
     constructor(previousTimestamp) {
-        this.courses = [];
-        this.timestamp = new Timestamp(previousTimestamp);
+        this.courses = [];  // A list of ALL courses
+        this.timestamp = new Timestamp(previousTimestamp); // A hash map of all KC dock point.
     }
 
     /**
@@ -11,13 +11,24 @@ class CanvasLP {
      */
     addCourse(courseObject) {
         this.courses.push(courseObject);
-        if (this.courses.length > 0) {
-            let test = true;
-        }
 
         // Add all generated KCs to this timestamp.
-        courseObject.dockPointsDev.forEach((value) => {
-            this.timestamp.addKCCourseCombo(value.KC,courseObject);
+        courseObject.data.Developed.forEach((value) => {
+            let dockingPoint = courseObject.addOutGoingDockingPoint(value);
+
+            // This function will only create A KC if no docking point exist already.
+            this.timestamp.addKCSource(value,dockingPoint);
+        });
+    }
+
+    /**
+     * This goes through all the courses and creates links for all
+     * required KCs (if there are any).
+     */
+    generateRequiredKCs() {
+        this.courses.forEach((value)=>{
+            // Generate all required KCs for every course.
+            value.generateAllIngoingKCs();
         });
     }
 
@@ -35,6 +46,18 @@ class CanvasLP {
 
     getNumberOfCourses() {
         return this.courses.length;
+    }
+
+    /**
+     * Find the docking point of a course that created a KC.
+     * @param kcData - The raw KC data we want to find.
+     * @returns {null|*} - Either null or a docking point.
+     */
+    findKCSource(kcData) {
+        if (this.timestamp != null) {
+            return this.timestamp.findKCSource(kcData);
+        }
+        return null;
     }
 
     draw(ctx) {

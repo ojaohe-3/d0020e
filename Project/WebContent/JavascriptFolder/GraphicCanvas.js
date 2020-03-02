@@ -49,109 +49,6 @@ function getMousePos(canvas, event) {
   };
 }
 
-
-
-/*function generateCanvasdfdfgf(data) {
-  // clear local data
-  kcMap = new Map();
-  //courses = new Map();
-  KCs = [];
-  // read from course
-  let year = data.year;
-  let offsetYear = 0;
-  let currentYear = year;
-  //KC mapping reset
-  REQ = new Map();
-  let intersection = [];
-
-  let courseContainer = document.getElementById("canvas_course_container");
-
-  while(courseContainer.childElementCount > 0) {
-    courseContainer.removeChild(courseContainer.firstElementChild);
-  }
-
-
-
-  data['Courses'].forEach(function (item, index,arr){
-
-
-
-
-    //======================== YEAR PARTITIONING========================
-    // All courses should, in theory, be sorted after year. We can therefore reset the study periods when
-    // The next course has a new year.
-    if (item.year !== currentYear) {
-      offsetYear = item.year-year;
-      for (let [key,value] of period) {
-        period.set(key,0);
-      }
-      currentYear = item.year;
-    }
-
-    //console.log(offsetYear);
-    let x = 0;
-    let hTemp = period.get(item.lp);
-    let y = hTemp*height*1.2;
-    period.set(item.lp, hTemp + 1);
-
-    //======================== LP PARTITIONING ========================
-    //set x axis
-    if(item.lp === "ONE"){
-      x+= width*1.2*offsetYear*4;
-    }
-    else if(item.lp === "TWO"){
-      x += width *1.2*(1+offsetYear*4);
-    }else if(item.lp === "THREE"){
-      x += width *1.2*(2+(offsetYear-1)*4);
-    }else if(item.lp === "FOUR"){
-      x += width *1.2*(3+(offsetYear-1)*4);
-    }
-
-
-
-    //========================  KC MAPPING ========================
-
-    //map required kcs
-    if(item.Required.length > 0){
-      REQ.set(item.courseCode, item.Required);
-    }
-
-    //======================== GENERATE GRAPHICS OBJECT ========================
-
-    let obj = new CourseObject(
-        item,
-        {
-          x: x,
-          y: y,
-          width: width,
-          height: height,
-          thickness: 24
-        }
-    );
-
-
-    createCourseOverlay(x,y,item, obj);  // TODO fix this, it ain't done.
-
-    if (!courses.has(item["year"]+item["lp"])) {
-      courses.set(item["year"]+item["lp"], [obj]);  // this is very abstract, but it wörks.
-    } else {
-      courses.get(item["year"]+item["lp"]).push(obj);
-    }
-
-  });
-
-  let kcReq = [];
-  let kvDev= [];
-  /!*courses.forEach((v)=>{
-    kcReq.push(REQ.get(v.data.courseCode));
-    kcDev.push(DEV.get(v.data.courseCode));
-    kcReq.filter(v1 => kcDev.some(v2=> kcEquals(v1,v2)));
-
-  });*!/
-
-  drawCanvas();
-}*/
-
 function generateCanvas(data) {
   LPHashmap = new Map();
   let year = data.year;
@@ -205,7 +102,8 @@ function generateCanvas(data) {
           width: width,
           height: height,
           thickness: 24
-        }
+        },
+        courseLP
     );
     courseObject.data.lp = lpString;
     createCourseOverlay(x,y,item, courseObject);
@@ -340,8 +238,6 @@ function createCourseOverlay(x,y, item, obj) {
 
   course.appendChild(dropDown);
   document.getElementById("canvas_course_container").appendChild(course);
-
-  console.log(courseDefinition);
 }
 
 function findCourseByCode(code) {
