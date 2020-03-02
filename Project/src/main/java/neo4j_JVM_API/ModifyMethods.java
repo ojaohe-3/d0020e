@@ -29,7 +29,7 @@ public class ModifyMethods {
 	 */
 	public void deleteKCsFromCourseAndAddTheNewOnes(Course course) {
 		String query = "MATCH(course: Course {courseCode : \"" + course.getCourseCode() + "\", year : \"" + course.getStartPeriod().getYear() + "\", lp : \"" + course.getStartPeriod().getPeriod() +"\" }) ";
-		query += "MATCH (course)-[r:" + Relations.REQUIRED + "]-() MATCH (course)-[p: "+ Relations.DEVELOPED+  "]-() DELETE r, p";
+		query += "MATCH (course)-[r]-(kc: KC) DELETE r";
 		
 		this.communicator.writeToNeo(query);
 		

@@ -66,6 +66,11 @@ h3, .courseInfo {
 	color: #bababa;
 }
 
+.course_list {
+	width: 95%;
+	margin: auto;
+}
+
 #title_content > div {
 	float: left;
 	padding-right: 10px;

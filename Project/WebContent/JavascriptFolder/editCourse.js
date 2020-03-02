@@ -4,7 +4,7 @@
  */
 $(document).ready(function() {
 $('#searchRequiredKC').on('keyup', function() {
-		if($("#searchRequiredKC").val().length > 3) {
+		if($("#searchRequiredKC").val().length > 0) {
 				$.ajax({
 
 					url : 'GetKCs/FilterByName',
@@ -30,7 +30,7 @@ $('#searchRequiredKC').on('keyup', function() {
 		
 	});
 $('#searchDevelopedKC').on('keyup', function() {
-	if($("#searchDevelopedKC").val().length > 3) {
+	if($("#searchDevelopedKC").val().length > 0) {
 			$.ajax({
 
 				url : 'GetKCs/FilterByName',
