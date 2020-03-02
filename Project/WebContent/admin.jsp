@@ -14,8 +14,12 @@
 
 	button {
 		min-width: 300px;
+		color: black;
 	}
-
+	
+	ul {
+	 list-style-type: none;}
+	
 </style>
 
 
@@ -75,7 +79,7 @@
 			</div>
 			<div class="col-md-4">
 				<ul>
-					<h4>KC</h4>
+					<h4>Knowledge Component</h4>
 					<li><button onclick="kc_create()()">Create</button></li>
 					<li><button onclick="kc_modify_general()">Modify General description</button></li>
 					<li><button onclick="kc_modify_taxonomy()">Modify Taxonomy description</button></li>
