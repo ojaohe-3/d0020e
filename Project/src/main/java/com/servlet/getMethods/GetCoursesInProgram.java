@@ -15,11 +15,17 @@ import Data.CourseProgram;
 import Data.LP;
 import neoCommunicator.Neo4jConfigLoader;
 
+/**
+ * Get list with courses in program from request by code, year, lp if logged in as admin
+ */
 @WebServlet("/getCoursesInProgram")
 public class GetCoursesInProgram extends HttpServlet {
 
+	/**
+	 * Checks if admin then reads out the program from database and find course order
+	 * prints out every course to a string with name, year and lp
+	 */
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     
     	try {
     		if((boolean)request.getSession().getAttribute("is_admin") == true) {
@@ -33,14 +39,7 @@ public class GetCoursesInProgram extends HttpServlet {
     			String s = "";
     			
     			ArrayList<Course> co = cp.getCourseOrder();
-    			/*for(int i = 0; i < co.getReadingPeriods(); i++) {
-    				for(int j = 0; j < co.COURSES_PER_PERIOD; j++) {
-    					if(co.getCourseArray()[j][i] != null) {
-    						Course c = co.getCourseArray()[j][i];
-    						s += c.getName() + ": " + c.getStartPeriod().getYear() + ": " + c.getStartPeriod().getPeriod() + "\n";
-    					}
-    				}
-    			}*/
+
 				for (Course c: co) {
 					s += c.getName() + ": " + c.getStartPeriod().getYear() + ": " + c.getStartPeriod().getPeriod() + "\n";
 				}
@@ -50,7 +49,6 @@ public class GetCoursesInProgram extends HttpServlet {
         	}
     	} catch (NullPointerException e) {}
     	
-       
     }
     
 }

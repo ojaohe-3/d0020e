@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Get program by code from request and return as JSON
+ */
 @WebServlet("/GetProgram/getCourses")
 public class GetCourseProgram extends HttpServlet {
 
@@ -28,7 +31,7 @@ public class GetCourseProgram extends HttpServlet {
                 new CourseDate(year, lp), Course.CourseLabels.YEAR, false);
         try {
             String json = data.getAsJson().toString().replaceAll("\\\\","").replaceAll("\"\\{",
-                    "{").replaceAll("}\"","}");//mucishi
+                    "{").replaceAll("}\"","}");
             response.setContentType("text/json");
             response.getWriter().write(json);
 

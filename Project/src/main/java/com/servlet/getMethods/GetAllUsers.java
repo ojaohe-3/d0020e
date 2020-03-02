@@ -15,10 +15,12 @@ import Data.LP;
 import neoCommunicator.Neo4jConfigLoader;
 
 @WebServlet("/getAllUsers")
+/**
+ * Print out all users from database if logged in as admin
+ */
 public class GetAllUsers extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-
     
     	try {
     		if((boolean)request.getSession().getAttribute("is_admin") == true) {
@@ -33,7 +35,6 @@ public class GetAllUsers extends HttpServlet {
         	}
     	} catch (NullPointerException e) {}
     	
-       
     }
     
 }
