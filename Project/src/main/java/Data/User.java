@@ -6,6 +6,9 @@ import java.util.ArrayList;
 
 /**
  * todo set session to this object
+ * 
+ * Create user with hashed password and if admin
+ * 
  * @author Johan RH
  */
 public class User {
@@ -21,6 +24,7 @@ public class User {
         //this.password =  Security.generateHash(password);;
         this.password = password;
     }
+    
     public void hashPassword() {
     	this.password = Security.generateHash(this.password);
     }
@@ -68,6 +72,9 @@ public class User {
     	return (this.username.equals(withUser.username)) && (this.password.equals(withUser.password));
     }
     
+    /**
+     * Enums to be used in neo API
+     */
     public static enum UserLables {
         USERNAME("Username"),  USERTAG("Usertag"), PASSWORD("Password"),USER("User");
         private String name;

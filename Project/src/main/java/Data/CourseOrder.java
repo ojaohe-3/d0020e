@@ -2,7 +2,7 @@ package Data;
 
 
 /**
- * 
+ * (Not in use)
  *  Keeps track of courses using a 2D array
  * 
  * @author Seagate_os

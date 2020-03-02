@@ -67,6 +67,10 @@ public class KC {
 		this.taxonomyDescription = taxonomyDescription;
 	}
 
+	/**
+	 * Convert KC object to JSON
+	 * @return String
+	 */
 	public String getAsJSON(){
 		JSONObject object = new JSONObject();
 		try {
@@ -80,6 +84,10 @@ public class KC {
 
 		return object.toString();
 	}
+	
+	/**
+	 * Enums to be used in NEO API
+	 */
 	public static enum KCLabel {
 		NAME("name"),  GENERAL_DESCRIPTION("generalDescription"), TAXONOMY_DESCRIPTION("taxonomyDescription"), TAXONOMYLEVEL("taxonomyLevel");
 		private String name;

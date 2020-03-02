@@ -20,6 +20,9 @@ public class Topic {
 		return this.title;
 	}
 	
+	/**
+	 * Check if given object is a Topic
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (o.getClass() != this.getClass()) {
