@@ -39,7 +39,7 @@ public class ProgramInformation {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 
@@ -48,7 +48,7 @@ public class ProgramInformation {
 	}
 	
 	public String getCode() {
-		return code;
+		return this.code;
 	}
 
 
@@ -58,7 +58,7 @@ public class ProgramInformation {
 
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 
@@ -68,7 +68,7 @@ public class ProgramInformation {
 
 
 	public float getCredits() {
-		return credits;
+		return this.credits;
 	}
 
 
@@ -77,7 +77,7 @@ public class ProgramInformation {
 	}
 
 	public CourseDate getStartDate() {
-		return startDate;
+		return this.startDate;
 	}
 
 	public void setStartDate(CourseDate startDate) {

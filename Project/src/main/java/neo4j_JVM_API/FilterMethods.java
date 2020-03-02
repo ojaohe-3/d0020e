@@ -101,7 +101,6 @@ public class FilterMethods {
 		if (DESCENDING) {
 			query += " DESC";
 		}
-		
 		/* This gives us the full list of records returned from neo. */
 		List<Record> resultList = this.communicator.readFromNeo(query).list();
 		ProgramInformation[] result = new ProgramInformation[resultList.size()];
@@ -118,8 +117,8 @@ public class FilterMethods {
 					prog.get(CourseProgram.ProgramLabels.CREDITS.toString()).asFloat(),
 					CourseProgram.ProgramType.PROGRAM);
 			result[i] = information;
+			i++;
 		}
-		
 		return result;
 	}
 	

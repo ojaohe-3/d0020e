@@ -30,6 +30,7 @@ public class GetProgramFilterByName extends HttpServlet {
 
 		ProgramInformation[] programs = Neo4jConfigLoader.getApi().filterMethods.filterProgramByTag(ProgramLabels.NAME, request.getParameter("filter"));
 		
+		
 		try {
 			JSONArray array = new JSONArray();
 			for (ProgramInformation program : programs) {
