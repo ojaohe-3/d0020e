@@ -8,20 +8,41 @@
 	<div class="container-fluid sidenav">
 	  <h2>Filter Container</h2>
 	  <ul class="nav nav-pills nav-justified" id="filterMenu">
-		<li class="active"><a data-toggle="pill" href="#course">Course</a></li>
-		<li><a data-toggle="pill" href="#program">Program</a></li>
+	  	<li class="active"><a data-toggle="pill" href="#program">Program</a></li>
+		<li><a data-toggle="pill" href="#course">Course</a></li>
 		<li><a data-toggle="pill" href="#KC">KC</a></li>
-
-		<!-- <li><a data-toggle="pill" href="#topic">Topic</a></li> -->
 		<li><a data-toggle="pill" href="#topic">Topic</a></li>
 
 	  </ul>
 
 	  <div class="tab-content">
-		<div id="course" class="tab-pane fade in active">
+	  
+	  	<div id="program" class="tab-pane fade in active">
+		  <h3>Program</h3>
+			<div class="radio">
+				  <label><input type="radio" name="optradio" id="programFilterByName" checked><span class="checkmark"></span>Filter by name</label>
+			</div>
+			<div class="radio">
+				  <label><input type="radio" name="optradio" id="programFilterByCode"><span class="checkmark"></span>Filter by code</label>
+			</div>
+			<div class="radio">
+				  <label><input type="radio" name="optradio" id="programFilterByTopic"><span class="checkmark"></span>Filter by topic</label>
+			</div>
+
+			<form class="search">
+				<input type="text" class="searchBar" id="searchProgram" placeholder="Search... ">
+			  </form>
+
+		  <div id="program_search_results" class="result pre-scrollable">
+
+		  </div>
+
+		</div>
+		
+		<div id="course" class="tab-pane fade in">
 		  <h3>Course</h3>
 			<div class="radio">
-				  <label><input type="radio" name="optradio" id="courseFilterByName" checked><span class="checkmark"></span>Filter by name</label>
+				  <label><input type="radio" name="optradio" id="courseFilterByName"><span class="checkmark"></span>Filter by name</label>
 			</div>
 			<div class="radio">
 				  <label><input type="radio" name="optradio" id="courseFilterByCode"><span class="checkmark"></span>Filter by code</label>
@@ -38,29 +59,6 @@
 
 			 </div>
 
-
-		</div>
-
-
-		<div id="program" class="tab-pane fade in">
-		  <h3>Program</h3>
-			<div class="radio">
-				  <label><input type="radio" name="optradio" id="programFilterByName"><span class="checkmark"></span>Filter by name</label>
-			</div>
-			<div class="radio">
-				  <label><input type="radio" name="optradio" id="programFilterByCode"><span class="checkmark"></span>Filter by code</label>
-			</div>
-			<div class="radio">
-				  <label><input type="radio" name="optradio" id="programFilterByTopic"><span class="checkmark"></span>Filter by topic</label>
-			</div>
-
-			<form class="search">
-				<input type="text" class="searchBar" id="searchProgram" placeholder="Search... ">
-			  </form>
-
-		  <div id="program_search_results" class="result pre-scrollable">
-
-		  </div>
 
 		</div>
 
