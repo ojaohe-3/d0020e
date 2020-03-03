@@ -18,10 +18,18 @@ public class GetCourseProgram extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
+    	System.out.println(request.getParameter("startyear"));
+    	
         String code = request.getParameter("code");
         int year = Integer.parseInt(request.getParameter("startyear"));
-        LP lp = LP.valueOf(request.getParameter("startperiod"));
-
+        LP lp = null;
+        try {
+        	lp = LP.valueOf(request.getParameter("startperiod"));
+        } catch(IllegalArgumentException e) {
+        	System.out.println("Exception " + request.getParameter("startperiod"));
+        	lp = LP.getByString(request.getParameter("startperiod"));
+        }
+        System.out.println(code + " " + year + " " + lp);
         // This will return a course program with a list of all courses in ascending order by year.
         // The nifty feature with this is that all courses within one year will be grouped together. <- used in the canvas.
         CourseProgram data = Neo4jConfigLoader.getApi().getMethods.getProgram(code,
