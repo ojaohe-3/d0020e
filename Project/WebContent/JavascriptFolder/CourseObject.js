@@ -99,7 +99,7 @@ class CourseObject{
         this.margin_top = 0;
         this.lp = lp;
         this.position = {x:conf.x,y:conf.y};
-
+        /*
         data.Required.forEach((k,i) => {
             this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i+this.thickness,KC:k});
             //this.KCs.REQ.push(new KCObject(conf.thickness, k));//if a dev exist a reqirement version will simply point on exact same points
@@ -107,7 +107,7 @@ class CourseObject{
         data.Developed.forEach((k,i)=>{
             this.dockPointsDev.push({x: conf.x+ conf.width, y:conf.y+conf.height+conf.thickness*i+this.thickness,KC:k});
             this.KCs.push(new KCObject(conf.thickness, k));
-        })
+        })*/
         this.heightExtension = Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness+this.thickness;
 
 
@@ -126,30 +126,6 @@ class CourseObject{
      */
     getHeight() {
         return this.height + (this.extended ? 0 : this.heightExtension);
-    }
-
-    /**
-     * DEPRECATED!!!
-     * Connect this course to a KC link via a new docking point for this course.
-     * Remember that the KC link will have the docking point as INPUT.
-     * @param kcLink - The KC link you wanna connect to.
-     * @author Robin
-     */
-    addOutgoingKCLink(kcLink) {
-        let dockingPoint = this.addOutGoingDockingPoint();
-        kcLink.setIngoingDockingPoint(dockingPoint);
-    }
-
-    /**
-     * DEPRECATED!!!
-     * Connect this course to a KC link via a new docking point for this course.
-     * Remember that the KC link will have the docking point as OUTPUT.
-     * @param kcLink
-     * @author Robin
-     */
-    addIngoingKCLink(kcLink) {
-        let dockingPoint = this.addIngoingDockingPoint();
-        kcLink.setOutgoingDockingPoint(dockingPoint);
     }
 
     /**
@@ -260,13 +236,6 @@ class CourseObject{
 
     }
 
-    /**
-     * get lower middle
-     * @return {{x: *, y: *}}
-     */
-    getMiddleSnap(){
-        return {x: this.x + this.width/2, y: this.y + this.height+this.height*0.1};
-    }
 
     /**
      * Find kc and map point to its required slot.
@@ -305,16 +274,7 @@ class CourseObject{
       saveMatrix();
       ctx.save();
       translate(0,0);
-       // this.button = new canvasButton({x: this.x + this.width*0.8,
-       //  y : this.y+this.height*0.8,
-       //  width : this.width*0.2,
-       //  height : this.height*0.2,
-       //  text:"▲"});
-       /* if (this.extended) {
-            this.KCs.forEach((v)=>{v.draw(ctx);});
-        }
 
-        */
        if (this.extended) {
            this.inputDockingPoints.forEach((value) => {
                value.draw(ctx);
@@ -325,24 +285,8 @@ class CourseObject{
        }
 
       ctx.strokeRect(this.x,this.y+this.margin_top,this.width,this.height);
-      //obsolete
-      //ctx.fillRect(this.x,this.y,this.width,this.height*0.2);
-      //ctx.fillStyle = "white";
-      //ctx.font = 'italic '+(this.width)*4/ctx.measureText(this.data["name"]).width+'pt Calibri';
-     // ctx.fillText(this.data["name"],
-       // this.x+this.width/2 -  ctx.measureText(this.data["name"]).width/2,
-        //this.y + this.height*0.14
-       // );
-     // ctx.fillStyle = "black";
-     // ctx.strokeRect(this.x+this.width*0.05,this.y+this.height*.3,this.width-this.width*0.1,this.height-this.height*0.5);
-
-     // this.drawInRect(this.x+this.width*0.1 ,this.y+this.height*0.35 ,0,0,0.70717,ctx);
-      //this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.36,this.data["courseCode"],ctx);
-     // this.drawInRect(this.x + this.width*0.1 ,this.y+this.height*0.6 ,0,0,0.70717,ctx);
-      //this.writeInRect(this.x+this.width*0.1,this.y+this.height*0.59,this.data["examiner"],ctx);
       restoreMatrix();
       ctx.restore();
-      // this.button.draw(ctx);
     }
 
   /**
