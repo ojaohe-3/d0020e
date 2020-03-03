@@ -41,8 +41,9 @@ class KCLink {
      * Draw this KC link. It should start drawing from the receiving docking point, since it can then
      * traverse back through every LP until it reaches the course that created the KC.
      * @param ctx
+     * @param caller - The docking point that called this method.
      */
-    draw(ctx) {
+    drawLink(ctx, caller) {
         // Note to self: The line should only be drawn if:
         //      Only one of the docking points are expanded.
         //      Both docking points are expanded and the docking point that called draw was

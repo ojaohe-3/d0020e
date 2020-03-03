@@ -11,6 +11,7 @@
 
 </div>
 <script> src="JavascriptFolder/courseInformation.js"</script>
+<script src ="JavascriptFolder/KCLink.js"></script>
 <script src="JavascriptFolder/CanvasLP.js"></script>
 <script src="JavascriptFolder/Timestamp.js"></script>
 <script src="JavascriptFolder/canvasButton.js"></script>

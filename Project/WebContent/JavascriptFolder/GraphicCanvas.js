@@ -22,7 +22,7 @@ let REQ = new Map();
   //translations
 let matrix=[1,0,0,1,0,0];
 let oldMatrix = [];
-window.addEventListener("resize", drawCanvas);
+//window.addEventListener("resize", drawCanvas);
 
 let LPHashmap = new Map();
 
@@ -109,6 +109,11 @@ function generateCanvas(data) {
     createCourseOverlay(x,y,item, courseObject);
     courseLP.addCourse(courseObject);
   });
+
+  LPHashmap.forEach((value) => {
+    value.generateRequiredKCs();
+  });
+
   drawCanvas();
 }
 

@@ -158,6 +158,9 @@ class CourseObject{
      * created by a course before a course can add it are required.
      */
     generateAllIngoingKCs() {
+        if (this.data.Required.length > 0) {
+            let temp = true;
+        }
         this.data.Required.forEach((value)=>{
             let requiredDockinpoint = this.addIngoingDockingPoint(value);// Create a docking point even if no KC exists.
             let developedDockingpoint = this.lp.findKCSource(value);     // find starting dock point.
@@ -307,10 +310,19 @@ class CourseObject{
        //  width : this.width*0.2,
        //  height : this.height*0.2,
        //  text:"▲"});
-        if (this.extended) {
+       /* if (this.extended) {
             this.KCs.forEach((v)=>{v.draw(ctx);});
         }
 
+        */
+       if (this.extended) {
+           this.inputDockingPoints.forEach((value) => {
+               value.draw(ctx);
+           });
+           this.outputDockingPoints.forEach((value) => {
+               value.draw(ctx);
+           });
+       }
 
       ctx.strokeRect(this.x,this.y+this.margin_top,this.width,this.height);
       //obsolete
@@ -428,7 +440,7 @@ class DockingPoint {
      */
     draw(ctx) {
         this.kcLinks.forEach((value) => {
-            value.draw(ctx);
+            value.drawLink(ctx,this);
         });
     }
 
