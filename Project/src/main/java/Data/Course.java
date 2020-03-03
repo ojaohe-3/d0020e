@@ -92,7 +92,7 @@ public class Course extends CourseInformation {
 
 	/**
 	 * I don't wanna use strings everywhere and keep track of how 
-	 * how to spell stuff, so I made this. It's basically just a few
+	 * to spell stuff, so I made this. It's basically just a few
 	 * values with the names of every label in a course.
 	 * @author Robin
 	 *
@@ -110,6 +110,10 @@ public class Course extends CourseInformation {
 			return this.name;
 		}
 	}
+	
+	/**
+	 * Get course information as JSONObject
+	 */
 	@Override
 	public JSONObject getAsJson() throws JSONException {
 		JSONObject obj = new JSONObject();
@@ -127,6 +131,9 @@ public class Course extends CourseInformation {
 
 	}
 
+	/**
+	 * Convert JSONobject to string
+	 */
 	@Override
 	public String toString() {
 		try {

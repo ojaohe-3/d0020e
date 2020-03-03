@@ -7,10 +7,19 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collection;
 
+/**
+ * Representation of a program with course
+ * 
+ * @author JSPr
+ */
 public class CourseProgram extends ProgramInformation{
+	
 	public static String program = "";
-	//private CourseOrder courseOrder;
 	private ArrayList<Course> courseOrder;
+	
+	/*
+	 * Enum to know if it is a program or a specialization to a program
+	 */
 	public static enum ProgramType {
 		PROGRAM("CourseProgram"),
 		SPECIALIZATION("ProgramSpecialization");
@@ -30,37 +39,55 @@ public class CourseProgram extends ProgramInformation{
 		super( null, null,null,null,0,null);
 		this.courseOrder = new ArrayList<>();
 	}
+	
 	public CourseProgram(Collection<Course> courses) {
 		super(null, null, null, null, 0, null);
 		this.courseOrder = (ArrayList<Course>) courses;
-
 	}
+	
 	/**
-	 *
+	 * Constructor for program with given course order
+	 * 
+	 * @param courseOrder - Arraylist with courses
 	 * @param code
 	 * @param name
 	 * @param description
 	 * @param startDate
 	 * @param credits
 	 */
-
 	public CourseProgram(ArrayList<Course> courseOrder, String code, String name, String description, CourseDate startDate, float credits) {
-		super( code, name, description, startDate, credits, ProgramType.PROGRAM);
+		super(code, name, description, startDate, credits, ProgramType.PROGRAM);
 		this.courseOrder = courseOrder;
 		
 	}
 	
-	public CourseProgram( String code, String name, String description, CourseDate startDate, float credits) {
+	/**
+	 * Constructor for program without course order
+	 * 
+	 * @param code
+	 * @param name
+	 * @param description
+	 * @param startDate
+	 * @param credits
+	 */
+	public CourseProgram(String code, String name, String description, CourseDate startDate, float credits) {
 
-		super( code, name, description, startDate, credits, ProgramType.PROGRAM);
+		super(code, name, description, startDate, credits, ProgramType.PROGRAM);
 		this.courseOrder = new ArrayList<>();
 		
 	}
 
-	
-
+	/**
+	 * Constructor for program with given course order
+	 * 
+	 * @param courseOrder - Arraylist with courses
+	 * @param code
+	 * @param name
+	 * @param description
+	 * @param startDate
+	 * @param credits
+	 */
 	public CourseProgram(ArrayList<Course> courseOrder, String code, String name, String description, CourseDate startDate, float credits, ProgramType type) {
-
 		super( code, name, description, startDate, credits, type);
 		this.courseOrder = (ArrayList<Course>) courseOrder;
 	}
@@ -74,6 +101,9 @@ public class CourseProgram extends ProgramInformation{
 		this.courseOrder =  courseOrder;
 	}
 
+	/**
+	 * Get program as JSONObject
+	 */
 	public JSONObject getAsJson() throws JSONException {
 		JSONObject obj = new JSONObject();
 
@@ -87,6 +117,10 @@ public class CourseProgram extends ProgramInformation{
 
 		return obj;
 	}
+	
+	/**
+	 * Enums for parameters to be used in neo API
+	 */
 	public static enum ProgramLabels {
 		NAME("name"), CODE("code"), DESCRIPTION("description"), YEAR("year"), LP("lp"), READING_PERIODS("readingPeriods"), CREDITS("credits");
 		private String label;

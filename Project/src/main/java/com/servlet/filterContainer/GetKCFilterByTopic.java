@@ -17,12 +17,12 @@ import Data.KC;
 import Data.KC.KCLabel;
 import neo4j_JVM_API.Neo4JAPI;
 
+/**
+ * Find all kc's by topic from request
+ */
 @WebServlet("/GetKCs/FilterByTopic")
 public class GetKCFilterByTopic extends HttpServlet {
 
-	/**
-	 *  No idea what this is.. 
-	 */
 	private static final long serialVersionUID = 1L;
 
 

@@ -16,6 +16,7 @@ public enum Relations {
 	CAN_EDIT("CAN_EDIT");
 	
 	private String relation;
+	
 	private Relations(String relation) {
 		this.relation = relation;
 	}

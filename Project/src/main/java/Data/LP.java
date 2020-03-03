@@ -13,7 +13,11 @@ public enum LP {
 	FOUR,
 	ERROR;
 	
-	
+	/**
+	 * Get enum values from integer strings
+	 * @param str
+	 * @return
+	 */
 	public static LP getByString(String str) {
 		if(str.equals("1")) {
 			return LP.ONE;
@@ -25,9 +29,13 @@ public enum LP {
 			return LP.FOUR;
 		}
 		return LP.ERROR;
-		
 	}
 
+	/**
+	 * Get enum values from text strings
+	 * @param str
+	 * @return
+	 */
 	public static LP getByStringByText(String str) {
 		if(str.equals("ONE")) {
 			return LP.ONE;
@@ -39,6 +47,5 @@ public enum LP {
 			return LP.FOUR;
 		}
 		return LP.ERROR;
-		
 	}
 }

@@ -86,7 +86,11 @@ public CourseInformation(String name, String courseCode, float credit, String de
 		this.credit = credit;
 	}
 
-
+	/**
+	 * Get course information as JSONObject
+	 * @return
+	 * @throws JSONException
+	 */
 	public JSONObject getAsJson() throws JSONException {
 		JSONObject obj = new JSONObject();
 
@@ -104,6 +108,10 @@ public CourseInformation(String name, String courseCode, float credit, String de
 		return obj;
 
 	}
+	
+	/**
+	 * Check if this course is equals to a given object
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;

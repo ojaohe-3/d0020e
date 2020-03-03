@@ -17,31 +17,27 @@ import Data.KC;
 import Data.LP;
 import neo4j_JVM_API.Neo4JAPI;
 
-
+/**
+ * Find course in database 
+ */
 @WebServlet("/GetCourse/byCodeYearLP")
 public class GetCourseByCodeYearLP extends HttpServlet {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	
+	/**
+	 * Find course from request and send it as a response
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException { 
 		
-		
-
 		Course course = Neo4jConfigLoader.getApi().getMethods.getCourse(request.getParameter("courseCode"), new CourseDate(Integer.parseInt(request.getParameter("year")), LP.valueOf(request.getParameter("lp"))));
-		
 		
 		try {
 			response.setContentType("text/json");
-			System.out.println(course.getAsJson().toString());
-			//response.getWriter().write(course.getAsJson().toString().replaceAll("\"\\{", "{").replaceAll("}\"", "}"));
 			response.getWriter().write(course.getAsJson().toString());
 			
 		} catch (JSONException e) { }
 		
 	}
 	
-
 }

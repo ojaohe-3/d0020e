@@ -19,11 +19,10 @@ import Data.KC.KCLabel;
 import Data.Course.CourseLabels;
 import neo4j_JVM_API.Neo4JAPI;
 
-
-
 /**
+ * Get one KC with specific taxonomy level when searching for kc by name
  * 
- * 	Will not return for each Taxonomy level
+ * Will not return for each Taxonomy level 
  * 
  * @author JSPr
  *
@@ -31,9 +30,6 @@ import neo4j_JVM_API.Neo4JAPI;
 @WebServlet("/GetKCs/FilterByNameGetOne")
 public class GetKCFilterByNameGetOne extends HttpServlet {
 
-	/**
-	 *  No idea what this is.. 
-	 */
 	private static final long serialVersionUID = 1L;
 
 	/**

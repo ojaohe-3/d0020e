@@ -92,6 +92,11 @@ public class ProgramInformation {
 		this.programType = programType;
 	}
 
+	/**
+	 * Get programInformation as JSONobject
+	 * @return
+	 * @throws JSONException
+	 */
 	public JSONObject getAsJson() throws JSONException {
 		JSONObject obj = new JSONObject();
 		obj.put(CourseProgram.ProgramLabels.NAME.toString(),name);

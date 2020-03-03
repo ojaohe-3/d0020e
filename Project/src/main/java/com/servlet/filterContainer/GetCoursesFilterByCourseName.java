@@ -23,20 +23,17 @@ import neoCommunicator.Neo4jCommunicator;
  * 
  * Will handle the Filter course by course name
  * 
- * 			Using a static Neo4jAPI..
  * @author Jesper
- *
- *
  */
 
 @WebServlet("/GetCourses/FilterByCourseName")
 public class GetCoursesFilterByCourseName extends HttpServlet {
 
-	/**
-	 *  No idea what this is.. 
-	 */
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * Send JSON array as string with all matching courses when searching for course by name
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		CourseInformation[] courses = Neo4jConfigLoader.getApi().filterMethods.filterCourseByTag(CourseLabels.NAME, request.getParameter("filter").toString());
@@ -60,20 +57,13 @@ public class GetCoursesFilterByCourseName extends HttpServlet {
 				jobj.put(CourseLabels.CREDIT.toString(), ci.getCredit());
 				jobj.put(CourseLabels.DESCRIPTION.toString(), ci.getDescription());
 				jArray.put(jobj);
-			
-				
-				
+
 			}
 			response.setContentType("text/json");
 			response.getWriter().write(jArray.toString());
 			
-			
-			System.out.println(jArray.toString());
 		} catch (JSONException ex) { }
 
-
-		
 	}
 	
 }
-
