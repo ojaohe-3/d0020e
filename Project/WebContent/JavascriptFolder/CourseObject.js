@@ -256,6 +256,14 @@ class CourseObject{
         return pos.x > this.x/dpi && pos.x < wx/dpi && pos.y < wy/dpi && pos.y > this.y/dpi
     }
 
+    getY() {
+        return this.y + this.margin_top;
+    }
+
+    getX() {
+        return this.x;
+    }
+
 }
 
 /**
@@ -321,7 +329,7 @@ class DockingPoint {
      */
     getPosition() {
         if (this.isExtended()) {
-            return {x: this.courseObject.x + this.expandedPoint.x, y:  this.courseObject.y + this.expandedPoint.y};
+            return {x: this.courseObject.getX() + this.expandedPoint.x, y:  this.courseObject.getY() + this.expandedPoint.y};
         } else {
             return this.position(this.courseObject);   // TODO Check if this actually works, or if the course object is lost.
         }
