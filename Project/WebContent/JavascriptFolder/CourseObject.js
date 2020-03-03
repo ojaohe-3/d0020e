@@ -310,13 +310,17 @@ class DockingPoint {
         return this.courseObject.myLP;
     }
 
+    isExtended() {
+        this.courseObject.extended;
+    }
+
     /**
      * This returns a point in space where every KC link should connect to.
      * @param expanded
      * @returns {{x: number, y: number}}
      */
     getPosition() {
-        if (this.courseObject.extended) {
+        if (this.isExtended()) {
             return {x: this.courseObject.x + this.expandedPoint.x, y:  this.courseObject.y + this.expandedPoint.y};
         } else {
             return this.position(this.courseObject);   // TODO Check if this actually works, or if the course object is lost.

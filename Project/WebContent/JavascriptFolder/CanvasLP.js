@@ -1,8 +1,19 @@
 class CanvasLP {
 
-    constructor(previousTimestamp) {
+    constructor(precedingLP,Lpstring) {
+        this.string = Lpstring;
         this.courses = [];  // A list of ALL courses
-        this.timestamp = new Timestamp(previousTimestamp); // A hash map of all KC dock point.
+        this.timestamp = null;
+        this.precendingLP = precedingLP;
+        if (precedingLP != null) {
+            this.timestamp = new Timestamp(precedingLP.timestamp); // A hash map of all KC dock point.
+        } else {
+            this.timestamp = new Timestamp(null);
+        }
+    }
+
+    getPrecendingLP() {
+        return this.precendingLP;
     }
 
     getMiddlePoint() {

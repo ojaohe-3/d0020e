@@ -44,11 +44,17 @@ class KCLink {
      * @param caller - The docking point that called this method.
      */
     drawLink(ctx, caller) {
-        let pos2 = this.outPoint.getPosition();
-        let pos1 = this.inPoint.getPosition();
+        let pos1 = this.outPoint.getPosition();
+        let pos2 = this.inPoint.getPosition();
         let currentLp =caller.getLP();
         if (caller == this.inPoint) {
             currentLp = this.outPoint.getLP();
+        } else if (this.inPoint.isExtended()) {
+            // We will only allow the required KC docking point to draw if
+            // the developed KC docking point is not in extended mode.
+            // this will cause the link to be drawn only once if both courses are
+            // in extended mode.
+            return;
         }
 
 
@@ -59,11 +65,17 @@ class KCLink {
         ctx.strokeStyle = "orange";
         ctx.beginPath();
         ctx.moveTo(pos1.x,pos1.y);
-        ctx.lineTo(pos1.x+caller.width*0.1,pos1.y);
-        while (currentLp)
+        ctx.lineTo(pos1.x-caller.courseObject.width*0.1,pos1.y);
+
+        while (currentLp != this.inPoint.getLP()) {
+            let LPcoords = currentLp.getMiddlePoint();
+            ctx.lineTo(LPcoords[1].x,LPcoords[1].y);
+            ctx.lineTo(LPcoords[0].x,LPcoords[0].y);
+            currentLp = currentLp.getPrecendingLP();
+        }
 
 
-        ctx.lineTo(pos2.x-caller.width*0.1,pos2.y);
+        ctx.lineTo(pos2.x+caller.courseObject.width*0.1,pos2.y);
         ctx.lineTo(pos2.x,pos2.y);
         ctx.stroke();
         ctx.restore();

@@ -27,7 +27,7 @@ let oldMatrix = [];
 let LPHashmap = new Map();
 
 canvas.addEventListener('click', function(evt) {
-  var mousePos = getMousePos(canvas, evt);
+ /* var mousePos = getMousePos(canvas, evt);
   courses.forEach(function (value, key, map) {
     if(value.isInside(mousePos,dpi)){
       //alert('Course Pressed!');
@@ -37,7 +37,7 @@ canvas.addEventListener('click', function(evt) {
       console.log("mouse pressed on nothing!");
     }
 
-  });
+  });*/
 },false);
 
 function getMousePos(canvas, event) {
@@ -55,45 +55,55 @@ function generateCanvas(data) {
   let offsetYear = 0;
   let currentYear = 0;
   let previousTimestamp = null;
-  let currentLPString = "";
+  let currentLPObject = null;
   data['Courses'].forEach(function (item, index,arr){
+    console.log(item.year + "  " + item.lp);
+    // This is where the course is created.
+    let currentLPString = 0;
+    let x = width*1.2*offsetYear*4;
+    if (item.lp === "TWO") {
+      currentLPString = 1;
+      x = width *1.2*(1+offsetYear*4);
+    } else if (item.lp === "THREE") {
+      currentLPString = 2;
+      x = width *1.2*(2+(offsetYear-1)*4);
+    } else if (item.lp === "FOUR") {
+      currentLPString = 3;
+      x = width *1.2*(3+(offsetYear-1)*4);
+    }
 
-
+    offsetYear = item.year-year;
+    currentYear = item.year;
     // This creates a new year with LP and timestamps.
     // We have to create the timestamps in order since every timestamp
     // depend on the previous timestamp.
-    if (item.year != currentYear) {
-      offsetYear = item.year-year;
-      currentYear = item.year;
-      let newLP = null;
-      for (let i = 0; i < 4; i++) {
-        currentLPString = item.year + ";" + i;
-        newLP = new CanvasLP(previousTimestamp);
-        LPHashmap.set(currentLPString,newLP);
-        previousTimestamp = newLP.timestamp;
+    if (!LPHashmap.has(currentYear + ";" + currentLPString)) {
+      if (LPHashmap.has(currentYear + ";" + 3)) {
+        currentLPObject = LPHashmap.get(currentYear + ";" + 3);
       }
+
+      let newLP = null;
+      for (let i = 0,year = item.year; i < 4; i++) {
+        if (i == 2) {
+          year ++;
+        }
+        let tempLPString = year + ";" + i;
+        newLP = new CanvasLP(currentLPObject,tempLPString);
+        LPHashmap.set(tempLPString,newLP);
+        currentLPObject = newLP;
+      }
+
     }
     // all courses are sorted after year. I.e. no more courses from previous year will pop up.
 
 
-    // This is where the course is created.
-    let lpString = 0;
-    let x = width*1.2*offsetYear*4;
-    if (item.lp === "TWO") {
-      lpString = 1;
-      x = width *1.2*(1+offsetYear*4);
-    } else if (item.lp === "THREE") {
-      lpString = 2;
-      x = width *1.2*(2+(offsetYear-1)*4);
-    } else if (item.lp === "FOUR") {
-      lpString = 3;
-      x = width *1.2*(3+(offsetYear-1)*4);
-    }
+
     // TODO Set the LPs to numbers instead of ONE, TWO, THREE, FOUR.
 
-    currentLPString = item.year + ";" + lpString;
-    let courseLP = LPHashmap.get(currentLPString);
-    let y = courseLP.courses.length*height*1.2;
+    let courseLPIdentifier = item.year + ";" + currentLPString;
+    console.log(courseLPIdentifier + "  " + item.lp + "   " + LPHashmap.has(courseLPIdentifier));
+    currentLPObject = LPHashmap.get(courseLPIdentifier);
+    let y = currentLPObject.courses.length*height*1.2;
     let courseObject = new CourseObject(
         item,
         {
@@ -101,13 +111,14 @@ function generateCanvas(data) {
           y: y,
           width: width,
           height: height,
-          thickness: 24,
-          courseLP
-        }
+          thickness: 24
+
+        },
+        currentLPObject
     );
-    courseObject.data.lp = lpString;
+    courseObject.data.lp = currentLPObject;
     createCourseOverlay(x,y,item, courseObject);
-    courseLP.addCourse(courseObject);
+    currentLPObject.addCourse(courseObject);
   });
 
   LPHashmap.forEach((value) => {
