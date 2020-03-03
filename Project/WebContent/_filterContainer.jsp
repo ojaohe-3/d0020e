@@ -3,6 +3,44 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerSearchBar.js"></script>
 <link rel="stylesheet" href="CssFolder/filterContainer.css">
 
+<style>
+.filterContainer {
+  height: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: 'none';
+  transition: 0.5s;
+  padding-top: 60px;
+}
+
+
+.filterContainer .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+</style>
+
+
+
+
+
+
+
 <!-- Creates menu to choose to search for course, kc, program or topic by name, code or topic -->
 <div class="filterContainer">
 	<div class="container-fluid sidenav">
