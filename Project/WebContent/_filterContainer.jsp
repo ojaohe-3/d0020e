@@ -3,47 +3,30 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerSearchBar.js"></script>
 <link rel="stylesheet" href="CssFolder/filterContainer.css">
 
-<style>
-.filterContainer {
-  height: 100%;
-  position: fixed;
-  z-index: 1;
-  top: 0;
-  left: 0;
-  overflow-x: 'none';
-  transition: 0.5s;
-  padding-top: 60px;
+
+<script>
+function openNav() {
+  document.getElementById("main").style.marginLeft = "310px";
+  document.getElementById("filterContainer").style.display = "block";
+  document.getElementById("filterContainerClosed").style.display = "none";
 }
 
-
-.filterContainer .closebtn {
-  position: absolute;
-  top: 0;
-  right: 25px;
-  font-size: 36px;
-  margin-left: 50px;
+function closeNav() {
+  document.getElementById("filterContainer").style.display = "none";
+  document.getElementById("filterContainerClosed").style.display = "block";
+  document.getElementById("filterContainerClosed").style.width = "50px";
+  document.getElementById("main").style.marginLeft= "50px";
 }
-
-#main {
-  transition: margin-left .5s;
-  padding: 16px;
-}
-
-@media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
-  .sidenav a {font-size: 18px;}
-}
-</style>
-
-
-
-
-
+</script>
 
 
 <!-- Creates menu to choose to search for course, kc, program or topic by name, code or topic -->
-<div class="filterContainer">
+<div id="filterContainerClosed">
+	<a href="javascript:void(1)" class="closebtn" onclick="openNav()">&#9776;</a>
+</div>
+<div class="filterContainer" id="filterContainer">
 	<div class="container-fluid sidenav">
+	  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&#9776;</a>
 	  <h2>Filter Container</h2>
 	  <ul class="nav nav-pills nav-justified" id="filterMenu">
 	  	<li class="active"><a data-toggle="pill" href="#program">Program</a></li>

@@ -99,3 +99,53 @@ a {
 .radio input:checked ~ .checkmark {
     background-color: orange;
 }
+
+.filterContainer {
+  height: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: 'none';
+  transition: .5s;
+  padding-top: 60px;
+}
+
+#filterContainerClosed {
+  height: 100%;
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  left: 0;
+  overflow-x: 'none';
+  transition: margin-left .5s;
+  padding-top: 60px;
+  background: #292929;
+}
+
+
+.filterContainer .closebtn {
+  position: absolute;
+  top: 0;
+  right: 25px;
+  font-size: 36px;
+  margin-left: 50px;
+}
+
+#filterContainerClosed .closebtn {
+  position: absolute;
+  padding-left: 5px;
+  top: 0;
+  font-size: 36px;
+  float: right;
+}
+
+a:hover {
+	text-decoration: none;
+	color: orange;
+}
+
+#main {
+  transition: margin-left .5s;
+  margin-left: 310px;
+}

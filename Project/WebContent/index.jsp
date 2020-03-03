@@ -15,7 +15,9 @@
       
   </head>
   <body>
+  
 
+ <div id="main">
   <%@include file="_includes.jsp" %>
 
 <!-- Pop up to accept cookies and store accepted answer for 30 days -->
@@ -46,7 +48,7 @@
     });
 </script>
 
-   <%@include  file="_filterContainer.jsp" %>
+  
   <%@include file="_graphCanvas.jsp"%>
 
 
@@ -54,6 +56,7 @@
 	#close_btn {
 		display: none;
 	}
+	
 	#displayKC {
 		display: none;
 	}
@@ -81,5 +84,7 @@
    
    <div class="container" style="background-color:yellow;" id="debug"></div>
   <%@include file="courseInformation.jsp"%>
+  </div>
+   <%@include  file="_filterContainer.jsp" %>
   </body>
 </html>
