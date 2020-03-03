@@ -24,6 +24,17 @@ let matrix=[1,0,0,1,0,0];
 let oldMatrix = [];
 window.addEventListener("resize", drawCanvas);
 
+canvas.addEventListener('move', (e)=>{
+  var mousePos = getMousePos(canvas, evt);
+  courses.forEach(function (value, key, map) {
+    value.KCs.forEach((e)=>{
+      if(e.isInside(mousePos,dpi)){
+         e.onHover();
+      }else
+        e.onExit();
+  });});
+ drawCanvas();
+},false);
 canvas.addEventListener('click', function(evt) {
   var mousePos = getMousePos(canvas, evt);
   courses.forEach(function (value, key, map) {
@@ -208,8 +219,11 @@ function createCourseOverlay(x,y, item, obj) {
   obj.dockPointsDev.forEach((value) => {
     let p = document.createElement("p");
     p.setAttribute("style","height: " + obj.thickness + "px;");
-    p.innerText = value.KC.name;
-    KCout.appendChild(p);
+    if(value.KC !== null)
+   {
+     p.innerText = value.KC.name;
+     KCout.appendChild(p);
+   }
   });
 
   obj.dockPointsReq.forEach((value) => {

@@ -8,10 +8,8 @@ function getCourseAt(date,c1) {
     let obj = null;
     courses.forEach((v,k)=>{
        if(k.includes(date.year+date.lp)){
-           if(v.y < c1.y*1.5 && v.y>c1.y*0.5){
-               obj = v;// again stupid js cannot break foreach loops.
-           }
-       }
+               obj = v;
+        }
     });
 
     if(obj === null){
@@ -51,9 +49,9 @@ function goToPeriod(c1, c2) {
     while (current.year !== c2.data.year && current.lp !== c2.data.lp){
 
         if(cCourse !== c1){
-            res.push(...cCourse.getFirstIntermittenPoint());
+            res.push(cCourse.getFirstIntermittenPoint());
             res.push(cCourse.getMiddleSnap());
-            res.push(...cCourse.getEndIntermittenPoint());
+            res.push(cCourse.getEndIntermittenPoint());
         }
         step = (step+1);
         if(step>3){
@@ -92,7 +90,7 @@ class CourseObject{
         this.thickness = conf.thickness;
         this.extended = false;
         this.dockPointsReq = [{x: this.x, y:this.height/2+this.y, KC: null}]; //default point
-        this.dockPointsDev =[];
+        this.dockPointsDev =[{x: this.x+this.width, y:this.height/2+this.y, KC: null}];
         this.KCs = [];
 
         data.Required.forEach((k,i) => {
@@ -103,17 +101,17 @@ class CourseObject{
             this.dockPointsDev.push({x: conf.x+ conf.width, y:conf.y+conf.height+conf.thickness*i+this.thickness,KC:k});
             this.KCs.push(new KCObject(conf.thickness, k));
         })
-        this.heightExtension = Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness+this.thickness;
+        this.heightExtension = Math.max(this.dockPointsDev.length-1,this.dockPointsReq.length-1)*this.thickness+this.thickness;
 
     }
 
     /**
      * Generate Snap points going to course object
-     * @param courseTarget CourseObject
+     * @param courseTarget CourseObject go to
      * @param kc KC JSON
      */
     setSnapPoints(courseTarget,kc){
-        if(this.extended && this.dockPointsDev.length>0){
+        if(this.extended && this.dockPointsDev.length>1){
             let endPos = courseTarget.getEndSnapPoint(kc);
             let startPos = this.dockPointsDev.find(value => kcEquals(value.KC,kc));
             let snapPoints = [{x:startPos.x,y:startPos.y}];
@@ -122,7 +120,9 @@ class CourseObject{
             snapPoints.push({x:courseTarget.x-courseTarget.width*0.1,y:endPos.y});
             snapPoints.push(endPos);
 
-            this.KCs[this.dockPointsDev.findIndex(value => kcEquals(value.KC,kc))].setSnapPoint(snapPoints);
+            let KC = this.KCs[this.dockPointsDev.findIndex(value => kcEquals(value.KC,kc))];
+            if(KC != null)
+                KC.setSnapPoint(snapPoints);
         }
     }
 
@@ -132,9 +132,11 @@ class CourseObject{
      * @return [{x: number, y: number}|{x: number, y: number}]
 */
     getFirstIntermittenPoint(){
-        if(this.extended)
-            return [{x: this.x - this.width*0.1, y: this.y + height + height*0.1},{x: this.x -  this.width*0.1, y: this.y + this.height + this.height*0.1}]
-        return [{x:  this.x - this.width*0.1, y: this.y + this.height + this.height*0.1}]
+        if(this.y < height){
+                return {x: this.x -  this.width*0.1, y: this.y + this.height + this.height*0.1};
+        }else
+                return {x: this.x - this.width*0.1, y: this.y - height*0.1};
+
     }
 
     /**
@@ -142,10 +144,12 @@ class CourseObject{
      * @return [{x: number, y: number}|{x: number, y: number}]
      */
     getEndIntermittenPoint(){
-        if(this.extended)
-            return [{x: this.x + this.width + this.width*0.1, y: this.y + this.height + this.height*0.1},{x: this.x + this.width + this.width*0.1, y: this.y + height + height*0.1}]
-        return [{x: this.x + this.width +this.width*0.1, y: this.y + this.height + this.height*0.1}]
+        if(this.y < height){
+                return {x: this.x + this.width +this.width*0.1, y: this.y + this.height + this.height*0.1};
+        }else{
+                return{x: this.x + this.width +this.width*0.1, y: this.y - this.height*0.1};
 
+        }
     }
 
     /**
@@ -153,7 +157,11 @@ class CourseObject{
      * @return {{x: *, y: *}}
      */
     getMiddleSnap(){
-        return {x: this.x + this.width/2, y: this.y + this.height+this.height*0.1};
+        if(this.y < height)
+            return {x: this.x + this.width/2, y: this.y + this.height+this.height*0.1};
+        else
+            return {x: this.x + this.width/2, y: this.y - this.height*0.1 };
+
     }
 
     /**

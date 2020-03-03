@@ -199,6 +199,7 @@ public class Admin extends HttpServlet {
 			float credits = Float.parseFloat(request.getParameter("credits"));
 			String examiner = request.getParameter("examiner");
 			String description = request.getParameter("description");
+			String topic = request.getParameter("topic");
 
 			LP period = LP.getByString(lp);
 			int Year = Integer.parseInt(year);
@@ -208,6 +209,9 @@ public class Admin extends HttpServlet {
 			Course course = new Course(courseName, courseCode, credits, description, examiner, courseDate);
 
 			Neo4jConfigLoader.getApi().createMethods.createCourse(course);
+			// Adds topic
+			Neo4jConfigLoader.getApi().createMethods.addTopic(topic);
+			Neo4jConfigLoader.getApi().createMethods.createTopicToCourseRelation(course, topic);
 
 			return "Course " + courseCode + " created";
 		}
@@ -253,6 +257,36 @@ public class Admin extends HttpServlet {
 			Neo4jConfigLoader.getApi().modifyMethods.editCourse(oldCourseCode, oldCourseDate, newCourse);
 
 			return "The course with coursecode " + oldCourseCode + " has been modified";
+
+		}
+		if(method.equals("ADD_TOPIC")) {
+			
+			String code = request.getParameter("courseCode");
+			LP lp = LP.getByString(request.getParameter("lp"));
+			int year = Integer.parseInt(request.getParameter("year"));
+			
+			String topic = request.getParameter("topic");
+			
+			Course c = new Course(null, code, 0, null, null, new CourseDate(year, lp));
+			
+			Neo4jConfigLoader.getApi().createMethods.addTopic(topic);
+			Neo4jConfigLoader.getApi().createMethods.createTopicToCourseRelation(c, topic);
+			
+			
+			return "Added topic to course " + code;
+
+		}
+		if(method.equals("DELETE_TOPIC")) {
+			
+			String code = request.getParameter("courseCode");
+			LP lp = LP.getByString(request.getParameter("lp"));
+			int year = Integer.parseInt(request.getParameter("year"));
+			
+			String topic = request.getParameter("topic");
+
+			Neo4jConfigLoader.getApi().deleteMethods.deleteRelationCourseToTopic(code, new CourseDate(year,lp), topic);
+			
+			return "Removed topic from course " + code;
 
 		} else {
 				return "The input must be either CREATE, DELETE or MODIFY";

@@ -203,11 +203,11 @@ function user_delete_course_relation() {
  * Create a new course
  */
 function course_create() {
-	var input = prompt("coursename;coursecode;LP(1-4);year;credits;examiner;description");
+	var input = prompt("coursename;coursecode;LP(1-4);year;credits;examiner;description;topic");
 	
 	var data = input.split(";");
 	
-	if(data.length == 7 ){
+	if(data.length == 8 ){
 		
 		$.ajax({
 			url : 'admin',
@@ -221,7 +221,8 @@ function course_create() {
 				year : data[3],
 				credits : parseFloat(data[4]),
 				examiner : data[5],
-				description : data[6]
+				description : data[6],
+				topic : data[7]
 			},
 			success : function(response) {
 				document.getElementById("log").innerHTML += "CREATE COURSE " + data[0]  +"</br>";
@@ -238,7 +239,6 @@ function course_create() {
  * Modify Course
  * 
  */
-
 function course_modify() {
 	var input = prompt("oldCourseCode;oldLP;oldYear;newCourseName;newCourseCode;newLP;newYear;newExaminer");
 	
@@ -272,42 +272,7 @@ function course_modify() {
 		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
 	}
 }
-/*
- * Modify a course
- */
-function course_modify() {
-	var input = prompt("oldCourseCode;oldLP,oldYear;newCourseName;newCourseCode;newLP;newYear;newExaminer");
-	
-	var data = input.split(";");
-	
-	if(data.length == 8 ){
-		
-		$.ajax({
-			url : 'admin',
-			type : "POST",
-			data : {
-				head : "COURSE",
-				method : "MODIFY",
-				oldCourseCode : data[0],
-				oldLP : data[1],
-				oldYear : data[2],
-				newCourseName : data[3],
-				newCourseCode : data[4],
-				newLP : data[5],
-				newYear : data[6],
-				newExaminer : data[7]
-			},
-			success : function(response) {
-				document.getElementById("log").innerHTML += "MODIFY COURSE with code " + data[0]  +"</br>";
-				document.getElementById("output").innerHTML += response + "</br>";
-			}
 
-		});
-		
-	} else {
-		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
-	}
-}
 
 
 /*
@@ -315,7 +280,7 @@ function course_modify() {
  */
 function course_delete() {
 	var input = prompt("courseCode;lp(1-4);year");
-	
+
 	var data = input.split(";");
 	
 	if(data.length == 3 ){
@@ -332,6 +297,67 @@ function course_delete() {
 			},
 			success : function(response) {
 				document.getElementById("log").innerHTML += "DELETE COURSE with code " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+/*
+ * Add Topic to a course 
+ */
+function course_add_topic() {
+	var input = prompt("courseCode;lp(1-4);year;topic");
+	
+	var data = input.split(";");
+	
+	if(data.length == 4 ){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "COURSE",
+				method : "ADD_TOPIC",
+				courseCode : data[0],
+				lp : data[1],
+				year : data[2],
+				topic : data[3]
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "Added topic to course " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+function course_delete_topic() {
+	var input = prompt("courseCode;lp(1-4);year;topic");
+	
+	var data = input.split(";");
+	
+	if(data.length == 4 ){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "COURSE",
+				method : "DELETE_TOPIC",
+				courseCode : data[0],
+				lp : data[1],
+				year : data[2],
+				topic : data[3]
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "Removed topic from course " + data[0]  +"</br>";
 				document.getElementById("output").innerHTML += response + "</br>";
 			}
 
