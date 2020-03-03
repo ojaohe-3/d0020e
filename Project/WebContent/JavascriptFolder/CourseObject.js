@@ -1,78 +1,13 @@
-/**
- * Get a course At a specific date, and is on equal heigh as the caller
- * @param date {year:*,lp:*}
- * @param c1 referense caller, CourseObject
- * @return {null|*} resulting CourseObject
- */
-function getCourseAt(date,c1) {
-    let obj = null;
-    courses.forEach((v,k)=>{
-       if(k.includes(date.year+date.lp)){
-           if(v.y < c1.y*1.5 && v.y>c1.y*0.5){
-               obj = v;// again stupid js cannot break foreach loops.
-           }
-       }
-    });
-
-    if(obj === null){
-        // empty space found
-        let temp = new CourseObject(c1.data,
-            {
-                x:c1.x,y:c1.y,
-                width: c1.width,
-                height: c1.height,
-                thickness: c1.thickness
-            });
-        temp.x += width;
-        temp.y = 0;
-        return temp;
-    }else{
-        return obj;
-    }
+function getInputPoint(courseObject) {
+    return courseObject.getDefaultIngoingDockingPoint();
 }
 
-/**
- * wander points by the middle from one point to another
- * @param c1 CourseObject 1
- * @param c2 CourseObject 2
- * @return array of snapPoints ending at intermittent
- */
-function goToPeriod(c1, c2) {
-    let current = {year:c1.data.year, lp:c1.data.lp};
-    let res = [];
-    let cCourse = c1;
-    let step = 0;
-    switch (current.lp) {
-        case "ONE":step =0;break;
-        case "TWO":step=1;break;
-        case "THREE":step=2;break;
-        case "FOUR":step=3;break
-    }
-    while (current.year !== c2.data.year && current.lp !== c2.data.lp){
-
-        if(cCourse !== c1){
-            res.push(...cCourse.getFirstIntermittenPoint());
-            res.push(cCourse.getMiddleSnap());
-            res.push(...cCourse.getEndIntermittenPoint());
-        }
-        step = (step+1);
-        if(step>3){
-            current.year += 1;
-            step %= 4;
-        }
-        switch (step) {
-            case 0:current.lp="ONE";break;
-            case 1:current.lp="TWO";break;
-            case 2:current.lp="THREE";break;
-            case 3:current.lp="FOUR";break;
-        }
-
-        cCourse = getCourseAt(current,cCourse);
-        if(cCourse === null)
-            return res;
-    }
-    return res;
+function getOutputPoint(courseObject) {
+    return courseObject.getDefaultOutGoingDockingPoint();
 }
+
+
+
 
 /**
  * Object For each graphical and logical position of Courses
@@ -82,8 +17,9 @@ class CourseObject{
      * Generate Object
      * @param data JSON fetched from database
      * @param conf {x,y,width,heigh,thickness}
+     * @param lp
      */
-    constructor(data,conf,lp) {
+    constructor(data,conf, myLP) {
         this.data = data;
         this.x = conf.x;
         this.y = conf.y;
@@ -91,33 +27,20 @@ class CourseObject{
         this.height = conf.height;
         this.thickness = conf.thickness;
         this.extended = false;
-        this.dockPointsReq = [{x: this.x, y:this.height/2+this.y, KC: null}]; //default point
-        this.dockPointsDev =[];
-        this.KCs = [];
+        this.myLP = myLP;
 
         // Start of the new solution.
         this.margin_top = 0;
-        this.lp = lp;
-        this.position = {x:conf.x,y:conf.y};
-        /*
-        data.Required.forEach((k,i) => {
-            this.dockPointsReq.push({x: conf.x, y:conf.y+conf.height+conf.thickness*i+this.thickness,KC:k});
-            //this.KCs.REQ.push(new KCObject(conf.thickness, k));//if a dev exist a reqirement version will simply point on exact same points
-        });
-        data.Developed.forEach((k,i)=>{
-            this.dockPointsDev.push({x: conf.x+ conf.width, y:conf.y+conf.height+conf.thickness*i+this.thickness,KC:k});
-            this.KCs.push(new KCObject(conf.thickness, k));
-        })*/
-        this.heightExtension = Math.max(this.dockPointsDev.length,this.dockPointsReq.length-1)*this.thickness+this.thickness;
+
+        this.heightExtension = Math.max(this.data.Developed.length,this.data.Required.length-1)*this.thickness+this.thickness;
 
 
         // These are outgoing and ingoing KC links.
         // Contains a list of docking points. These points can have several
         // KC links connected to them, in theory. I haven't tested it yet.
-        this.inputDockingPoints = [];
-        this.outputDockingPoints = [];
+        this.dockPointsReq = [];
+        this.dockPointsDev = [];
         this.pointHeight = 24; // docking point height.
-
     }
 
     /**
@@ -133,18 +56,17 @@ class CourseObject{
      * Remember to call this only AFTER all courses have been created, since the KC must have been
      * created by a course before a course can add it are required.
      */
-    generateAllIngoingKCs() {
-        if (this.data.Required.length > 0) {
-            let temp = true;
-        }
+    generateAllIngoingKCs(myLP) {
         this.data.Required.forEach((value)=>{
             let requiredDockinpoint = this.addIngoingDockingPoint(value);// Create a docking point even if no KC exists.
-            let developedDockingpoint = this.lp.findKCSource(value);     // find starting dock point.
+            let developedDockingpoint = myLP.findKCSource(value);     // find starting dock point.
             if (developedDockingpoint != null) {
                 let link = new KCLink();
                 // Link both docking points to the newly created link.
                 developedDockingpoint.addKCLinkConnection(link);
+                link.setIngoingDockingPoint(developedDockingpoint);
                 requiredDockinpoint.addKCLinkConnection(link);
+                link.setOutgoingDockingPoint(requiredDockinpoint);
             }
         });
     }
@@ -155,7 +77,7 @@ class CourseObject{
      * @author Robin
      */
     getDefaultIngoingDockingPoint() {
-        return {x:0,y:this.height/2};
+        return {x:this.x,y:this.y + this.height/2};
     }
 
     /**
@@ -164,7 +86,7 @@ class CourseObject{
      * @author Robin
      */
     getDefaultOutGoingDockingPoint() {
-        return {x:this.width, y: this.height/2};
+        return {x:this.x + this.width, y: this.y + this.height/2};
     }
 
 
@@ -174,7 +96,7 @@ class CourseObject{
      * @returns DockingPoint - This is the newly created docking point.
      */
     addIngoingDockingPoint(kcData) {
-        let point = new DockingPoint(this, this.getDefaultIngoingDockingPoint,
+        let point = new DockingPoint(this, getInputPoint,
             {x:0,y:this.height + this.dockPointsReq.length*this.pointHeight},kcData);
         this.dockPointsReq.push(point);
         return point;
@@ -189,7 +111,7 @@ class CourseObject{
      * @returns {DockingPoint}
      */
     addOutGoingDockingPoint(kcData) {
-        let point = new DockingPoint(this, this.getDefaultOutGoingDockingPoint,
+        let point = new DockingPoint(this, getOutputPoint,
             {x:this.width,y:this.height + this.dockPointsDev.length*this.pointHeight},kcData);
         this.dockPointsDev.push(point);
         return point;
@@ -215,24 +137,19 @@ class CourseObject{
     }
 
     /**
-     * Get the first point before meeting the object, to the left of the object going towards right
-     * if extended return 2 points, one incoming from middle and one outgoing
-     * @return [{x: number, y: number}|{x: number, y: number}]
+     * Get the first lower point before meeting the object, left faced
+     * @return {x: number, y: number}
 */
     getFirstIntermittenPoint(){
-        if(this.extended)
-            return [{x: this.x - this.width*0.1, y: this.y + height + height*0.1},{x: this.x -  this.width*0.1, y: this.y + this.height + this.height*0.1}]
-        return [{x:  this.x - this.width*0.1, y: this.y + this.height + this.height*0.1}]
+            return {x:  this.x - this.width*0.1, y: this.y + this.margin_top + this.height+this.height*0.1};
     }
 
     /**
-     * Get points after leaving the middle part, if extended return 2, one outgoing and one going back to middle
-     * @return [{x: number, y: number}|{x: number, y: number}]
+     * Get right lower faced point
+     * @return {x: number, y: number}
      */
     getEndIntermittenPoint(){
-        if(this.extended)
-            return [{x: this.x + this.width + this.width*0.1, y: this.y + this.height + this.height*0.1},{x: this.x + this.width + this.width*0.1, y: this.y + height + height*0.1}]
-        return [{x: this.x + this.width +this.width*0.1, y: this.y + this.height + this.height*0.1}]
+            return {x: this.x + this.width +this.width*0.1, y:this.y + this.margin_top + this.height+this.height*0.1};
 
     }
 
@@ -276,10 +193,10 @@ class CourseObject{
       translate(0,0);
 
        if (this.extended) {
-           this.inputDockingPoints.forEach((value) => {
+           this.dockPointsReq.forEach((value) => {
                value.draw(ctx);
            });
-           this.outputDockingPoints.forEach((value) => {
+           this.dockPointsDev.forEach((value) => {
                value.draw(ctx);
            });
        }
@@ -361,10 +278,11 @@ class DockingPoint {
     constructor(courseObject, defaultPointFunction, expandedPoint, kcData) {
         this.courseObject = courseObject;
         //this.collapsedPoint = {x:courseObject.position.x,y:courseObject.getHeight()/2};
-        this.getPosition = defaultPointFunction;
+        this.position = defaultPointFunction;
         this.expandedPoint = expandedPoint;
         this.kcLinks = [];
         this.kcData = kcData; // Not used right now but we could need it later on.
+
     }
 
     /**
@@ -388,16 +306,20 @@ class DockingPoint {
         });
     }
 
+    getLP() {
+        return this.courseObject.myLP;
+    }
+
     /**
      * This returns a point in space where every KC link should connect to.
      * @param expanded
      * @returns {{x: number, y: number}}
      */
-    getPoint() {
+    getPosition() {
         if (this.courseObject.extended) {
-            return this.expandedPoint;
+            return {x: this.courseObject.x + this.expandedPoint.x, y:  this.courseObject.y + this.expandedPoint.y};
         } else {
-            return this.getPosition();   // TODO Check if this actually works, or if the course object is lost.
+            return this.position(this.courseObject);   // TODO Check if this actually works, or if the course object is lost.
         }
     }
 }

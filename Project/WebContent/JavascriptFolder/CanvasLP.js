@@ -5,6 +5,12 @@ class CanvasLP {
         this.timestamp = new Timestamp(previousTimestamp); // A hash map of all KC dock point.
     }
 
+    getMiddlePoint() {
+        let point1 = this.courses[0].getFirstIntermittenPoint();
+        let point2 = this.courses[0].getEndIntermittenPoint();
+        return [point1, point2];
+    }
+
     /**
      * Add a course object to this LP.
      * @param courseObject
@@ -28,7 +34,7 @@ class CanvasLP {
     generateRequiredKCs() {
         this.courses.forEach((value)=>{
             // Generate all required KCs for every course.
-            value.generateAllIngoingKCs();
+            value.generateAllIngoingKCs(this);
         });
     }
 

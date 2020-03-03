@@ -101,9 +101,9 @@ function generateCanvas(data) {
           y: y,
           width: width,
           height: height,
-          thickness: 24
-        },
-        courseLP
+          thickness: 24,
+          courseLP
+        }
     );
     courseObject.data.lp = lpString;
     createCourseOverlay(x,y,item, courseObject);
@@ -302,7 +302,6 @@ function addCourse(data) {
 
 
 function drawCanvas() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
   //==== KC MAPPING ====
   /*courses.forEach((v)=>{
     REQ.forEach((e,k)=>{

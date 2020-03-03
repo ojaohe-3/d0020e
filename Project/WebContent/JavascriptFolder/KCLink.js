@@ -44,6 +44,31 @@ class KCLink {
      * @param caller - The docking point that called this method.
      */
     drawLink(ctx, caller) {
+        let pos2 = this.outPoint.getPosition();
+        let pos1 = this.inPoint.getPosition();
+        let currentLp =caller.getLP();
+        if (caller == this.inPoint) {
+            currentLp = this.outPoint.getLP();
+        }
+
+
+        ctx.save();
+        saveMatrix();
+        translate(0,0);
+        ctx.lineWidth = 12;
+        ctx.strokeStyle = "orange";
+        ctx.beginPath();
+        ctx.moveTo(pos1.x,pos1.y);
+        ctx.lineTo(pos1.x+caller.width*0.1,pos1.y);
+        while (currentLp)
+
+
+        ctx.lineTo(pos2.x-caller.width*0.1,pos2.y);
+        ctx.lineTo(pos2.x,pos2.y);
+        ctx.stroke();
+        ctx.restore();
+        restoreMatrix();
+
         // Note to self: The line should only be drawn if:
         //      Only one of the docking points are expanded.
         //      Both docking points are expanded and the docking point that called draw was
