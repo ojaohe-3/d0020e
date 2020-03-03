@@ -57,8 +57,9 @@ function generateCanvas(data) {
   let previousTimestamp = null;
   let currentLPObject = null;
   data['Courses'].forEach(function (item, index,arr){
-    console.log(item.year + "  " + item.lp);
     // This is where the course is created.
+    offsetYear = item.year-year;
+    currentYear = item.year;
     let currentLPString = 0;
     let x = width*1.2*offsetYear*4;
     if (item.lp === "TWO") {
@@ -72,8 +73,7 @@ function generateCanvas(data) {
       x = width *1.2*(3+(offsetYear-1)*4);
     }
 
-    offsetYear = item.year-year;
-    currentYear = item.year;
+
     // This creates a new year with LP and timestamps.
     // We have to create the timestamps in order since every timestamp
     // depend on the previous timestamp.
@@ -88,7 +88,7 @@ function generateCanvas(data) {
           year ++;
         }
         let tempLPString = year + ";" + i;
-        newLP = new CanvasLP(currentLPObject,tempLPString);
+        newLP = new CanvasLP(currentLPObject);
         LPHashmap.set(tempLPString,newLP);
         currentLPObject = newLP;
       }
@@ -101,7 +101,6 @@ function generateCanvas(data) {
     // TODO Set the LPs to numbers instead of ONE, TWO, THREE, FOUR.
 
     let courseLPIdentifier = item.year + ";" + currentLPString;
-    console.log(courseLPIdentifier + "  " + item.lp + "   " + LPHashmap.has(courseLPIdentifier));
     currentLPObject = LPHashmap.get(courseLPIdentifier);
     let y = currentLPObject.courses.length*height*1.2;
     let courseObject = new CourseObject(
@@ -112,11 +111,10 @@ function generateCanvas(data) {
           width: width,
           height: height,
           thickness: 24
-
         },
         currentLPObject
     );
-    courseObject.data.lp = currentLPObject;
+    courseObject.data.lp = currentLPString;
     createCourseOverlay(x,y,item, courseObject);
     currentLPObject.addCourse(courseObject);
   });

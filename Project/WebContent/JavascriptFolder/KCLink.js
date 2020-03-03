@@ -67,12 +67,24 @@ class KCLink {
         ctx.moveTo(pos1.x,pos1.y);
         ctx.lineTo(pos1.x-caller.courseObject.width*0.1,pos1.y);
 
-        while (currentLp != this.inPoint.getLP()) {
-            let LPcoords = currentLp.getMiddlePoint();
-            ctx.lineTo(LPcoords[1].x,LPcoords[1].y);
-            ctx.lineTo(LPcoords[0].x,LPcoords[0].y);
+        if (currentLp == this.outPoint.getLP().getPrecendingLP()) {
+            // This is just a special case for when the dev. course is right before th req. course
+            ctx.lineTo(pos2.x, pos2.y);
+        } else {
+            // There is at least one LP between this course and the dev. course.
+            //let lPcoords = currentLp.getMiddlePoint();
+            let lPcoords = null;
+            //ctx.lineTo(lPcoords[0].x,lPcoords[0].y)
             currentLp = currentLp.getPrecendingLP();
+            while (currentLp != this.inPoint.getLP()) {
+                lPcoords = currentLp.getMiddlePoint();
+                ctx.lineTo(lPcoords[1].x,lPcoords[1].y);
+                ctx.lineTo(lPcoords[0].x,lPcoords[0].y);
+                currentLp = currentLp.getPrecendingLP();
+            }
         }
+
+
 
 
         ctx.lineTo(pos2.x+caller.courseObject.width*0.1,pos2.y);

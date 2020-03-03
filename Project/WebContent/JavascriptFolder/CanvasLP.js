@@ -1,7 +1,6 @@
 class CanvasLP {
 
-    constructor(precedingLP,Lpstring) {
-        this.string = Lpstring;
+    constructor(precedingLP) {
         this.courses = [];  // A list of ALL courses
         this.timestamp = null;
         this.precendingLP = precedingLP;

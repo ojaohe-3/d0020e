@@ -311,7 +311,7 @@ class DockingPoint {
     }
 
     isExtended() {
-        this.courseObject.extended;
+        return this.courseObject.extended;
     }
 
     /**
