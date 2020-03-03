@@ -1,12 +1,12 @@
 <script type="text/javascript" src="${pageContext.request.contextPath}/JavascriptFolder/filterContainerFunctions.js"></script>
-<link rel="stylesheet" href="CssFolder/editCourse.css">
+<link rel="stylesheet" href="CssFolder/KCInfo.css">
 
 <div class="container">
 
-    <h1>KC info</h1>
+    <h1>KCname</h1>
     <div id="title_content"></div>
-    <div class="KC_info">
-        <div id="KC_info">
+    <div class="KCInformation">
+        <div id="KCName">
         </div>
 
         <div id="kcRequired_search_results" class="result pre-scrollable">

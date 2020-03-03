@@ -81,5 +81,6 @@
    
    <div class="container" style="background-color:yellow;" id="debug"></div>
   <%@include file="courseInformation.jsp"%>
+  <%@include file="KCInformation.jsp"%>
   </body>
 </html>
