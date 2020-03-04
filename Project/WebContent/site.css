@@ -18,7 +18,8 @@ body {
 canvas{
 	display: flex;
 	justify-content: center;
-
+	width: 5000px;
+	height: 3000px;
 }
 .SearchResult {
 	background-color : #404040;
