@@ -31,12 +31,8 @@ public class GetCourseByCodeYearLP extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException { 
 		
 		Course course = Neo4jConfigLoader.getApi().getMethods.getCourse(request.getParameter("courseCode"), new CourseDate(Integer.parseInt(request.getParameter("year")), LP.valueOf(request.getParameter("lp"))));
-		
-		try {
-			response.setContentType("text/json");
-			response.getWriter().write(course.getAsJson().toString());
-			
-		} catch (JSONException e) { }
+		response.setContentType("text/json");
+		response.getWriter().write(course.toString());
 		
 	}
 	

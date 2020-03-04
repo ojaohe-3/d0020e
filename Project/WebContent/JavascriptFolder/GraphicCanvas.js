@@ -17,12 +17,14 @@ const period = new Map();
   period.set('TWO',0);
   period.set('THREE',0);
   period.set('FOUR',0);
-let courses =new Map();
+//let courses =new Map(); // string as key and an array with all courses in one LP.
 let REQ = new Map();
   //translations
 let matrix=[1,0,0,1,0,0];
 let oldMatrix = [];
-window.addEventListener("resize", drawCanvas);
+//window.addEventListener("resize", drawCanvas);
+
+let LPHashmap = new Map();
 
 canvas.addEventListener('move', (e)=>{
   var mousePos = getMousePos(canvas, evt);
@@ -36,7 +38,7 @@ canvas.addEventListener('move', (e)=>{
  drawCanvas();
 },false);
 canvas.addEventListener('click', function(evt) {
-  var mousePos = getMousePos(canvas, evt);
+ /* var mousePos = getMousePos(canvas, evt);
   courses.forEach(function (value, key, map) {
     if(value.isInside(mousePos,dpi)){
       //alert('Course Pressed!');
@@ -46,7 +48,7 @@ canvas.addEventListener('click', function(evt) {
       console.log("mouse pressed on nothing!");
     }
 
-  });
+  });*/
 },false);
 
 function getMousePos(canvas, event) {
@@ -58,20 +60,13 @@ function getMousePos(canvas, event) {
   };
 }
 
-
-
 function generateCanvas(data) {
-  // clear local data
-  kcMap = new Map();
-  courses = new Map();
-  KCs = [];
-  // read from course
+  LPHashmap = new Map();
   let year = data.year;
   let offsetYear = 0;
-  let currentYear = year;
-  //KC mapping reset
-  REQ = new Map();
-  let intersection = [];
+  let currentYear = 0;
+  let previousTimestamp = null;
+  let currentLPObject = null;
 
   let courseContainer = document.getElementById("canvas_course_container");
 
@@ -79,84 +74,60 @@ function generateCanvas(data) {
     courseContainer.removeChild(courseContainer.firstElementChild);
   }
 
-
-
   data['Courses'].forEach(function (item, index,arr){
+    // This is where the course is created.
+    offsetYear = item.year-year;
+    currentYear = item.year;
+    let currentLPString = 0;
+    if (item.lp === "TWO") {
+      currentLPString = 1;
+    } else if (item.lp === "THREE") {
+      currentLPString = 2;
+    } else if (item.lp === "FOUR") {
+      currentLPString = 3;
+    }
 
 
-
-
-    //======================== YEAR PARTITIONING========================
-    // All courses should, in theory, be sorted after year. We can therefore reset the study periods when
-    // The next course has a new year.
-    if (item.year !== currentYear) {
-      offsetYear = item.year-year;
-      for (let [key,value] of period) {
-        period.set(key,0);
+    // This creates a new year with LP and timestamps.
+    // We have to create the timestamps in order since every timestamp
+    // depend on the previous timestamp.
+    if (!LPHashmap.has(currentYear + ";" + currentLPString)) {
+      if (LPHashmap.has(currentYear + ";" + 3)) {
+        currentLPObject = LPHashmap.get(currentYear + ";" + 3);
       }
-      currentYear = item.year;
-    }
 
-    //console.log(offsetYear);
-    let x = 0;
-    let hTemp = period.get(item.lp);
-    let y = hTemp*height*1.2;
-    period.set(item.lp, hTemp + 1);
-
-    //======================== LP PARTITIONING ========================
-    //set x axis
-    if(item.lp === "ONE"){
-      x+= width*1.2*offsetYear*4;
-    }
-    else if(item.lp === "TWO"){
-      x += width *1.2*(1+offsetYear*4);
-    }else if(item.lp === "THREE"){
-      x += width *1.2*(2+(offsetYear-1)*4);
-    }else if(item.lp === "FOUR"){
-      x += width *1.2*(3+(offsetYear-1)*4);
-    }
-
-
-
-    //========================  KC MAPPING ========================
-
-    //map required kcs
-    if(item.Required.length > 0){
-      REQ.set(item.courseCode, item.Required);
-    }
-
-    //======================== GENERATE GRAPHICS OBJECT ========================
-
-    let obj = new CourseObject(
-        item,
-        {
-          x: x,
-          y: y,
-          width: width,
-          height: height,
-          thickness: 24
+      let newLP = null;
+      for (let i = 0,year = item.year; i < 4; i++) {
+        if (i == 2) {
+          year ++;
         }
-    );
+        let tempLPString = year + ";" + i;
+        newLP = new CanvasLP(currentLPObject,width *1.2*LPHashmap.size, height*1.2, year,i);
+        LPHashmap.set(tempLPString,newLP);
+        currentLPObject = newLP;
+      }
+
+    }
+    // all courses are sorted after year. I.e. no more courses from previous year will pop up.
 
 
-    createCourseOverlay(x,y,item, obj);  // TODO fix this, it ain't done.
+    let courseLPIdentifier = item.year + ";" + currentLPString;
+    currentLPObject = LPHashmap.get(courseLPIdentifier);
 
-    courses.set(item["courseCode"]+item["year"]+item["lp"], obj);
+    // this creates the course and adds a course overlay.
+    createCourseOverlay(item, currentLPObject.addCourse(item));
   });
 
-  let kcReq = [];
-  let kvDev= [];
-  /*courses.forEach((v)=>{
-    kcReq.push(REQ.get(v.data.courseCode));
-    kcDev.push(DEV.get(v.data.courseCode));
-    kcReq.filter(v1 => kcDev.some(v2=> kcEquals(v1,v2)));
-
-  });*/
+  LPHashmap.forEach((value) => {
+    value.generateRequiredKCs();
+  });
 
   drawCanvas();
 }
 
-function createCourseOverlay(x,y, item, obj) {
+function createCourseOverlay( item, obj) {
+  let x = obj.getX();
+  let y = obj.getY();
   let courseDefinition = item["courseCode"]+item["year"]+item["lp"];
 
   /*
@@ -216,21 +187,18 @@ function createCourseOverlay(x,y, item, obj) {
   dropdown_table.appendChild(KCout);
   dropDown.appendChild(dropdown_table);
 
-  obj.dockPointsDev.forEach((value) => {
+  obj.data.Developed.forEach((value) => {
     let p = document.createElement("p");
     p.setAttribute("style","height: " + obj.thickness + "px;");
-    if(value.KC !== null)
-   {
-     p.innerText = value.KC.name;
-     KCout.appendChild(p);
-   }
+    p.innerText = value.name;
+    KCout.appendChild(p);
   });
 
-  obj.dockPointsReq.forEach((value) => {
+  obj.data.Required.forEach((value) => {
     if (value.KC !== null) {
       let p = document.createElement("p");
       p.setAttribute("style","height: " + obj.thickness + "px;");
-      p.innerText = value.KC.name;
+      p.innerText = value.name;
       KCin.appendChild(p);
     }
 
@@ -269,7 +237,7 @@ function createCourseOverlay(x,y, item, obj) {
       dropDown.style.display= "none";
       margin = 0;
     }
-
+/*
     for (let i = x; i < x+LPs*(width*1.2); i += width*1.2) {
       let victimHeight = y+height*1.2;
       let victim = document.getElementById(i + ";" + victimHeight);
@@ -278,93 +246,87 @@ function createCourseOverlay(x,y, item, obj) {
         victim.firstChild.style.marginTop = margin + "px";
       }
     }
+
+ */
+
     courseObject.setExtended();
+
+    courseObject.myLP.courses.forEach((value)=>{
+      let victim = document.getElementById(value.x + ";" + value.y);
+      victim.firstChild.style.marginTop = value.margin_top + "px";
+    });
+
+
 
   });
 
 
   course.appendChild(dropDown);
   document.getElementById("canvas_course_container").appendChild(course);
-
-  console.log(courseDefinition);
 }
+
 
 function findCourseByCode(code) {
+  let courseObject = null;
   courses.forEach((v,k)=>{
-    if(k.contains(code)){
-      return v;
+    for (let i = 0; k.length; i++) {
+      if(v[i].data.courseCode.contains(code)){
+        courseObject =  v[i];
+      }
     }
   });
-  return null;
+  return courseObject;
 }
+
+/**
+ * This  adds a new course to the canvas.
+ * @param data
+ */
 function addCourse(data) {
-  try{
-    courses.set(data["courseCode"]+data["year"]+data["lp"]);
-    regenerateCanvas();
-  }catch (e) {
-    alert(e.message+' Value might already exist!');
+  let lpString = 0;
+
+  if (data.lp === "TWO") {
+    lpString = 1;
+  } else if (data.lp === "THREE") {
+    lpString = 2;
+  } else if (data.lp === "FOUR") {
+    lpString = 3;
   }
+
+  let lp = LPHashmap.get(data.year + ";" + lpString);
+  if (lp == null) {
+    console.log("course is out of bounds");
+    return;
+  }
+
+  // Add the course to the lp and create overlay.
+  createCourseOverlay(data,lp.addCourse(data));
+
+
+  // Regenerate all required KCs just in case the new course created something that is needed later.
+  LPHashmap.forEach((value) => {
+    value.generateRequiredKCs();
+  });
 
 }
 
 function reFormatSection(lp,year){
-  let key = year+lp;//string
-  let oldkey ="";
-  let old = {};
-  courses.forEach((v,k)=> {
-    if(k.includes(key)){
-      if(courses.has(oldkey)){
-        old = courses.get(oldkey);
-        v.y = old.y + old.height*1.2;
-      }
-      oldkey = k;
+  let key = year+";"+lp;//string
+  let heightAddition = 0;
+  LPHashmap.get(key).courses.forEach((value => {
+    value.margin_top = heightAddition;
+    if (value.extended) {
+      heightAddition += value.heightExtension;
     }
-  });
+  }));
+
   drawCanvas();
 }
-function findCourseByCode(code) {
-  let obj = {};
-  courses.forEach((v,k)=>{
-    if(k.includes(code)){
-      obj = v;//cant break for loops apparently
-    }
-  });
-  return obj;
-}
-function addCourse(data) {
-  try{
-    courses.set(data["courseCode"]+data["year"]+data["lp"]);
-    regenerateCanvas();
-  }catch (e) {
-    alert(e.message+' Value might already exist!');
-  }
 
-}
-
-function reFormatSection(lp,year){
-  let key = year+lp;//string
-  let oldkey ="";
-  let old = {};
-  courses.forEach((v,k)=> {
-    if(k.includes(key)){
-      if(courses.has(oldkey)){
-        old = courses.get(oldkey);
-        // this sets the height of all courses below the chosen one.
-        // The height extension is a FIXED value, while the y value is height*1.2 times the
-        // number of courses above. We therefore need to add the height extension as a fixed value AFTER
-        // we multiply the height by 1.2.
-        v.y = old.y+1.2*height + old.heightExtension*old.extended;
-      }
-      oldkey = k;
-    }
-  });
-  drawCanvas();
-}
 
 function drawCanvas() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
   //==== KC MAPPING ====
-  courses.forEach((v)=>{
+  /*courses.forEach((v)=>{
     REQ.forEach((e,k)=>{
       let obj = findCourseByCode(k);
       if(obj !== null){
@@ -373,7 +335,7 @@ function drawCanvas() {
         });
       }
     });
-  });
+  });*/
   //==== DRAWING ====
   saveMatrix();
   ctx.save();
@@ -381,10 +343,10 @@ function drawCanvas() {
   //translate(viewportX,viewportY);
   //ctx.scale(width/(window.innerWidth*0.2),height/(window.innerHeight*0.21));
   //console.log('width:'+window.innerWidth*0.2+", height: "+(window.innerHeight*0.21));
-  courses.forEach(function (value,index,arr) {
-    //console.log('draw nr:'+index);
-    value.draw(ctx);
-  })
+
+  LPHashmap.forEach((lp)=>{
+    lp.draw(ctx);
+  });
   restoreMatrix();
   ctx.restore();
 }

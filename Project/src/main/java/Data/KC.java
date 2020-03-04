@@ -82,7 +82,8 @@ public class KC {
 			e.printStackTrace();
 		}
 
-		return object.toString();
+		return object.toString().replaceAll("\\\\","").replaceAll("\"\\{",
+				"{").replaceAll("}\"","}");
 	}
 	
 	/**
