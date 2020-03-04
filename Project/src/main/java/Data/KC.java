@@ -78,7 +78,8 @@ public class KC {
 			e.printStackTrace();
 		}
 
-		return object.toString();
+		return object.toString().replaceAll("\\\\","").replaceAll("\"\\{",
+				"{").replaceAll("}\"","}");
 	}
 	public static enum KCLabel {
 		NAME("name"),  GENERAL_DESCRIPTION("generalDescription"), TAXONOMY_DESCRIPTION("taxonomyDescription"), TAXONOMYLEVEL("taxonomyLevel");

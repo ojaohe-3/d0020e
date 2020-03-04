@@ -56,6 +56,13 @@ function generateCanvas(data) {
   let currentYear = 0;
   let previousTimestamp = null;
   let currentLPObject = null;
+
+  let courseContainer = document.getElementById("canvas_course_container");
+
+  while(courseContainer.childElementCount > 0) {
+    courseContainer.removeChild(courseContainer.firstElementChild);
+  }
+
   data['Courses'].forEach(function (item, index,arr){
     // This is where the course is created.
     offsetYear = item.year-year;
@@ -219,7 +226,7 @@ function createCourseOverlay( item, obj) {
       dropDown.style.display= "none";
       margin = 0;
     }
-
+/*
     for (let i = x; i < x+LPs*(width*1.2); i += width*1.2) {
       let victimHeight = y+height*1.2;
       let victim = document.getElementById(i + ";" + victimHeight);
@@ -228,7 +235,17 @@ function createCourseOverlay( item, obj) {
         victim.firstChild.style.marginTop = margin + "px";
       }
     }
+
+ */
+
     courseObject.setExtended();
+
+    courseObject.myLP.courses.forEach((value)=>{
+      let victim = document.getElementById(value.x + ";" + value.y);
+      victim.firstChild.style.marginTop = value.margin_top + "px";
+    });
+
+
 
   });
 
@@ -272,7 +289,7 @@ function addCourse(data) {
   }
 
   // Add the course to the lp and create overlay.
-  createCourseOverlay(data,lp.addCourse());
+  createCourseOverlay(data,lp.addCourse(data));
 
 
   // Regenerate all required KCs just in case the new course created something that is needed later.
@@ -293,17 +310,6 @@ function reFormatSection(lp,year){
   }));
 
   drawCanvas();
-}
-
-function addCourse(data) {
-  // TODO this does not wörk.
-  try{
-    courses.set(data["courseCode"]+data["year"]+data["lp"]);
-    regenerateCanvas();
-  }catch (e) {
-    alert(e.message+' Value might already exist!');
-  }
-
 }
 
 
