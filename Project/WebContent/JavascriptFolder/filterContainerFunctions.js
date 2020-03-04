@@ -48,39 +48,42 @@ function kcClicked(name) {
 
 		url : 'GetKC/byName',
 		data : {
-			name : name
+			name : name,
 		},
 		success : function(response) {
 			
-			response = JSON.parse(JSON.stringify(response));
+			var name = JSON.parse(response.ONE);
 			
-			//$('#displayKC').style.display = "block";
+			var generalDescription = JSON.parse(response.ONE);
+			
+			var firstTax = response.ONE;
+			var firstTaxJ = JSON.parse(firstTax);
+
+						
+			var secondTax = response.TWO;
+			var secondTaxJ = JSON.parse(secondTax);
+			
+			var thirdTax = response.THREE;
+			var thirdTaxJ = JSON.parse(thirdTax);
+			
+			document.getElementById("KCInformation.KCName").innerHTML=name.name;
+			document.getElementById("KCInformation.generalDescription").innerHTML=generalDescription.generalDescription;
+			document.getElementById("KCInformation.taxonomyDescription1").innerHTML=firstTaxJ.taxonomyDescription;
+			document.getElementById("KCInformation.taxonomyDescription2").innerHTML=secondTaxJ.taxonomyDescription;
+			document.getElementById("KCInformation.taxonomyDescription3").innerHTML=thirdTaxJ.taxonomyDescription;
+
+			
 			
 			console.log(response);
 			console.log(response.ONE);
+
+			document.getElementById("KCInformation").style.display = "flex";
 			
-			var one = JSON.parse(response.ONE);
-			var two = JSON.parse(response.TWO);
-			var three = JSON.parse(response.THREE);
-			
-			
-			console.log(one.name);
-			
-			$('#close_btn').css('display','block');
-			$('#displayKC').css('display','block');
-			
-			
-			$('#kc_name').html("<h1>" + one.name + "</h1>");
-			$('#kc_general_desc').html("<h3>" + one.generalDescription + "</h3>");
-			
-			$('#kc_tax_desc_1').html("<p> Level 1 <br> " + one.taxonomyDescription + "</p>");
-			$('#kc_tax_desc_2').html("<p> Level 2 <br> " + two.taxonomyDescription + "</p>");
-			$('#kc_tax_desc_3').html("<p> Level 3 <br> " + three.taxonomyDescription + "</p>");
 		}
 	});
 }
 
 function hideKCdiv() {
-	$('#displayKC').css('display','none');
+	$('#KCInformation').css('display','none');
 	$('#close_btn').css('display','none');
 }

@@ -86,5 +86,6 @@
   <%@include file="courseInformation.jsp"%>
   </div>
    <%@include  file="_filterContainer.jsp" %>
+  <%@include file="KCInformation.jsp"%>
   </body>
 </html>
