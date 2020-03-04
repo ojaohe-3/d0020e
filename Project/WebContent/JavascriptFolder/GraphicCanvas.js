@@ -432,7 +432,18 @@ function generateKcsInAllLPs() {
  * Dynamically resize the canvas to fit all courses.
  */
 function resizeTofitCourses() {
-
+  let canvasHeight = 0;
+  LPHashmap.forEach((value)=>{
+    let tempHeight = value.getHeight();
+    if (tempHeight > canvasHeight) {
+      canvasHeight = tempHeight;
+    }
+  });
+  canvas.setAttribute('height',  canvasHeight + "px");
+  canvas.setAttribute('width', (LPHashmap.size*width*1.2) + "px");
+  let container = document.getElementById("canvas_container");
+  container.setAttribute("height", canvasHeight + "px");
+  fix_dpi();
 }
 
 

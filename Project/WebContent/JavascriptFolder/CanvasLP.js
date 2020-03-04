@@ -99,4 +99,8 @@ class CanvasLP {
             this.courses[i].draw(ctx);
         }
     }
+
+    getHeight() {
+        return this.courses[this.courses.length-1].getHeight() + this.courses[this.courses.length-1].getY();
+    }
 }
