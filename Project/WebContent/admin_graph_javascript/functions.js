@@ -18,7 +18,7 @@ function readIn(dat) {
     window.initialized = true;
     var canv = new KAnvas();
     canv.handleResponse(window.data);
-    document.getElementById("GKcontainer").style.display = "block";
+    document.getElementById("outerContainer").style.display = "block";
 }
 
 window.initialized = false;
@@ -37,7 +37,7 @@ function createCourseBox(name, code, size, x, y, year,lp) {
         width: size,
         fontFamily: 'Calibri',
         text: name + "\n" + code,
-        fill: 'black',
+        fill: 'gray',
         padding: 10
     });
     
@@ -61,7 +61,7 @@ function createCourseBox(name, code, size, x, y, year,lp) {
     var rect = new Konva.Rect({
         width: size,
         height: size,
-        fill: '#aaf',
+        fill: '#404040',
         stroke: 'black',
         strokeWidth: 3
     });
@@ -92,9 +92,9 @@ function addCourseBox(year, lp, size, x, y) {
     var rect = new Konva.Rect({
         width: size,
         height: size,
-        fill: '#90ee90',
+        fill: '#bababa',
         stroke: 'black',
-        strokeWidth: 2
+        strokeWidth: 1
     });
     
     var text = new Konva.Text({
@@ -132,6 +132,16 @@ function callback(year, lp, response, kGroup) {
     	document.getElementById("command_log").innerHTML += "ADD;" + response.courseCode + ";" + year + ";"+ lp + ";;;";
         kGroup.remove();
         
+        response.Required = JSON.parse(JSON.stringify(response.Required));
+        response.Developed = JSON.parse(JSON.stringify(response.Developed));
+
+        response.Required.forEach(function (item, index, arr){
+            response.Required[index] = JSON.parse(item);
+        });
+        response.Developed.forEach(function (item, index, arr){
+            response.Developed[index] = JSON.parse(item);
+        });
+        
         window.data.Courses.push(response);
         
         readIn(window.data);
@@ -161,7 +171,7 @@ function getNewCourse(year, lp, kGroup) {
 }
 
 
-function createLine(from, to, size, yChannel, kAnvas) {
+function createLine(from, to, size, yChannel, kAnvas, name, tax) {
     
     var fromX = from[0] + size;
     var fromY = from[1] + 12 + (12 * occurencies(kAnvas.xKCposxD, from[0]));
@@ -169,20 +179,22 @@ function createLine(from, to, size, yChannel, kAnvas) {
     
     var redLine = new Konva.Line({
         points: [fromX , fromY ,fromX + 35, fromY, fromX + 35, yChannel, to[0] + 3 /*+ size/ 2*/, yChannel, to[0] + 3/*+ size / 2*/, to[1] + size / 2],
-        stroke: 'red',
+        stroke: 'orange',
         strokeWidth: 3,
         lineCap: 'round',
         lineJoin: 'round'
     });
     
     redLine.on('mouseover', function(e) {
-        e.target.stroke('green');
+        e.target.stroke('#404040');
         e.target.draw();
+        document.getElementById("kc_info").innerHTML = name + ": " + tax;
     });
     
     redLine.on('mouseout', function(e) {
-        e.target.stroke('red');
-        e.target.draw();
+        e.target.stroke('orange');
+        e.target.draw(); 
+        document.getElementById("kc_info").innerHTML = " </br>";
     });
     
     return redLine;;

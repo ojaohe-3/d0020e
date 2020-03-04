@@ -187,7 +187,7 @@ class KAnvas {
                 // for each Required
                 a[i][3].forEach(function(item, index, array) {
                     //console.log(item);
-                    t.layer2.add(createLine(dev, item, t.boxSize, t.lineChannelY, t));
+                    t.layer2.add(createLine(dev, item, t.boxSize, t.lineChannelY, t, a[i][0], a[i][1]));
                 });
 
             });
@@ -198,8 +198,9 @@ class KAnvas {
                 
             
             });  */       
-
         });
+        console.log("KCs should have been redrawn");
+        console.log(t.KCs);
         
         // Checking that required KCs is developed
         var str = "";
