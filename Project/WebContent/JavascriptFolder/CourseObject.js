@@ -45,10 +45,12 @@ class CourseObject{
             this.addIngoingDockingPoint(value);
         });
 
-
+        this.courseOverlay = null;
     }
 
-
+    setCourseOverlay(overlay) {
+        this.courseOverlay = overlay;
+    }
 
     /**
      * This creates links for all required KCs in this course.

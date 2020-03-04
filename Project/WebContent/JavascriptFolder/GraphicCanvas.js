@@ -26,6 +26,8 @@ let oldMatrix = [];
 
 let LPHashmap = new Map();
 
+let largestLP = null;    // the biggest amount of courses in some LP.
+
 canvas.addEventListener('move', (e)=>{
   var mousePos = getMousePos(canvas, evt);
   courses.forEach(function (value, key, map) {
@@ -115,13 +117,12 @@ function generateCanvas(data) {
     currentLPObject = LPHashmap.get(courseLPIdentifier);
 
     // this creates the course and adds a course overlay.
-    createCourseOverlay(item, currentLPObject.addCourse(item));
+    let course = currentLPObject.addCourse(item);
+    course.setCourseOverlay(createCourseOverlay(item, course));
   });
 
-  LPHashmap.forEach((value) => {
-    value.generateRequiredKCs();
-  });
 
+  generateKcsInAllLPs();
   drawCanvas();
 }
 
@@ -250,12 +251,12 @@ function createCourseOverlay( item, obj) {
  */
 
     courseObject.setExtended();
-
+/*
     courseObject.myLP.courses.forEach((value)=>{
       let victim = document.getElementById(value.x + ";" + value.y);
       victim.firstChild.style.marginTop = value.margin_top + "px";
     });
-
+*/
 
 
   });
@@ -263,6 +264,8 @@ function createCourseOverlay( item, obj) {
 
   course.appendChild(dropDown);
   document.getElementById("canvas_course_container").appendChild(course);
+
+  return course;
 }
 
 
@@ -300,14 +303,14 @@ function addCourse(data) {
   }
 
   // Add the course to the lp and create overlay.
-  createCourseOverlay(data,lp.addCourse(data));
+  let course = lp.addCourse(data);
+  course.setCourseOverlay(createCourseOverlay(data,course));
+
 
 
   // Regenerate all required KCs just in case the new course created something that is needed later.
-  LPHashmap.forEach((value) => {
-    value.generateRequiredKCs();
-  });
-
+  generateKcsInAllLPs();
+  reFormatSection(lpString, data.year);
 }
 
 function reFormatSection(lp,year){
@@ -315,16 +318,17 @@ function reFormatSection(lp,year){
   let heightAddition = 0;
   LPHashmap.get(key).courses.forEach((value => {
     value.margin_top = heightAddition;
+    value.courseOverlay.firstChild.style.marginTop = value.margin_top + "px";
     if (value.extended) {
       heightAddition += value.heightExtension;
     }
   }));
-
   drawCanvas();
 }
 
 
 function drawCanvas() {
+  resizeTofitCourses();
   //==== KC MAPPING ====
   /*courses.forEach((v)=>{
     REQ.forEach((e,k)=>{
@@ -412,6 +416,22 @@ function restoreMatrix() {
   if(oldMatrix.length>0)
     matrix = oldMatrix.pop();
 
+
+}
+
+function generateKcsInAllLPs() {
+  LPHashmap.forEach((value) => {
+    if (largestLP == null || value.courses.length > largestLP.courses) {
+      largestLP = value;
+    }
+    value.generateRequiredKCs();
+  });
+}
+
+/**
+ * Dynamically resize the canvas to fit all courses.
+ */
+function resizeTofitCourses() {
 
 }
 
