@@ -10,7 +10,7 @@ class KAnvas {
         this.width = 8000;
         this.height = 3000;
         
-        if(typeof lastname !== "undefined") {
+        if(typeof window.stage !== "undefined") {
             window.stage.destroyChildren();
         }
         
@@ -71,6 +71,8 @@ class KAnvas {
           
     handleResponse(data) {
         
+    	console.log("Handle response is running");
+    	
         //var data = JSON.parse(data);
         
         let year = data['year']; // Don't know why year sometimes is find using data.name... 

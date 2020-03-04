@@ -30,13 +30,16 @@ class KC {
     }
 }
 
-/*
+
 class Program {
-    constructor(name, readingPeriods) {
+    constructor(name, code, year, lp) {
         this.name = name;
-        this.readingPeriods = readingPeriods;
-        this.courses = [];
-        this.KCs = [];
+        this.code = code;
+        this.year = year;
+        this.lp = lp;
+        //this.readingPeriods = readingPeriods;
+        /*this.courses = [];
+        this.KCs = [];*/
     }
 }
-*/
+

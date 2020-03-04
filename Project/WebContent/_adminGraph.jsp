@@ -53,11 +53,18 @@ button {
 </div>
     
 <script>
-
+/*
+ * 
+ */
 
 function hideit() {
 	document.getElementById("command_log").innerHTML = "";
 	document.getElementById("GKcontainer").style.display = "none";
+	
+	if(window.state !== "undefined") {
+		window.stage.destroyChildren();
+	}
+	
 	window.data = new Object();
 	window.initialized = false;
 }
@@ -75,24 +82,60 @@ function save() {
 	for(var i = 0; i < arr.length -1; i++) {
 		t = arr.split(";");
 		if(t[0] == "ADD") {
-			
+			GKaddCourse(t[1], t[2], t[3]);
 		} else if(t[0] == "DELETE") {
-			
+			GKdeleteCourse(t[1], t[2], t[3]);
 		}
 	}
 	
-	
-	window.data = new Object();
-	window.initialized = false;
 	hideit();
 }
 
-function GKaddCourse() {
-	
+function GKaddCourse(courseCode, courseYear, courseLp) {
+	$.ajax({
+		url : 'admin',
+		type : "POST",
+		data : {
+			head : "PROGRAM",
+			method : "ADD_COURSE",
+			programCode : window.program.code,
+			programStartYear : window.program.year,
+			programStartLP : window.program.lp,
+			courseCode : courseCode,
+			courseYear : courseYear,
+			courseLP : courseLp
+			
+		},
+		success : function(response) {
+			document.getElementById("log").innerHTML += "ADD COURSE " + courseCode + " TO PROGRAM " + window.program.code  +"</br>";
+			document.getElementById("output").innerHTML += response + "</br>";
+		}
+
+	});
 }
 
-function GKdeleteCourse() {
-	
+function GKdeleteCourse(courseCode, courseYear, courseLp) {
+	console.log("Think this is not implemented");
+	$.ajax({
+		url : 'admin',
+		type : "POST",
+		data : {
+			head : "PROGRAM",
+			method : "REMOVE_COURSE",
+			programCode : window.program.code,
+			programStartYear : window.program.year,
+			programStartLP : window.program.lp,
+			courseCode : courseCode,
+			courseYear : courseYear,
+			courseLP : courseLp
+			
+		},
+		success : function(response) {
+			document.getElementById("log").innerHTML += "REMOVE COURSE " + courseCode + " FROM PROGRAM " + window.program.code  +"</br>";
+			document.getElementById("output").innerHTML += response + "</br>";
+		}
+
+	});
 }
 
 

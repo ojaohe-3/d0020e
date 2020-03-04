@@ -11,6 +11,9 @@ function readIn(dat) {
         window.data = dat;//JSON.parse(dat);
     }
     
+    window.program = new Program(dat.name, dat.code, dat.year, dat.lp);
+    console.log(program);
+    
     
     window.initialized = true;
     var canv = new KAnvas();
