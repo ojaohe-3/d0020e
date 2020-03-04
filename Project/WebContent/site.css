@@ -10,16 +10,15 @@ body {
 #canvas_container {
 	position: relative;
 	overflow: scroll;
-	width: 75%;
-	height: 600px;
+	height: 37em;
+	width: 98%;
 	border: #292929;
 	float: right;
 }
 canvas{
 	display: flex;
 	justify-content: center;
-	width: 5000px;
-	height: 3000px;
+
 }
 .SearchResult {
 	background-color : #404040;

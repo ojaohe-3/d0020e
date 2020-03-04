@@ -1,6 +1,7 @@
 .canvas_course {
     position: absolute;
-    //float: left;
+    float: left;
+    heigth: 15em;
 }
 
 .canvas_course h1 {
