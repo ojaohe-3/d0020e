@@ -6,7 +6,7 @@
 
 <script>
 function openNav() {
-  document.getElementById("main").style.marginLeft = "310px";
+  document.getElementById("main").style.marginLeft = "22em";
   document.getElementById("filterContainer").style.display = "block";
   document.getElementById("filterContainerClosed").style.display = "none";
 }
@@ -14,8 +14,8 @@ function openNav() {
 function closeNav() {
   document.getElementById("filterContainer").style.display = "none";
   document.getElementById("filterContainerClosed").style.display = "block";
-  document.getElementById("filterContainerClosed").style.width = "50px";
-  document.getElementById("main").style.marginLeft= "50px";
+  document.getElementById("filterContainerClosed").style.width = "3.5em";
+  document.getElementById("main").style.marginLeft= "3.5em";
 }
 </script>
 
