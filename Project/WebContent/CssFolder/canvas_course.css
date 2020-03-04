@@ -1,11 +1,12 @@
 .canvas_course {
     position: absolute;
     float: left;
-    heigth: 15em;
+    
 }
 
 .canvas_course h1 {
     font-size: 15pt;
+    padding: 0.2em;
 }
 
 .canvas_course_dropdown {
@@ -16,6 +17,7 @@
 
 .canvas_course p {
     color: black;
+    padding: 0.5em;
 }
 
 .canvas_course table {

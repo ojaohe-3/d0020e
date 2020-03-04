@@ -9,11 +9,12 @@ body {
 
 #canvas_container {
 	position: relative;
-	overflow: scroll;
+	overflow: auto;
 	height: 37em;
 	width: 98%;
 	border: #292929;
 	float: right;
+	
 }
 canvas{
 	display: flex;
