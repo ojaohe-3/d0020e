@@ -49,10 +49,6 @@ function kcClicked(name) {
 		url : 'GetKC/byName',
 		data : {
 			name : name,
-//			generalDescription : generalDescription,
-//			taxonomyDescription : taxonomyDescription1
-//			taxonomyDescription : taxonomyDescription2,
-//			taxonomyDescription : taxonomyDescription3
 		},
 		success : function(response) {
 			
@@ -78,12 +74,6 @@ function kcClicked(name) {
 
 			
 			
-			//response = JSON.parse(JSON.stringify(response));
-			//document.getElementById("KCInformation").style.display = "block";
-			
-			
-			//$('#displayKC').style.display = "block";
-			
 			console.log(response);
 			console.log(response.ONE);
 
@@ -94,6 +84,6 @@ function kcClicked(name) {
 }
 
 function hideKCdiv() {
-	$('#displayKC').css('display','none');
+	$('#KCInformation').css('display','none');
 	$('#close_btn').css('display','none');
 }
