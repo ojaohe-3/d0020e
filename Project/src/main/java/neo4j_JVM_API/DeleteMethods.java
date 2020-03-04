@@ -179,7 +179,7 @@ public class DeleteMethods {
 		String query = "MATCH (program: " + type + " {" + CourseProgram.ProgramLabels.CODE + ": \"" + programCode + "\", "+ 
 				CourseLabels.YEAR + " : \"" + programStartDate.getYear() + "\", " + 
 				CourseLabels.LP + " :\"" + programStartDate.getPeriod() + 
-				"\" }})<-[relation]-(course: " + Course.course + " {" + 
+				"\" })<-[relation]-(course: " + Course.course + " {" + 
 				Course.CourseLabels.CODE + ": \"" + courseCode + "\", "+ 
 				CourseLabels.YEAR + " : \"" + courseStartDate.getYear() + "\", " + 
 				CourseLabels.LP + " : \"" + courseStartDate.getPeriod() + 

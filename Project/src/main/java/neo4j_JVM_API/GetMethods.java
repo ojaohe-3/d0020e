@@ -118,7 +118,7 @@ public class GetMethods {
 
 		String query = "MATCH (courseProgram: CourseProgram {code: \"" + code + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) ";
 		query += "RETURN courseProgram";
-
+		System.out.println(query);
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
 

@@ -137,7 +137,8 @@ public class Course extends CourseInformation {
 	@Override
 	public String toString() {
 		try {
-			return getAsJson().toString();
+			return getAsJson().toString().replaceAll("\\\\","").replaceAll("\"\\{",
+					"{").replaceAll("}\"","}");
 		} catch (JSONException e) {
 			e.printStackTrace();
 			return null;

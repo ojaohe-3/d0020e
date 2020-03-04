@@ -23,6 +23,8 @@ function user_create() {
 			success : function(response) {
 				document.getElementById("log").innerHTML += "CREATE USER " + data[0];
 				document.getElementById("output").innerHTML += response + "</br>";
+				console.log("type of response = " + typeof response);
+				readIn(response);
 			}
 
 		});

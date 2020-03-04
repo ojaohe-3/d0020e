@@ -88,12 +88,14 @@
 					<li><button onclick="program_copy_from_year_special()">Copy Specialization From Year</button></li>
 					<li><button onclick="program_add_course()">Add Course to program</button></li>
 					<li><button onclick="get_courses_in_program()">Get Courses in Program</button></li>
+					<li><button onclick="graphModifyCourse()">Modify Course using graphics</button>
 				</ul>
 			</div>
 		
 		
 		</div>
 	
+	<%@include file="_adminGraph.jsp" %>
 
 	<div class="row">
 		<div class="col-sm-4" id="log"> <h4>log</h4> </div>

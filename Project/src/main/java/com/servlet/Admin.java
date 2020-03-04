@@ -540,6 +540,26 @@ public class Admin extends HttpServlet {
 
 			return "The relationship between " + programCode + " and " + courseCode + " has been modified";
 
+		} 
+		if(method.equals("REMOVE_COURSE")) {
+			String programCode = request.getParameter("programCode");
+			String programStartYear = request.getParameter("programStartYear");
+			String programStartLP = request.getParameter("programStartLP");
+			String courseCode = request.getParameter("courseCode");
+			String courseYear = request.getParameter("courseYear");
+			String courseLP = request.getParameter("courseLP");
+
+			int programYear = Integer.parseInt(programStartYear);
+			LP programStartPeriod = LP.getByString(programStartLP);
+			int course_Year = Integer.parseInt(courseYear);
+			LP coursePeriod = LP.getByString(courseLP);
+
+			CourseDate courseStartDate = new CourseDate(course_Year, coursePeriod);
+			CourseDate programStartDate = new CourseDate(programYear, programStartPeriod);
+			
+			Neo4jConfigLoader.getApi().deleteMethods.deleteRelationCourseInProgram(courseCode, courseStartDate, programCode, programStartDate, CourseProgram.ProgramType.PROGRAM);
+		
+			return "The relationship between " + programCode + " and " + courseCode + " has been deleted";
 		}
 		if(method.equals("CREATE_SPECIAL")) {
 			String name = request.getParameter("name");
