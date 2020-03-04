@@ -41,15 +41,15 @@ class CourseObject{
         this.dockPointsReq = [];
         this.dockPointsDev = [];
         this.pointHeight = 24; // docking point height.
+
+        this.data.Required.forEach((value)=>{
+            this.addIngoingDockingPoint(value);
+        });
+
+
     }
 
-    /**
-     * Get the total height of this course object.
-     * @returns {*}
-     */
-    getHeight() {
-        return this.height + (this.extended ? 0 : this.heightExtension);
-    }
+
 
     /**
      * This creates links for all required KCs in this course.
@@ -57,6 +57,20 @@ class CourseObject{
      * created by a course before a course can add it are required.
      */
     generateAllIngoingKCs(myLP) {
+        this.dockPointsReq.forEach((dockingPoint)=>{
+            if (!dockingPoint.hasLink()) {
+                let developedDockingpoint = myLP.findKCSource(dockingPoint.kcData);     // find starting dock point.
+                if (developedDockingpoint != null) {
+                    let link = new KCLink();
+                    // Link both docking points to the newly created link.
+                    developedDockingpoint.addKCLinkConnection(link);
+                    link.setIngoingDockingPoint(developedDockingpoint);
+                    dockingPoint.addKCLinkConnection(link);
+                    link.setOutgoingDockingPoint(dockingPoint);
+                }
+            }
+        });
+/*
         this.data.Required.forEach((value)=>{
             let requiredDockinpoint = this.addIngoingDockingPoint(value);// Create a docking point even if no KC exists.
             let developedDockingpoint = myLP.findKCSource(value);     // find starting dock point.
@@ -69,6 +83,8 @@ class CourseObject{
                 link.setOutgoingDockingPoint(requiredDockinpoint);
             }
         });
+
+ */
     }
 
     /**
@@ -264,6 +280,14 @@ class CourseObject{
         return this.x;
     }
 
+    /**
+     * Get the total height of this course object.
+     * @returns {*}
+     */
+    getHeight() {
+        return this.height + (this.extended ? 0 : this.heightExtension);
+    }
+
 }
 
 /**
@@ -320,6 +344,10 @@ class DockingPoint {
 
     isExtended() {
         return this.courseObject.extended;
+    }
+
+    hasLink() {
+        return this.kcLinks.length > 0;
     }
 
     /**

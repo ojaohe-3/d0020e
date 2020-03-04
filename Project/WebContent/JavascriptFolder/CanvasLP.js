@@ -1,6 +1,10 @@
 class CanvasLP {
 
-    constructor(precedingLP) {
+    constructor(precedingLP, xPosition, courseHeight, year, lp) {
+        this.x = xPosition;
+        this.courseHeight = courseHeight;
+        this.year = year;
+        this.lp = lp;
         this.courses = [];  // A list of ALL courses
         this.timestamp = null;
         this.precendingLP = precedingLP;
@@ -24,8 +28,21 @@ class CanvasLP {
     /**
      * Add a course object to this LP.
      * @param courseObject
+     * @return - The newly created course.
      */
-    addCourse(courseObject) {
+    addCourse(courseData) {
+        let courseObject = new CourseObject(
+            courseData,
+            {
+                x: this.x,
+                y: this.courses.length*this.courseHeight,
+                width: width,
+                height: height,
+                thickness: 24
+            },
+            this
+        );
+        courseObject.data.lp = this.lp;
         this.courses.push(courseObject);
 
         // Add all generated KCs to this timestamp.
@@ -35,6 +52,7 @@ class CanvasLP {
             // This function will only create A KC if no docking point exist already.
             this.timestamp.addKCSource(value,dockingPoint);
         });
+        return courseObject;
     }
 
     /**

@@ -61,16 +61,12 @@ function generateCanvas(data) {
     offsetYear = item.year-year;
     currentYear = item.year;
     let currentLPString = 0;
-    let x = width*1.2*offsetYear*4;
     if (item.lp === "TWO") {
       currentLPString = 1;
-      x = width *1.2*(1+offsetYear*4);
     } else if (item.lp === "THREE") {
       currentLPString = 2;
-      x = width *1.2*(2+(offsetYear-1)*4);
     } else if (item.lp === "FOUR") {
       currentLPString = 3;
-      x = width *1.2*(3+(offsetYear-1)*4);
     }
 
 
@@ -88,7 +84,7 @@ function generateCanvas(data) {
           year ++;
         }
         let tempLPString = year + ";" + i;
-        newLP = new CanvasLP(currentLPObject);
+        newLP = new CanvasLP(currentLPObject,width *1.2*LPHashmap.size, height*1.2, year,i);
         LPHashmap.set(tempLPString,newLP);
         currentLPObject = newLP;
       }
@@ -97,26 +93,11 @@ function generateCanvas(data) {
     // all courses are sorted after year. I.e. no more courses from previous year will pop up.
 
 
-
-    // TODO Set the LPs to numbers instead of ONE, TWO, THREE, FOUR.
-
     let courseLPIdentifier = item.year + ";" + currentLPString;
     currentLPObject = LPHashmap.get(courseLPIdentifier);
-    let y = currentLPObject.courses.length*height*1.2;
-    let courseObject = new CourseObject(
-        item,
-        {
-          x: x,
-          y: y,
-          width: width,
-          height: height,
-          thickness: 24
-        },
-        currentLPObject
-    );
-    courseObject.data.lp = currentLPString;
-    createCourseOverlay(x,y,item, courseObject);
-    currentLPObject.addCourse(courseObject);
+
+    // this creates the course and adds a course overlay.
+    createCourseOverlay(item, currentLPObject.addCourse(item));
   });
 
   LPHashmap.forEach((value) => {
@@ -126,7 +107,9 @@ function generateCanvas(data) {
   drawCanvas();
 }
 
-function createCourseOverlay(x,y, item, obj) {
+function createCourseOverlay( item, obj) {
+  let x = obj.getX();
+  let y = obj.getY();
   let courseDefinition = item["courseCode"]+item["year"]+item["lp"];
 
   /*
@@ -186,18 +169,18 @@ function createCourseOverlay(x,y, item, obj) {
   dropdown_table.appendChild(KCout);
   dropDown.appendChild(dropdown_table);
 
-  obj.dockPointsDev.forEach((value) => {
+  obj.data.Developed.forEach((value) => {
     let p = document.createElement("p");
     p.setAttribute("style","height: " + obj.thickness + "px;");
-    p.innerText = value.KC.name;
+    p.innerText = value.name;
     KCout.appendChild(p);
   });
 
-  obj.dockPointsReq.forEach((value) => {
+  obj.data.Required.forEach((value) => {
     if (value.KC !== null) {
       let p = document.createElement("p");
       p.setAttribute("style","height: " + obj.thickness + "px;");
-      p.innerText = value.KC.name;
+      p.innerText = value.name;
       KCin.appendChild(p);
     }
 
@@ -254,6 +237,7 @@ function createCourseOverlay(x,y, item, obj) {
   document.getElementById("canvas_course_container").appendChild(course);
 }
 
+
 function findCourseByCode(code) {
   let courseObject = null;
   courses.forEach((v,k)=>{
@@ -265,20 +249,41 @@ function findCourseByCode(code) {
   });
   return courseObject;
 }
+
+/**
+ * This  adds a new course to the canvas.
+ * @param data
+ */
 function addCourse(data) {
-  try{
-    courses.set(data["courseCode"]+data["year"]+data["lp"]);
-    regenerateCanvas();
-  }catch (e) {
-    alert(e.message+' Value might already exist!');
+  let lpString = 0;
+
+  if (data.lp === "TWO") {
+    lpString = 1;
+  } else if (data.lp === "THREE") {
+    lpString = 2;
+  } else if (data.lp === "FOUR") {
+    lpString = 3;
   }
+
+  let lp = LPHashmap.get(data.year + ";" + lpString);
+  if (lp == null) {
+    console.log("course is out of bounds");
+    return;
+  }
+
+  // Add the course to the lp and create overlay.
+  createCourseOverlay(data,lp.addCourse());
+
+
+  // Regenerate all required KCs just in case the new course created something that is needed later.
+  LPHashmap.forEach((value) => {
+    value.generateRequiredKCs();
+  });
 
 }
 
 function reFormatSection(lp,year){
   let key = year+";"+lp;//string
-  let oldkey ="";
-  let old = {};
   let heightAddition = 0;
   LPHashmap.get(key).courses.forEach((value => {
     value.margin_top = heightAddition;
@@ -289,15 +294,7 @@ function reFormatSection(lp,year){
 
   drawCanvas();
 }
-function findCourseByCode(code) {
-  let obj = {};
-  courses.forEach((v,k)=>{
-    if(k.includes(code)){
-      obj = v;//cant break for loops apparently
-    }
-  });
-  return obj;
-}
+
 function addCourse(data) {
   // TODO this does not wörk.
   try{
