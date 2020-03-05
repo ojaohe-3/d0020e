@@ -16,8 +16,48 @@ public class Main {
     static CourseProgram courseOrder;
     static Neo4JAPI neoapi;
 
-    public static void main(String[] args) throws IOException {
-        Course test = new Course("hello", "ddddd", 7.5f, "hello there cowboy", "man", new CourseDate(102, LP.ONE));
+    public static void main(String[] args) throws IOException { 
+    	
+    	/*
+    	User admin = new User("admin", "password");
+    	admin.hashPassword();
+    	admin.setAdmintag(true);
+    	
+    	Neo4jConfigLoader.getApi().userMethods.addUser(admin);*/
+    	
+    	
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Introduktion Till Programmering","D0009E",(float) 7.5, "This is the Desc", "Bengtsson", new CourseDate(2017,LP.ONE))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Datateknik och Ingenjörsvetenskap","D0015E",(float) 7.5, "This is the Desc", "Håkan Jonsson", new CourseDate(2017,LP.ONE))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Fysik 1","F0004T",(float) 7.5, "This is the Desc", "Gustavsson", new CourseDate(2017,LP.TWO))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Diskret matematik", "M0009E",(float) 7.5, "This is the Desc", "Stefan Ericsson", new CourseDate(2017,LP.TWO))));
+    	  
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Objektorienterad programmering och design","D0010E",(float) 7.5, "This is the Desc", "Håkan Jonsson", new CourseDate(2018,LP.THREE))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Grundkurs i projekt- och industriell ekonomi","R0005N",(float) 7.5, "This is the Desc", "Posten Anders", new CourseDate(2018,LP.THREE))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Digitalteknik","D0011E",(float) 7.5, "This is the Desc", "Ulf Bodin", new CourseDate(2018,LP.FOUR))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Matematik 1 - Differentialkalkyl","M0038M",(float) 7.5, "This is the Desc", "Ove Edlund", new CourseDate(2018,LP.FOUR))));
+    	  
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Mikrodatorteknik","D0013E",(float) 7.5, "This is the Desc", "Per Lindgren", new CourseDate(2018,LP.ONE))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Nätverksprogrammering","D0036D",(float) 7.5, "This is the Desc", "Typ Ulf", new CourseDate(2018,LP.ONE))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Algoritmer och datastrukturer","D0012E",(float) 7.5, "This is the Desc", "Jingsen Chen", new CourseDate(2018,LP.TWO))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Matematik 2 - Integralkalkyl och linjär algebra", "M0043M",(float) 7.5, "This is the Desc", "Ove Edlund", new CourseDate(2018,LP.TWO))));
+    	  
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Realtidssystem","D0003E",(float) 7.5, "This is the Desc", "Bengtsson", new CourseDate(2019,LP.THREE))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Matematik 3 - Differentialekvationer, komplexa tal och transformteori","M0039M",(float) 7.5, "This is the Desc", "Ove Edlund", new CourseDate(2019,LP.THREE))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Datorkommunikation","D0002E",(float) 7.5, "This is the Desc", "Evgeny Osipov", new CourseDate(2019,LP.FOUR))));
+    	
+    	  
+    	//Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Mikrodatorteknik","D0013E",(float) 7.5, "This is the Desc", "Per Lindgren", new CourseDate(2019,LP.ONE))));
+    	//Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Nätverksprogrammering","D0036D",(float) 7.5, "This is the Desc", "Typ Ulf", new CourseDate(2019,LP.ONE))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Databasteknik","D0018E",(float) 7.5, "This is the Desc", "Olof Schelen", new CourseDate(2019,LP.TWO))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Projekt i datateknik", "D0020E",(float) 15, "This is the Desc", "Ulf Bodin", new CourseDate(2019,LP.TWO))));
+    	  
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Nätverk och Mobilitet","D0021E",(float) 7.5, "This is the Desc", "Christer Åhlund", new CourseDate(2020,LP.THREE))));
+    	Neo4jConfigLoader.getApi().createMethods.createCourse(new Course(new CourseInformation("Examensarbete i datateknik","X0001E",(float) 15, "This is the Desc", "Josef Hallberg", new CourseDate(2020,LP.FOUR))));
+    	
+
+    }
+}
+        /*Course test = new Course("hello", "ddddd", 7.5f, "hello there cowboy", "man", new CourseDate(102, LP.ONE));
         test.setRequiredKC(new KC("wow", "wowowo", 2, "no"));
         test.setRequiredKC(new KC("2323", "wowo33wo", 25, "n2o"));
         test.setDevelopedKC(new KC("wow", "wowowo", 3, "yes"));
@@ -276,7 +316,7 @@ public class Main {
 			print("Developed KCs");
 			printKCs(c.getDevelopedKC());
 			print("Required KCs");
-			printKCs(c.getRequiredKC());*/
+			printKCs(c.getRequiredKC());*//*
 
     }
 
@@ -348,4 +388,4 @@ public class Main {
 
     }
 
-}
+}*/
