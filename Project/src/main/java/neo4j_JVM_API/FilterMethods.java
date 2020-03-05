@@ -90,8 +90,12 @@ public class FilterMethods {
 	 * @return An array containing all the search results.
 	 */
 	public ProgramInformation[] filterProgramByTag(CourseProgram.ProgramLabels filter, String searchTerm, CourseProgram.ProgramLabels orderBy, boolean DESCENDING) {
+		return filterProgramByTag(ProgramType.PROGRAM, filter, searchTerm, orderBy, DESCENDING);
 
-		String query = "MATCH (program: " + CourseProgram.ProgramType.PROGRAM +") WHERE LOWER(program." + filter + ") CONTAINS LOWER(\"" + searchTerm + "\") RETURN program ORDER BY program." + orderBy;
+	}
+
+	private ProgramInformation[] filterProgramByTag(CourseProgram.ProgramType type, CourseProgram.ProgramLabels filter, String searchTerm, CourseProgram.ProgramLabels orderBy, boolean DESCENDING) {
+		String query = "MATCH (program: " + type +") WHERE LOWER(program." + filter + ") CONTAINS LOWER(\"" + searchTerm + "\") RETURN program ORDER BY program." + orderBy;
 
 		if (DESCENDING) {
 			query += " DESC";
@@ -115,6 +119,14 @@ public class FilterMethods {
 			i++;
 		}
 		return result;
+	}
+
+	public ProgramInformation[] filterSpecializationByTag(CourseProgram.ProgramLabels filter, String searchTerm) {
+		return filterProgramByTag(ProgramType.SPECIALIZATION, filter, searchTerm, ProgramLabels.YEAR, true);
+	}
+
+	public ProgramInformation[] filterSpecializationByTag(CourseProgram.ProgramLabels filter, String searchTerm, CourseProgram.ProgramLabels orderBy, boolean DESCENDING) {
+		return filterProgramByTag(ProgramType.SPECIALIZATION, filter, searchTerm, orderBy, DESCENDING);
 	}
 	
 	/**
@@ -347,6 +359,29 @@ public class FilterMethods {
 		}
 		return programs.toArray(new ProgramInformation[programs.size()]);
 		
+	}
+
+	public ProgramInformation[] filterSpecializationByTopic(String topicTitle) {
+		String query = "MATCH(topic: Topic {title : \""+ topicTitle +"\"})<-[r]-(courseProgram: "+ProgramType.SPECIALIZATION+") RETURN courseProgram ";
+
+		StatementResult result = this.communicator.readFromNeo(query);
+		ArrayList<ProgramInformation> programs = new ArrayList<ProgramInformation>();
+
+		while(result.hasNext()) {
+			Record row = result.next();
+			programs.add(new ProgramInformation(
+					row.get("courseProgram").get(ProgramLabels.NAME.toString()).toString().replaceAll("\"", ""),
+					row.get("courseProgram").get(ProgramLabels.CODE.toString()).toString().replaceAll("\"", ""),
+					row.get("courseProgram").get(ProgramLabels.DESCRIPTION.toString()).toString().replaceAll("\"", ""),
+					new CourseDate(
+							Integer.parseInt(row.get("courseProgram").get(ProgramLabels.YEAR.toString()).toString().replaceAll("\"", "")),
+							LP.valueOf(row.get("courseProgram").get(ProgramLabels.LP.toString()).toString().replaceAll("\"", ""))),
+					Float.parseFloat(row.get("courseProgram").get(ProgramLabels.CREDITS.toString()).toString().replaceAll("\"", "")),
+					ProgramType.PROGRAM
+			));
+		}
+		return programs.toArray(new ProgramInformation[programs.size()]);
+
 	}
 	
 	/**

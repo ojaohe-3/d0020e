@@ -26,7 +26,7 @@ let oldMatrix = [];
 
 let LPHashmap = new Map();
 
-let largestLP = null;    // the biggest amount of courses in some LP.
+let startYear = 0;
 
 canvas.addEventListener('move', (e)=>{
   var mousePos = getMousePos(canvas, evt);
@@ -63,6 +63,7 @@ function getMousePos(canvas, event) {
 }
 
 function generateCanvas(data) {
+  startYear = data.year;
   LPHashmap = new Map();
   let year = data.year;
   let offsetYear = 0;
@@ -75,55 +76,35 @@ function generateCanvas(data) {
   while(courseContainer.childElementCount > 0) {
     courseContainer.removeChild(courseContainer.firstElementChild);
   }
-
-  data['Courses'].forEach(function (item, index,arr){
-    // This is where the course is created.
-    offsetYear = item.year-year;
-    currentYear = item.year;
-    let currentLPString = 0;
-    if (item.lp === "TWO") {
-      currentLPString = 1;
-    } else if (item.lp === "THREE") {
-      currentLPString = 2;
-    } else if (item.lp === "FOUR") {
-      currentLPString = 3;
-    }
-
-
-    // This creates a new year with LP and timestamps.
-    // We have to create the timestamps in order since every timestamp
-    // depend on the previous timestamp.
-    if (!LPHashmap.has(currentYear + ";" + currentLPString)) {
-      if (LPHashmap.has(currentYear + ";" + 3)) {
-        currentLPObject = LPHashmap.get(currentYear + ";" + 3);
-      }
-
-      let newLP = null;
-      for (let i = 0,year = item.year; i < 4; i++) {
-        if (i == 2) {
-          year ++;
-        }
-        let tempLPString = year + ";" + i;
-        newLP = new CanvasLP(currentLPObject,width *1.2*LPHashmap.size, height*1.2, year,i);
-        LPHashmap.set(tempLPString,newLP);
-        currentLPObject = newLP;
-      }
-
-    }
-    // all courses are sorted after year. I.e. no more courses from previous year will pop up.
-
-
-    let courseLPIdentifier = item.year + ";" + currentLPString;
-    currentLPObject = LPHashmap.get(courseLPIdentifier);
-
-    // this creates the course and adds a course overlay.
-    let course = currentLPObject.addCourse(item);
-    course.setCourseOverlay(createCourseOverlay(item, course));
-  });
-
+  addAllCourses(data['Courses']);
 
   generateKcsInAllLPs();
   drawCanvas();
+}
+
+/**
+ * Add a program specialization to the canvas. This function can even add
+ * specializations in the middle of a program.
+ * @param data
+ */
+function appendProgramspecialization(data) {
+  addAllCourses(data['Courses']);
+
+  generateKcsInAllLPs();
+  drawCanvas();
+
+}
+
+function convertLP(lp) {
+  let result = 0;
+  if (lp === "TWO") {
+    result = 1;
+  } else if (lp === "THREE") {
+    result = 2;
+  } else if (lp === "FOUR") {
+    result = 3;
+  }
+  return result;
 }
 
 function createCourseOverlay( item, obj) {
@@ -157,13 +138,16 @@ function createCourseOverlay( item, obj) {
 
   //--------------- info ------------------
   let info = document.createElement("div");
-  info.setAttribute("style","height: "+height+"px; width:100%; position:relative; background-color: white; display:inline-block;");
+  info.className = "courseBox";
+  info.setAttribute("style","height: "+height+"px;");
+  //info.setAttribute("style","height: "+height+"px; width:100%; position:relative; background-color: white; display:inline-block;");
   info.innerHTML =
       "<h1>" +item["name"]+"</h1>" +
       "<p>" +item["courseCode"]+"</p>" +
       "<p>"+item["examiner"]+"</p>";
   let infoButton = document.createElement("button");
-  infoButton.setAttribute("style","width:60px;height:60px");
+  infoButton.className = "courseInformation";
+  //infoButton.setAttribute("style","width:60px;height:60px");
   info.appendChild(infoButton);
   infoButton.addEventListener("click", function () {
     showCourseInfo(obj.data);
@@ -269,18 +253,6 @@ function createCourseOverlay( item, obj) {
 }
 
 
-function findCourseByCode(code) {
-  let courseObject = null;
-  courses.forEach((v,k)=>{
-    for (let i = 0; k.length; i++) {
-      if(v[i].data.courseCode.contains(code)){
-        courseObject =  v[i];
-      }
-    }
-  });
-  return courseObject;
-}
-
 /**
  * This  adds a new course to the canvas.
  * @param data
@@ -313,6 +285,55 @@ function addCourse(data) {
   reFormatSection(lpString, data.year);
 }
 
+function addAllCourses(courses) {
+  let year = startYear;
+  let offsetYear = 0;
+  let currentYear = 0;
+  let previousTimestamp = null;
+  let currentLPObject = null;
+  courses.forEach(function (item, index,arr){
+    // This is where the course is created.
+    offsetYear = item.year-year;
+    currentYear = item.year;
+    let currentLPString = convertLP(item.lp);
+
+
+    // This creates a new year with LP and timestamps.
+    // We have to create the timestamps in order since every timestamp
+    // depend on the previous timestamp.
+    if (!LPHashmap.has(currentYear + ";" + currentLPString)) {
+      let latestYear = LPHashmap.size/4 + startYear;
+      if (LPHashmap.has(latestYear + ";" + 3)) {
+        currentLPObject = LPHashmap.get(latestYear + ";" + 3);
+      } else {
+        currentLPObject = null;
+      }
+      // TODO TEST IF THIS WORK, YOU IMBECILE.
+
+      while (!LPHashmap.has(currentYear + ";" + currentLPString)) {
+        for (let i = 0; i < 4; i++) {
+          if (i === 2) {
+            latestYear ++;
+          }
+          let newLP = new CanvasLP(currentLPObject,width *1.2*LPHashmap.size, height*1.2, latestYear,i);
+          LPHashmap.set(latestYear + ";" + i,newLP);
+          currentLPObject = newLP;
+        }
+      }
+
+    }
+    // all courses are sorted after year. I.e. no more courses from previous year will pop up.
+
+
+    let courseLPIdentifier = item.year + ";" + currentLPString;
+    currentLPObject = LPHashmap.get(courseLPIdentifier);
+
+    // this creates the course and adds a course overlay.
+    let course = currentLPObject.addCourse(item);
+    course.setCourseOverlay(createCourseOverlay(item, course));
+  });
+}
+
 function reFormatSection(lp,year){
   let key = year+";"+lp;//string
   let heightAddition = 0;
@@ -329,18 +350,6 @@ function reFormatSection(lp,year){
 
 function drawCanvas() {
   resizeTofitCourses();
-  //==== KC MAPPING ====
-  /*courses.forEach((v)=>{
-    REQ.forEach((e,k)=>{
-      let obj = findCourseByCode(k);
-      if(obj !== null){
-        e.filter(value =>v.data.Developed.some(value1 => kcEquals(value1,value))).forEach((x)=>{
-          v.setSnapPoints(obj,x);
-        });
-      }
-    });
-  });*/
-  //==== DRAWING ====
   saveMatrix();
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -421,9 +430,6 @@ function restoreMatrix() {
 
 function generateKcsInAllLPs() {
   LPHashmap.forEach((value) => {
-    if (largestLP == null || value.courses.length > largestLP.courses) {
-      largestLP = value;
-    }
     value.generateRequiredKCs();
   });
 }
