@@ -14,6 +14,11 @@
 
 	button {
 		min-width: 300px;
+		color: black;
+	}
+
+	ul {
+		list-style:none;
 	}
 
 </style>
