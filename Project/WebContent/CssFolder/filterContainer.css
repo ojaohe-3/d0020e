@@ -5,9 +5,8 @@
     height: auto;
     display: block;
     color: #bababa;
-
+    overflow-y: auto;
 }
-
 
 .radio input {
   position: absolute;
@@ -85,7 +84,10 @@
 	margin-bottom: 30px;
 }
 
-
+.nav-pills > li > a:hover {
+	color: #bababab;
+	background: #333333;
+}
 
 a {
 	color: #bababa;
@@ -127,9 +129,9 @@ a {
 .filterContainer .closebtn {
   position: absolute;
   top: 0;
-  right: 25px;
+  right: 1em;
   font-size: 36px;
-  margin-left: 50px;
+  margin-left: 10em;
 }
 
 #filterContainerClosed .closebtn {
@@ -148,4 +150,9 @@ a:hover {
 #main {
   transition: margin-left .5s;
   margin-left: 22em;
+}
+
+#course_search_results, #kc_search_results, #program_search_results, #topic_search_results {
+	overflow-y: auto;
+	max-height: 13em;
 }
