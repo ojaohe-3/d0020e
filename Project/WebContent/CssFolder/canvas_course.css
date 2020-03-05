@@ -1,18 +1,16 @@
 .canvas_course {
     position: absolute;
     float: left;
-    
 }
 
 .canvas_course h1 {
     font-size: 15pt;
-    padding: 0.2em;
 }
 
 .canvas_course_dropdown {
     display:none;
     width: 100%;
-    background-color: white;
+    background-color: #dbdbdb;
 }
 
 .canvas_course p {
@@ -52,10 +50,40 @@
 }
 
 .canvas_course_button {
-    width: 30px;
-    height: 30px;
+    width: 2em;
+    height: 2em;
     background-color: dimgray;
     position: absolute;
     bottom: 0px;
     right: 0px;
+}
+
+.canvas_course_button:hover {
+    background-color: #565656;
+}
+
+.courseInformation {
+	width: 2em;
+	height: 2em;
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    background: #bababa;
+    border: solid;
+}
+
+.courseBox {
+	width:100%; 
+	position:relative; 
+	background-color: #dbdbdb; 
+	display:inline-block;
+}
+
+.canvas_course_dropdown {
+    
+}
+
+.courseBox p {
+	margin-bottom: 0;
+	padding-bottom: 0;
 }

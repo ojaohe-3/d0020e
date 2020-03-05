@@ -156,13 +156,16 @@ function createCourseOverlay( item, obj) {
 
   //--------------- info ------------------
   let info = document.createElement("div");
-  info.setAttribute("style","height: "+height+"px; width:100%; position:relative; background-color: white; display:inline-block;");
+  info.className = "courseBox";
+  info.setAttribute("style","height: "+height+"px;");
+  //info.setAttribute("style","height: "+height+"px; width:100%; position:relative; background-color: white; display:inline-block;");
   info.innerHTML =
       "<h1>" +item["name"]+"</h1>" +
       "<p>" +item["courseCode"]+"</p>" +
       "<p>"+item["examiner"]+"</p>";
   let infoButton = document.createElement("button");
-  infoButton.setAttribute("style","width:60px;height:60px");
+  infoButton.className = "courseInformation";
+  //infoButton.setAttribute("style","width:60px;height:60px");
   info.appendChild(infoButton);
   infoButton.addEventListener("click", function () {
     showCourseInfo(obj.data);

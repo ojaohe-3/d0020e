@@ -5,6 +5,7 @@
     height: auto;
     display: block;
     color: #bababa;
+    overflow-y: auto;
 }
 
 .radio input {
