@@ -247,15 +247,19 @@ class KAnvas {
                 x += t.boxSize * 1.4 * (2+(oYear-1)*4);
                 cLP = "FOUR";
                 eLP = 3;
-                cYear++;
+                //cYear++;
             }else if(cLP === "FOUR"){
                 x += t.boxSize * 1.4 * (3+(oYear-1)*4);
                 cLP = "ONE"
                 eLP = 4;
             }
             //console.log(cLP + " " + x);
-            t.layer1.add(addCourseBox(cYear, eLP, t.boxSize, x, t.spaceBetweenY + (t.boxSize + t.spaceBetweenY) * occurencies(takenXpos, x)));
             
+            
+            t.layer1.add(addCourseBox(cYear, eLP, t.boxSize, x, t.spaceBetweenY + (t.boxSize + t.spaceBetweenY) * occurencies(takenXpos, x)));
+            if(cLP === "TWO") {
+                cYear++;
+            }
         }
     
         
