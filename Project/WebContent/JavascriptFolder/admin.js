@@ -831,6 +831,41 @@ function program_delete_special() {
 		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
 	}
 }
+	
+function specialization_add_course() {
+	var input = prompt("specializationName;programCode;specializationtartYear;specializationStartLP;courseCode;courseYear;courseLP");
+		
+	var data = input.split(";");
+		
+	if(data.length == 7){
+			
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "ADD_COURSE_SPECIALIZATION",
+				specializationName : data[0],
+				programCode : data[1],
+				specializationtartYear : data[2],
+				specializationtartLP : data[3],
+				courseCode : data[4],
+				courseYear : data[5],
+				courseLP : data[6]
+					
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "ADD COURSE " + data[4] + " TO PROGRAM " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+			
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+
 // YeAH 800 rows in one File :pPPpPPpPppppPPPp
 
 // This is the oneline version

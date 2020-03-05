@@ -613,10 +613,42 @@ public class Admin extends HttpServlet {
 
 			return "The progrmspecialization named " + oldName + " has been modified. New name is " + newName;
 
-		}else {
+		}
+		if(method.contentEquals("ADD_COURSE_SPECIALIZATION")) {
+			String specialiZationName = request.getParameter("specializationName");
+			String programCode = request.getParameter("programCode");
+			String specializationStartYear = request.getParameter("specializationtartYear");
+			String specializationStartLP = request.getParameter("specializationtartLP");
+			String courseCode = request.getParameter("courseCode");
+			String courseYear = request.getParameter("courseYear");
+			String courseLP = request.getParameter("courseLP");
+			System.out.print(specializationStartYear);
+			int specializationYear = Integer.parseInt(specializationStartYear);
+			LP specializationStartPeriod = LP.getByString(specializationStartLP);
+			int course_Year = Integer.parseInt(courseYear);
+			LP coursePeriod = LP.getByString(courseLP);
+
+			CourseDate specializationStartDate = new CourseDate(specializationYear, specializationStartPeriod);
+			CourseDate courseDate = new CourseDate(course_Year, coursePeriod);
+
+			ProgramSpecialization specialization = Neo4jConfigLoader.getApi().getMethods.getProgramSpecialization(specialiZationName, specializationStartDate, programCode);
+			Course course = Neo4jConfigLoader.getApi().getMethods.getCourse(courseCode, courseDate);
+
+			//CourseInformation courseInformation = new CourseInformation(course.getName(), course.getCourseCode(), course.getCredit(), course.getDescription(), course.getExaminer(), course.getStartPeriod());
+			//ProgramInformation programInformation = new ProgramInformation(courseProgram.getCode(), courseProgram.getName(), courseProgram.getDescription(), courseProgram.getStartDate(), courseProgram.getCredits(), courseProgram.getProgramType());
+
+			specialization.setCode(programCode);
+			//CourseProgram courseProgram = new CourseProgram(null, programCode, null, null, new CourseDate(programYear, programStartPeriod) ,null );
+			Neo4jConfigLoader.getApi().createMethods.createProgramCourseRelation(specialization, course);
+
+			return "The relationship between " + specialiZationName + " and " + courseCode + " has been modified";
+		}
+		else {
 			return "The input must be either CREATE, DELETE, DELETE_SPECIAL, COPY_FROM_YEAR, MODIFY, MODIFY_SPECIAL, SET_RELATION_TO_COURSE, ADD_COURSE or CREATE_SPECIAL";
 
 		}
+		
+		
 	}
 
 
