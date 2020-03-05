@@ -282,28 +282,6 @@ public class GetMethods {
 	 * @return
 	 */
 	public ProgramSpecialization getProgramSpecialization(String name, String code, CourseDate startDate,CourseLabels orderCoursesBy, boolean DESCENDING) {
-/*
-		String query = "MATCH (programSpecialization: ProgramSpecialization {"+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" , code : \"" + code + "\" }) ";
-		query += "RETURN programSpecialization";
-
-		StatementResult result = this.communicator.readFromNeo(query);
-		Record row = result.next();
-
-		ArrayList<Course> courseOrder = new ArrayList<>();
-
-		String inProgramQuery = "MATCH (programSpecialization: ProgramSpecialization {code: \"" + code + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\"}) ";
-		inProgramQuery += "MATCH(courseInProgram : Course)<-[relation: IN_PROGRAM]-(programSpecialization) RETURN courseInProgram, relation";
-		result = this.communicator.readFromNeo(inProgramQuery);
-		while(result.hasNext()) {
-			Record currentRow = result.next();
-			Course course = createCourse(currentRow.get(0));
-			courseOrder.add(course);
-		}
-
-
-		//return courseProgramSpecialization;
-
- */
 
 		String query = "MATCH (programSpecialization: ProgramSpecialization {"+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" , code : \"" + code + "\" }) ";
 		query += "RETURN programSpecialization";

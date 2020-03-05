@@ -147,7 +147,7 @@ $(document).ready(function() {
 		} else if($("#searchSpecialization").is(':checked')) {
 			$.ajax({
 
-				url : 'GetSpecializations/FilterByName',
+				url : 'GetSpecializations/FilterByCode',
 				data : {
 					filter : $("#searchProgram").val()
 				},
@@ -170,75 +170,6 @@ $(document).ready(function() {
 	});
 	// -- end search Program
 
-	// -- Search program specialization
-	$('#searchSpec').on('keyup', function() {
-		if($("#searchSpec").val().length > 2) {
-			if($("#specializationFilterByName").is(':checked')) {
-				$.ajax({
-
-					url : 'GetSpecializations/FilterByName',
-					data : {
-						filter : $("#searchProgram").val()
-					},
-					success : function(response) {
-						var s = "<div class=\"SearchResultContainer\">";
-						for(i in response) {
-							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked('"+response[i].code+"','" +response[i].year+"','"+response[i].lp+"')\"> <b>" + response[i].name + "</b> - " + response[i].code ;
-							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
-						}
-						s += "</div>";
-						$('#program_search_results').html('');
-						$('#program_search_results').html(s);
-					}
-
-				});
-			} else if($("#specializationFilterByCode").is(':checked')) {
-				$.ajax({
-
-					url : 'GetSpecializations/FilterByCode',
-					data : {
-						filter : $("#searchProgram").val()
-					},
-					success : function(response) {
-						var s = "<div class=\"SearchResultContainer\">";
-						for(i in response) {
-							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked('"+response[i].code+"','" +response[i].year+"','"+response[i].lp+"')\"> <b>" + response[i].name + "</b> - " + response[i].code ;
-							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
-						}
-						s += "</div>";
-						$('#program_search_results').html('');
-						$('#program_search_results').html(s);
-					}
-
-				});
-			} else if($("#specializationFilterByTopic").is(':checked')) {
-				$.ajax({
-
-					url : 'GetSpecializations/FilterByTopic',
-					data : {
-						filter : $("#searchProgram").val()
-					},
-					success : function(response) {
-						var s = "<div class=\"SearchResultContainer\">";
-						for(i in response) {
-							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked('"+response[i].code+"','" +response[i].year+"','"+response[i].lp+"')\"> <b>" + response[i].name + "</b> - " + response[i].code ;
-							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
-						}
-						s += "</div>";
-						$('#program_search_results').html('');
-						$('#program_search_results').html(s);
-					}
-
-				});
-			}
-
-		} else {
-			$('#program_search_results').html('');
-		}
-
-	});
-	// -- End search program specialization
-	
 	// -- Search KC ---
 	
 	$('#searchKC').on('keyup', function() {

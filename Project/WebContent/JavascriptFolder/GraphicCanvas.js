@@ -88,27 +88,6 @@ function generateCanvas(data) {
  * @param data
  */
 function appendProgramspecialization(data) {
-  /*let lp = convertLP(data.lp);
-  let year = LPHashmap.size/4 + startYear;
-  let currentLPObject = null;
-  if (!LPHashmap.has(data.year + ";" + lp)) {
-    let latestYear = LPHashmap.size/4 + startYear;
-
-    // TODO TEST IF THIS WORK, YOU IMBECILE.
-    currentLPObject = LPHashmap.get(latestYear + ";" + 3);
-    while (!LPHashmap.has(data.year + ";" + lp)) {
-      for (lp = 0; lp < 4; lp++) {
-        if (lp === 2) {
-          latestYear ++;
-        }
-        let newLP = new CanvasLP(currentLPObject,width *1.2*LPHashmap.size, height*1.2, latestYear,lp);
-        LPHashmap.set(latestYear + "; " + i,newLP);
-        currentLPObject = newLP;
-      }
-    }
-  } else {
-    currentLPObject = LPHashmap.get(data.year + ";" + lp);
-  }*/
   addAllCourses(data['Courses']);
 
   generateKcsInAllLPs();
@@ -338,18 +317,6 @@ function addAllCourses(courses) {
           currentLPObject = newLP;
         }
       }
-      /*
-      for (let i = 0,year = item.year; i < 4; i++) {
-        if (i == 2) {
-          year ++;
-        }
-        let tempLPString = year + ";" + i;
-        newLP = new CanvasLP(currentLPObject,width *1.2*LPHashmap.size, height*1.2, year,i);
-        LPHashmap.set(tempLPString,newLP);
-        currentLPObject = newLP;
-      }
-
-       */
 
     }
     // all courses are sorted after year. I.e. no more courses from previous year will pop up.
@@ -380,18 +347,6 @@ function reFormatSection(lp,year){
 
 function drawCanvas() {
   resizeTofitCourses();
-  //==== KC MAPPING ====
-  /*courses.forEach((v)=>{
-    REQ.forEach((e,k)=>{
-      let obj = findCourseByCode(k);
-      if(obj !== null){
-        e.filter(value =>v.data.Developed.some(value1 => kcEquals(value1,value))).forEach((x)=>{
-          v.setSnapPoints(obj,x);
-        });
-      }
-    });
-  });*/
-  //==== DRAWING ====
   saveMatrix();
   ctx.save();
   ctx.clearRect(0, 0, canvas.width, canvas.height);
