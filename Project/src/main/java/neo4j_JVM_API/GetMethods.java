@@ -56,25 +56,35 @@ public class GetMethods {
 	 * @param startDate
 	 * @return
 	 */
-	public CourseProgram getProgram(String code, CourseDate startDate) {
+	public CourseProgram getProgram( String code, CourseDate startDate) {
 		return getProgram(code,startDate, CourseLabels.YEAR, false);
 	}
 
 
 	/**
 	 * Internal method for creating a course order. this is used by {@link #getProgram(String, CourseDate)} and
-	 * {@link #getProgramSpecialization(String, CourseDate, String)}.
+	 * {@link #getProgramSpecialization(String, String, CourseDate, CourseLabels, boolean)}.
 	 * @param code
 	 * @param startDate
 	 * @param orderCoursesBy
 	 * @param DESCENDING
 	 * @return
 	 */
-	private ArrayList<Course> getCourseOrder(String code, CourseDate startDate, CourseLabels orderCoursesBy, boolean DESCENDING) {
-		String inProgramQuery = "MATCH (courseProgram: CourseProgram {"+CourseProgram.ProgramLabels.CODE+": \"" + code + "\", "+ CourseProgram.ProgramLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseProgram.ProgramLabels.LP + " : \"" + startDate.getPeriod() + "\" })"+
+	private ArrayList<Course> getCourseOrder(CourseProgram.ProgramType type, String name, String code, CourseDate startDate, CourseLabels orderCoursesBy, boolean DESCENDING) {
+		String inProgramQuery = "MATCH (courseProgram: "+type+ "{"+ CourseProgram.ProgramLabels.NAME + ":\""+name+"\", " +CourseProgram.ProgramLabels.CODE+": \"" + code + "\", "+ CourseProgram.ProgramLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseProgram.ProgramLabels.LP + " : \"" + startDate.getPeriod() + "\" })"+
 				"-[relation:IN_PROGRAM]-(courseInProgram:Course)"+
 				"OPTIONAL MATCH (kc : KC)-[r]-(courseInProgram) RETURN courseInProgram,kc,type(r) ORDER BY courseInProgram." + orderCoursesBy;
-		System.out.println(inProgramQuery);
+		return this.getCourseOrderHelper(inProgramQuery);
+	}
+
+	private ArrayList<Course> getCourseOrder(CourseProgram.ProgramType type, String code, CourseDate startDate, CourseLabels orderCoursesBy, boolean DESCENDING) {
+		String inProgramQuery = "MATCH (courseProgram: "+type+ "{" +CourseProgram.ProgramLabels.CODE+": \"" + code + "\", "+ CourseProgram.ProgramLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseProgram.ProgramLabels.LP + " : \"" + startDate.getPeriod() + "\" })"+
+				"-[relation:IN_PROGRAM]-(courseInProgram:Course)"+
+				"OPTIONAL MATCH (kc : KC)-[r]-(courseInProgram) RETURN courseInProgram,kc,type(r) ORDER BY courseInProgram." + orderCoursesBy;
+		return this.getCourseOrderHelper(inProgramQuery);
+	}
+
+	private ArrayList<Course> getCourseOrderHelper(String inProgramQuery) {
 		StatementResult courseQuery = this.communicator.readFromNeo(inProgramQuery);
 
 		String tempCode;
@@ -122,7 +132,7 @@ public class GetMethods {
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
 
-		CourseProgram courseProgram = createCourseProgram(this.getCourseOrder(code,startDate,orderCoursesBy,DESCENDING), row, "courseProgram");
+		CourseProgram courseProgram = createCourseProgram(this.getCourseOrder(CourseProgram.ProgramType.PROGRAM,code,startDate,orderCoursesBy,DESCENDING), row, "courseProgram");
 		return courseProgram;
 	}
 
@@ -265,14 +275,13 @@ public class GetMethods {
 	/**
 	 * Get programSpecialization from database
 	 *
-	 * @param specialization
 	 * @param startDate
 	 * @param code
 	 * @param orderCoursesBy
 	 * @param DESCENDING
 	 * @return
 	 */
-	public ProgramSpecialization getProgramSpecialization(String specialization, CourseDate startDate, String code,CourseLabels orderCoursesBy, boolean DESCENDING) {
+	public ProgramSpecialization getProgramSpecialization(String name, String code, CourseDate startDate,CourseLabels orderCoursesBy, boolean DESCENDING) {
 /*
 		String query = "MATCH (programSpecialization: ProgramSpecialization {"+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" , code : \"" + code + "\" }) ";
 		query += "RETURN programSpecialization";
@@ -297,25 +306,24 @@ public class GetMethods {
  */
 
 		String query = "MATCH (programSpecialization: ProgramSpecialization {"+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\" , " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" , code : \"" + code + "\" }) ";
-		query += "RETURN courseProgram";
+		query += "RETURN programSpecialization";
 
 		StatementResult result = this.communicator.readFromNeo(query);
 		Record row = result.next();
 
-		ProgramSpecialization courseProgramSpecialization = createProgramSpecialization(this.getCourseOrder(code,startDate,orderCoursesBy,DESCENDING), row, "programSpecialization");
+		ProgramSpecialization courseProgramSpecialization = createProgramSpecialization(this.getCourseOrder(CourseProgram.ProgramType.SPECIALIZATION,name, code,startDate,orderCoursesBy,DESCENDING), row, "programSpecialization");
 		return courseProgramSpecialization;
 	}
 
 	/**
 	 * Get programSpecialization from database
 	 *
-	 * @param specialization
 	 * @param startDate
 	 * @param code
 	 * @return
 	 */
-	public ProgramSpecialization getProgramSpecialization(String specialization, CourseDate startDate, String code) {
-		return this.getProgramSpecialization(specialization,startDate,code,CourseLabels.YEAR, false);
+	public ProgramSpecialization getProgramSpecialization(String name, String code, CourseDate startDate) {
+		return this.getProgramSpecialization(name,code,startDate,CourseLabels.YEAR, false);
 	}
 
 	private ProgramSpecialization createProgramSpecialization(ArrayList<Course> courseOrder, Record row, String nodename) {

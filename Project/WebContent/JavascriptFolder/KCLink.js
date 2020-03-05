@@ -77,7 +77,10 @@ class KCLink {
             //ctx.lineTo(lPcoords[0].x,lPcoords[0].y)
             currentLp = currentLp.getPrecendingLP();
             while (currentLp != this.inPoint.getLP()) {
-                lPcoords = currentLp.getMiddlePoint();
+                let tempCoords = currentLp.getMiddlePoint();
+                if (tempCoords !== null) {
+                    lPcoords = tempCoords;
+                }
                 ctx.lineTo(lPcoords[1].x,lPcoords[1].y);
                 ctx.lineTo(lPcoords[0].x,lPcoords[0].y);
                 currentLp = currentLp.getPrecendingLP();
