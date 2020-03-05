@@ -43,6 +43,27 @@ function programClicked(code,year,lp) {
 	
 }
 
+function specializationClicked(name, code,year,lp) {
+	$.ajax({
+
+		url : '/GetSpecialization/getCourses',
+		data : {
+			name: name,
+			code : code,
+			startyear : year,
+			startperiod : lp
+		},
+		success : function(response) {
+			// Should call a function in the canvas with the response
+			appendProgramspecialization(response);
+			$('#debug').html("response : " + response.name + ", courses: " +response.Courses.length);
+		}
+	}).fail(function (response) {
+		console.log(response);
+	});
+
+}
+
 function kcClicked(name) {
 	
 	$.ajax({

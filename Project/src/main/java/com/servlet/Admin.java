@@ -475,7 +475,7 @@ public class Admin extends HttpServlet {
 			CourseDate courseDate = new CourseDate(fromYear, fromLP);
 			CourseDate dateForRelations = new CourseDate(toYear, fromLP);
 
-			ProgramSpecialization oldSpecialization = Neo4jConfigLoader.getApi().getMethods.getProgramSpecialization(name, courseDate, code);
+			ProgramSpecialization oldSpecialization = Neo4jConfigLoader.getApi().getMethods.getProgramSpecialization(name, code, courseDate);
 
 			Neo4jConfigLoader.getApi().createMethods.createCopyOfSpecializationbyYear(oldSpecialization, toYear, code, dateForRelations);
 

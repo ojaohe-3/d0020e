@@ -30,7 +30,7 @@ function closeNav() {
 	  <h2>Filter Container</h2>
 	  <ul class="nav nav-pills nav-justified" id="filterMenu">
 	  	<li class="active"><a data-toggle="pill" href="#program">Program</a></li>
-		<li><a data-toggle="pill" href="#course">Course</a></li>
+		  <li><a data-toggle="pill" href="#course">Course</a></li>
 		<li><a data-toggle="pill" href="#KC">KC</a></li>
 		<li><a data-toggle="pill" href="#topic">Topic</a></li>
 
@@ -48,6 +48,9 @@ function closeNav() {
 			</div>
 			<div class="radio">
 				  <label><input type="radio" name="optradio" id="programFilterByTopic"><span class="checkmark"></span>Filter by topic</label>
+			</div>
+			<div class="radio">
+				<label><input type="radio" name="optradio" id="searchSpecialization"><span class="checkmark"></span>search for specialization</label>
 			</div>
 
 			<form class="search">
