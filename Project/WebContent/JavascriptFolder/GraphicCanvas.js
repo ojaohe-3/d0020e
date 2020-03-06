@@ -252,11 +252,14 @@ function createCourseOverlay( item, obj) {
   rm.setAttribute("class","canvas_course_remove");
 
   rm.addEventListener("click",function() {
-    let c = obj;
-    course.parentNode.removeChild(course);
-    c.setCourseOverlay(null);
-    c.myLP.removeCourse(obj.data);
-    reFormatSection(obj.data.lp,obj.data.year);
+    if(confirm("Are you sure you want to remove "+obj.data.courseCode+"?"))
+    {
+      let c = obj;
+      course.parentNode.removeChild(course);
+      c.setCourseOverlay(null);
+      c.myLP.removeCourse(obj.data);
+      reFormatSection(obj.data.lp,obj.data.year);
+    }
 
   });
 
