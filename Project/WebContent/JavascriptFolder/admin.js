@@ -855,7 +855,7 @@ function specialization_add_course() {
 					
 			},
 			success : function(response) {
-				document.getElementById("log").innerHTML += "ADD COURSE " + data[4] + " TO PROGRAM " + data[0]  +"</br>";
+				document.getElementById("log").innerHTML += "ADD COURSE " + data[4] + " TO SPECIALIZATION " + data[0]  +"</br>";
 				document.getElementById("output").innerHTML += response + "</br>";
 			}
 

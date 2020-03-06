@@ -16,6 +16,7 @@ import Data.LP;
 import Data.Relations;
 import Data.Topic;
 import Data.Course.CourseLabels;
+import Data.CourseProgram.ProgramType;
 import neoCommunicator.Neo4jCommunicator;
 
 
@@ -216,14 +217,20 @@ private final Neo4jCommunicator communicator;
 
 
 	/**
-	 * 	Matches A program and a course and creates a IN_PROGRAM relation
-	 * 
+	 * 	Matches A program and a course and creates a IN_PROGRAM relation.
+	 * <b>Remember to add a name to the program if it is a specialization.<b>
 	 * @param program 
 	 * @param course
 	 */
 	public void createProgramCourseRelation(CourseProgram program,Course course) {
 		program.getCourseOrder().add(course);
-		String query = "MATCH(program:"+program.getProgramType()+"{"+ CourseProgram.ProgramLabels.CODE +":\""+program.getCode()+"\","+CourseProgram.ProgramLabels.LP+":\""+
+		
+		String name = "";
+		if (program.getProgramType() == ProgramType.SPECIALIZATION) {
+			name = CourseProgram.ProgramLabels.NAME + ":\"" + program.getName() + "\",";
+		}
+		
+		String query = "MATCH(program:"+program.getProgramType()+"{"+ name + CourseProgram.ProgramLabels.CODE +":\""+program.getCode()+"\","+CourseProgram.ProgramLabels.LP+":\""+
 				program.getStartDate().getPeriod().toString()+"\","+ CourseProgram.ProgramLabels.YEAR+":\""+program.getStartDate().getYear()+"\"}),";
 
 		query += "(course:"+Course.course+"{"+Course.CourseLabels.CODE+":\""+course.getCourseCode()+"\","+ CourseLabels.LP.toString()+":\""+course.getStartPeriod().getPeriod().toString()
@@ -231,9 +238,9 @@ private final Neo4jCommunicator communicator;
 
 		System.out.println(query);
 		this.communicator.writeToNeo(query);
-
-
 	}
+	
+	
 	/**
 	 * Add relations between a course and all it's KCs to the database. 
 	 * The KCs must be added as required or developed to the desired 
