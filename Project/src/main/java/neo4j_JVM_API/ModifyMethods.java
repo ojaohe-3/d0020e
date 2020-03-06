@@ -141,6 +141,7 @@ public class ModifyMethods {
 
 	public void editSpecialization(String programspecializationName,CourseDate startyear, ProgramSpecialization newProgramSpcialization) {
 		String query = "MATCH (n:ProgramSpecialization{name:\""+  programspecializationName+"\"}) SET n={";
+		query += ProgramSpecialization.ProgramLabels.NAME.toString() +": \"" + newProgramSpcialization.getName() + "\", ";
 		query += ProgramSpecialization.ProgramLabels.CODE.toString() +": \"" + newProgramSpcialization.getCode() + "\", ";
 		query += ProgramSpecialization.ProgramLabels.DESCRIPTION.toString() +": \""+newProgramSpcialization.getDescription() + "\", ";
 		query += ProgramSpecialization.ProgramLabels.YEAR.toString() +": \""+newProgramSpcialization.getStartDate().getYear() + "\", ";
