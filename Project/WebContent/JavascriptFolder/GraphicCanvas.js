@@ -162,18 +162,25 @@ function createCourseOverlay( item, obj) {
   dropDown.setAttribute("class","canvas_course_dropdown");
 
   let dropdown_table = document.createElement("table");
-  dropdown_table.setAttribute("style", "margin-top:" + obj.thickness/2 + "px;");
+  //dropdown_table.setAttribute("style", "margin-top:" + obj.thickness/2 + "px;");
   let KCin = document.createElement("th");
   KCin.setAttribute("valign", "middle");
   let KCout = document.createElement("th");
-  KCout.setAttribute("style","height: " + obj.thickness + "px;");
+  //KCout.setAttribute("style","height: " + obj.thickness + "px;");
   KCout.setAttribute("valign", "middle");
   dropdown_table.appendChild(KCin);
   dropdown_table.appendChild(KCout);
   dropDown.appendChild(dropdown_table);
 
+  let ul = document.createElement("ul");
+  KCin.appendChild(ul);
+  KCin = ul;
+  let ul2 = document.createElement("ul");
+  KCout.appendChild(ul2);
+  KCout = ul2;
+
   obj.data.Developed.forEach((value) => {
-    let p = document.createElement("p");
+    let p = document.createElement("li");
     p.setAttribute("style","height: " + obj.thickness + "px;");
     p.innerText = value.name;
     KCout.appendChild(p);
@@ -181,7 +188,7 @@ function createCourseOverlay( item, obj) {
 
   obj.data.Required.forEach((value) => {
     if (value.KC !== null) {
-      let p = document.createElement("p");
+      let p = document.createElement("li");
       p.setAttribute("style","height: " + obj.thickness + "px;");
       p.innerText = value.name;
       KCin.appendChild(p);
