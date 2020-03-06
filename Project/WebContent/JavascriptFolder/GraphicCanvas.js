@@ -129,7 +129,7 @@ function createCourseOverlay( item, obj) {
       "</div>";
 */
   //--------------- course ----------------
-  course.setAttribute("style","left:"+x+"px; top:"+y+"px; width:"+width+"px;"+"px;");
+  course.setAttribute("style","left:"+x+"px; top:"+y+"px; width:"+width+"px;");
   //course.setAttribute("style","left:"+x+"px; top:"+y+"px;");
   course.setAttribute("class","canvas_course");
   course.setAttribute("id", "" + x +";" + y);

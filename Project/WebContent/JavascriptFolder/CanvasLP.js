@@ -41,7 +41,17 @@ class CanvasLP {
         removedObject.unlinkDockingPoints();
         removedObject.setCourseOverlay(null);
         this.courses = this.courses.filter(value => course.courseCode+course.lp+course.year !== value.data.courseCode+value.data.lp+value.data.year );
+        this.reevaluateCourses();
     }
+
+    reevaluateCourses() {
+        let i = 0;
+        this.courses.forEach((value)=> {
+            value.moveCourseY(i*this.courseHeight);
+            i++;
+        });
+    }
+
     /**
      * Add a course object to this LP.
      * @param courseObject

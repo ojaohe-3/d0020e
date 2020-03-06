@@ -266,6 +266,16 @@ class CourseObject{
         });
     }
 
+    /**
+     * Move a course and its overlay.
+     * @param newY
+     */
+    moveCourseY(newY) {
+        this.courseOverlay.setAttribute("id", this.x + ";" + newY);
+        this.courseOverlay.setAttribute("style","left:"+this.x+"px; top:"+newY+"px; width:"+this.width+"px;");
+        this.y = newY;
+    }
+
 }
 
 /**
