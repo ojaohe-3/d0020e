@@ -188,22 +188,6 @@ function createCourseOverlay( item, obj) {
     }
 
   });
-
-/*
-  let dropdown_table = document.createElement("table");
-  let KCin = document.createElement("th");
-  let KCout = document.createElement("th");
-
-
-  for (let i=0; i < obj.KCs.REQ.length; i++) {
-    let KC = document.createElement("p");
-    //p.innerText = obj.KCs.REQ[i].data.
-  }
-
-  for (let i = 0;  i < obj.KCs.DEV.length; i++) {
-
-  }
-*/
   // ---------------- button ----------------
   let button = document.createElement("div");
   course.firstChild.appendChild(button);
@@ -222,27 +206,7 @@ function createCourseOverlay( item, obj) {
       dropDown.style.display= "none";
       margin = 0;
     }
-/*
-    for (let i = x; i < x+LPs*(width*1.2); i += width*1.2) {
-      let victimHeight = y+height*1.2;
-      let victim = document.getElementById(i + ";" + victimHeight);
-      if (victim !== null) {
-        //victim.style.top = (victimHeight+40) + "px";
-        victim.firstChild.style.marginTop = margin + "px";
-      }
-    }
-
- */
-
     courseObject.setExtended();
-/*
-    courseObject.myLP.courses.forEach((value)=>{
-      let victim = document.getElementById(value.x + ";" + value.y);
-      victim.firstChild.style.marginTop = value.margin_top + "px";
-    });
-*/
-
-
   });
 
 
