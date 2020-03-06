@@ -725,7 +725,7 @@ function program_add_course() {
  * Change parameters of a program
  */
 function program_modify() {
-	var input = prompt("oldCode;oldStartYear;oldStartLP;newName;newCode;newStartYear;newStartLP;newDescription;newCredits");
+	var input = prompt("oldCode;oldStartYear;oldStartLP;newName;newCode;newStartYear;newStartLP;newDescription;newCredits;readingPeriods");
 	
 	var data = input.split(";");
 	

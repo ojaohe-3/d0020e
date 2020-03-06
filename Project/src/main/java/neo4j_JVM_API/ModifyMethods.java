@@ -118,14 +118,15 @@ public class ModifyMethods {
 	
 	public void editProgram(String programCode,CourseDate startyear, CourseProgram newProgram) {
 
-		String query = "MATCH (n:CourseProgram{code:\""+  programCode+"\"}) SET n={";
+		String query = "MATCH (n:CourseProgram{code:\""+  programCode+"\", year: \""+ startyear.getYear() +"\", lp: \"" + startyear.getPeriod() + "\"}) SET n={";
 		query += CourseProgram.ProgramLabels.CODE.toString() +": \"" + newProgram.getCode() + "\", ";
+		query += CourseProgram.ProgramLabels.NAME.toString() + ":\"" + newProgram.getName() + "\", ";
 		query += CourseProgram.ProgramLabels.DESCRIPTION.toString() +": \""+newProgram.getDescription() + "\", ";
 		query += CourseProgram.ProgramLabels.YEAR.toString() +": \""+newProgram.getStartDate().getYear() + "\", ";
 		query += CourseProgram.ProgramLabels.LP.toString() +": \""+newProgram.getStartDate().getPeriod() + "\", ";
 		query += CourseProgram.ProgramLabels.READING_PERIODS.toString() +": \""+1 + "\", ";
-		query += CourseProgram.ProgramLabels.CREDITS.toString() +": "+newProgram.getCredits() + "";
-
+		query += CourseProgram.ProgramLabels.CREDITS.toString() +": "+newProgram.getCredits() + "}";
+		System.out.println(query);
 
 		communicator.writeToNeo(query);
 	}
