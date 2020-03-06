@@ -77,7 +77,18 @@ private final Neo4jCommunicator communicator;
 
 	}
 	
-	
+	/**
+	 * Create a relationship between a program and a topic
+	 * @param courseProgram
+	 * @param topic
+	 */
+	public void createTopicToProgramRelation(CourseProgram courseProgram, String topic) {
+		String query = "MATCH (courseProgram: CourseProgram {" + CourseProgram.ProgramLabels.CODE +" : \"" + courseProgram.getCode() + "\", "+ CourseProgram.ProgramLabels.LP + ": \"" + courseProgram.getStartDate().getPeriod() + "\", " + CourseProgram.ProgramLabels.YEAR + ": \"" + courseProgram.getStartDate().getYear() + "\"  }) ";
+		query += "MATCH (topic: Topic {title : \"" + topic + "\"}) ";
+		query += "MERGE (courseProgram)-[r:"+ Relations.BELONGS_TO +"]->(topic)";
+		this.communicator.writeToNeo(query);
+
+	}
 	
 	/**
 	 * Add a new course to the server. This is still a work in progress, so don't use it yet.

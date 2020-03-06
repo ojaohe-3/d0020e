@@ -512,11 +512,11 @@ function kc_delete() {
  * Create a new program
  */
 function program_create() {
-	var input = prompt("name;code;startYear;startLP;credits;reading_periods;description");
+	var input = prompt("name;code;startYear;startLP;credits;reading_periods;description;topic");
 	
 	var data = input.split(";");
 	
-	if(data.length == 7){
+	if(data.length == 8){
 		
 		$.ajax({
 			url : 'admin',
@@ -530,7 +530,8 @@ function program_create() {
 				startLP : data[3],
 				credits : parseFloat(data[4]),
 				readingPeriods : data[5],
-				description : data[6]
+				description : data[6],
+				topic : data[7]
 				
 				
 			},
@@ -616,6 +617,67 @@ function program_delete() {
 	}
 }
 
+/*
+ * Add Topic to a program
+ */
+function program_add_topic() {
+	var input = prompt("programCode;lp(1-4);year;topic");
+	
+	var data = input.split(";");
+	
+	if(data.length == 4 ){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "ADD_TOPIC",
+				programCode : data[0],
+				lp : data[1],
+				year : data[2],
+				topic : data[3]
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "Added topic to program " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
+function program_delete_topic() {
+	var input = prompt("programCode;lp(1-4);year;topic");
+	
+	var data = input.split(";");
+	
+	if(data.length == 4 ){
+		
+		$.ajax({
+			url : 'admin',
+			type : "POST",
+			data : {
+				head : "PROGRAM",
+				method : "DELETE_TOPIC",
+				programCode : data[0],
+				lp : data[1],
+				year : data[2],
+				topic : data[3]
+			},
+			success : function(response) {
+				document.getElementById("log").innerHTML += "Removed topic from program " + data[0]  +"</br>";
+				document.getElementById("output").innerHTML += response + "</br>";
+			}
+
+		});
+		
+	} else {
+		document.getElementById("log").innerHTML += "Invalid input " + input + "</br>";
+	}
+}
 /*
  * create a copy of a program with a new year and a new starting LP
  */

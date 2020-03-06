@@ -402,6 +402,8 @@ public class Admin extends HttpServlet {
 			String description = request.getParameter("description");
 			String credits = request.getParameter("credits");
 			int readingPeriods = Integer.parseInt(request.getParameter("readingPeriods"));
+			String topic = request.getParameter("topic");
+			
 
 			LP period = LP.getByString(startLP);
 			int Year = Integer.parseInt(startYear);
@@ -413,6 +415,9 @@ public class Admin extends HttpServlet {
 				
 			
 			Neo4jConfigLoader.getApi().createMethods.createProgram(program);
+			
+			Neo4jConfigLoader.getApi().createMethods.addTopic(topic);
+			Neo4jConfigLoader.getApi().createMethods.createTopicToProgramRelation(program, topic);
 
 			return "The program named " + programName + " has been created";
 
@@ -646,6 +651,35 @@ public class Admin extends HttpServlet {
 			Neo4jConfigLoader.getApi().createMethods.createProgramCourseRelation(specialization, course);
 
 			return "The relationship between " + specializationName + " and " + courseCode + " has been modified";
+		}
+		if(method.equals("ADD_TOPIC")) {
+			
+			String code = request.getParameter("programCode");
+			LP lp = LP.getByString(request.getParameter("lp"));
+			int year = Integer.parseInt(request.getParameter("year"));
+			System.out.println(code + "," + lp + ", " + year);			
+			String topic = request.getParameter("topic");
+			
+			CourseProgram c = new CourseProgram(code, "", "", new CourseDate(year, lp), 0);
+			
+			Neo4jConfigLoader.getApi().createMethods.addTopic(topic);
+			Neo4jConfigLoader.getApi().createMethods.createTopicToProgramRelation(c, topic);
+			
+			return "Added topic to program " + code;
+
+		}
+		if(method.equals("DELETE_TOPIC")) {
+			
+			String code = request.getParameter("programCode");
+			LP lp = LP.getByString(request.getParameter("lp"));
+			int year = Integer.parseInt(request.getParameter("year"));
+			
+			String topic = request.getParameter("topic");
+
+			Neo4jConfigLoader.getApi().deleteMethods.deleteRelationProgramToTopic(code, new CourseDate(year,lp), topic);
+			
+			return "Removed topic from program " + code;
+
 		}
 		else {
 			return "The input must be either CREATE, DELETE, DELETE_SPECIAL, COPY_FROM_YEAR, MODIFY, MODIFY_SPECIAL, SET_RELATION_TO_COURSE, ADD_COURSE or CREATE_SPECIAL";
