@@ -119,7 +119,7 @@ public class UserMethods {
 	 * @param newUsername
 	 */
 	public void changeUsername(String username, String newUsername) {
-		String query = "MATCH(n:User){"+ UserLables.USERNAME +":"+username+"}) SET n."+ UserLables.USERNAME +"= \"" + newUsername + "\"";
+		String query = "MATCH(n:User{"+ UserLables.USERNAME +":\""+username+"\"}) SET n."+ UserLables.USERNAME +"= \"" + newUsername + "\"";
 		communicator.writeToNeo(query);
 
 	}

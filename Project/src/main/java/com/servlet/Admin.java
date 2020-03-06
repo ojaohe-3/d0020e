@@ -134,7 +134,7 @@ public class Admin extends HttpServlet {
 
 		if (method.equals("MODIFY_USERNAME")) {
 			String username = request.getParameter("username");
-			String newusername = request.getParameter("username");
+			String newusername = request.getParameter("newusername");
 
 			Neo4jConfigLoader.getApi().userMethods.changeUsername(username, newusername);
 
