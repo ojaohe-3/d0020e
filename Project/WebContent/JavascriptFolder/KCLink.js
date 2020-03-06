@@ -61,7 +61,7 @@ class KCLink {
         ctx.save();
         saveMatrix();
         translate(0,0);
-        ctx.lineWidth = 12;
+        ctx.lineWidth = 6;
         ctx.strokeStyle = "orange";
         ctx.beginPath();
         ctx.moveTo(pos1.x,pos1.y);

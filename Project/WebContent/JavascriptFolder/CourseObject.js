@@ -237,7 +237,7 @@ class CourseObject{
      * @returns {*}
      */
     getHeight() {
-        return this.height + (this.extended ? 0 : this.heightExtension);
+        return this.height + (this.extended ? this.heightExtension : 0);
     }
 
 }
