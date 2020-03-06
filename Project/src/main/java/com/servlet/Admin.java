@@ -392,6 +392,7 @@ public class Admin extends HttpServlet {
 	private String program(HttpServletRequest request) throws IOException {
 
 		String method = request.getParameter("method");
+		System.out.println("inne i program " + method);
 		
 		if(method.equals("CREATE")) {
 			String programName = request.getParameter("name");
@@ -525,7 +526,6 @@ public class Admin extends HttpServlet {
 			int course_Year = Integer.parseInt(courseYear);
 			LP coursePeriod = LP.getByString(courseLP);
 			
-			System.out.print("fel metod");
 
 			CourseDate programStartDate = new CourseDate(programYear, programStartPeriod);
 			CourseDate courseDate = new CourseDate(course_Year, coursePeriod);
@@ -594,23 +594,26 @@ public class Admin extends HttpServlet {
 
 		}
 		if (method.equals("MODIFY_SPECIAL")) {
+			
 			String oldName = request.getParameter("oldName");
 			int programStartYear = Integer.parseInt(request.getParameter("programStartYear"));
-			LP programStartLP = LP.getByString(request.getParameter("programStartByString"));
+			LP programStartLP = LP.getByString(request.getParameter("programStartLP"));
 			String newName = request.getParameter("newName");
+		
 			String newCode = request.getParameter("newCode");
 			int newStartYear = Integer.parseInt(request.getParameter("newStartYear"));
-			LP newStartLP = LP.getByString(request.getParameter("newStartByString"));
+			LP newStartLP = LP.getByString(request.getParameter("newStartLP"));
 			String newDescription = request.getParameter("newDescription");
 			float newCredits = Float.parseFloat(request.getParameter("newCredits"));
 			int readingPeriods = Integer.parseInt(request.getParameter("readingPeriods"));
-			ArrayList<Course> courseOrder= new ArrayList<Course>();
-
+			CourseOrder courseOrder = new CourseOrder(readingPeriods);
+			
+	
+			
 			CourseDate programDate = new CourseDate(programStartYear, programStartLP);
 			CourseDate specializationDate = new CourseDate(newStartYear, newStartLP);
 			
-
-			ProgramSpecialization programSpecialization = new ProgramSpecialization(courseOrder, newCode, newName,newDescription, specializationDate, newCredits);
+			ProgramSpecialization programSpecialization = new ProgramSpecialization(null, newCode, newName,newDescription, specializationDate, newCredits);
 
 			Neo4jConfigLoader.getApi().modifyMethods.editSpecialization(oldName, programDate, programSpecialization);
 
@@ -636,7 +639,6 @@ public class Admin extends HttpServlet {
 
 			ProgramSpecialization specialization = Neo4jConfigLoader.getApi().getMethods.getProgramSpecialization(specializationName, programCode, specializationStartDate);
 			Course course = Neo4jConfigLoader.getApi().getMethods.getCourse(courseCode, courseDate);
-			System.out.println(specialization);
 
 			specialization.setCode(programCode);
 			specialization.setName(specializationName);

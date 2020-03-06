@@ -724,7 +724,7 @@ function program_add_course() {
 /*
  * Change parameters of a program
  */
-function program_modify() {
+function program_modify_special() {
 	var input = prompt("oldCode;oldStartYear;oldStartLP;newName;newCode;newStartYear;newStartLP;newDescription;newCredits;readingPeriods");
 	
 	var data = input.split(";");
@@ -736,7 +736,7 @@ function program_modify() {
 			type : "POST",
 			data : {
 				head : "PROGRAM",
-				method : "MODIFY",
+				method : "MODIFY_SPECIAL",
 				oldCode : data[0],
 				programStartYear : data[1],
 				programStartLP : data[2],
@@ -750,7 +750,7 @@ function program_modify() {
 				
 			},
 			success : function(response) {
-				document.getElementById("log").innerHTML += "MODIFY PROGRAM" + data[3] + "</br>";
+				document.getElementById("log").innerHTML += "MODIFY PROGRAM " + data[3] + "</br>";
 				document.getElementById("output").innerHTML += response + "</br>";
 			}
 
@@ -764,7 +764,7 @@ function program_modify() {
  * change parameters of a specialization
  */
 function program_modify_special() {
-	var input = prompt("oldName;oldStartYear;oldStartLP;newName;newCode;newStartYear;newStartLP;newDescription;newCredits");
+	var input = prompt("oldName;oldStartYear;oldStartLP;newName;newCode;newStartYear;newStartLP;newDescription;newCredits;readingPeriods");
 	
 	var data = input.split(";");
 	
