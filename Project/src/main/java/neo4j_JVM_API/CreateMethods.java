@@ -69,7 +69,6 @@ private final Neo4jCommunicator communicator;
 	 * @param topic
 	 */
 	public void createTopicToCourseRelation(Course course, String topic) {
-		System.out.println("what is going on");
 		String query = "MATCH (course: Course {" + Course.CourseLabels.CODE +" : \"" + course.getCourseCode() + "\", "+ Course.CourseLabels.LP + ": \"" + course.getStartPeriod().getPeriod() + "\", " + Course.CourseLabels.YEAR + ": \"" + course.getStartPeriod().getYear() + "\"  }) ";
 		query += "MATCH (topic: Topic {title : \"" + topic + "\"}) ";
 		query += "MERGE (course)-[r:"+ Relations.BELONGS_TO +"]->(topic)";

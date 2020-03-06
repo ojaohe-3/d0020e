@@ -148,8 +148,7 @@ public class DeleteMethods {
 	 * @param topic
 	 */
 	public void deleteRelationCourseToTopic(String courseCode, CourseDate startDate, String topic) {
-		String query = "MATCH (topic: Topic {name: \"" + topic + "\"})<-[relation]-(course: Course {" + Course.CourseLabels.CODE + ": \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\", " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) DELETE relation";
-		
+		String query = "MATCH (topic: Topic {title: \"" + topic + "\"})<-[relation]-(course: Course {" + Course.CourseLabels.CODE + ": \"" + courseCode + "\", "+ CourseLabels.YEAR + " : \"" + startDate.getYear() + "\", " + CourseLabels.LP + " : \"" + startDate.getPeriod() + "\" }) DELETE relation";
 		communicator.writeToNeo(query);
 	}
 	
