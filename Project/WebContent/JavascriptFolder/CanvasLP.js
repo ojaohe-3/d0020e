@@ -24,7 +24,7 @@ class CanvasLP {
      * @returns {({x: number, y: *}|{x: *, y: *})[]|number}
      */
     getMiddlePoint() {
-        if (this.courses.length = 0) {
+        if (this.courses.length == 0) {
             return null;
         }
         let point1 = this.courses[0].getFirstIntermittenPoint();
