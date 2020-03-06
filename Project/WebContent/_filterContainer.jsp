@@ -49,8 +49,12 @@ function closeNav() {
 			<div class="radio">
 				  <label><input type="radio" name="optradio" id="programFilterByTopic"><span class="checkmark"></span>Filter by topic</label>
 			</div>
+		   <h3>Specialization</h3>
 			<div class="radio">
-				<label><input type="radio" name="optradio" id="searchSpecialization"><span class="checkmark"></span>search for specialization</label>
+				<label><input type="radio" name="optradio" id="specializationByName"><span class="checkmark"></span>Filter by name</label>
+			</div>
+			<div class="radio">
+				<label><input type="radio" name="optradio" id="specializationByCode"><span class="checkmark"></span>Filter by code</label>
 			</div>
 
 			<form class="search">

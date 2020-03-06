@@ -28,6 +28,9 @@
 .course_list>div:nth-child(odd){
  background-color: #404040;
 }
+
 .course_list>div:nth-child(even){
  background-color: #4b4b4b;
 }
+
+

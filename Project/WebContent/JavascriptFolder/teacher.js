@@ -56,7 +56,6 @@ function courseClickedEdit(code, year, lp) {
 }
 
 function coolKCbox(KC) {
-	KC = JSON.parse(KC);
 	var s = "<div class=\"\" onclick=\"dropKC('"+ KC.name+"', '"+KC.taxonomyLevel +"')\" id=\""+KC.name+"_"+KC.taxonomyLevel+"\">";
 	s += KC.name;
 	s += ": ";
