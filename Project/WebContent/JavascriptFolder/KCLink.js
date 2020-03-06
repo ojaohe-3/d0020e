@@ -44,10 +44,6 @@ class KCLink {
      * @param caller - The docking point that called this method.
      */
     drawLink(ctx, caller) {
-        if(this.inPoint === null || this.outPoint === null) //object have been removed
-            {
-                return;//todo actually remove this object
-            }
         let pos1 = this.outPoint.getPosition();
         let pos2 = this.inPoint.getPosition();
         let currentLp =caller.getLP();
