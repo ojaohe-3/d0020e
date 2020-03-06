@@ -32,7 +32,7 @@ public class Course extends CourseInformation {
 	 * @param credit enum 
 	 * @param description
 	 * @param examiner
-	 * @param startPeriod an object of type {@link CourseOrder}
+	 * @param startPeriod an object of type
 	 */
 	public Course(String name, String courseCode, float credit, String description, String examiner, CourseDate startPeriod) {
 		super(name,courseCode,credit,description,examiner,startPeriod);
