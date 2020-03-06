@@ -96,7 +96,7 @@ $(document).ready(function() {
 						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked('"+response[i].code+"','" +response[i].year+"','"+response[i].lp+"')\"> <b>" + response[i].name + "</b> - " + response[i].code ;
-							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
+							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credits + "</div></div>";
 						}
 						s += "</div>";
 						$('#program_search_results').html('');
@@ -115,7 +115,7 @@ $(document).ready(function() {
 						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked('"+response[i].code+"','" +response[i].year+"','"+response[i].lp+"')\"> <b>" + response[i].name + "</b> - " + response[i].code ;
-							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
+							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credits + "</div></div>";
 						}
 						s += "</div>";
 						$('#program_search_results').html('');
@@ -134,7 +134,7 @@ $(document).ready(function() {
 						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"programClicked('"+response[i].code+"','" +response[i].year+"','"+response[i].lp+"')\"> <b>" + response[i].name + "</b> - " + response[i].code ;
-							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
+							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credits + "</div></div>";
 						}
 						s += "</div>";
 						$('#program_search_results').html('');
@@ -153,7 +153,7 @@ $(document).ready(function() {
 						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"specializationClicked('"+response[i].name+"','"+response[i].code+"','" +response[i].year+"','"+response[i].lp+"')\"> <b>" + response[i].name + "</b> - " + response[i].code ;
-							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
+							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credits + "</div></div>";
 						}
 						s += "</div>";
 						$('#program_search_results').html('');
@@ -172,7 +172,7 @@ $(document).ready(function() {
 						var s = "<div class=\"SearchResultContainer\">";
 						for(i in response) {
 							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"specializationClicked('"+response[i].name+"','"+response[i].code+"','" +response[i].year+"','"+response[i].lp+"')\"> <b>" + response[i].name + "</b> - " + response[i].code ;
-							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
+							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credits + "</div></div>";
 						}
 						s += "</div>";
 						$('#program_search_results').html('');
