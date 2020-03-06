@@ -23,12 +23,12 @@ class CanvasLP {
      * Returns 0 if there are no courses in this LP.
      * @returns {({x: number, y: *}|{x: *, y: *})[]|number}
      */
-    getMiddlePoint() {
-        if (this.courses.length = 0) {
+    getMiddlePoint(courseLP) {
+        if (courseLP.courses.length === 0) {
             return null;
         }
-        let point1 = this.courses[0].getFirstIntermittenPoint();
-        let point2 = this.courses[0].getEndIntermittenPoint();
+        let point1 = courseLP.courses[0].getFirstIntermittenPoint();
+        let point2 = courseLP.courses[0].getEndIntermittenPoint();
         return [point1, point2];
     }
 
