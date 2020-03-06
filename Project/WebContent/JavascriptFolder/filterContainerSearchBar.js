@@ -142,7 +142,26 @@ $(document).ready(function() {
 					}
 
 				});
-			} else if($("#searchSpecialization").is(':checked')) {
+			} else if($("#specializationByName").is(':checked')) {
+				$.ajax({
+
+					url : 'GetSpecializations/FilterByName',
+					data : {
+						filter : $("#searchProgram").val()
+					},
+					success : function(response) {
+						var s = "<div class=\"SearchResultContainer\">";
+						for(i in response) {
+							s += "<div class=\"SearchResult\" id=\"program\" onclick=\"specializationClicked('"+response[i].name+"','"+response[i].code+"','" +response[i].year+"','"+response[i].lp+"')\"> <b>" + response[i].name + "</b> - " + response[i].code ;
+							s += "<div class=\"SearchResultExpander\"> Credits : " + response[i].credit + "</div></div>";
+						}
+						s += "</div>";
+						$('#program_search_results').html('');
+						$('#program_search_results').html(s);
+					}
+
+				});
+			} else if($("#specializationByCode").is(':checked')) {
 				$.ajax({
 
 					url : 'GetSpecializations/FilterByCode',

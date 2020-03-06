@@ -5,15 +5,16 @@
     position: fixed;
     left: 50%;
     top: 40%;
+    margin-top: 5em;
     transform: translateX(-50%) translateY(-50%);
     display: none;  /* This must be set to flex when visible. */
     flex-flow: column;
     overflow: auto;
     border-radius: 50pt;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 #KCInfoScreen {
-    background-color: white;
     width: 100%;
     height: 100%;
     float:left;
@@ -28,7 +29,7 @@
 }
 
 #KCInformation .header h1 {
-    color: whitesmoke;
+    color: #bababa;
     font-size: 24pt;
 }
 
@@ -39,7 +40,9 @@
 }
 
 #KCInformation .container h1 {
-    /* TODO make it pretty */
+   font-size: 15pt;
+   margin-top: 5pt;
+   margin-bottom: 0pt;
 }
 
 #courseKCList {
@@ -49,7 +52,7 @@
 
 #closeCourseButton {
     position: fixed;
-    top: 0;
+    top: 17pt;
     right: 50pt;
+    color: #292929;
 }
-

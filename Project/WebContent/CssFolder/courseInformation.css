@@ -1,22 +1,27 @@
 #courseInformation {
-    background-color: #404040;
-    width: 60%;
-    height: 60%;
+    background-color: #292929;
+    width: 40%;
+    height: 80%;
     position: fixed;
     left: 50%;
-    top: 50%;
+    top: 40%;
+    margin-top: 5em;
     transform: translateX(-50%) translateY(-50%);
     display: none;  /* This must be set to flex when visible. */
     flex-flow: column;
     overflow: auto;
     border-radius: 50pt;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow: auto;
 }
 
 #courseInfoScreen {
-    background-color: white;
-    width: 60%;
-    height: 100%;
-    float:left;
+    width: 100%;
+    height: auto;
+
+    background-color: #292929;
+    padding-top: 20pt;
+    
 }
 
 #courseInformation .header {
@@ -28,28 +33,33 @@
 }
 
 #courseInformation .header h1 {
-    color: whitesmoke;
-    font-size: 24pt;
+    color: #bababa;
+    font-size: 20pt;
+    margin-top: 5%;
 }
 
 #courseInformation .container {
     flex-grow: 1;
+    margin-top: 7%;
     padding: 0;
     width: 100%;
 }
 
 #courseInformation .container h1 {
-    /* TODO make it pretty */
+   font-size: 15pt;
+   margin-top: 5pt;
+   margin-bottom: 0pt;
 }
 
 #courseKCList {
     /* TODO make it pretty */
-    background-color: white;
+	background-color: #292929;
 }
 
 #closeCourseButton {
     position: fixed;
-    top: 0;
+    top: 17pt;
     right: 50pt;
+    color: #292929;
 }
 
