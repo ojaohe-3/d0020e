@@ -255,14 +255,20 @@ private final Neo4jCommunicator communicator;
 			query += " MATCH ( kc" + (i+required.size()) + ": " + KC.kc + "{" + KC.KCLabel.NAME.toString() +":\"" + developed.get(i).getName() + "\", " + KC.KCLabel.TAXONOMYLEVEL.toString() + ":\"" + developed.get(i).getTaxonomyLevel()+ "\"})";
 		}
 		
+		boolean run = false;
 		/* these loops create a relation between the matched KCs and the course. */
 		for (int i = 0; i < required.size(); i++) {
+			run = true;
 			query += "MERGE (course)-[r" + i + ":" + Relations.REQUIRED.toString() + "]->(kc" + i + ")";
 		}
 		for (int i = 0; i < developed.size(); i++) {
+			run = true;
 			query += "MERGE (course)-[r" + (required.size()+i) + ":" + Relations.DEVELOPED.toString() + "]->(kc" + (required.size()+i) + ")";
 		}
-		communicator.writeToNeo(query);
+		if(run) {
+			communicator.writeToNeo(query);
+		}
+		
 	}	
 	
 	/**
