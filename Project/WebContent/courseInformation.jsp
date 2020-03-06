@@ -3,8 +3,10 @@
 
 <div id="courseInformation">
     <div class="header">
+    
+    	<button id="closeCourseButton" type="button" onclick="hideCourseInfo()">close</button><br>
         <h1 id="courseInformation.courseName">NULL</h1>
-        <button id="closeCourseButton" type="button" onclick="hideCourseInfo()">close</button>
+        
     </div>
     <div class="container">
         <div id="courseInfoScreen">
@@ -24,7 +26,7 @@
             <p id="courseInformation.courseCode">NULL</p>
         </div>
         <div id="courseKCList">
-            <p>NULL</p>
+            <p></p>
         </div>
     </div>
     
