@@ -134,7 +134,7 @@ public class Admin extends HttpServlet {
 
 		if (method.equals("MODIFY_USERNAME")) {
 			String username = request.getParameter("username");
-			String newusername = request.getParameter("username");
+			String newusername = request.getParameter("newusername");
 
 			Neo4jConfigLoader.getApi().userMethods.changeUsername(username, newusername);
 
@@ -267,11 +267,10 @@ public class Admin extends HttpServlet {
 			
 			String topic = request.getParameter("topic");
 			
-			Course c = new Course(null, code, 0, null, null, new CourseDate(year, lp));
+			Course c = new Course("", code, 0, "", "", new CourseDate(year, lp));
 			
 			Neo4jConfigLoader.getApi().createMethods.addTopic(topic);
 			Neo4jConfigLoader.getApi().createMethods.createTopicToCourseRelation(c, topic);
-			
 			
 			return "Added topic to course " + code;
 

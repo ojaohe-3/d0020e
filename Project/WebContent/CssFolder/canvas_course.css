@@ -5,6 +5,8 @@
 
 .canvas_course h1 {
     font-size: 15pt;
+    padding-left: 0.2em;
+    padding-right: 0.2em;
 }
 
 .canvas_course_dropdown {
