@@ -124,21 +124,21 @@ class CourseObject{
      * @param courseTarget CourseObject go to
      * @param kc KC JSON
      */
-    setSnapPoints(courseTarget,kc){
-        if(this.extended && this.dockPointsDev.length>1){
-            let endPos = courseTarget.getEndSnapPoint(kc);
-            let startPos = this.dockPointsDev.find(value => kcEquals(value.KC,kc));
-            let snapPoints = [{x:startPos.x,y:startPos.y}];
-            snapPoints.push({x:this.x+this.width+this.width*0.1,y:startPos.y});
-            snapPoints.push(...goToPeriod(this, courseTarget));
-            snapPoints.push({x:courseTarget.x-courseTarget.width*0.1,y:endPos.y});
-            snapPoints.push(endPos);
-
-            let KC = this.KCs[this.dockPointsDev.findIndex(value => kcEquals(value.KC,kc))];
-            if(KC != null)
-                KC.setSnapPoint(snapPoints);
-        }
-    }
+    // setSnapPoints(courseTarget,kc){
+    //     if(this.extended && this.dockPointsDev.length>1){
+    //         let endPos = courseTarget.getEndSnapPoint(kc);
+    //         let startPos = this.dockPointsDev.find(value => kcEquals(value.KC,kc));
+    //         let snapPoints = [{x:startPos.x,y:startPos.y}];
+    //         snapPoints.push({x:this.x+this.width+this.width*0.1,y:startPos.y});
+    //         snapPoints.push(...goToPeriod(this, courseTarget));
+    //         snapPoints.push({x:courseTarget.x-courseTarget.width*0.1,y:endPos.y});
+    //         snapPoints.push(endPos);
+    //
+    //         let KC = this.KCs[this.dockPointsDev.findIndex(value => kcEquals(value.KC,kc))];
+    //         if(KC != null)
+    //             KC.setSnapPoint(snapPoints);
+    //     }
+    // }
 
     /**
      * Get the first lower point before meeting the object, left faced

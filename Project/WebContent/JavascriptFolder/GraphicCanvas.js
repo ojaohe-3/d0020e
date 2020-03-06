@@ -151,7 +151,8 @@ function createCourseOverlay( item, obj) {
   info.appendChild(infoButton);
   infoButton.addEventListener("click", function () {
     showCourseInfo(obj.data);
-  })
+  });
+
   course.appendChild(info);
 
 
@@ -212,7 +213,7 @@ function createCourseOverlay( item, obj) {
 
   button.addEventListener("click",function() {
     let courseObject = obj;
-    let LPs = 1; // TODO give every course a width i.e. how many periods the should be.
+    let LPs = 1; // TODO give every course a width i.e. how many periods the should be. huh?/johan
     //let c = document.getElementById(x +";" + y);
 
     let margin = obj.heightExtension;
@@ -244,6 +245,23 @@ function createCourseOverlay( item, obj) {
 
 
   });
+
+  //--- removeButton ---
+  let rm = document.createElement("div");
+  course.firstChild.appendChild(rm);
+  rm.setAttribute("class","canvas_course_remove");
+
+  rm.addEventListener("click",function() {
+    let c = obj;
+    course.parentNode.removeChild(course);
+    c.setCourseOverlay(null);
+    c.myLP.removeCourse(obj.data);
+    reFormatSection(obj.data.lp,obj.data.year);
+
+  });
+
+
+
 
 
   course.appendChild(dropDown);
@@ -349,6 +367,7 @@ function reFormatSection(lp,year){
 
 
 function drawCanvas() {
+
   resizeTofitCourses();
   saveMatrix();
   ctx.save();
