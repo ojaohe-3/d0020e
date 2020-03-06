@@ -38,18 +38,7 @@ class CanvasLP {
      */
     removeCourse(course){
         let removedObject = this.courses.filter(value => course.courseCode+course.lp+course.year == value.data.courseCode+value.data.lp+value.data.year ).pop();
-        removedObject.dockPointsDev.forEach((value, index) => {
-           value.kcLinks.forEach((element)=>{
-               element.inPoint = null;
-               element.outPoint = null;
-           });
-        });
-        removedObject.dockPointsReq.forEach((value, index) => {
-            value.kcLinks.forEach((element)=>{
-                element.inPoint = null;
-                element.outPoint = null;
-            });
-        });
+        removedObject.unlinkDockingPoints();
         removedObject.setCourseOverlay(null);
         this.courses = this.courses.filter(value => course.courseCode+course.lp+course.year !== value.data.courseCode+value.data.lp+value.data.year );
     }

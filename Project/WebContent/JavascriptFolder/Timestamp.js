@@ -28,6 +28,10 @@ class Timestamp {
         }
     }
 
+    deleteKCSource(dockingPoint) {
+        this.KCOut.delete(dockingPoint.kcData.name + ";" + dockingPoint.kcData.taxonomyLevel);
+    }
+
 
     /**
      * This finds a course docking point that can be connected to a KC link.

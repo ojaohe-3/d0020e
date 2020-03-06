@@ -112,5 +112,18 @@ class KCLink {
         // 4: if the input belongs to current LP: enter the input and Bob's your uncle.
         // 5: repeat 2.
     }
+
+    /**
+     * Remove this link from the other end. This will remind them that a link has been removed
+     * and must be updated.
+     * @param dockingPoint
+     */
+    unlinkOtherEnd(dockingPoint) {
+        if (this.inPoint === dockingPoint) {
+            this.outPoint.unlink(this);
+        } else {
+            this.inPoint.unlink(this);
+        }
+    }
 }
 
