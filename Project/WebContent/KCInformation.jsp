@@ -18,7 +18,7 @@
     </div>
     <div class="container">
         <div id="KCInfoScreen">
-            <h1>
+            <h1 id="KCInformation.KCName.Level1">
                 KC level 1:
             </h1>
             <p id="KCInformation.taxonomyDescription1">NULL</p>
@@ -28,7 +28,7 @@
     </div>
     <div class="container">
         <div id="KCInfoScreen">
-            <h1>
+            <h1 id="KCInformation.KCName.Level2">
                 KC level 2:
             </h1>
             <p id="KCInformation.taxonomyDescription2">NULL</p>
@@ -38,7 +38,7 @@
     </div>
     <div class="container">
         <div id="KCInfoScreen">
-            <h1>
+            <h1 id="KCInformation.KCName.Level3">
                 KC level 3:
             </h1>
             <p id="KCInformation.taxonomyDescription3">NULL</p>
