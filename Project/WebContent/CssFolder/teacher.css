@@ -7,6 +7,10 @@
 	border-radius: 0 25px 25px 0;
 }
 
+.course_list {
+	overflow-y: auto;
+	max-height: 90%;
+}
 #courses h3 {
 	text-align: center;
 }
