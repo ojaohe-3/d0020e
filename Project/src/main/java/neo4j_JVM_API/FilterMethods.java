@@ -308,7 +308,7 @@ public class FilterMethods {
 	 * @author Johan RH
 	 */
 	public CourseInformation[] filterCourseByTopic(String topicTitle) {
-		String query = "MATCH(node: Topic {title : \""+ topicTitle +"\"})<-[r]-(course:Course) RETURN course ";
+		String query = "MATCH (node : Topic) WHERE LOWER(node.title) CONTAINS LOWER(\"" + topicTitle + "\") MATCH (node)<-[r]-(course:Course) RETURN course ";
 		
 		
 		StatementResult result = this.communicator.readFromNeo(query);

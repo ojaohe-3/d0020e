@@ -313,7 +313,7 @@ function course_delete() {
  */
 function course_add_topic() {
 	var input = prompt("courseCode;lp(1-4);year;topic");
-	
+	console.log("in add topic");
 	var data = input.split(";");
 	
 	if(data.length == 4 ){
