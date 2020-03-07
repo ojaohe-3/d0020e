@@ -6,6 +6,7 @@
 	background-color: #292929;
 	color: #bababa;
 	border-radius: 25px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
 .description {
@@ -23,9 +24,13 @@
 
 #requiredKCs>div:nth-child(odd), #developedKCs>div:nth-child(odd){
  background-color: #404040;
+  padding: 0.2em;
+ padding-left: 0.5em;
 }
 #requiredKCs>div:nth-child(even), #developedKCs>div:nth-child(even){
  background-color: #4b4b4b;
+ padding: 0.2em;
+ padding-left: 0.5em;
 }
 
 #requiredKCs > div:hover {
@@ -91,7 +96,7 @@ h3, .courseInfo {
   margin-top: 10px;
   background: #404040;
   border: 1px solid #474747;
-  font-size: 12pt;
+  font-size: 11pt;
   color: #bababa;;
   padding-left: 10px;
   border-radius: 5px;
