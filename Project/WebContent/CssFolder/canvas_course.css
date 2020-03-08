@@ -29,11 +29,20 @@
     height: 100%;
 }
 
-.canvas_course table th p{
+.canvas_course table ul{
+    color: black;
+    list-style: none;
     font-size: 7pt;
+    padding: 0;
+}
+
+.canvas_course table li{
     margin: 0;
     vertical-align: middle;
-    display:inline;
+    display:inline-block;
+    width:100%;
+    text-align: center;
+    padding: 0;
 }
 
 .canvas_course h1 {

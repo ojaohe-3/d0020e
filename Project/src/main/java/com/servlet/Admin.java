@@ -303,6 +303,7 @@ public class Admin extends HttpServlet {
 
 		String method = request.getParameter("method");
 		
+		
 		if(method.equals("CREATE")) {
 
 			String KCName = request.getParameter("name");
@@ -391,6 +392,7 @@ public class Admin extends HttpServlet {
 	private String program(HttpServletRequest request) throws IOException {
 
 		String method = request.getParameter("method");
+		System.out.println("inne i program " + method);
 		
 		if(method.equals("CREATE")) {
 			String programName = request.getParameter("name");
@@ -523,6 +525,7 @@ public class Admin extends HttpServlet {
 			LP programStartPeriod = LP.getByString(programStartLP);
 			int course_Year = Integer.parseInt(courseYear);
 			LP coursePeriod = LP.getByString(courseLP);
+			
 
 			CourseDate programStartDate = new CourseDate(programYear, programStartPeriod);
 			CourseDate courseDate = new CourseDate(course_Year, coursePeriod);
@@ -591,31 +594,65 @@ public class Admin extends HttpServlet {
 
 		}
 		if (method.equals("MODIFY_SPECIAL")) {
+			
 			String oldName = request.getParameter("oldName");
 			int programStartYear = Integer.parseInt(request.getParameter("programStartYear"));
-			LP programStartLP = LP.getByString(request.getParameter("programStartByString"));
+			LP programStartLP = LP.getByString(request.getParameter("programStartLP"));
 			String newName = request.getParameter("newName");
+		
 			String newCode = request.getParameter("newCode");
 			int newStartYear = Integer.parseInt(request.getParameter("newStartYear"));
-			LP newStartLP = LP.getByString(request.getParameter("newStartByString"));
+			LP newStartLP = LP.getByString(request.getParameter("newStartLP"));
 			String newDescription = request.getParameter("newDescription");
 			float newCredits = Float.parseFloat(request.getParameter("newCredits"));
 			int readingPeriods = Integer.parseInt(request.getParameter("readingPeriods"));
-			ArrayList<Course> courseOrder= new ArrayList<Course>();
-
+			CourseOrder courseOrder = new CourseOrder(readingPeriods);
+			
+	
+			
 			CourseDate programDate = new CourseDate(programStartYear, programStartLP);
 			CourseDate specializationDate = new CourseDate(newStartYear, newStartLP);
-
-			ProgramSpecialization programSpecialization = new ProgramSpecialization(courseOrder, newCode, newName,newDescription, specializationDate, newCredits);
+			
+			ProgramSpecialization programSpecialization = new ProgramSpecialization(null, newCode, newName,newDescription, specializationDate, newCredits);
 
 			Neo4jConfigLoader.getApi().modifyMethods.editSpecialization(oldName, programDate, programSpecialization);
 
 			return "The progrmspecialization named " + oldName + " has been modified. New name is " + newName;
 
-		}else {
+		}
+		if(method.equals("ADD_COURSE_SPECIALIZATION")) {
+			String specializationName = request.getParameter("specializationName");
+			String programCode = request.getParameter("programCode");
+			String specializationStartYear = request.getParameter("specializationtartYear");
+			String specializationStartLP = request.getParameter("specializationtartLP");
+			String courseCode = request.getParameter("courseCode");
+			String courseYear = request.getParameter("courseYear");
+			String courseLP = request.getParameter("courseLP");
+			
+			int specializationYear = Integer.parseInt(specializationStartYear);
+			LP specializationStartPeriod = LP.getByString(specializationStartLP);
+			int course_Year = Integer.parseInt(courseYear);
+			LP coursePeriod = LP.getByString(courseLP);
+
+			CourseDate specializationStartDate = new CourseDate(specializationYear, specializationStartPeriod);
+			CourseDate courseDate = new CourseDate(course_Year, coursePeriod);
+
+			ProgramSpecialization specialization = Neo4jConfigLoader.getApi().getMethods.getProgramSpecialization(specializationName, programCode, specializationStartDate);
+			Course course = Neo4jConfigLoader.getApi().getMethods.getCourse(courseCode, courseDate);
+
+			specialization.setCode(programCode);
+			specialization.setName(specializationName);
+
+			Neo4jConfigLoader.getApi().createMethods.createProgramCourseRelation(specialization, course);
+
+			return "The relationship between " + specializationName + " and " + courseCode + " has been modified";
+		}
+		else {
 			return "The input must be either CREATE, DELETE, DELETE_SPECIAL, COPY_FROM_YEAR, MODIFY, MODIFY_SPECIAL, SET_RELATION_TO_COURSE, ADD_COURSE or CREATE_SPECIAL";
 
 		}
+		
+		
 	}
 
 

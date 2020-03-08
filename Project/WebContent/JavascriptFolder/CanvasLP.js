@@ -45,7 +45,7 @@ class CanvasLP {
                 y: this.courses.length*this.courseHeight,
                 width: width,
                 height: height,
-                thickness: 24
+                thickness: 12
             },
             this
         );

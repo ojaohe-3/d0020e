@@ -31,7 +31,7 @@ class CourseObject{
         // Start of the new solution.
         this.margin_top = 0;
 
-        this.heightExtension = Math.max(this.data.Developed.length,this.data.Required.length-1)*this.thickness+this.thickness;
+        this.heightExtension = Math.max(this.data.Developed.length,this.data.Required.length)*this.thickness+this.thickness/2;
 
 
         // These are outgoing and ingoing KC links.
@@ -39,7 +39,6 @@ class CourseObject{
         // KC links connected to them, in theory. I haven't tested it yet.
         this.dockPointsReq = [];
         this.dockPointsDev = [];
-        this.pointHeight = 24; // docking point height.
 
         this.data.Required.forEach((value)=>{
             this.addIngoingDockingPoint(value);
@@ -99,7 +98,7 @@ class CourseObject{
      */
     addIngoingDockingPoint(kcData) {
         let point = new DockingPoint(this, getInputPoint,
-            {x:0,y:this.height + this.dockPointsReq.length*this.pointHeight},kcData);
+            {x:0,y:this.height + this.dockPointsReq.length*this.thickness+this.thickness/2},kcData);
         this.dockPointsReq.push(point);
         return point;
     }
@@ -114,7 +113,7 @@ class CourseObject{
      */
     addOutGoingDockingPoint(kcData) {
         let point = new DockingPoint(this, getOutputPoint,
-            {x:this.width,y:this.height + this.dockPointsDev.length*this.pointHeight},kcData);
+            {x:this.width,y:this.height + this.dockPointsDev.length*this.thickness+this.thickness/2},kcData);
         this.dockPointsDev.push(point);
         return point;
     }
@@ -311,7 +310,7 @@ class DockingPoint {
         if (this.isExtended()) {
             return {x: this.courseObject.getX() + this.expandedPoint.x, y:  this.courseObject.getY() + this.expandedPoint.y};
         } else {
-            return this.position(this.courseObject);   // TODO Check if this actually works, or if the course object is lost.
+            return this.position(this.courseObject);
         }
     }
 }
