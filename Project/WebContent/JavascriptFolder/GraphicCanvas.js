@@ -182,7 +182,7 @@ function createCourseOverlay( item, obj) {
   obj.data.Developed.forEach((value) => {
     let p = document.createElement("li");
     p.setAttribute("style","height: " + obj.thickness + "px;");
-    p.innerText = value.name;
+    p.innerText = value.name + " " + value.taxonomyLevel;
     KCout.appendChild(p);
   });
 
@@ -190,7 +190,7 @@ function createCourseOverlay( item, obj) {
     if (value.KC !== null) {
       let p = document.createElement("li");
       p.setAttribute("style","height: " + obj.thickness + "px;");
-      p.innerText = value.name;
+      p.innerText = value.name + " " + value.taxonomyLevel;
       KCin.appendChild(p);
     }
 
