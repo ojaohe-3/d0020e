@@ -77,7 +77,7 @@ class KCLink {
             //ctx.lineTo(lPcoords[0].x,lPcoords[0].y)
             currentLp = currentLp.getPrecendingLP();
             while (currentLp != this.inPoint.getLP()) {
-                let tempCoords = currentLp.getMiddlePoint();
+                let tempCoords = currentLp.getMiddlePoint(currentLp);
                 if (tempCoords !== null) {
                     lPcoords = tempCoords;
                 }
@@ -107,6 +107,19 @@ class KCLink {
         // 3: find a way into the previous LP
         // 4: if the input belongs to current LP: enter the input and Bob's your uncle.
         // 5: repeat 2.
+    }
+
+    /**
+     * Remove this link from the other end. This will remind them that a link has been removed
+     * and must be updated.
+     * @param dockingPoint
+     */
+    unlinkOtherEnd(dockingPoint) {
+        if (this.inPoint === dockingPoint) {
+            this.outPoint.unlink(this);
+        } else {
+            this.inPoint.unlink(this);
+        }
     }
 }
 

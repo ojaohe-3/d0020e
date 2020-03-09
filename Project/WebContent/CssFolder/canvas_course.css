@@ -69,6 +69,16 @@
     right: 0px;
 }
 
+.canvas_course_remove{
+    width: 2em;
+    height: 2em;
+    background-color: darkred;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+
+}
+
 .canvas_course_button:hover {
     background-color: #565656;
 }

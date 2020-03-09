@@ -58,18 +58,22 @@ class CourseObject{
      */
     generateAllIngoingKCs(myLP) {
         this.dockPointsReq.forEach((dockingPoint)=>{
-            if (!dockingPoint.hasLink()) {
-                let developedDockingpoint = myLP.findKCSource(dockingPoint.kcData);     // find starting dock point.
-                if (developedDockingpoint != null) {
-                    let link = new KCLink();
-                    // Link both docking points to the newly created link.
-                    developedDockingpoint.addKCLinkConnection(link);
-                    link.setIngoingDockingPoint(developedDockingpoint);
-                    dockingPoint.addKCLinkConnection(link);
-                    link.setOutgoingDockingPoint(dockingPoint);
-                }
-            }
+            this.generateIngoingKCForDockingPoint(dockingPoint);
         });
+    }
+
+    generateIngoingKCForDockingPoint(dockingPoint) {
+        if (!dockingPoint.hasLink()) {
+            let developedDockingpoint = this.myLP.findKCSource(dockingPoint.kcData);     // find starting dock point.
+            if (developedDockingpoint != null) {
+                let link = new KCLink();
+                // Link both docking points to the newly created link.
+                developedDockingpoint.addKCLinkConnection(link);
+                link.setIngoingDockingPoint(developedDockingpoint);
+                dockingPoint.addKCLinkConnection(link);
+                link.setOutgoingDockingPoint(dockingPoint);
+            }
+        }
     }
 
     /**
@@ -123,21 +127,21 @@ class CourseObject{
      * @param courseTarget CourseObject go to
      * @param kc KC JSON
      */
-    setSnapPoints(courseTarget,kc){
-        if(this.extended && this.dockPointsDev.length>1){
-            let endPos = courseTarget.getEndSnapPoint(kc);
-            let startPos = this.dockPointsDev.find(value => kcEquals(value.KC,kc));
-            let snapPoints = [{x:startPos.x,y:startPos.y}];
-            snapPoints.push({x:this.x+this.width+this.width*0.1,y:startPos.y});
-            snapPoints.push(...goToPeriod(this, courseTarget));
-            snapPoints.push({x:courseTarget.x-courseTarget.width*0.1,y:endPos.y});
-            snapPoints.push(endPos);
-
-            let KC = this.KCs[this.dockPointsDev.findIndex(value => kcEquals(value.KC,kc))];
-            if(KC != null)
-                KC.setSnapPoint(snapPoints);
-        }
-    }
+    // setSnapPoints(courseTarget,kc){
+    //     if(this.extended && this.dockPointsDev.length>1){
+    //         let endPos = courseTarget.getEndSnapPoint(kc);
+    //         let startPos = this.dockPointsDev.find(value => kcEquals(value.KC,kc));
+    //         let snapPoints = [{x:startPos.x,y:startPos.y}];
+    //         snapPoints.push({x:this.x+this.width+this.width*0.1,y:startPos.y});
+    //         snapPoints.push(...goToPeriod(this, courseTarget));
+    //         snapPoints.push({x:courseTarget.x-courseTarget.width*0.1,y:endPos.y});
+    //         snapPoints.push(endPos);
+    //
+    //         let KC = this.KCs[this.dockPointsDev.findIndex(value => kcEquals(value.KC,kc))];
+    //         if(KC != null)
+    //             KC.setSnapPoint(snapPoints);
+    //     }
+    // }
 
     /**
      * Get the first lower point before meeting the object, left faced
@@ -239,6 +243,38 @@ class CourseObject{
         return this.height + (this.extended ? this.heightExtension : 0);
     }
 
+    /**
+     * A required docking point has lost its only link. We must find a link that can
+     * replace it.
+     * @param dockingPoint
+     */
+    requiredWasUnlinked(dockingPoint) {
+        this.generateIngoingKCForDockingPoint(dockingPoint);
+    }
+
+    /**
+     * Just unlink all docking points. This should be done when the course is deleted from its LP.
+     */
+    unlinkDockingPoints() {
+        this.dockPointsDev.forEach((value, index) => {
+            this.myLP.timestamp.deleteKCSource(value);
+            value.unlinkAll();
+        });
+        this.dockPointsReq.forEach((value, index) => {
+            value.unlinkAll();
+        });
+    }
+
+    /**
+     * Move a course and its overlay.
+     * @param newY
+     */
+    moveCourseY(newY) {
+        this.courseOverlay.setAttribute("id", this.x + ";" + newY);
+        this.courseOverlay.setAttribute("style","left:"+this.x+"px; top:"+newY+"px; width:"+this.width+"px;");
+        this.y = newY;
+    }
+
 }
 
 /**
@@ -299,6 +335,29 @@ class DockingPoint {
 
     hasLink() {
         return this.kcLinks.length > 0;
+    }
+
+    /**
+     * Unlink all connections.
+     */
+    unlinkAll() {
+        this.kcLinks.forEach((value)=>{
+            // Also unlink the other end so it doesn't think there is still a connection.
+            value.unlinkOtherEnd(this);
+        });
+    }
+
+    /**
+     * The link was removed in the other end. This will check if the course object should be notified.
+     * @param kcLink
+     */
+    unlink(kcLink) {
+        let i = this.kcLinks.indexOf(kcLink);
+        this.kcLinks.splice(i,1);
+        if (this === kcLink.outPoint) {
+            // this is a required docking point and someone just removed the link :(
+            this.courseObject.requiredWasUnlinked(this);
+        }
     }
 
     /**

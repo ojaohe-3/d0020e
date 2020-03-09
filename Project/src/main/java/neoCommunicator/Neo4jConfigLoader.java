@@ -73,7 +73,8 @@ public class Neo4jConfigLoader {
         }
 
         config temp = new config(uname,pwd,url);
-        return temp;*/
+        return temp;
+         */
     }
 
     /**

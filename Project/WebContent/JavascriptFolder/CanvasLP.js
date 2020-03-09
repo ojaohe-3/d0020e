@@ -27,9 +27,29 @@ class CanvasLP {
         if (this.courses.length == 0) {
             return null;
         }
-        let point1 = this.courses[0].getFirstIntermittenPoint();
-        let point2 = this.courses[0].getEndIntermittenPoint();
+        let point1 = courseLP.courses[0].getFirstIntermittenPoint();
+        let point2 = courseLP.courses[0].getEndIntermittenPoint();
         return [point1, point2];
+    }
+
+    /**
+     * Remove a specific course
+     * @param course JSON of course
+     */
+    removeCourse(course){
+        let removedObject = this.courses.filter(value => course.courseCode+course.lp+course.year == value.data.courseCode+value.data.lp+value.data.year ).pop();
+        removedObject.unlinkDockingPoints();
+        removedObject.setCourseOverlay(null);
+        this.courses = this.courses.filter(value => course.courseCode+course.lp+course.year !== value.data.courseCode+value.data.lp+value.data.year );
+        this.reevaluateCourses();
+    }
+
+    reevaluateCourses() {
+        let i = 0;
+        this.courses.forEach((value)=> {
+            value.moveCourseY(i*this.courseHeight);
+            i++;
+        });
     }
 
     /**
