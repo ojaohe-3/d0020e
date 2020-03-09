@@ -350,7 +350,53 @@ private final Neo4jCommunicator communicator;
 	 * @param newYear - The year of the first study period. This is not relative to the old year.
 	 */
 	public void createCopyOfProgrambyYear(CourseProgram program, int newYear) {
-		int yearDifference = newYear - program.getStartDate().getYear();
+		
+		int yearDiff = newYear - program.getStartDate().getYear();
+		
+		ArrayList<Course> oldCourses = program.getCourseOrder();
+		ArrayList<Course> newCourses = new ArrayList<Course>();
+		
+		/*
+		 * Loop through every old course and change the year. 
+		 * Copies over all the KCs and creates the relations in the DB
+		 */
+		for(Course oldCourse: oldCourses) {
+			CourseDate newDate = new CourseDate(oldCourse.getStartPeriod().getYear() + yearDiff, oldCourse.getStartPeriod().getPeriod());
+		
+			Course courseCopy = new Course(oldCourse.getName(), oldCourse.getCourseCode(), oldCourse.getCredit(), oldCourse.getDescription(), oldCourse.getExaminer(), newDate);
+			
+			for(KC kc: oldCourse.getDevelopedKC()) {
+				courseCopy.setDevelopedKC(kc);
+			}
+			for(KC kc: oldCourse.getRequiredKC()) {
+				courseCopy.setRequiredKC(kc);
+			}
+			
+			this.createCourse(courseCopy);
+			this.createCourseKCrelation(courseCopy);
+			newCourses.add(courseCopy);
+		}
+		
+		
+		/*
+		 * Creates the program and the relations to the new courses.
+		 */
+		CourseDate programDate = new CourseDate(program.getStartDate().getYear() + yearDiff, program.getStartDate().getPeriod());
+		CourseProgram newProgram = new CourseProgram(program.getCode(), program.getName(), program.getDescription(), programDate, program.getCredits());
+		//newProgram.setCourseOrder(newCourses);
+		
+		this.createProgram(newProgram);
+		
+		/*
+		 * This is mega slow but I don't want to read the other buggy code :)
+		 */
+		for(Course c: newCourses) {
+			this.createProgramCourseRelation(newProgram, c);
+		}
+		// The bugs in this one... -v-
+		//this.createProgramCourseRelations(newProgram);
+		// ---------
+		/*int yearDifference = newYear - program.getStartDate().getYear();
 		ArrayList<Course> courses = program.getCourseOrder();
 		ArrayList<Course> newCourses = new ArrayList<Course>();
 		CourseDate courseStartDateRef = null;
@@ -360,6 +406,7 @@ private final Neo4jCommunicator communicator;
 				this.createCourse(courseRef);
 				for (KC kc : courseRef.getDevelopedKC()) {
 					courseRef.setDevelopedKC(kc);
+					
 				}
 				for (KC kc : courseRef.getRequiredKC()) {
 					courseRef.setRequiredKC(kc);
@@ -374,7 +421,7 @@ private final Neo4jCommunicator communicator;
 		//newCourseOrder.assignCourseOrder(newCourses);
 		//update version using pointers.
 		this.createProgram(newProgram);
-		this.createProgramCourseRelations(newProgram);
+		this.createProgramCourseRelations(newProgram);*/
 	}
 
 	/**
@@ -384,7 +431,48 @@ private final Neo4jCommunicator communicator;
 	 * @param newYear - The year of the first study period. This is not relative to the old year.
 	 */
 	public void createCopyOfSpecializationbyYear(ProgramSpecialization program, int newYear, String code, CourseDate newRelationDate) {
-		int yearDifference = newYear - program.getStartDate().getYear();
+		
+		int yearDiff = newYear - program.getStartDate().getYear();
+		
+		ArrayList<Course> oldCourses = program.getCourseOrder();
+		ArrayList<Course> newCourses = new ArrayList<Course>();
+		
+		/*
+		 * Loop through every old course and change the year. 
+		 * Copies over all the KCs and creates the relations in the DB
+		 */
+		for(Course oldCourse: oldCourses) {
+			CourseDate newDate = new CourseDate(oldCourse.getStartPeriod().getYear() + yearDiff, oldCourse.getStartPeriod().getPeriod());
+		
+			Course courseCopy = new Course(oldCourse.getName(), oldCourse.getCourseCode(), oldCourse.getCredit(), oldCourse.getDescription(), oldCourse.getExaminer(), newDate);
+			
+			for(KC kc: oldCourse.getDevelopedKC()) {
+				courseCopy.setDevelopedKC(kc);
+			}
+			for(KC kc: oldCourse.getRequiredKC()) {
+				courseCopy.setRequiredKC(kc);
+			}
+			
+			this.createCourse(courseCopy);
+			this.createCourseKCrelation(courseCopy);
+			newCourses.add(courseCopy);
+		}
+		
+		
+		/*
+		 * Creates the program and the relations to the new courses.
+		 */
+		CourseDate programDate = new CourseDate(program.getStartDate().getYear() + yearDiff, program.getStartDate().getPeriod());
+		ProgramSpecialization newProgram = new ProgramSpecialization(null, program.getName(), program.getCode(), program.getDescription(), programDate, program.getCredits());
+		//newProgram.setCourseOrder(newCourses);
+		
+		this.createProgram(newProgram);
+		this.createProgramSpecializationRelation(code, newRelationDate, newProgram);
+		for(Course c: newCourses) {
+			this.createProgramCourseRelation(newProgram, c);
+		}
+		
+		/*int yearDifference = newYear - program.getStartDate().getYear();
 		ArrayList<Course> courses = program.getCourseOrder();
 		ArrayList<Course> newCourses = new ArrayList<Course>();
 		CourseDate courseStartDateRef = null;
@@ -409,6 +497,7 @@ private final Neo4jCommunicator communicator;
 		//update version using pointers.
 		this.createProgramSpecialization(newProgram);
 		this.createProgramCourseRelations(newProgram);
+		*/
 	}
 
 }

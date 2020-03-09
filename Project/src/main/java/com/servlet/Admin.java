@@ -450,23 +450,28 @@ public class Admin extends HttpServlet {
 			return "The specialization " + name + " has been deleted";
 		}
 
+		/**
+		 * Copy from year will not be able to change the LP
+		 */
 		if(method.equals("COPY_FROM_YEAR")) {
 			String programCode = request.getParameter("code");
 			String fromYear = request.getParameter("fromYear");
 			String fromLP = request.getParameter("fromLP");
 			String toYear = request.getParameter("toYear");
+			//String toLP = request.getParameter("toLP");
 
 			LP fromPeriod = LP.getByString(fromLP);
 			int previousYear = Integer.parseInt(fromYear);
-			int nextYear = Integer.parseInt(toYear);
+			int newYear = Integer.parseInt(toYear);
+			//LP newPeriod = LP.getByString(toLP);
 
 			CourseDate earlierProgramDate = new CourseDate(previousYear, fromPeriod);
 
 			CourseProgram oldProgram = Neo4jConfigLoader.getApi().getMethods.getProgram(programCode, earlierProgramDate);
 
-			Neo4jConfigLoader.getApi().createMethods.createCopyOfProgrambyYear(oldProgram, nextYear);
+			Neo4jConfigLoader.getApi().createMethods.createCopyOfProgrambyYear(oldProgram, newYear);
 
-			return "A new program with program code " + programCode + " has been created for year "+ toYear;
+			return "A new program with program code " + programCode + " has been created for year "+ newYear;
 
 		}
 

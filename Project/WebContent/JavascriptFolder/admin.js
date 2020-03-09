@@ -682,11 +682,11 @@ function program_delete_topic() {
  * create a copy of a program with a new year and a new starting LP
  */
 function program_copy_from_year() {
-	var input = prompt("code;fromYear;fromLP;toYear;toLP");
+	var input = prompt("code;fromYear;fromLP;toYear");
 	
 	var data = input.split(";");
 	
-	if(data.length == 5){
+	if(data.length == 4){
 		
 		$.ajax({
 			url : 'admin',
@@ -697,8 +697,7 @@ function program_copy_from_year() {
 				code : data[0],
 				fromYear : data[1],
 				fromLP : data[2],
-				toYear : data[3],
-				toLP : data[4]
+				toYear : data[3]
 				
 			},
 			success : function(response) {
@@ -717,11 +716,11 @@ function program_copy_from_year() {
  * Create a copy of a specialization with a new year and a new lp
  */
 function program_copy_from_year_special() {
-	var input = prompt("name;code;fromYear;fromLP;toYear;toLP");
+	var input = prompt("name;code;fromYear;fromLP;toYear\n WARNING, THIS MAY NOW WORK");
 	
 	var data = input.split(";");
 	
-	if(data.length == 6){
+	if(data.length == 5){
 		
 		$.ajax({
 			url : 'admin',
@@ -733,8 +732,8 @@ function program_copy_from_year_special() {
 				code : data[1],
 				fromYear : data[2],
 				fromLP : data[3],
-				toYear : data[4],
-				toLP : data[5]
+				toYear : data[4]
+				
 				
 			},
 			success : function(response) {
