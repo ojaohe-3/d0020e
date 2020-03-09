@@ -30,10 +30,11 @@ public class GetProgramFilterByTopic extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
 		ProgramInformation[] programs = Neo4jConfigLoader.getApi().filterMethods.filterProgramByTopic(request.getParameter("filter"));
-		
+
 		try {
 			JSONArray array = new JSONArray();
 			for (ProgramInformation program : programs) {
+				
 			    JSONObject obj = new JSONObject();
 			    obj.put(ProgramLabels.NAME.toString(), program.getName());
 			    obj.put(ProgramLabels.CODE.toString(), program.getCode());

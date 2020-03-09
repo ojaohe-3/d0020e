@@ -1,11 +1,12 @@
 #KCInformation {
     background-color: #292929;
     width: 40%;
-    height: 80%;
+    height: auto;
     position: fixed;
     left: 50%;
-    top: 40%;
+    top: 15em;
     margin-top: 5em;
+    padding-bottom: 2em;
     transform: translateX(-50%) translateY(-50%);
     display: none;  /* This must be set to flex when visible. */
     flex-flow: column;
@@ -16,7 +17,7 @@
 
 #KCInfoScreen {
     width: 100%;
-    height: 100%;
+    height: auto;
     float:left;
 }
 

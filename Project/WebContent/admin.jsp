@@ -84,17 +84,21 @@
 				<ul>
 					<h4>Program</h4>
 					<li><button onclick="program_create()">Create Program</button></li>
-					<li><button onclick="program_create_specialization()">Create Specialization</button></li>
-					<li><button onclick="program_modify()">Modify</button></li>
-					<li><button onclick="program_delete()">Delete</button></li>
-					<li><button onclick="program_modify_special()">Modify Specialization</button></li>
-					<li><button onclick="program_delete()">Delete Specialization</button></li>
+					<li><button onclick="program_modify()">Modify Program</button></li>
+					<li><button onclick="program_delete()">Delete Program</button></li>
 					<li><button onclick="program_copy_from_year()">Copy From Year</button></li>
-					<li><button onclick="program_copy_from_year_special()">Copy Specialization From Year</button></li>
 					<li><button onclick="program_add_course()">Add Course to program</button></li>
-					<li><button onclick="specialization_add_course()">Add Course to Specialization</button></li>
 					<li><button onclick="get_courses_in_program()">Get Courses in Program</button></li>
-					<li><button onclick="graphModifyCourse()">Modify Course using graphics</button>
+					<li><button onclick="graphModifyCourse()">Modify Program using graphics</button></li>
+					<li><button onclick="program_add_topic()">Add topic to Program</button></li>
+					<li><button onclick="program_delete_topic()">Delete topic from Program</button></li>
+					
+					<li><button onclick="program_create_specialization()">Create Specialization</button></li>
+					<li><button onclick="program_modify_special()">Modify Specialization</button></li>
+					<li><button onclick="program_delete()">Delete Specialization</button></li>	
+					<li><button onclick="program_copy_from_year_special()">Copy Specialization From Year</button></li>
+					<li><button onclick="specialization_add_course()">Add Course to Specialization</button></li>
+					
 				</ul>
 			</div>
 		

@@ -18,7 +18,7 @@ function courseClicked(code, year, lp) {
 		success : function(response) {
 			addCourse(response);
 			// Should call a function in the canvas with the response
-			$('#debug').html("response : " + response);
+			//$('#debug').html("response : " + response);
 		}
 	});
 }
@@ -35,7 +35,7 @@ function programClicked(code,year,lp) {
 		success : function(response) {
 			// Should call a function in the canvas with the response
 			generateCanvas(response);
-			$('#debug').html("response : " + response.name + ", courses: " +response.Courses.length);
+			//$('#debug').html("response : " + response.name + ", courses: " +response.Courses.length);
 		}
 	}).fail(function (response) {
 		console.log(response);
@@ -56,7 +56,7 @@ function specializationClicked(name, code,year,lp) {
 		success : function(response) {
 			// Should call a function in the canvas with the response
 			appendProgramspecialization(response);
-			$('#debug').html("response : " + response.name + ", courses: " +response.Courses.length);
+			//$('#debug').html("response : " + response.name + ", courses: " +response.Courses.length);
 		}
 	}).fail(function (response) {
 		console.log(response);
@@ -89,6 +89,9 @@ function kcClicked(name) {
 			var thirdTaxJ = JSON.parse(thirdTax);
 			
 			document.getElementById("KCInformation.KCName").innerHTML=name.name;
+			document.getElementById("KCInformation.KCName.Level1").innerHTML=name.name + " level 1:";
+			document.getElementById("KCInformation.KCName.Level2").innerHTML=name.name + " level 2:";
+			document.getElementById("KCInformation.KCName.Level3").innerHTML=name.name + " level 3:";
 			document.getElementById("KCInformation.generalDescription").innerHTML=generalDescription.generalDescription;
 			document.getElementById("KCInformation.taxonomyDescription1").innerHTML=firstTaxJ.taxonomyDescription;
 			document.getElementById("KCInformation.taxonomyDescription2").innerHTML=secondTaxJ.taxonomyDescription;

@@ -308,7 +308,7 @@ public class FilterMethods {
 	 * @author Johan RH
 	 */
 	public CourseInformation[] filterCourseByTopic(String topicTitle) {
-		String query = "MATCH(node: Topic {title : \""+ topicTitle +"\"})<-[r]-(course:Course) RETURN course ";
+		String query = "MATCH (node : Topic) WHERE LOWER(node.title) CONTAINS LOWER(\"" + topicTitle + "\") MATCH (node)<-[r]-(course:Course) RETURN course ";
 		
 		
 		StatementResult result = this.communicator.readFromNeo(query);
@@ -339,16 +339,17 @@ public class FilterMethods {
 	 * @return
 	 */
 	public ProgramInformation[] filterProgramByTopic(String topicTitle) {
-		String query = "MATCH(topic: Topic {title : \""+ topicTitle +"\"})<-[r]-(courseProgram: CourseProgram) RETURN courseProgram ";
+		//String query = "MATCH(topic: Topic {title : \""+ topicTitle +"\"})<-[r]-(courseProgram: CourseProgram) RETURN courseProgram ";
+		String query = "MATCH (node : Topic) WHERE LOWER(node.title) CONTAINS LOWER(\"" + topicTitle + "\") MATCH (node)-[r]-(courseProgram: CourseProgram) RETURN courseProgram";
 		
 		StatementResult result = this.communicator.readFromNeo(query);
 		ArrayList<ProgramInformation> programs = new ArrayList<ProgramInformation>();
-		
 		while(result.hasNext()) {
 			Record row = result.next();
+
 			programs.add(new ProgramInformation(
-					row.get("courseProgram").get(ProgramLabels.NAME.toString()).toString().replaceAll("\"", ""),
 					row.get("courseProgram").get(ProgramLabels.CODE.toString()).toString().replaceAll("\"", ""),
+					row.get("courseProgram").get(ProgramLabels.NAME.toString()).toString().replaceAll("\"", ""),
 					row.get("courseProgram").get(ProgramLabels.DESCRIPTION.toString()).toString().replaceAll("\"", ""),
 					new CourseDate(
 							Integer.parseInt(row.get("courseProgram").get(ProgramLabels.YEAR.toString()).toString().replaceAll("\"", "")),

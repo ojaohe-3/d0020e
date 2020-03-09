@@ -27,7 +27,7 @@ function closeNav() {
 <div class="filterContainer" id="filterContainer">
 	<div class="container-fluid sidenav">
 	  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&#9776;</a>
-	  <h2>Filter Container</h2>
+
 	  <ul class="nav nav-pills nav-justified" id="filterMenu">
 	  	<li class="active"><a data-toggle="pill" href="#program">Program</a></li>
 		  <li><a data-toggle="pill" href="#course">Course</a></li>

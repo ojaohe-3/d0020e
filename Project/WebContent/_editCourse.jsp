@@ -12,7 +12,7 @@
 			<div id="requiredKCs">
 			</div>
 				  <form class="search">
-					<input type="text" class="searchBar" id="searchRequiredKC" placeholder="Search... ">
+					<input type="text" class="searchBar" id="searchRequiredKC" placeholder="Search for knowledge compoenent...">
 				  </form>
 			  <div id="kcRequired_search_results" class="result pre-scrollable">
 			  </div>
@@ -34,7 +34,7 @@
 			<div id="developedKCs">
 			</div>
 			<form class="search">
-				<input type="text" class="searchBar" id="searchDevelopedKC" placeholder="Search... ">
+				<input type="text" class="searchBar" id="searchDevelopedKC" placeholder="Search for knowledge compoenent... ">
 			</form>
 			<div id="kcDeveloped_search_results" class="result pre-scrollable">
 			</div>

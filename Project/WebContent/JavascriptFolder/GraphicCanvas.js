@@ -158,7 +158,7 @@ function createCourseOverlay( item, obj) {
   // ---------------- dropdown -------------
 
   let dropDown = document.createElement("div");
-  dropDown.setAttribute("style","height:"+obj.heightExtension+"px;");
+  //dropDown.setAttribute("style","height:"+obj.heightExtension+"px;");
   dropDown.setAttribute("class","canvas_course_dropdown");
 
   let dropdown_table = document.createElement("table");
@@ -181,7 +181,7 @@ function createCourseOverlay( item, obj) {
 
   obj.data.Developed.forEach((value) => {
     let p = document.createElement("li");
-    p.setAttribute("style","height: " + obj.thickness + "px;");
+    //p.setAttribute("style","height: " + obj.thickness + "px;");
     p.innerText = value.name + " " + value.taxonomyLevel;
     KCout.appendChild(p);
   });
@@ -189,7 +189,7 @@ function createCourseOverlay( item, obj) {
   obj.data.Required.forEach((value) => {
     if (value.KC !== null) {
       let p = document.createElement("li");
-      p.setAttribute("style","height: " + obj.thickness + "px;");
+      //p.setAttribute("style","height: " + obj.thickness + "px;");
       p.innerText = value.name + " " + value.taxonomyLevel;
       KCin.appendChild(p);
     }
