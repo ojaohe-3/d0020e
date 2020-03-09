@@ -152,7 +152,12 @@ a:hover {
   margin-left: 22em;
 }
 
-#course_search_results, #kc_search_results, #program_search_results, #topic_search_results {
+#course_search_results, #kc_search_results, #topic_search_results {
 	overflow-y: auto;
-	max-height: 13em;
+	max-height: 45%;
+}
+
+#program_search_results {
+	overflow-y: auto;
+	max-height: 25%;
 }
