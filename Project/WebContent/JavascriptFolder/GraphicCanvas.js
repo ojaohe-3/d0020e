@@ -88,6 +88,10 @@ function generateCanvas(data) {
  * @param data
  */
 function appendProgramspecialization(data) {
+  if (LPHashmap.size == 0) {
+    generateCanvas(data);
+    return;
+  }
   addAllCourses(data['Courses']);
 
   generateKcsInAllLPs();
@@ -262,7 +266,7 @@ function addCourse(data) {
 
   let lp = LPHashmap.get(data.year + ";" + lpString);
   if (lp == null) {
-    console.log("course is out of bounds");
+    showCourseInfo(data);
     return;
   }
 

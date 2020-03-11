@@ -257,7 +257,7 @@ class KAnvas {
             
             
             t.layer1.add(addCourseBox(cYear, eLP, t.boxSize, x, t.spaceBetweenY + (t.boxSize + t.spaceBetweenY) * occurencies(takenXpos, x)));
-            if(cLP === "TWO") {
+            if(cLP === "THREE") {
                 cYear++;
             }
         }

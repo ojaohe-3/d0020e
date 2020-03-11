@@ -136,10 +136,10 @@ function callback(year, lp, response, kGroup) {
         response.Developed = JSON.parse(JSON.stringify(response.Developed));
 
         response.Required.forEach(function (item, index, arr){
-            response.Required[index] = JSON.parse(item);
+            response.Required[index] = item;//JSON.parse(item);
         });
         response.Developed.forEach(function (item, index, arr){
-            response.Developed[index] = JSON.parse(item);
+            response.Developed[index] = item;//JSON.parse(item);
         });
         
         window.data.Courses.push(response);

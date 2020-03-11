@@ -13,6 +13,7 @@ class CanvasLP {
         } else {
             this.timestamp = new Timestamp(null);
         }
+        this.headerHeight = 50;
     }
 
     getPrecendingLP() {
@@ -47,7 +48,7 @@ class CanvasLP {
     reevaluateCourses() {
         let i = 0;
         this.courses.forEach((value)=> {
-            value.moveCourseY(i*this.courseHeight);
+            value.moveCourseY(i*this.courseHeight + this.headerHeight);
             i++;
         });
     }
@@ -62,7 +63,7 @@ class CanvasLP {
             courseData,
             {
                 x: this.x,
-                y: this.courses.length*this.courseHeight,
+                y: this.courses.length*this.courseHeight + this.headerHeight,
                 width: width,
                 height: height,
                 thickness: 12
@@ -122,6 +123,15 @@ class CanvasLP {
     }
 
     draw(ctx) {
+        ctx.save();
+        ctx.strokeStyle = "white";
+        ctx.fillStyle = "white";
+        ctx.lineWidth = 10;
+        ctx.font = "15pt Arial";
+        ctx.textAlign = "center";
+        //ctx.strokeRect(this.x,0,width,this.headerHeight);
+        ctx.fillText(this.year + " LP " + (this.lp+1),this.x + width/2,this.headerHeight/2,500);
+        ctx.restore();
         for (let i = 0; i < this.courses.length; i++) {
             this.courses[i].draw(ctx);
         }
